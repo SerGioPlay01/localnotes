@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /css
+Disallow: /fonts
+Disallow: /js/*
+Disallow: /resources
+Disallow: /yandex_0c0ab9bc96dcb723.html
+Disallow: /manifest.json
+Allow: /
+
+Host: https://silly-figolla-097c1f.netlify.app/
+Sitemap: https://silly-figolla-097c1f.netlify.app/sitemap_index.xml

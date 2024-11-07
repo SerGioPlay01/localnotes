@@ -1,0 +1,16 @@
+{
+    "name": "Локальные заметки",
+    "short_name": "Локальные заметки",
+    "theme_color": "#2196f3",
+    "background_color": "#2196f3",
+    "display": "fullscreen",
+    "orientation": "portrait",
+    "scope": "/",
+    "start_url": "/",
+    "icons": [
+    {
+      "src": "/resources/icon.jpg",
+      "sizes": "512x512"
+    }
+  ]
+  }

@@ -1,5 +1,7 @@
 ![](https://github.com/SerGioPlay01/localnotes/blob/main/screen.png)
 
+- [EN](https://translate.google.com/translate?sl=ru&tl=en&u=https://github.com/SerGioPlay01/qr-codes-generating)
+
 # Локальные Заметки
 
 Локальные Заметки — это удобное и безопасное веб-приложение для создания, хранения и организации заметок прямо в браузере. Подходит для фрилансеров, студентов, бизнесменов и всех, кто ценит безопасность и простоту в использовании.

@@ -1,7 +1,7 @@
 ![](https://github.com/SerGioPlay01/localnotes/blob/main/screen.png)
 
 - [EN](https://translate.google.com/translate?sl=ru&tl=en&u=https://github.com/SerGioPlay01/qr-codes-generating)
-- [Перейти на сайт проекта](https://silly-figolla-097c1f.netlify.app/)
+- [Перейти на сайт проекта](https://localnotes-web.netlify.app/)
 
 # Локальные Заметки
 

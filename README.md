@@ -1,4 +1,4 @@
-![](https://github.com/SerGioPlay01/localnotes/blob/main/screen_5.png?raw=true)
+![](https://github.com/SerGioPlay01/localnotes/blob/main/sccc.png?raw=true)
 
 - [EN](https://translate.google.com/translate?sl=ru&tl=en&u=https://github.com/SerGioPlay01/qr-codes-generating)
 - [Перейти на сайт проекта](https://localnotes-web.netlify.app/)

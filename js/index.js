@@ -1,28 +1,497 @@
-// Оптимизация для мобильных устройств
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-// Добавляем классы для мобильных устройств
-if (isMobile) {
-    document.documentElement.classList.add('mobile-device');
-}
-if (isTouch) {
+// Адаптивная система определения устройств
+class ResponsiveManager {
+    constructor() {
+        this.breakpoints = {
+            mobile: 768,
+            tablet: 1024,
+            desktop: 1200
+        };
+        this.currentBreakpoint = this.getCurrentBreakpoint();
+        this.isMobile = this.currentBreakpoint === 'mobile';
+        this.isTablet = this.currentBreakpoint === 'tablet';
+        this.isDesktop = this.currentBreakpoint === 'desktop';
+        this.isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        this.init();
+    }
+    
+    getCurrentBreakpoint() {
+        const width = window.innerWidth;
+        if (width < this.breakpoints.mobile) return 'mobile';
+        if (width < this.breakpoints.tablet) return 'tablet';
+        return 'desktop';
+    }
+    
+    init() {
+        // Добавляем классы для устройств
+        document.documentElement.classList.add(`${this.currentBreakpoint}-device`);
+        if (this.isTouch) {
     document.documentElement.classList.add('touch-device');
 }
 
-// Оптимизация событий для touch-устройств
-const eventType = isTouch ? 'touchstart' : 'click';
+        // Слушаем изменения размера окна
+        window.addEventListener('resize', this.handleResize.bind(this));
+        
+        // Слушаем изменения ориентации
+        window.addEventListener('orientationchange', this.handleOrientationChange.bind(this));
+    }
+    
+    handleResize() {
+        const newBreakpoint = this.getCurrentBreakpoint();
+        if (newBreakpoint !== this.currentBreakpoint) {
+            // Удаляем старый класс
+            document.documentElement.classList.remove(`${this.currentBreakpoint}-device`);
+            
+            // Обновляем переменные
+            this.currentBreakpoint = newBreakpoint;
+            this.isMobile = this.currentBreakpoint === 'mobile';
+            this.isTablet = this.currentBreakpoint === 'tablet';
+            this.isDesktop = this.currentBreakpoint === 'desktop';
+            
+            // Добавляем новый класс
+            document.documentElement.classList.add(`${this.currentBreakpoint}-device`);
+            
+            // Обновляем редактор при изменении размера
+            this.updateEditorLayout();
+        }
+    }
+    
+    handleOrientationChange() {
+        // Небольшая задержка для корректного определения размеров
+        setTimeout(() => {
+            this.handleResize();
+        }, 100);
+    }
+    
+    updateEditorLayout() {
+        if (tinymceEditor && !tinymceEditor.destroyed) {
+            // Обновляем настройки редактора в зависимости от размера экрана
+            const newToolbar = this.getToolbarForBreakpoint();
+            const newToolbarMode = this.getToolbarModeForBreakpoint();
+            const newMenubar = this.getMenubarForBreakpoint();
+            const fullscreenSettings = this.getFullscreenSettings();
+            
+            // Проверяем, что TinyMCE редактор существует
+            if (tinymceEditor && tinymceEditor.settings) {
+                tinymceEditor.settings.toolbar = newToolbar;
+                tinymceEditor.settings.toolbar_mode = newToolbarMode;
+                tinymceEditor.settings.menubar = newMenubar;
+                tinymceEditor.settings.resize = this.isDesktop;
+                tinymceEditor.settings.elementpath = this.isDesktop;
+                tinymceEditor.settings.height = fullscreenSettings.height;
+                tinymceEditor.settings.width = fullscreenSettings.width;
+                tinymceEditor.settings.menubar_height = fullscreenSettings.menubar_height;
+                tinymceEditor.settings.toolbar_height = fullscreenSettings.toolbar_height;
+            }
+            
+            // Применяем адаптивные стили меню
+            this.applyMenuStyles();
+            
+            // Применяем полноэкранные стили
+            this.applyFullscreenStyles();
+            
+            // Перезагружаем редактор с новыми настройками
+            const currentContent = tinymceEditor.getContent();
+            tinymceEditor.destroy();
+            
+            setTimeout(() => {
+                initTinyMCE();
+                if (tinymceEditor && currentContent) {
+                    tinymceEditor.setContent(currentContent);
+                }
+                // Повторно применяем стили после перезагрузки
+                setTimeout(() => {
+                    this.applyMenuStyles();
+                    this.applyFullscreenStyles();
+                }, 200);
+            }, 100);
+        }
+    }
+    
+    getToolbarForBreakpoint() {
+        if (this.isMobile || this.isTouch) {
+            // Для touch-устройств создаем одну длинную строку с прокруткой - ВСЕ функции
+            return 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough superscript subscript | ' +
+                   'alignleft aligncenter alignright alignjustify | outdent indent | ' +
+                   'numlist bullist | forecolor backcolor removeformat | charmap emoticons | ' +
+                   'link image media table | mceInsertTableSimple | mceInsertTableCustom | code | help | fullscreen preview | insertfile anchor codesample | ' +
+                   'ltr rtl | pagebreak | visualblocks visualchars | searchreplace | wordcount';
+        } else if (this.isTablet) {
+            return 'undo redo | blocks fontfamily fontsize | bold italic underline | alignleft aligncenter alignright | numlist bullist | forecolor backcolor | charmap emoticons | link image media table | mceInsertTableSimple | mceInsertTableCustom | code | help';
+        } else {
+            return 'undo redo | blocks fontfamily fontsize | ' +
+                   'bold italic underline strikethrough superscript subscript | ' +
+                   'alignleft aligncenter alignright alignjustify | ' +
+                   'outdent indent | numlist bullist | ' +
+                   'forecolor backcolor removeformat | ' +
+                   'pagebreak | charmap emoticons | ' +
+                   'fullscreen preview | insertfile image media link anchor codesample table | mceInsertTableSimple | mceInsertTableCustom | ' +
+                   'ltr rtl | code | help';
+        }
+    }
+    
+    getToolbarModeForBreakpoint() {
+        if (this.isMobile || this.isTouch) {
+            return 'wrap'; // Для touch-устройств используем wrap для горизонтальной прокрутки
+        } else if (this.isTablet) {
+            return 'wrap';
+        } else {
+            return 'floating';
+        }
+    }
+    
+    getEventType() {
+        // Используем современный Pointer Events API
+        if (pointerManager) {
+            return pointerManager.getEventType();
+        }
+        // Fallback для старых браузеров
+        return this.isTouch ? 'touchstart' : 'click';
+    }
+    
+    getMenubarForBreakpoint() {
+        if (this.isMobile) {
+            return 'file edit view insert format tools'; // Показываем упрощенное меню на мобильных
+        } else if (this.isTablet) {
+            return 'file edit view insert format tools'; // Упрощенное меню для планшетов
+        } else {
+            return 'file edit view insert format tools table help'; // Полное меню для десктопа
+        }
+    }
+    
+    getFullscreenSettings() {
+        // Вычисляем общую высоту хедера и навигации с дополнительным отступом
+        const headerHeight = 100; // .info-app height
+        const navHeight = 80; // .center_nav approximate height (20px padding * 2 + content)
+        const extraMargin = 40; // Дополнительный отступ для предотвращения перекрытия
+        const totalHeaderHeight = headerHeight + navHeight + extraMargin;
+        
+        return {
+            height: `calc(100vh - ${totalHeaderHeight}px)`,
+            width: '100vw',
+            menubar_height: 40,
+            toolbar_height: 50,
+            statusbar_height: 30,
+            header_offset: totalHeaderHeight
+        };
+    }
+    
+    applyMenuStyles() {
+        // Применяем адаптивные стили к меню
+        const menubar = document.querySelector('.tox .tox-menubar');
+        if (menubar) {
+            // Добавляем классы для адаптивности
+            menubar.classList.remove('mobile-menu', 'tablet-menu', 'desktop-menu');
+            
+            if (this.isMobile) {
+                menubar.classList.add('mobile-menu');
+            } else if (this.isTablet) {
+                menubar.classList.add('tablet-menu');
+            } else {
+                menubar.classList.add('desktop-menu');
+            }
+            
+            // Применяем стили в зависимости от темы
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            this.updateMenuTheme(menubar, currentTheme);
+        }
+    }
+    
+    updateMenuTheme(menubar, theme) {
+        if (!menubar) return;
+        
+        if (theme === 'light') {
+            menubar.style.background = 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)';
+            menubar.style.borderBottom = '1px solid #dee2e6';
+        } else {
+            menubar.style.background = 'linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%)';
+            menubar.style.borderBottom = '1px solid #404040';
+        }
+        
+        // Обновляем стили пунктов меню
+        const menuItems = menubar.querySelectorAll('.tox-mbtn');
+        menuItems.forEach(item => {
+            if (theme === 'light') {
+                item.style.color = '#212529';
+                item.style.borderRadius = '4px';
+                item.style.transition = 'all 0.2s ease';
+            } else {
+                item.style.color = '#ffffff';
+                item.style.borderRadius = '4px';
+                item.style.transition = 'all 0.2s ease';
+            }
+            
+            // Добавляем hover эффекты с поддержкой Pointer Events
+            item.addEventListener('pointerenter', () => {
+                if (theme === 'light') {
+                    item.style.background = 'rgba(0, 0, 0, 0.05)';
+                } else {
+                    item.style.background = 'rgba(255, 255, 255, 0.1)';
+                }
+            });
+            
+            item.addEventListener('pointerleave', () => {
+                item.style.background = 'transparent';
+            });
+            
+            // Fallback для старых браузеров
+            item.addEventListener('mouseenter', () => {
+                if (theme === 'light') {
+                    item.style.background = 'rgba(0, 0, 0, 0.05)';
+                } else {
+                    item.style.background = 'rgba(255, 255, 255, 0.1)';
+                }
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                item.style.background = 'transparent';
+            });
+        });
+    }
+    
+    applyFullscreenStyles() {
+        // Применяем полноэкранные стили к редактору
+        const editorContainer = document.querySelector('.tox-tinymce');
+        if (editorContainer) {
+            // Добавляем класс для полноэкранного режима
+            editorContainer.classList.add('fullscreen-editor');
+            
+            // Применяем стили в зависимости от размера экрана
+            if (this.isMobile) {
+                editorContainer.style.setProperty('--menubar-height', '50px'); // Показываем меню на мобильных
+                editorContainer.style.setProperty('--toolbar-height', '60px');
+                editorContainer.style.setProperty('--statusbar-height', '30px');
+                editorContainer.style.setProperty('--header-offset', '200px');
+            } else if (this.isTablet) {
+                editorContainer.style.setProperty('--menubar-height', '35px');
+                editorContainer.style.setProperty('--toolbar-height', '45px');
+                editorContainer.style.setProperty('--statusbar-height', '30px');
+                editorContainer.style.setProperty('--header-offset', '190px');
+            } else {
+                editorContainer.style.setProperty('--menubar-height', '40px');
+                editorContainer.style.setProperty('--toolbar-height', '50px');
+                editorContainer.style.setProperty('--statusbar-height', '30px');
+                editorContainer.style.setProperty('--header-offset', '180px');
+            }
+        }
+        
+        // Применяем стили к контейнеру TinyMCE
+        const tinymceContainer = document.querySelector('.tinymce');
+        if (tinymceContainer) {
+            tinymceContainer.classList.add('fullscreen-container');
+            
+            // Применяем отступы в зависимости от размера экрана
+            if (this.isMobile) {
+                tinymceContainer.style.marginTop = '240px';
+                tinymceContainer.style.height = 'calc(100vh - 240px)';
+            } else if (this.isTablet) {
+                tinymceContainer.style.marginTop = '230px';
+                tinymceContainer.style.height = 'calc(100vh - 230px)';
+            } else {
+                tinymceContainer.style.marginTop = '220px';
+                tinymceContainer.style.height = 'calc(100vh - 220px)';
+            }
+        }
+    }
+    
+    resetEditorStyles() {
+        // Сбрасываем стили редактора для исправления проблем
+        const editorContainer = document.querySelector('.tox-tinymce');
+        if (editorContainer) {
+            editorContainer.style.position = '';
+            editorContainer.style.top = '';
+            editorContainer.style.left = '';
+            editorContainer.style.width = '';
+            editorContainer.style.height = '';
+            editorContainer.style.zIndex = '';
+        }
+        
+        const tinymceContainer = document.querySelector('.tinymce');
+        if (tinymceContainer) {
+            tinymceContainer.style.position = '';
+            tinymceContainer.style.top = '';
+            tinymceContainer.style.left = '';
+            tinymceContainer.style.width = '';
+            tinymceContainer.style.height = '';
+            tinymceContainer.style.zIndex = '';
+        }
+    }
+}
 
-document.getElementById("addNoteButton").addEventListener(eventType, (e) => {
+// Утилита для работы с современными Pointer Events
+class PointerEventManager {
+    constructor() {
+        this.pointerType = 'mouse'; // По умолчанию
+        this.isTouchDevice = false;
+        this.isPenDevice = false;
+        this.init();
+    }
+    
+    init() {
+        // Определяем тип устройства при первом взаимодействии
+        this.setupPointerEventListeners();
+        
+        // Fallback для старых браузеров
+        this.setupLegacyDetection();
+    }
+    
+    setupPointerEventListeners() {
+        // Используем современный Pointer Events API
+        const events = ['pointerdown', 'pointermove', 'pointerup'];
+        
+        events.forEach(eventType => {
+            document.addEventListener(eventType, (event) => {
+                this.updatePointerType(event);
+            }, { passive: true, once: false });
+        });
+    }
+    
+    updatePointerType(event) {
+        if (event.pointerType) {
+            this.pointerType = event.pointerType;
+            this.isTouchDevice = event.pointerType === 'touch';
+            this.isPenDevice = event.pointerType === 'pen';
+        }
+    }
+    
+    setupLegacyDetection() {
+        // Fallback для браузеров без поддержки Pointer Events
+        if (!window.PointerEvent) {
+            // Проверяем поддержку touch
+            this.isTouchDevice = 'ontouchstart' in window || 
+                                navigator.maxTouchPoints > 0 || 
+                                navigator.msMaxTouchPoints > 0;
+            
+            if (this.isTouchDevice) {
+                this.pointerType = 'touch';
+            }
+        }
+    }
+    
+    getEventType() {
+        // Возвращаем оптимальный тип события для текущего устройства
+        if (this.isTouchDevice) {
+            return 'touchstart';
+        } else if (this.isPenDevice) {
+            return 'pointerdown';
+        } else {
+            return 'click';
+        }
+    }
+    
+    isTouch() {
+        return this.isTouchDevice;
+    }
+    
+    isPen() {
+        return this.isPenDevice;
+    }
+    
+    isMouse() {
+        return this.pointerType === 'mouse';
+    }
+    
+    getPointerType() {
+        return this.pointerType;
+    }
+}
+
+// Создаем экземпляр менеджера Pointer Events
+const pointerManager = new PointerEventManager();
+
+// Создаем экземпляр адаптивного менеджера
+const responsiveManager = new ResponsiveManager();
+
+// Обратная совместимость
+const isMobile = responsiveManager.isMobile;
+const isTouch = responsiveManager.isTouch || pointerManager.isTouch();
+
+// Функция для инициализации обработчиков событий
+function initializeEventListeners() {
+    const eventType = pointerManager.getEventType();
+    
+    // Обработчик для кнопки добавления заметки
+    const addNoteButton = document.getElementById("addNoteButton");
+    if (addNoteButton) {
+        addNoteButton.addEventListener(eventType, (e) => {
     e.preventDefault();
     openModal();
 });
-document.getElementById("importButton").addEventListener(eventType, (e) => {
+        console.log('addNoteButton event listener added');
+    } else {
+        console.error('addNoteButton element not found');
+    }
+    
+    // Обработчик для кнопки импорта
+    const importButton = document.getElementById("importButton");
+    if (importButton) {
+        importButton.addEventListener(eventType, (e) => {
     e.preventDefault();
-    document.getElementById("importInput").click();
-});
-document.getElementById("importInput").addEventListener("change", importNotesWithFormat);
-document.getElementById("searchInput").addEventListener("input", filterNotes);
+            const importInput = document.getElementById("importInput");
+            if (importInput) {
+                importInput.click();
+            }
+        });
+    } else {
+        console.error('importButton element not found');
+    }
+    
+    // Обработчик для поля импорта
+    const importInput = document.getElementById("importInput");
+    if (importInput) {
+        importInput.addEventListener("change", importNotesWithFormat);
+    }
+    
+    // Обработчик для поля поиска
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+        searchInput.addEventListener("input", debounce(filterNotes, 300));
+    }
+    
+    // Обработчик для кнопки очистки всех заметок
+    const clearAllButton = document.getElementById("clearAllButton");
+    if (clearAllButton) {
+        clearAllButton.addEventListener("click", () => {
+            // Определяем сообщение подтверждения
+            const confirmationMessage = t("confirmDeleteAll");
+            
+            showCustomPrompt(
+                t("confirmDeleteAllTitle"),
+                confirmationMessage,
+                t("confirmDeleteAllPlaceholder"),
+                (password) => {
+                    if (password === "DELETE ALL") {
+                        clearAllNotes();
+                    } else {
+                        showCustomAlert(t("error"), t("invalidPassword"), "error");
+                    }
+                }
+            );
+        });
+    }
+    
+    console.log('All event listeners initialized');
+}
+
+// Функция для очистки всех заметок
+async function clearAllNotes() {
+    try {
+        // Получаем все заметки и удаляем их
+        const notes = await notesDB.getAllNotes();
+        for (const note of notes) {
+            await notesDB.deleteNote(note.id);
+        }
+        await loadNotes(); // Обновляет отображение заметок
+        showCustomAlert(t("success"), t("allNotesDeleted"), "success");
+    } catch (error) {
+        console.error('Error clearing notes:', error);
+        showCustomAlert(
+            t("error"),
+            t("errorClearingNotes"),
+            "error"
+        );
+    }
+}
 
 // Получаем текущий язык системы (предполагаем, что это en или ru)
 const currentLang = window.currentLang || navigator.language || navigator.userLanguage || 'en';
@@ -275,24 +744,110 @@ function getTinyMCEContentStyle() {
     }
 }
 
-// Функция для обновления темы TinyMCE при смене темы сайта
+// Улучшенная функция для мгновенного обновления темы TinyMCE
 function updateTinyMCETheme() {
-    if (tinymceEditor && tinymceEditor.settings) {
+    if (tinymceEditor && !tinymceEditor.destroyed) {
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
         
-        // Сохраняем текущее содержимое
+        try {
+            // Мгновенное обновление CSS переменных в редакторе
+            const editorContainer = tinymceEditor.getContainer();
+            if (editorContainer) {
+                // Обновляем стили контейнера
+                editorContainer.style.setProperty('--editor-bg', currentTheme === 'light' ? '#ffffff' : '#1e1e1e');
+                editorContainer.style.setProperty('--editor-text', currentTheme === 'light' ? '#212529' : '#ffffff');
+                editorContainer.style.setProperty('--editor-toolbar-bg', currentTheme === 'light' ? '#f8f9fa' : 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)');
+                editorContainer.style.setProperty('--editor-toolbar-border', currentTheme === 'light' ? '#dee2e6' : '#404040');
+            }
+            
+            // Обновляем iframe редактора
+            const editorIframe = editorContainer?.querySelector('iframe');
+            if (editorIframe && editorIframe.contentDocument) {
+                const editorDoc = editorIframe.contentDocument;
+                const editorBody = editorDoc.body;
+                
+                if (editorBody) {
+                    // Применяем новые стили к телу редактора
+                    editorBody.style.backgroundColor = currentTheme === 'light' ? '#ffffff' : '#1e1e1e';
+                    editorBody.style.color = currentTheme === 'light' ? '#212529' : '#ffffff';
+                    
+                    // Обновляем стили для различных элементов
+                    const style = editorDoc.createElement('style');
+                    style.textContent = getTinyMCEContentStyle();
+                    
+                    // Удаляем старые стили
+                    const oldStyle = editorDoc.querySelector('style[data-theme]');
+                    if (oldStyle) {
+                        oldStyle.remove();
+                    }
+                    
+                    // Добавляем новые стили
+                    style.setAttribute('data-theme', currentTheme);
+                    editorDoc.head.appendChild(style);
+                }
+            }
+            
+            // Обновляем панель инструментов
+            updateToolbarTheme(currentTheme);
+            
+            // Обновляем стили меню
+            const menubar = document.querySelector('.tox .tox-menubar');
+            if (menubar && responsiveManager) {
+                responsiveManager.updateMenuTheme(menubar, currentTheme);
+            }
+            
+            // Сохраняем тему в localStorage для восстановления после перезагрузки
+            localStorage.setItem('editorTheme', currentTheme);
+            
+            console.log('TinyMCE theme updated instantly to:', currentTheme);
+            
+        } catch (error) {
+            console.error('Error updating TinyMCE theme:', error);
+            // Fallback к перезагрузке редактора
+            fallbackThemeUpdate();
+        }
+    }
+}
+
+// Функция для обновления темы панели инструментов
+function updateToolbarTheme(theme) {
+    const toolbar = document.querySelector('.tox .tox-toolbar');
+    if (toolbar) {
+        if (theme === 'light') {
+            toolbar.style.background = '#f8f9fa';
+            toolbar.style.borderBottom = '1px solid #dee2e6';
+        } else {
+            toolbar.style.background = 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)';
+            toolbar.style.borderBottom = '1px solid #404040';
+        }
+    }
+    
+    // Обновляем кнопки
+    const buttons = document.querySelectorAll('.tox .tox-tbtn');
+    buttons.forEach(button => {
+        if (theme === 'light') {
+            button.style.color = '#212529';
+        } else {
+            button.style.color = '#ffffff';
+        }
+    });
+}
+
+// Fallback функция для перезагрузки редактора
+function fallbackThemeUpdate() {
+    if (tinymceEditor && !tinymceEditor.destroyed) {
         const currentContent = tinymceEditor.getContent();
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
         
         // Обновляем настройки
         tinymceEditor.settings.skin = getTinyMCESkin();
         tinymceEditor.settings.content_css = getTinyMCEContentCSS();
         tinymceEditor.settings.content_style = getTinyMCEContentStyle();
         
-        // Перезагружаем редактор с новой темой
+        // Перезагружаем редактор
         tinymceEditor.destroy();
         setTimeout(() => {
             initTinyMCE();
-            // Восстанавливаем содержимое после инициализации
             if (tinymceEditor && currentContent) {
                 tinymceEditor.setContent(currentContent);
             }
@@ -322,9 +877,105 @@ function forceUpdateTinyMCETheme() {
     }
 }
 
+// Функция для восстановления темы редактора после перезагрузки
+function restoreEditorTheme() {
+    const savedTheme = localStorage.getItem('editorTheme');
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    
+    if (savedTheme && savedTheme !== currentTheme) {
+        // Если сохраненная тема отличается от текущей, обновляем
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        console.log('Restored editor theme from localStorage:', savedTheme);
+    }
+}
+
+// Функция для генерации версии файлов (cache busting)
+function generateFileVersion() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+// Функция для обновления ссылок на файлы с версией
+function updateFileVersions() {
+    const version = generateFileVersion();
+    
+    // Обновляем CSS файлы
+    const cssLinks = document.querySelectorAll('link[rel="stylesheet"]');
+    cssLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && !href.includes('?') && !href.includes('tinymce') && !href.includes('google')) {
+            link.setAttribute('href', href + '?v=' + version);
+        }
+    });
+    
+    // Обновляем JS файлы
+    const jsScripts = document.querySelectorAll('script[src]');
+    jsScripts.forEach(script => {
+        const src = script.getAttribute('src');
+        if (src && !src.includes('?') && !src.includes('tinymce') && !src.includes('google')) {
+            script.setAttribute('src', src + '?v=' + version);
+        }
+    });
+    
+    console.log('File versions updated with version:', version);
+}
+
+// Функция для очистки кеша браузера
+function clearBrowserCache() {
+    // Очищаем localStorage от устаревших данных
+    const cacheKeys = Object.keys(localStorage).filter(key => 
+        key.startsWith('cache_') || key.startsWith('temp_')
+    );
+    cacheKeys.forEach(key => localStorage.removeItem(key));
+    
+    // Очищаем sessionStorage
+    sessionStorage.clear();
+    
+    // Принудительно обновляем страницу без кеша
+    if ('caches' in window) {
+        caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => {
+                if (cacheName.includes('app-cache') || cacheName.includes('static-cache')) {
+                    caches.delete(cacheName);
+                }
+            });
+        });
+    }
+    
+    console.log('Browser cache cleared');
+}
+
+// Функция для принудительного обновления ресурсов
+function forceRefreshResources() {
+    // Обновляем изображения
+    const images = document.querySelectorAll('img[src]');
+    images.forEach(img => {
+        const src = img.getAttribute('src');
+        if (src && !src.includes('?')) {
+            img.setAttribute('src', src + '?v=' + generateFileVersion());
+        }
+    });
+    
+    // Обновляем фоновые изображения в CSS
+    const elementsWithBg = document.querySelectorAll('[style*="background-image"]');
+    elementsWithBg.forEach(element => {
+        const style = element.getAttribute('style');
+        if (style && style.includes('url(') && !style.includes('?')) {
+            const newStyle = style.replace(/url\(([^)]+)\)/g, (match, url) => {
+                return `url(${url}?v=${generateFileVersion()})`;
+            });
+            element.setAttribute('style', newStyle);
+        }
+    });
+    
+    console.log('Resources force refreshed');
+}
+
 // Инициализация приложения
 window.onload = async () => {
     try {
+        // Восстанавливаем тему редактора
+        restoreEditorTheme();
+        
         // Инициализируем IndexedDB
         if (typeof notesDB !== 'undefined') {
             await notesDB.init();
@@ -338,6 +989,15 @@ window.onload = async () => {
             try {
                 initTinyMCE();
                 console.log('TinyMCE initialized successfully');
+                
+                // Применяем сохраненную тему после инициализации
+                setTimeout(() => {
+                    const savedTheme = localStorage.getItem('editorTheme');
+                    if (savedTheme) {
+                        updateTinyMCETheme();
+                    }
+                }, 500);
+                
             } catch (error) {
                 console.error('Error initializing TinyMCE:', error);
             }
@@ -360,6 +1020,18 @@ window.onload = async () => {
         if (typeof updateFooterTexts === 'function') {
             updateFooterTexts();
         }
+        
+        // Инициализируем обработчики событий
+        initializeEventListeners();
+        
+        // Обновляем версии файлов для очистки кеша
+        updateFileVersions();
+        
+        // Очищаем кеш браузера
+        clearBrowserCache();
+        
+        // Принудительно обновляем ресурсы
+        forceRefreshResources();
     } catch (error) {
         console.error('Error initializing application:', error);
         console.error('Error stack:', error.stack);
@@ -432,20 +1104,62 @@ function closeAllFloatingPanels() {
     });
 }
 
-// Инициализация редактора TinyMCE
+// Функция для добавления обработчиков событий с поддержкой Pointer Events
+function addPointerEventListeners() {
+    // Обработчик для закрытия плавающих панелей
+    const handlePanelClose = function(e) {
+        // Если клик не по плавающей панели, закрываем все панели
+        if (!e.target.closest('.tox-pop') && !e.target.closest('.tox-toolbar')) {
+            closeAllFloatingPanels();
+        }
+    };
+    
+    // Добавляем обработчики с поддержкой Pointer Events
+    document.addEventListener('pointerdown', handlePanelClose);
+    
+    // Fallback для старых браузеров
+    document.addEventListener('click', handlePanelClose);
+    
+    // Обработчик для кнопок закрытия
+    const handleCloseButtons = function(e) {
+        if (e.target.closest('.tox-button[aria-label*="close"]') || 
+            e.target.closest('.tox-button[title*="close"]')) {
+            closeAllFloatingPanels();
+        }
+    };
+    
+    document.addEventListener('pointerdown', handleCloseButtons);
+    document.addEventListener('click', handleCloseButtons);
+}
+
+// Инициализация редактора TinyMCE с улучшенной обработкой ошибок
 function initTinyMCE() {
     if (typeof tinymce === 'undefined') {
         console.error('TinyMCE library is not loaded');
         return false;
     }
     
+    // Проверяем, не инициализирован ли уже редактор
+    if (tinymceEditor && !tinymceEditor.destroyed) {
+        console.log('TinyMCE already initialized');
+        return true;
+    }
+    
+    // Проверяем наличие контейнера
+    const container = document.querySelector('.tinymce');
+    if (!container) {
+        console.error('TinyMCE container not found');
+        return false;
+    }
+    
+    try {
     tinymce.init({
         selector: '.tinymce',
         base_url: '/editor_news',
         suffix: '.min',
-        height: '100%',
-        width: '100%',
-        menubar: !isMobile,
+            height: responsiveManager.getFullscreenSettings().height,
+            width: responsiveManager.getFullscreenSettings().width,
+            menubar: responsiveManager.getMenubarForBreakpoint(),
         plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
@@ -453,31 +1167,23 @@ function initTinyMCE() {
             'codesample', 'pagebreak', 'nonbreaking', 'quickbars', 'accordion',
             'autosave', 'directionality', 'visualchars'
         ],
-        toolbar: isMobile ? 
-            'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | numlist bullist | forecolor backcolor | charmap emoticons | link image | code' :
-            'undo redo | blocks fontfamily fontsize | ' +
-            'bold italic underline strikethrough superscript subscript | ' +
-            'alignleft aligncenter alignright alignjustify | ' +
-            'outdent indent | numlist bullist | ' +
-            'forecolor backcolor removeformat | ' +
-            'pagebreak | charmap emoticons | ' +
-            'fullscreen preview | insertfile image media link anchor codesample | ' +
-            'ltr rtl | code | help',
-        toolbar_mode: isMobile ? 'sliding' : 'wrap',
-        toolbar_sticky: !isMobile,
+            toolbar: responsiveManager.getToolbarForBreakpoint(),
+            toolbar_mode: responsiveManager.getToolbarModeForBreakpoint(),
+            toolbar_sticky: responsiveManager.isDesktop,
         language: getTinyMCELanguage(),
         license_key: 'gpl',
         branding: false,
         promotion: false,
-        resize: !isMobile,
-        elementpath: !isMobile,
+            resize: responsiveManager.isDesktop,
+            elementpath: responsiveManager.isDesktop,
         statusbar: false,
-        quickbars_selection_toolbar: isTouch ? 'bold italic | quicklink h2 h3 blockquote quickimage quicktable' : false,
-        quickbars_insert_toolbar: isTouch ? 'quickimage quicktable' : false,
-        contextmenu: isTouch ? 'link image imagetools table' : 'link image imagetools table',
-        mobile: isMobile,
-        touch: isTouch,
-        menubar: 'file edit view insert format tools table help',
+            quickbars_selection_toolbar: (responsiveManager.isTouch || pointerManager.isTouch()) ? 'bold italic | quicklink h2 h3 blockquote quickimage quicktable' : false,
+            quickbars_insert_toolbar: (responsiveManager.isTouch || pointerManager.isTouch()) ? 'quickimage quicktable' : false,
+            contextmenu: (responsiveManager.isTouch || pointerManager.isTouch()) ? 'link image imagetools table' : 'link image imagetools table',
+            mobile: responsiveManager.isMobile,
+            touch: responsiveManager.isTouch || pointerManager.isTouch(),
+            menubar_height: responsiveManager.getFullscreenSettings().menubar_height,
+            toolbar_height: responsiveManager.getFullscreenSettings().toolbar_height,
         menu: {
             file: { title: getTinyMCETranslation('File'), items: 'newdocument restoredraft | preview | export | deleteallconversations' },
             edit: { title: getTinyMCETranslation('Edit'), items: 'undo redo | cut copy paste pastetext | selectall | searchreplace' },
@@ -485,31 +1191,122 @@ function initTinyMCE() {
             insert: { title: getTinyMCETranslation('Insert'), items: 'image link media codesample inserttable | charmap emoticons | pagebreak nonbreaking anchor | insertdatetime' },
             format: { title: getTinyMCETranslation('Format'), items: 'bold italic underline strikethrough superscript subscript codeformat | blocks fontfamily fontsize align lineheight | forecolor backcolor | removeformat' },
             tools: { title: getTinyMCETranslation('Tools'), items: 'spellchecker spellcheckerlanguage | a11ycheck code wordcount' },
-            table: { title: getTinyMCETranslation('Table'), items: 'inserttable | cell row column | advtablesort | tableprops deletetable' },
+                table: { title: getTinyMCETranslation('Table'), items: 'inserttable | mceInsertTableSimple | mceInsertTableCustom | cell row column | advtablesort | tableprops deletetable' },
             help: { title: getTinyMCETranslation('Help'), items: 'help' }
         },
         content_style: getTinyMCEContentStyle(),
         skin: getTinyMCESkin(),
         content_css: getTinyMCEContentCSS(),
-        setup: function (editor) {
-            editor.on('change', function () {
-                editor.save();
-            });
-            
-            // Сохраняем ссылку на редактор
-            tinymceEditor = editor;
-            
-            // Исправляем отображение и закрытие плавающих панелей
-            editor.on('init', function() {
-                // Добавляем обработчики для закрытия плавающих панелей
-                document.addEventListener('click', function(e) {
-                    // Если клик не по плавающей панели, закрываем все панели
-                    if (!e.target.closest('.tox-pop') && !e.target.closest('.tox-toolbar')) {
-                        const floatingPanels = document.querySelectorAll('.tox-pop:not(.tox-pop--hidden)');
-                        floatingPanels.forEach(panel => {
-                            panel.classList.add('tox-pop--hidden');
-                        });
+            // Настройки для таблиц
+            table_default_attributes: {
+                border: '1'
+            },
+            table_default_styles: {
+                'border-collapse': 'collapse',
+                'width': '100%'
+            },
+            table_cell_advtab: false,
+            table_cell_class_list: [
+                {title: 'None', value: ''},
+                {title: 'Header', value: 'header'},
+                {title: 'Highlighted', value: 'highlighted'}
+            ],
+            table_row_class_list: [
+                {title: 'None', value: ''},
+                {title: 'Header', value: 'header'},
+                {title: 'Highlighted', value: 'highlighted'}
+            ],
+            table_appearance_options: true,
+            table_grid: true,
+            table_tab_navigation: true,
+            // Добавляем обработку ошибок
+            init_instance_callback: function (editor) {
+                console.log('TinyMCE instance initialized successfully');
+                
+                // Проверяем, что меню создано
+                setTimeout(() => {
+                    const menubar = document.querySelector('.tox .tox-menubar');
+                    if (menubar) {
+                        console.log('Menubar found:', menubar);
+                        menubar.style.display = 'flex';
+                        menubar.style.visibility = 'visible';
+                        menubar.style.opacity = '1';
+                    } else {
+                        console.warn('Menubar not found');
                     }
+                }, 100);
+                
+                // Добавляем обработчики для кнопок
+                editor.addCommand('mcePageBreak', function() {
+                    insertPageBreak();
+                });
+                
+                editor.addCommand('mceInsertTable', function() {
+                    insertTable();
+                });
+                
+                editor.addCommand('mceInsertTableSimple', function() {
+                    insertTableAlternative();
+                });
+                
+                editor.addCommand('mceInsertTableCustom', function() {
+                    insertTableWithSize();
+                });
+                
+                editor.addCommand('mceInsertImage', function() {
+                    insertImage();
+                });
+                
+                editor.addCommand('mceInsertLink', function() {
+                    insertLink();
+                });
+                
+                editor.addCommand('mceInsertMedia', function() {
+                    insertMedia();
+                });
+                
+                editor.addCommand('mceInsertAnchor', function() {
+                    insertAnchor();
+                });
+                
+                editor.addCommand('mceInsertCode', function() {
+                    insertCode();
+                });
+            },
+        setup: function (editor) {
+                // Обработка ошибок инициализации
+            editor.on('init', function() {
+                    console.log('TinyMCE editor initialized');
+                    
+                    // Проверяем доступность редактора
+                    if (!editor.getContainer()) {
+                        console.error('TinyMCE container not found');
+                        return;
+                    }
+                    
+                // Добавляем обработчики событий с поддержкой Pointer Events
+                addPointerEventListeners();
+                
+                // Добавляем обработчики для меню
+                editor.on('init', function() {
+                    console.log('Editor init event fired');
+                    
+                    // Принудительно показываем меню
+                    setTimeout(() => {
+                        const menubar = document.querySelector('.tox .tox-menubar');
+                        if (menubar) {
+                            menubar.style.display = 'flex !important';
+                            menubar.style.visibility = 'visible !important';
+                            menubar.style.opacity = '1 !important';
+                            
+                            // Добавляем обработчики кликов для пунктов меню
+                            const menuItems = menubar.querySelectorAll('.tox-mbtn');
+                            menuItems.forEach(item => {
+                                item.style.pointerEvents = 'auto';
+                                item.style.cursor = 'pointer';
+                            });
+                        }
+                    }, 200);
                 });
                 
                 // Закрываем панели при нажатии Escape
@@ -555,6 +1352,14 @@ function initTinyMCE() {
                         subtree: true
                     });
                     
+                    // Применяем адаптивные стили меню после инициализации
+                    setTimeout(() => {
+                        if (responsiveManager) {
+                            responsiveManager.applyMenuStyles();
+                            responsiveManager.applyFullscreenStyles();
+                        }
+                    }, 300);
+                    
                     // Добавляем обработчик для изменения системной темы
                     if (window.matchMedia) {
                         const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
@@ -568,20 +1373,103 @@ function initTinyMCE() {
                         });
                     }
                 });
+                
+                // Обработка ошибок
+                editor.on('error', function(e) {
+                    console.error('TinyMCE error:', e);
+                });
+                
+                editor.on('change', function () {
+                    try {
+                        editor.save();
+                    } catch (error) {
+                        console.error('Error saving TinyMCE content:', error);
+                    }
+                });
+                
+                // Сохраняем ссылку на редактор
+                tinymceEditor = editor;
             }
         });
     
     return true;
+    } catch (error) {
+        console.error('Error initializing TinyMCE:', error);
+        return false;
+    }
 }
 
 function openModal(noteId, noteContent, noteCreationTime) {
     const modal = document.getElementById("editModal");
 
-    if (!tinymceEditor) {
-        if (!initTinyMCE()) return; // Exit if TinyMCE failed to initialize
+    if (!modal) {
+        console.error('Modal element not found');
+        return;
     }
 
-    if (noteId) {
+    // Проверяем и инициализируем TinyMCE с повторными попытками
+    let initAttempts = 0;
+    const maxInitAttempts = 3;
+    
+    const tryInitTinyMCE = () => {
+        if (initAttempts >= maxInitAttempts) {
+            console.error('Failed to initialize TinyMCE after multiple attempts');
+            showCustomAlert(
+                t("error"),
+                t("errorEditorInitialization"),
+                "error"
+            );
+            return false;
+        }
+        
+        initAttempts++;
+        
+        if (!tinymceEditor || tinymceEditor.destroyed) {
+            if (!initTinyMCE()) {
+                // Повторная попытка через 500мс
+                setTimeout(tryInitTinyMCE, 500);
+                return false;
+            }
+        }
+        
+        return true;
+    };
+    
+    if (!tryInitTinyMCE()) {
+        return;
+    }
+
+    // Ждем полной инициализации редактора
+    const waitForEditor = () => {
+        return new Promise((resolve, reject) => {
+            let attempts = 0;
+            const maxAttempts = 50; // 5 секунд максимум
+            
+            const checkEditor = () => {
+                attempts++;
+                
+                if (tinymceEditor && !tinymceEditor.destroyed && tinymceEditor.getContainer()) {
+                    resolve();
+                } else if (attempts >= maxAttempts) {
+                    reject(new Error('Editor initialization timeout'));
+                } else {
+                    setTimeout(checkEditor, 100);
+                }
+            };
+            
+            checkEditor();
+        });
+    };
+
+    // Открываем модальное окно
+    modal.style.display = "block";
+    document.body.classList.add('modal-open');
+
+    // Ждем инициализации редактора и устанавливаем контент
+    waitForEditor()
+        .then(() => {
+            try {
+                if (noteId && noteContent) {
         tinymceEditor.setContent(noteContent);
         currentNoteId = noteId;
     } else {
@@ -589,8 +1477,8 @@ function openModal(noteId, noteContent, noteCreationTime) {
         currentNoteId = null;
     }
 
-    modal.style.display = "block";
-    document.body.classList.add('modal-open');
+                // Фокусируемся на редакторе
+                tinymceEditor.focus();
 
     // Применяем подсветку синтаксиса к блокам кода
     setTimeout(() => {
@@ -598,6 +1486,19 @@ function openModal(noteId, noteContent, noteCreationTime) {
             hljs.highlightAll();
         }
     }, 100);
+                
+            } catch (error) {
+                console.error('Error setting content in TinyMCE:', error);
+            }
+        })
+        .catch((error) => {
+            console.error('Error waiting for editor:', error);
+            showCustomAlert(
+                t("error"),
+                t("errorEditorTimeout"),
+                "error"
+            );
+        });
 
     document.getElementById("saveNoteButton").onclick = async function () {
         // Закрываем все плавающие панели перед сохранением
@@ -666,28 +1567,6 @@ function openModal(noteId, noteContent, noteCreationTime) {
     };
 }
 
-document.getElementById("clearAllButton").addEventListener("click", () => {
-    // Определяем сообщение подтверждения
-    const confirmationMessage = t("confirmDeleteAll");
-
-    showConfirmModal(confirmationMessage, async () => {
-        try {
-            // Получаем все заметки и удаляем их
-            const notes = await notesDB.getAllNotes();
-            for (const note of notes) {
-                await notesDB.deleteNote(note.id);
-            }
-            await loadNotes(); // Обновляет отображение заметок
-        } catch (error) {
-            console.error('Error clearing notes:', error);
-            showCustomAlert(
-                t("error"),
-                t("errorClearingNotes"),
-                "error"
-            );
-        }
-    });
-});
 
 function showConfirmModal(message, onConfirm) {
     const modal = document.getElementById("confirmModal");
@@ -741,21 +1620,40 @@ async function loadNotes() {
             const noteElement = document.createElement("div");
             noteElement.classList.add("note");
 
+            // Создаем хедер заметки
+            const footer = document.createElement("div");
+            footer.classList.add("note-footer");
+
+            // Форматируем строки в зависимости от языка
+            const creationTime = new Date(note.creationTime).toLocaleString(locale, options);
+            const lastModified = new Date(note.lastModified).toLocaleString(locale, options);
+
+            // Формируем текст в зависимости от языка
+            if (currentLang.startsWith("ru")) {
+                footer.textContent = `Создано: ${creationTime} | Изменено: ${lastModified}`;
+            } else {
+                footer.textContent = `Created: ${creationTime} | Changed: ${lastModified}`;
+            }
+            noteElement.appendChild(footer);
+
+            // Создаем контент заметки
         const notePreview = document.createElement("div");
         notePreview.classList.add("noteContent");
             notePreview.innerHTML = note.content;
             noteElement.appendChild(notePreview);
 
+            // Создаем контейнер для кнопок
+            const buttonsContainer = document.createElement("div");
+            buttonsContainer.classList.add("note-buttons");
+
+            // Создаем кнопки
         const editButton = document.createElement("button");
-        // Устанавливаем текст на кнопке
         editButton.innerHTML = `<i class="fas fa-edit"></i> ${t("edit")}`;
         editButton.classList.add("editBtn");
             editButton.onclick = () => openModal(note.id, note.content, note.creationTime);
-            noteElement.appendChild(editButton);
 
         const deleteButton = document.createElement("button");
         deleteButton.classList.add("deleteBtn");
-        // Устанавливаем текст на кнопке
         deleteButton.innerHTML = `<i class="fas fa-trash"></i> ${t("delete")}`;
             deleteButton.onclick = async () => {
                 noteElement.classList.add("removing");
@@ -773,30 +1671,19 @@ async function loadNotes() {
                     }
             }, 500);
         };
-            noteElement.appendChild(deleteButton);
 
         const exportButton = document.createElement("button");
         exportButton.classList.add("exportBtn");
-        // Устанавливаем текст на кнопке
         exportButton.innerHTML = `<i class="fas fa-download"></i> ${t("export")}`;
             exportButton.onclick = () => showExportOptions(note.content);
-            noteElement.appendChild(exportButton);
 
-        const footer = document.createElement("div");
-        footer.classList.add("note-footer");
+            // Добавляем кнопки в контейнер
+            buttonsContainer.appendChild(editButton);
+            buttonsContainer.appendChild(deleteButton);
+            buttonsContainer.appendChild(exportButton);
 
-        // Форматируем строки в зависимости от языка
-            const creationTime = new Date(note.creationTime).toLocaleString(locale, options);
-            const lastModified = new Date(note.lastModified).toLocaleString(locale, options);
-
-        // Формируем текст в зависимости от языка
-        if (currentLang.startsWith("ru")) {
-            footer.textContent = `Создано: ${creationTime} | Изменено: ${lastModified}`;
-        } else {
-            footer.textContent = `Created: ${creationTime} | Changed: ${lastModified}`;
-        }
-
-            noteElement.appendChild(footer);
+            // Добавляем контейнер кнопок в заметку
+            noteElement.appendChild(buttonsContainer);
             notesContainer.appendChild(noteElement);
         viewer.style.display = "";
     });
@@ -909,7 +1796,14 @@ function showCustomPrompt(title, message, placeholder = "", defaultValue = "", c
         }
     });
     
-    // Закрытие по клику вне модального окна
+    // Закрытие по клику вне модального окна с поддержкой Pointer Events
+    promptModal.addEventListener('pointerdown', (e) => {
+        if (e.target === promptModal) {
+            handleCancel();
+        }
+    });
+    
+    // Fallback для старых браузеров
     promptModal.addEventListener('click', (e) => {
         if (e.target === promptModal) {
             handleCancel();
@@ -971,7 +1865,14 @@ function showCustomAlert(title, message, type = 'info') {
         }
     });
     
-    // Закрытие по клику вне модального окна
+    // Закрытие по клику вне модального окна с поддержкой Pointer Events
+    alertModal.addEventListener('pointerdown', (e) => {
+        if (e.target === alertModal) {
+            handleOk();
+        }
+    });
+    
+    // Fallback для старых браузеров
     alertModal.addEventListener('click', (e) => {
         if (e.target === alertModal) {
             handleOk();
@@ -985,12 +1886,16 @@ async function importNotes(event, password) {
 
     let importedCount = 0;
     let errorCount = 0;
+    let totalFiles = files.length;
+    let processedFiles = 0;
 
-    for (const file of Array.from(files)) {
+    // Функция для обработки одного файла
+    const processFile = (file) => {
+        return new Promise((resolve) => {
         if (!file.name.endsWith('.note')) {
-            // Формируем текст в зависимости от языка
-            showCustomAlert(t("error"), t("errorInvalidFile", { filename: file.name }), "error");
             errorCount++;
+                showCustomAlert(t("error"), t("errorInvalidFile", { filename: file.name }), "error");
+                resolve();
             return;
         }
 
@@ -1016,8 +1921,8 @@ async function importNotes(event, password) {
                 const tagPattern = /<!-- Exported on [\d-T:.Z]+ -->/;
                 if (!tagPattern.test(finalText)) {
                     errorCount++;
-                    // Формируем текст в зависимости от языка
                     showCustomAlert(t("error"), t("errorNoUniqueTag", { filename: file.name }), "error");
+                        resolve();
                     return;
                 }
 
@@ -1037,20 +1942,36 @@ async function importNotes(event, password) {
                         await notesDB.saveNote(noteObj);
                         importedCount++;
                     }
+                    }
+                } catch (err) {
+                    errorCount++;
+                    showCustomAlert(t("error"), t("errorDecryption", { filename: file.name }), "error");
                 }
 
+                processedFiles++;
+                
+                // Проверяем, обработаны ли все файлы
+                if (processedFiles === totalFiles) {
                 if (importedCount > 0) {
                     showCustomAlert(t("success"), t("importCompleted", { count: importedCount }), "success");
                     await loadNotes();
+                    } else if (errorCount === totalFiles) {
+                        showCustomAlert(t("error"), t("errorNoFilesImported"), "error");
+                    } else {
+                        showCustomAlert(t("warning"), t("importPartialSuccess", { imported: importedCount, errors: errorCount }), "warning");
+                        await loadNotes();
                 }
-            } catch (err) {
-                errorCount++;
-                // Формируем текст в зависимости от языка
-                showCustomAlert(t("error"), t("errorDecryption", { filename: file.name }), "error");
             }
+                
+                resolve();
         };
         reader.readAsText(file);
-    }
+        });
+    };
+
+    // Обрабатываем все файлы параллельно
+    const promises = Array.from(files).map(file => processFile(file));
+    await Promise.all(promises);
 }
 
 
@@ -1069,7 +1990,6 @@ function transliterate(text) {
     return text.replace(/[а-яёА-ЯЁ]/g, char => translitMap[char] || char);
 }
 
-document.getElementById("searchInput").addEventListener("input", debounce(filterNotes, 300));
 
 function debounce(func, delay) {
     let timeout;
@@ -1146,8 +2066,11 @@ async function importNotesHTML(event) {
     let importedCount = 0;
     let errorCount = 0;
     let totalFiles = files.length;
+    let processedFiles = 0;
 
-    for (const [index, file] of Array.from(files).entries()) {
+    // Функция для обработки одного файла
+    const processFile = (file) => {
+        return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = async function (e) {
             try {
@@ -1158,6 +2081,7 @@ async function importNotesHTML(event) {
                 if (!tagPattern.test(importedText)) {
                     errorCount++;
                     showCustomAlert(t("error"), t("errorNoUniqueTag", { filename: file.name }), "error");
+                        resolve();
                     return;
                 }
 
@@ -1178,25 +2102,37 @@ async function importNotesHTML(event) {
                         await notesDB.saveNote(noteObj);
                         importedCount++;
                     }
+                    }
+                } catch (error) {
+                    errorCount++;
+                    console.error('Import error:', error);
+                    showCustomAlert(t("error"), t("errorImport", { filename: file.name, message: error.message }), "error");
                 }
+                
+                processedFiles++;
 
                 // Проверяем, обработаны ли все файлы
-                if (index === totalFiles - 1) {
+                if (processedFiles === totalFiles) {
                     if (importedCount > 0) {
                         showCustomAlert(t("success"), t("importCompleted", { count: importedCount }), "success");
                         await loadNotes();
                     } else if (errorCount === totalFiles) {
                         showCustomAlert(t("error"), t("errorNoFilesImported"), "error");
+                    } else {
+                        showCustomAlert(t("warning"), t("importPartialSuccess", { imported: importedCount, errors: errorCount }), "warning");
+                        await loadNotes();
                     }
                 }
-            } catch (error) {
-                errorCount++;
-                console.error('Import error:', error);
-                showCustomAlert(t("error"), t("errorImport", { filename: file.name, message: error.message }), "error");
-            }
+                
+                resolve();
         };
         reader.readAsText(file);
-    }
+        });
+    };
+
+    // Обрабатываем все файлы параллельно
+    const promises = Array.from(files).map(file => processFile(file));
+    await Promise.all(promises);
 }
 
 // Улучшенная функция импорта с поддержкой разных форматов
@@ -1262,7 +2198,14 @@ async function importNotesWithFormat(event) {
         document.body.removeChild(importModal);
     });
     
-    // Закрытие по клику вне модального окна
+    // Закрытие по клику вне модального окна с поддержкой Pointer Events
+    importModal.addEventListener('pointerdown', (e) => {
+        if (e.target === importModal) {
+            document.body.removeChild(importModal);
+        }
+    });
+    
+    // Fallback для старых браузеров
     importModal.addEventListener('click', (e) => {
         if (e.target === importModal) {
             document.body.removeChild(importModal);
@@ -1338,8 +2281,311 @@ function toggleFullscreen() {
     }
 }
 
+// Функция для вставки разрыва страницы
+function insertPageBreak() {
+    if (tinymceEditor) {
+        tinymceEditor.insertContent('<div class="page-break"></div>');
+    }
+}
+
+// Функция для вставки изображения
+function insertImage() {
+    if (tinymceEditor) {
+        try {
+            tinymceEditor.execCommand('mceImage');
+        } catch (error) {
+            console.error('Error opening image dialog:', error);
+            // Fallback: открываем диалог вставки изображения
+            tinymceEditor.windowManager.open({
+                title: 'Insert Image',
+                body: {
+                    type: 'panel',
+                    items: [
+                        {
+                            type: 'input',
+                            name: 'src',
+                            label: 'Image URL'
+                        }
+                    ]
+                },
+                buttons: [
+                    {
+                        type: 'cancel',
+                        text: 'Cancel'
+                    },
+                    {
+                        type: 'submit',
+                        text: 'Insert',
+                        primary: true
+                    }
+                ],
+                onSubmit: function(api) {
+                    const data = api.getData();
+                    if (data.src) {
+                        tinymceEditor.insertContent(`<img src="${data.src}" alt="Image" style="max-width: 100%; height: auto;">`);
+                        api.close();
+                    }
+                }
+            });
+        }
+    }
+}
+
+// Функция для вставки ссылки
+function insertLink() {
+    if (tinymceEditor) {
+        try {
+            tinymceEditor.execCommand('mceLink');
+        } catch (error) {
+            console.error('Error opening link dialog:', error);
+            // Fallback: открываем диалог вставки ссылки
+            tinymceEditor.windowManager.open({
+                title: 'Insert Link',
+                body: {
+                    type: 'panel',
+                    items: [
+                        {
+                            type: 'input',
+                            name: 'url',
+                            label: 'URL'
+                        },
+                        {
+                            type: 'input',
+                            name: 'text',
+                            label: 'Link Text'
+                        }
+                    ]
+                },
+                buttons: [
+                    {
+                        type: 'cancel',
+                        text: 'Cancel'
+                    },
+                    {
+                        type: 'submit',
+                        text: 'Insert',
+                        primary: true
+                    }
+                ],
+                onSubmit: function(api) {
+                    const data = api.getData();
+                    if (data.url) {
+                        const linkText = data.text || data.url;
+                        tinymceEditor.insertContent(`<a href="${data.url}" target="_blank" rel="noopener">${linkText}</a>`);
+                        api.close();
+                    }
+                }
+            });
+        }
+    }
+}
+
+// Функция для вставки медиа
+function insertMedia() {
+    if (tinymceEditor) {
+        try {
+            tinymceEditor.execCommand('mceMedia');
+        } catch (error) {
+            console.error('Error opening media dialog:', error);
+            // Fallback: открываем диалог вставки медиа
+            tinymceEditor.windowManager.open({
+                title: 'Insert Media',
+                body: {
+                    type: 'panel',
+                    items: [
+                        {
+                            type: 'input',
+                            name: 'src',
+                            label: 'Media URL'
+                        },
+                        {
+                            type: 'selectbox',
+                            name: 'type',
+                            label: 'Media Type',
+                            items: [
+                                { text: 'Video', value: 'video' },
+                                { text: 'Audio', value: 'audio' }
+                            ]
+                        }
+                    ]
+                },
+                buttons: [
+                    {
+                        type: 'cancel',
+                        text: 'Cancel'
+                    },
+                    {
+                        type: 'submit',
+                        text: 'Insert',
+                        primary: true
+                    }
+                ],
+                onSubmit: function(api) {
+                    const data = api.getData();
+                    if (data.src && data.type) {
+                        if (data.type === 'video') {
+                            tinymceEditor.insertContent(`<video controls style="max-width: 100%; height: auto;"><source src="${data.src}" type="video/mp4">Your browser does not support the video tag.</video>`);
+                        } else if (data.type === 'audio') {
+                            tinymceEditor.insertContent(`<audio controls><source src="${data.src}" type="audio/mpeg">Your browser does not support the audio tag.</audio>`);
+                        }
+                        api.close();
+                    }
+                }
+            });
+        }
+    }
+}
+
+// Функция для вставки якоря
+function insertAnchor() {
+    if (tinymceEditor) {
+        try {
+            tinymceEditor.execCommand('mceAnchor');
+        } catch (error) {
+            console.error('Error opening anchor dialog:', error);
+            // Fallback: открываем диалог вставки якоря
+            tinymceEditor.windowManager.open({
+                title: 'Insert Anchor',
+                body: {
+                    type: 'panel',
+                    items: [
+                        {
+                            type: 'input',
+                            name: 'name',
+                            label: 'Anchor Name'
+                        }
+                    ]
+                },
+                buttons: [
+                    {
+                        type: 'cancel',
+                        text: 'Cancel'
+                    },
+                    {
+                        type: 'submit',
+                        text: 'Insert',
+                        primary: true
+                    }
+                ],
+                onSubmit: function(api) {
+                    const data = api.getData();
+                    if (data.name) {
+                        tinymceEditor.insertContent(`<a id="${data.name}"></a>`);
+                        api.close();
+                    }
+                }
+            });
+        }
+    }
+}
+
+// Функция для вставки кода
+function insertCode() {
+    if (tinymceEditor) {
+        try {
+            tinymceEditor.execCommand('mceCodeSample');
+        } catch (error) {
+            console.error('Error opening code dialog:', error);
+            // Fallback: открываем диалог вставки кода
+            tinymceEditor.windowManager.open({
+                title: 'Insert Code',
+                body: {
+                    type: 'panel',
+                    items: [
+                        {
+                            type: 'textarea',
+                            name: 'code',
+                            label: 'Code'
+                        },
+                        {
+                            type: 'selectbox',
+                            name: 'language',
+                            label: 'Language',
+                            items: [
+                                { text: 'HTML', value: 'html' },
+                                { text: 'CSS', value: 'css' },
+                                { text: 'JavaScript', value: 'javascript' },
+                                { text: 'Python', value: 'python' },
+                                { text: 'Java', value: 'java' },
+                                { text: 'C++', value: 'cpp' },
+                                { text: 'PHP', value: 'php' },
+                                { text: 'SQL', value: 'sql' },
+                                { text: 'Plain Text', value: 'text' }
+                            ]
+                        }
+                    ]
+                },
+                buttons: [
+                    {
+                        type: 'cancel',
+                        text: 'Cancel'
+                    },
+                    {
+                        type: 'submit',
+                        text: 'Insert',
+                        primary: true
+                    }
+                ],
+                onSubmit: function(api) {
+                    const data = api.getData();
+                    if (data.code) {
+                        const language = data.language || 'text';
+                        tinymceEditor.insertContent(`<pre><code class="language-${language}">${data.code}</code></pre>`);
+                        api.close();
+                    }
+                }
+            });
+        }
+    }
+}
+
 // Функция для вставки таблицы
 function insertTable() {
+    if (tinymceEditor) {
+        // Способ 1: Стандартная команда TinyMCE для создания таблицы
+        try {
+            tinymceEditor.execCommand('mceInsertTable');
+        } catch (error) {
+            console.log('Standard table command failed, trying alternative method:', error);
+            // Способ 2: Альтернативный способ через меню
+            insertTableAlternative();
+        }
+    }
+}
+
+// Альтернативный способ вставки таблицы
+function insertTableAlternative() {
+    if (tinymceEditor) {
+        // Способ 2: Создаем простую таблицу 3x3
+        const tableHtml = `
+            <table style="border-collapse: collapse; width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
+                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
+                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
+                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
+                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
+                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
+                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+        
+        tinymceEditor.insertContent(tableHtml);
+    }
+}
+
+// Способ 3: Создание таблицы с выбором размера
+function insertTableWithSize() {
+    if (tinymceEditor) {
     showCustomPrompt(
         t("createTable"),
         t("enterRows"),
@@ -1354,19 +2600,7 @@ function insertTable() {
                     "3",
                     (cols) => {
                         if (cols && !isNaN(cols) && parseInt(cols) > 0) {
-            if (tinymceEditor) {
-            let tableHtml = '<table><tbody>';
-            for (let i = 0; i < parseInt(rows); i++) {
-                tableHtml += '<tr>';
-                for (let j = 0; j < parseInt(cols); j++) {
-                    tableHtml += '<td></td>';
-                }
-                tableHtml += '</tr>';
-            }
-            tableHtml += '</tbody></table>';
-            
-                tinymceEditor.insertContent(tableHtml);
-            }
+                                createTable(parseInt(rows), parseInt(cols));
                         } else if (cols !== null) {
                             showCustomAlert(
                                 t("error"),
@@ -1385,9 +2619,88 @@ function insertTable() {
             }
         }
     );
+    }
 }
 
-// Улучшенная система шифрования с обфускацией
+// Функция создания таблицы с заданными размерами
+function createTable(rows, cols) {
+    if (tinymceEditor) {
+        let tableHtml = '<table style="border-collapse: collapse; width: 100%;"><tbody>';
+        
+        for (let i = 0; i < rows; i++) {
+            tableHtml += '<tr>';
+            for (let j = 0; j < cols; j++) {
+                tableHtml += '<td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>';
+            }
+            tableHtml += '</tr>';
+        }
+        
+        tableHtml += '</tbody></table>';
+        tinymceEditor.insertContent(tableHtml);
+    }
+}
+
+// Функция для тестирования модальных окон
+function testModals() {
+    console.log('Testing TinyMCE modals...');
+    
+    if (!tinymceEditor) {
+        console.error('TinyMCE editor not initialized');
+        return;
+    }
+    
+    // Тестируем каждую функцию вставки
+    const testFunctions = [
+        { name: 'Image', func: insertImage },
+        { name: 'Link', func: insertLink },
+        { name: 'Media', func: insertMedia },
+        { name: 'Anchor', func: insertAnchor },
+        { name: 'Code', func: insertCode },
+        { name: 'Table', func: insertTable },
+        { name: 'Table Simple', func: insertTableAlternative },
+        { name: 'Table Custom', func: insertTableWithSize }
+    ];
+    
+    testFunctions.forEach((test, index) => {
+        setTimeout(() => {
+            console.log(`Testing ${test.name}...`);
+            try {
+                test.func();
+                console.log(`✓ ${test.name} modal opened successfully`);
+            } catch (error) {
+                console.error(`✗ ${test.name} modal failed:`, error);
+            }
+        }, index * 1000); // Задержка между тестами
+    });
+}
+
+// Функция для проверки состояния TinyMCE
+function checkTinyMCEStatus() {
+    console.log('TinyMCE Status Check:');
+    console.log('- Editor initialized:', !!tinymceEditor);
+    console.log('- Editor destroyed:', tinymceEditor ? tinymceEditor.destroyed : 'N/A');
+    console.log('- TinyMCE version:', typeof tinymce !== 'undefined' ? tinymce.majorVersion : 'Not loaded');
+    
+    if (tinymceEditor) {
+        console.log('- Editor container:', tinymceEditor.getContainer());
+        console.log('- Editor content:', tinymceEditor.getContent().length > 0 ? 'Has content' : 'Empty');
+        console.log('- Available commands:', Object.keys(tinymceEditor.commands || {}));
+    }
+}
+
+// Делаем функции доступными в глобальной области для тестирования
+window.testModals = testModals;
+window.checkTinyMCEStatus = checkTinyMCEStatus;
+window.insertImage = insertImage;
+window.insertLink = insertLink;
+window.insertMedia = insertMedia;
+window.insertAnchor = insertAnchor;
+window.insertCode = insertCode;
+window.insertTable = insertTable;
+window.insertTableAlternative = insertTableAlternative;
+window.insertTableWithSize = insertTableWithSize;
+
+// Улучшенная система шифрования с обфускацией и поддержкой медиа
 class AdvancedEncryption {
     constructor() {
         this.saltLength = 32;
@@ -1398,6 +2711,8 @@ class AdvancedEncryption {
         this.maxAttempts = 3; // Максимальное количество попыток
         this.lockoutTime = 30000; // Время блокировки в мс (30 сек)
         this.attempts = new Map(); // Отслеживание попыток
+        this.mediaTypes = ['image', 'video', 'audio']; // Поддерживаемые типы медиа
+        this.maxMediaSize = 50 * 1024 * 1024; // Максимальный размер медиа файла (50MB)
     }
 
     // Генерация случайных байтов
@@ -1743,6 +3058,222 @@ class AdvancedEncryption {
         }
         
         return realContent.join('\n');
+    }
+
+    // Проверка типа медиа файла
+    isMediaFile(filename) {
+        const extension = filename.toLowerCase().split('.').pop();
+        const mediaExtensions = {
+            'image': ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'ico'],
+            'video': ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 'm4v'],
+            'audio': ['mp3', 'wav', 'ogg', 'aac', 'flac', 'm4a', 'wma']
+        };
+        
+        for (const [type, extensions] of Object.entries(mediaExtensions)) {
+            if (extensions.includes(extension)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
+    // Оптимизированное шифрование для медиа файлов
+    async encryptMedia(file, password, identifier = 'media') {
+        try {
+            // Проверяем размер файла
+            if (file.size > this.maxMediaSize) {
+                throw new Error(`File size exceeds maximum allowed size of ${this.maxMediaSize / (1024 * 1024)}MB`);
+            }
+
+            // Проверяем тип файла
+            const mediaType = this.isMediaFile(file.name);
+            if (!mediaType) {
+                throw new Error('Unsupported media file type');
+            }
+
+            // Читаем файл как ArrayBuffer
+            const arrayBuffer = await file.arrayBuffer();
+            const data = new Uint8Array(arrayBuffer);
+            
+            // Генерируем соль и IV
+            const salt = this.generateRandomBytes(this.saltLength);
+            const iv = this.generateRandomBytes(this.ivLength);
+            
+            // Получаем ключ
+            const key = await this.deriveKey(password, salt);
+            
+            // Шифруем данные
+            const encrypted = await crypto.subtle.encrypt(
+                { 
+                    name: 'AES-GCM', 
+                    iv: iv,
+                    tagLength: this.tagLength
+                },
+                key,
+                data
+            );
+            
+            // Создаем метаданные
+            const metadata = {
+                filename: file.name,
+                type: file.type,
+                size: file.size,
+                mediaType: mediaType,
+                timestamp: Date.now(),
+                version: '2.0'
+            };
+            
+            // Объединяем метаданные, соль, IV и зашифрованные данные
+            const metadataJson = JSON.stringify(metadata);
+            const metadataBytes = new TextEncoder().encode(metadataJson);
+            const metadataLength = new Uint8Array(4);
+            new DataView(metadataLength.buffer).setUint32(0, metadataBytes.length, false);
+            
+            const combined = new Uint8Array(
+                metadataLength.length + 
+                metadataBytes.length + 
+                salt.length + 
+                iv.length + 
+                encrypted.byteLength
+            );
+            
+            let offset = 0;
+            combined.set(metadataLength, offset);
+            offset += metadataLength.length;
+            combined.set(metadataBytes, offset);
+            offset += metadataBytes.length;
+            combined.set(salt, offset);
+            offset += salt.length;
+            combined.set(iv, offset);
+            offset += iv.length;
+            combined.set(new Uint8Array(encrypted), offset);
+            
+            // Обфускация для медиа файлов (более агрессивная)
+            const obfuscated = this.obfuscateMediaData(combined);
+            
+            return btoa(String.fromCharCode(...obfuscated));
+        } catch (error) {
+            throw new Error('Media encryption failed: ' + error.message);
+        }
+    }
+
+    // Расшифровка медиа файлов
+    async decryptMedia(encryptedData, password, identifier = 'media') {
+        try {
+            // Проверяем блокировку
+            if (this.isLocked(identifier)) {
+                const remainingTime = Math.ceil((this.lockoutTime - (Date.now() - this.attempts.get(identifier).lastAttempt)) / 1000);
+                throw new Error(`Too many failed attempts. Try again in ${remainingTime} seconds.`);
+            }
+
+            // Декодируем из base64
+            const obfuscated = new Uint8Array(
+                atob(encryptedData).split('').map(char => char.charCodeAt(0))
+            );
+            
+            // Деобфускация
+            const combined = this.deobfuscateMediaData(obfuscated);
+            
+            // Извлекаем метаданные
+            const metadataLength = new DataView(combined.buffer, 0, 4).getUint32(0, false);
+            const metadataBytes = combined.slice(4, 4 + metadataLength);
+            const metadata = JSON.parse(new TextDecoder().decode(metadataBytes));
+            
+            // Извлекаем соль, IV и зашифрованные данные
+            const saltOffset = 4 + metadataLength;
+            const salt = combined.slice(saltOffset, saltOffset + this.saltLength);
+            const ivOffset = saltOffset + this.saltLength;
+            const iv = combined.slice(ivOffset, ivOffset + this.ivLength);
+            const encryptedOffset = ivOffset + this.ivLength;
+            const encrypted = combined.slice(encryptedOffset);
+            
+            // Получаем ключ
+            const key = await this.deriveKey(password, salt);
+            
+            // Расшифровываем
+            const decrypted = await crypto.subtle.decrypt(
+                { 
+                    name: 'AES-GCM', 
+                    iv: iv,
+                    tagLength: this.tagLength
+                },
+                key,
+                encrypted
+            );
+            
+            // Сброс попыток при успешном дешифровании
+            this.resetAttempts(identifier);
+            
+            return {
+                data: new Uint8Array(decrypted),
+                metadata: metadata
+            };
+        } catch (error) {
+            this.recordFailedAttempt(identifier);
+            throw new Error('Media decryption failed: ' + error.message);
+        }
+    }
+
+    // Специальная обфускация для медиа данных
+    obfuscateMediaData(data) {
+        // Для медиа файлов используем более сложную обфускацию
+        const chunks = [];
+        const chunkSize = 1024; // 1KB чанки
+        
+        for (let i = 0; i < data.length; i += chunkSize) {
+            const chunk = data.slice(i, i + chunkSize);
+            const randomPadding = this.generateRandomBytes(64);
+            
+            // Перемешиваем чанк с случайными данными
+            const mixedChunk = new Uint8Array(chunk.length + randomPadding.length);
+            mixedChunk.set(randomPadding, 0);
+            mixedChunk.set(chunk, randomPadding.length);
+            
+            chunks.push(mixedChunk);
+        }
+        
+        // Объединяем все чанки
+        const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+        const result = new Uint8Array(totalLength);
+        let offset = 0;
+        
+        for (const chunk of chunks) {
+            result.set(chunk, offset);
+            offset += chunk.length;
+        }
+        
+        return result;
+    }
+
+    // Деобфускация медиа данных
+    deobfuscateMediaData(obfuscatedData) {
+        const chunks = [];
+        let offset = 0;
+        
+        while (offset < obfuscatedData.length) {
+            // Пропускаем случайные данные (64 байта)
+            offset += 64;
+            
+            // Извлекаем реальные данные (до 1024 байт)
+            const chunkSize = Math.min(1024, obfuscatedData.length - offset);
+            if (chunkSize > 0) {
+                const chunk = obfuscatedData.slice(offset, offset + chunkSize);
+                chunks.push(chunk);
+                offset += chunkSize;
+            }
+        }
+        
+        // Объединяем все чанки
+        const totalLength = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+        const result = new Uint8Array(totalLength);
+        offset = 0;
+        
+        for (const chunk of chunks) {
+            result.set(chunk, offset);
+            offset += chunk.length;
+        }
+        
+        return result;
     }
 }
 
@@ -2288,7 +3819,14 @@ function showExportOptions(noteContent) {
         document.body.removeChild(exportModal);
     });
     
-    // Закрытие по клику вне модального окна
+    // Закрытие по клику вне модального окна с поддержкой Pointer Events
+    exportModal.addEventListener('pointerdown', (e) => {
+        if (e.target === exportModal) {
+            document.body.removeChild(exportModal);
+        }
+    });
+    
+    // Fallback для старых браузеров
     exportModal.addEventListener('click', (e) => {
         if (e.target === exportModal) {
             document.body.removeChild(exportModal);
@@ -2341,3 +3879,4 @@ function updateFooterTexts() {
         console.error('Error updating footer texts:', error);
     }
 }
+

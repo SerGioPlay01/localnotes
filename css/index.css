@@ -182,54 +182,100 @@ body.modal-open {
     --transition-slow: 0.5s ease;
 }
 
-/* Темная тема (явная) */
+/* Современная темная тема */
 [data-theme="dark"] {
     --primary-color: #aefc6e;
+    --primary-hover: #8dd85a;
+    --primary-light: #c8ff8a;
     --secondary-color: #f9f8fd;
     --accent-color: #007bff;
+    --accent-hover: #0056b3;
     --text-color: #ffffff;
+    --text-secondary: #b3b3b3;
+    --text-muted: #808080;
     --bg-color: #0a0a0a;
+    --bg-secondary: #111111;
+    --bg-tertiary: #1a1a1a;
     --dark-bg: #0a0a0a;
     --card-bg: #0f0f0f;
+    --card-hover: #151515;
     --border-color: #272727;
+    --border-hover: #404040;
     --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow-color-light: rgba(0, 0, 0, 0.1);
     --note-bg: #0f0f0f;
     --note-text: #ffffff;
     --note-border: #272727;
     --input-bg: #1a1a1a;
     --input-text: #ffffff;
-    --button-bg: #0f0f0f;
+    --input-border: #404040;
+    --input-focus: #aefc6e;
+    --button-bg: #1a1a1a;
     --button-text: #ffffff;
-    --button-hover: #272727;
+    --button-hover: #2d2d2d;
+    --button-active: #404040;
     --modal-bg: #1a1a1a;
     --modal-text: #ffffff;
     --modal-border: #272727;
     --header-bg: #080808;
     --footer-bg: #0f0f0f;
     --footer-text: #ffffff;
-    --button-border: #272727;
+    --button-border: #404040;
     --scrollbar-track: #1a1a1a;
-    --scrollbar-thumb: #272727;
+    --scrollbar-thumb: #404040;
+    --scrollbar-hover: #555555;
+    --gradient-primary: linear-gradient(135deg, #aefc6e 0%, #7dd87d 100%);
+    --gradient-secondary: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    --gradient-card: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+    --gradient-button: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.2);
+    --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.3);
+    --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 20px rgba(174, 252, 110, 0.3);
+    --border-radius-small: 8px;
+    --border-radius-medium: 16px;
+    --border-radius-large: 24px;
+    --border-radius-xl: 32px;
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --backdrop-blur: blur(20px);
 }
 
-/* Светлая тема */
+/* Современная светлая тема */
 [data-theme="light"] {
     --primary-color: #28a745;
+    --primary-hover: #218838;
+    --primary-light: #34ce57;
     --secondary-color: #6c757d;
     --accent-color: #007bff;
+    --accent-hover: #0056b3;
     --text-color: #212529;
+    --text-secondary: #495057;
+    --text-muted: #6c757d;
     --bg-color: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
     --card-bg: #ffffff;
+    --card-hover: #f8f9fa;
     --border-color: #dee2e6;
+    --border-hover: #adb5bd;
     --shadow-color: rgba(0, 0, 0, 0.1);
+    --shadow-color-light: rgba(0, 0, 0, 0.05);
     --note-bg: #ffffff;
     --note-text: #212529;
     --note-border: #dee2e6;
     --input-bg: #ffffff;
     --input-text: #212529;
+    --input-border: #ced4da;
+    --input-focus: #28a745;
     --button-bg: #f8f9fa;
     --button-text: #212529;
     --button-hover: #e9ecef;
+    --button-active: #dee2e6;
     --modal-bg: #ffffff;
     --modal-text: #212529;
     --modal-border: #dee2e6;
@@ -239,9 +285,29 @@ body.modal-open {
     --button-border: #dee2e6;
     --scrollbar-track: #f1f3f4;
     --scrollbar-thumb: #c1c1c1;
+    --scrollbar-hover: #a8a8a8;
+    --gradient-primary: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    --gradient-secondary: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    --gradient-card: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    --gradient-button: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%);
+    --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.15);
+    --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.2);
+    --shadow-glow: 0 0 20px rgba(40, 167, 69, 0.3);
+    --border-radius-small: 8px;
+    --border-radius-medium: 16px;
+    --border-radius-large: 24px;
+    --border-radius-xl: 32px;
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     --editor-bg: #ffffff;
     --editor-toolbar-bg: #f8f9fa;
     --editor-toolbar-border: #dee2e6;
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --backdrop-blur: blur(20px);
     --editor-text: #212529;
     --editor-placeholder: #6c757d;
     --editor-table-bg: #f8f9fa;
@@ -473,9 +539,10 @@ html {
 
 body {
     font-family: 'Golos Text', sans-serif;
-    background-color: var(--bg-color);
+    background: var(--bg-color);
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
 }
 
 .info-app {
@@ -486,6 +553,8 @@ body {
     gap: 40px;
     width: 100%;
     background-color: var(--header-bg);
+    z-index: 10;
+    position: relative;
 }
 
 .app-notes-center {
@@ -494,7 +563,12 @@ body {
     align-items: center;
     flex-direction: column;
     width: 100%;
-    gap: 10px;
+    gap: 15px;
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
 }
 .app-notes {
     width: 95%;
@@ -508,8 +582,11 @@ body {
 .name-app {
     color: var(--text-color);
     text-align: center;
-    font-size: 2.0em;
+    font-size: 2.2em;
     font-family: 'Intro', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-shadow: none;
 }
 
 .modal_h2 {
@@ -541,7 +618,7 @@ body {
     height: max-content;
     background-color: var(--header-bg);
     padding: 0;
-    z-index: 99;
+    z-index: 10;
 }
 
 .notes_center {
@@ -572,15 +649,26 @@ body {
 
 #searchInput {
     flex: 1;
-    height: 48px;
-    border: 1px solid #27272762;
-    background-color: var(--input-bg);
-    backdrop-filter: blur(40px);
-    border-radius: 5px;
+    height: 56px; /* Равна высоте кнопок */
+    border: 1px solid var(--button-border);
+    background: var(--button-bg);
+    border-radius: 0; /* Убираем скругление */
     color: var(--input-text);
     text-indent: 20px;
     outline: none;
     min-width: 0;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+#searchInput:hover {
+    background: var(--button-hover);
+}
+
+#searchInput:focus {
+    border-color: var(--primary-color);
+    background: var(--button-hover);
 }
 
 #searchInput::placeholder {
@@ -593,35 +681,30 @@ body {
     color: transparent;
 }
 
+/* Сеточный вид (по умолчанию) */
 #notesContainer.default-view {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
-    /* Автоматическая подстройка колонок */
-    gap: 20px 20px;
-    /* Вертикальный отступ: 20px, горизонтальный: 15px */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
     height: 100%;
     min-height: 450px;
     width: 100%;
     z-index: 10;
     margin-top: 20px;
     margin-bottom: 5%;
-    /* Отступы внутри контейнера */
     transition: all 0.4s ease-in-out;
 }
 
-/* Полноширинный вид */
+/* Полноширинный вид (список) */
 #notesContainer.full-width-view {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100%, 0fr));
-    /* Автоматическая подстройка колонок */
+    grid-template-columns: 1fr;
     gap: 20px 0px;
-    /* Вертикальный отступ: 20px, горизонтальный: 15px */
     height: 100%;
     width: 100%;
     z-index: 10;
     margin-top: 20px;
     margin-bottom: 5%;
-    /* Отступы внутри контейнера */
     transition: all 0.4s ease-in-out;
 }
 #notesContainer.full-width-view .note {
@@ -634,41 +717,65 @@ body {
 .note {
     color: var(--note-text);
     font-size: 1em;
-    line-height: 1.5;
+    line-height: 1.6;
     border: 1px solid var(--note-border);
-    background-color: var(--note-bg);
+    background: var(--note-bg);
     border-radius: 8px;
     overflow-y: auto;
-    padding: 4%;
-    height: 400px;
-    box-shadow: 0 4px 8px var(--shadow-color);
+    padding: 0;
+    height: 450px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     position: relative;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    animation: fadeInUp 0.5s ease-in-out;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.note:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .noteContent {
-    margin-top: 5%;
+    flex: 1;
+    padding: 20px;
+    margin-top: 50px; /* Отступ для увеличенного хедера */
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+/* Контейнер для кнопок заметки */
+.note-buttons {
+    display: flex;
+    gap: 10px;
+    padding: 10px 20px; /* Уменьшили с 15px */
+    background: var(--note-footer-bg);
+    border-top: 1px solid var(--border-color);
+    margin-top: auto; /* Прижимаем к низу */
 }
 
 .editBtn,
 .deleteBtn,
 .exportBtn {
     border: 1px solid var(--border-color);
-    background-color: var(--button-bg);
-    width: 100%;
-    height: 50px;
+    background: var(--button-bg);
+    flex: 1;
+    height: 36px; /* Уменьшили с 48px */
     color: var(--button-text);
-    font-size: 1em;
-    font-weight: 700;
-    margin-right: 10px;
-    margin-top: 10px;
+    font-size: 0.9em; /* Уменьшили размер шрифта */
+    font-weight: 500;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px; /* Уменьшили gap */
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.editBtn:hover,
+.deleteBtn:hover,
+.exportBtn:hover {
+    background: var(--button-hover);
 }
 
 .editBtn i,
@@ -740,6 +847,29 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#toggleViewButton:active {
+    transform: scale(0.98);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#toggleViewButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+#toggleViewButton:hover::before {
+    left: 100%;
 }
 
 #toggleViewButton i {
@@ -749,19 +879,26 @@ body {
 #importButton,
 #clearAllButton {
     flex: 1;
-    height: 50px;
-    border: 1px solid #27272762;
-    background-color: var(--button-bg);
-    backdrop-filter: blur(40px);
+    height: 56px;
+    border: 1px solid var(--button-border);
+    background: var(--button-bg);
     color: var(--button-text);
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     min-width: 0;
+    transition: background-color 0.2s ease;
+}
+
+#addNoteButton:hover,
+#importButton:hover,
+#clearAllButton:hover {
+    background: var(--button-hover);
 }
 
 #addNoteButton i,
@@ -840,20 +977,192 @@ body.modal-open {
     background: var(--modal-bg);
     margin: 0;
     padding: 0;
-    border: none;
-    border-radius: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    box-shadow: none;
-    backdrop-filter: none;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 50;
     animation: none;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 50;
     display: flex;
     flex-direction: column;
+}
+
+/* Скрываем заголовок модального окна редактора */
+.modal_h2 {
+    display: none !important;
+}
+
+/* Убеждаемся, что модальное окно не перекрывает меню редактора */
+.modal-content {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Стили для кнопок модального окна редактора */
+.modal-buttons-container {
+    display: flex;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    border-radius: 0 0 16px 16px;
+    position: relative;
+    z-index: 60;
+}
+
+.modal-buttons-container button {
+    flex: 1;
+    padding: 12px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--button-bg);
+    color: var(--button-text);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.modal-buttons-container button:hover {
+    background: var(--button-hover);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-buttons-container button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.modal-buttons-container button i {
+    font-size: 16px;
+}
+
+/* Специальные стили для кнопки сохранения */
+.modal-buttons-container button.save {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.modal-buttons-container button.save:hover {
+    background: var(--button-hover);
+    border-color: var(--button-hover);
+}
+
+/* Специальные стили для кнопки отмены */
+.modal-buttons-container button.cancel {
+    background: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.modal-buttons-container button.cancel:hover {
+    background: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Темная тема для модального окна */
+[data-theme="dark"] .modal-content {
+    background: rgba(20, 20, 20, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] .modal-buttons-container {
+    background: rgba(30, 30, 30, 0.95) !important;
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .modal-buttons-container button {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .modal-buttons-container button:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: #aefc6e !important;
+}
+
+[data-theme="dark"] .modal-buttons-container button.save {
+    background: #aefc6e !important;
+    color: #000000 !important;
+    border-color: #aefc6e !important;
+}
+
+[data-theme="dark"] .modal-buttons-container button.save:hover {
+    background: #9ce55a !important;
+    border-color: #9ce55a !important;
+}
+
+[data-theme="dark"] .modal-buttons-container button.cancel {
+    background: #dc3545 !important;
+    color: #ffffff !important;
+    border-color: #dc3545 !important;
+}
+
+[data-theme="dark"] .modal-buttons-container button.cancel:hover {
+    background: #c82333 !important;
+    border-color: #c82333 !important;
+}
+
+/* Светлая тема для модального окна */
+[data-theme="light"] .modal-content {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme="light"] .modal-buttons-container {
+    background: rgba(248, 249, 250, 0.95) !important;
+    border-top-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .modal-buttons-container button {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    color: #333333 !important;
+}
+
+[data-theme="light"] .modal-buttons-container button:hover {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-color: #28a745 !important;
+}
+
+[data-theme="light"] .modal-buttons-container button.save {
+    background: #28a745 !important;
+    color: #ffffff !important;
+    border-color: #28a745 !important;
+}
+
+[data-theme="light"] .modal-buttons-container button.save:hover {
+    background: #218838 !important;
+    border-color: #218838 !important;
+}
+
+[data-theme="light"] .modal-buttons-container button.cancel {
+    background: #dc3545 !important;
+    color: #ffffff !important;
+    border-color: #dc3545 !important;
+}
+
+[data-theme="light"] .modal-buttons-container button.cancel:hover {
+    background: #c82333 !important;
+    border-color: #c82333 !important;
 }
 
 @keyframes modalContentSlideIn {
@@ -1431,10 +1740,12 @@ input {
 /* Заголовки в заметках */
 .note h1, .note h2, .note h3, .note h4, .note h5, .note h6 {
     color: var(--note-text);
-    margin: 20px 0 12px 0;
-    font-weight: 600;
+    margin: 24px 0 16px 0;
+    font-weight: 700;
     line-height: 1.3;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    letter-spacing: -0.02em;
 }
 
 .note h1 {
@@ -1465,16 +1776,19 @@ input {
     display: flex;
     align-items: center;
     position: absolute;
-    padding-left: 15px;
-    height: 30px;
+    padding: 16px 24px; /* Увеличили отступы сверху и снизу */
+    height: 50px; /* Увеличили высоту */
     left: 0px;
     top: 0px;
     color: var(--note-text);
-    opacity: 0.7;
-    font-weight: 700;
-    font-size: 0.7em;
-    background-color: var(--note-footer-bg);
+    opacity: 0.8;
+    font-weight: 500;
+    font-size: 0.8em;
+    background: var(--note-footer-bg);
     width: 100%;
+    border-radius: 0 0 8px 0;
+    border-bottom: 1px solid var(--border-color);
+    box-sizing: border-box;
 }
 
 .note a {
@@ -1486,10 +1800,13 @@ input {
 
 /* Дополнительные стили для контента заметок */
 .note p {
-    margin-bottom: 12px;
-    line-height: 1.7;
+    margin-bottom: 16px;
+    line-height: 1.8;
     color: var(--note-text);
     font-size: 1.05em;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
 }
 
 .note strong,
@@ -1530,6 +1847,348 @@ input {
     height: 1px;
     background: linear-gradient(90deg, transparent, #272727, transparent);
     margin: 24px 0;
+}
+
+/* Дополнительные стили форматирования текста */
+
+/* Верхний и нижний индекс */
+.note sup {
+    font-size: 0.75em;
+    vertical-align: super;
+    line-height: 0;
+    color: var(--note-text);
+}
+
+.note sub {
+    font-size: 0.75em;
+    vertical-align: sub;
+    line-height: 0;
+    color: var(--note-text);
+}
+
+/* Маркированные списки с разными стилями */
+.note ul[style*="list-style-type: circle"] {
+    list-style-type: circle;
+}
+
+.note ul[style*="list-style-type: square"] {
+    list-style-type: square;
+}
+
+.note ul[style*="list-style-type: none"] {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/* Нумерованные списки с разными стилями */
+.note ol[style*="list-style-type: lower-alpha"] {
+    list-style-type: lower-alpha;
+}
+
+.note ol[style*="list-style-type: upper-alpha"] {
+    list-style-type: upper-alpha;
+}
+
+.note ol[style*="list-style-type: lower-roman"] {
+    list-style-type: lower-roman;
+}
+
+.note ol[style*="list-style-type: upper-roman"] {
+    list-style-type: upper-roman;
+}
+
+/* Таблицы */
+.note table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    background: var(--input-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.note table th,
+.note table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--note-text);
+}
+
+.note table th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+}
+
+.note table tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.note table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Выравнивание текста */
+.note [style*="text-align: center"] {
+    text-align: center;
+}
+
+.note [style*="text-align: right"] {
+    text-align: right;
+}
+
+.note [style*="text-align: justify"] {
+    text-align: justify;
+}
+
+.note [style*="text-align: left"] {
+    text-align: left;
+}
+
+/* Отступы */
+.note [style*="margin-left"] {
+    margin-left: 20px;
+}
+
+.note [style*="margin-right"] {
+    margin-right: 20px;
+}
+
+.note [style*="margin-top"] {
+    margin-top: 16px;
+}
+
+.note [style*="margin-bottom"] {
+    margin-bottom: 16px;
+}
+
+/* Отступы текста */
+.note [style*="text-indent"] {
+    text-indent: 20px;
+}
+
+/* Межстрочный интервал */
+.note [style*="line-height"] {
+    line-height: 1.8;
+}
+
+/* Размер шрифта */
+.note [style*="font-size: small"] {
+    font-size: 0.875em;
+}
+
+.note [style*="font-size: large"] {
+    font-size: 1.25em;
+}
+
+.note [style*="font-size: x-large"] {
+    font-size: 1.5em;
+}
+
+.note [style*="font-size: xx-large"] {
+    font-size: 2em;
+}
+
+/* Цвет текста */
+.note [style*="color: red"],
+.note [style*="color: #ff0000"] {
+    color: #ff4444;
+}
+
+.note [style*="color: blue"],
+.note [style*="color: #0000ff"] {
+    color: #4488ff;
+}
+
+.note [style*="color: green"],
+.note [style*="color: #008000"] {
+    color: #44aa44;
+}
+
+.note [style*="color: yellow"],
+.note [style*="color: #ffff00"] {
+    color: #ffdd44;
+}
+
+.note [style*="color: orange"],
+.note [style*="color: #ffa500"] {
+    color: #ff8844;
+}
+
+.note [style*="color: purple"],
+.note [style*="color: #800080"] {
+    color: #aa44aa;
+}
+
+/* Фон текста */
+.note [style*="background-color"] {
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* Стили для выделения */
+.note mark {
+    background: #ffdd44;
+    color: #333;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* Стили для кода */
+.note kbd {
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    color: var(--note-text);
+    display: inline-block;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+    font-weight: 600;
+    line-height: 1;
+    padding: 2px 4px;
+    white-space: nowrap;
+}
+
+/* Стили для переменных */
+.note var {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-style: italic;
+    color: var(--primary-color);
+}
+
+/* Стили для образца вывода */
+.note samp {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    background: var(--input-bg);
+    color: var(--note-text);
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* Стили для аббревиатур */
+.note abbr {
+    border-bottom: 1px dotted var(--primary-color);
+    cursor: help;
+}
+
+/* Стили для определений */
+.note dfn {
+    font-style: italic;
+    color: var(--primary-color);
+}
+
+/* Стили для цитат */
+.note q {
+    font-style: italic;
+    color: var(--primary-color);
+}
+
+.note q::before {
+    content: '"';
+}
+
+.note q::after {
+    content: '"';
+}
+
+/* Стили для адресов */
+.note address {
+    font-style: italic;
+    margin: 16px 0;
+    padding: 12px;
+    background: var(--input-bg);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 0 4px 4px 0;
+}
+
+/* Стили для времени */
+.note time {
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+
+/* Стили для данных */
+.note data {
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+
+/* Стили для измерений */
+.note meter {
+    width: 100%;
+    height: 20px;
+    background: var(--input-bg);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.note progress {
+    width: 100%;
+    height: 20px;
+    background: var(--input-bg);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Стили для деталей */
+.note details {
+    margin: 16px 0;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--input-bg);
+}
+
+.note summary {
+    padding: 12px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.note details[open] summary {
+    border-radius: 8px 8px 0 0;
+}
+
+.note details > *:not(summary) {
+    padding: 12px 16px;
+}
+
+/* Стили для диалогов */
+.note dialog {
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 16px var(--shadow-color);
+}
+
+/* Стили для полей ввода */
+.note input,
+.note textarea,
+.note select {
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--note-text);
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.note input:focus,
+.note textarea:focus,
+.note select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(174, 252, 110, 0.2);
 }
 
 
@@ -1653,6 +2312,9 @@ input {
         flex: 1;
         border-radius: 0%;
         min-width: 0;
+        height: 110px;
+        font-size: 18px;
+        padding: 20px;
     }
 
     .block_btn {
@@ -1783,39 +2445,33 @@ input {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 2px solid var(--border-color);
+    width: 48px;
+    height: 48px;
+    border-radius: 4px; /* Убрали круглую форму */
+    border: 1px solid var(--border-color);
     background-color: var(--button-bg);
     color: var(--button-text);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
-    transition: all 0.3s ease;
+    font-size: 18px;
+    transition: background-color 0.2s ease; /* Упростили анимацию */
     z-index: 1000;
-    box-shadow: 0 4px 12px var(--shadow-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Уменьшили тень */
 }
 
 .theme-toggle:hover {
     background-color: var(--button-hover);
-    transform: scale(1.1);
-    box-shadow: 0 6px 16px var(--shadow-color);
 }
 
 .theme-toggle:active {
-    transform: scale(0.95);
+    background-color: var(--button-active);
 }
 
-/* Анимация для иконки */
+/* Убрали анимацию для иконки */
 .theme-toggle .theme-icon {
-    transition: transform 0.3s ease;
-}
-
-.theme-toggle:hover .theme-icon {
-    transform: rotate(180deg);
+    transition: none;
 }
 
 /* Стили для модального окна выбора темы */
@@ -2085,8 +2741,9 @@ input {
     .search-input {
         width: 100%;
         max-width: 100%;
-        font-size: 16px;
-        padding: 18px 20px;
+        font-size: 18px;
+        padding: 25px 20px;
+        height: 110px;
         border-radius: var(--border-radius-medium);
         box-sizing: border-box;
         margin: 0;
@@ -2404,20 +3061,19 @@ input {
     .theme-toggle {
         bottom: 20px;
         right: 20px;
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
         z-index: 1000;
         background: var(--button-bg);
         border: 1px solid var(--button-border);
-        border-radius: 50%;
-        box-shadow: 0 4px 12px var(--shadow-color);
-        transition: all 0.3s ease;
+        border-radius: 4px; /* Убрали круглую форму */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Уменьшили тень */
+        transition: background-color 0.2s ease; /* Упростили анимацию */
     }
     
     .theme-toggle:hover {
-        transform: scale(1.1);
-        box-shadow: 0 6px 16px var(--shadow-color);
+        background: var(--button-hover);
     }
 }
 
@@ -2844,9 +3500,10 @@ input {
     .theme-toggle {
         bottom: 15px;
         right: 15px;
-        width: 45px;
-        height: 45px;
-        font-size: 18px;
+        width: 44px;
+        height: 44px;
+        font-size: 16px;
+        border-radius: 4px; /* Убрали круглую форму */
     }
     
     .theme-modal-content {
@@ -3455,32 +4112,6 @@ input {
     display: block !important;
 }
 
-/* Стили прелоадера для светлой темы */
-[data-theme="light"] .preloader {
-    background-color: #f8f9fa !important;
-}
-
-[data-theme="light"] .preloader span {
-    color: #333333 !important;
-}
-
-[data-theme="light"] .preloader__sheet {
-    border-color: #333333 !important;
-    border-top-color: transparent !important;
-}
-
-@keyframes preloader-light {
-    0% {
-        background-color: #f8f9fa !important;
-    }
-    100% {
-        background-color: #f8f9fa !important;
-    }
-}
-
-[data-theme="light"] .preloader {
-    animation: preloader-light 15s linear forwards;
-}
 
 .ql-toolbar .ql-picker-label {
     cursor: pointer !important;
@@ -3627,4 +4258,591 @@ input {
 
 .export-close:hover {
     background: #444;
+}
+
+/* ===== АДАПТИВНЫЕ СТИЛИ ДЛЯ РЕДАКТОРА ===== */
+
+/* Мобильные устройства (до 768px) */
+@media (max-width: 767px) {
+    /* Адаптивный редактор для мобильных */
+    .tox-tinymce {
+        height: calc(100vh - 120px) !important;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+    }
+    
+    /* Скрываем лишние элементы на мобильных */
+    .tox .tox-menubar {
+        display: none !important;
+    }
+    
+    .tox .tox-statusbar {
+        display: none !important;
+    }
+    
+    /* Адаптивная панель инструментов */
+    .tox .tox-toolbar {
+        padding: 8px;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        white-space: nowrap !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar {
+        height: 4px;
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        border-radius: 2px;
+    }
+    
+    .tox .tox-toolbar__group {
+        margin: 0 2px;
+        flex-shrink: 0 !important;
+        display: inline-flex !important;
+    }
+    
+    .tox .tox-tbtn {
+        padding: 6px;
+        min-width: 32px;
+        min-height: 32px;
+        flex-shrink: 0;
+    }
+    
+    .tox .tox-tbtn svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    /* Скрываем некоторые кнопки на мобильных */
+    .tox .tox-tbtn[title*="Fullscreen"],
+    .tox .tox-tbtn[title*="Preview"],
+    .tox .tox-tbtn[title*="Help"],
+    .tox .tox-tbtn[title*="Word count"] {
+        display: none !important;
+    }
+}
+
+/* Планшеты (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Адаптивный редактор для планшетов */
+    .tox-tinymce {
+        height: calc(100vh - 140px) !important;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+    }
+    
+    /* Упрощенная панель инструментов */
+    .tox .tox-toolbar {
+        padding: 10px;
+        flex-wrap: wrap !important;
+        gap: 4px;
+    }
+    
+    .tox .tox-tbtn {
+        padding: 8px;
+        min-width: 36px;
+        min-height: 36px;
+    }
+    
+    .tox .tox-tbtn svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    /* Скрываем некоторые элементы на планшетах */
+    .tox .tox-statusbar {
+        display: none !important;
+    }
+}
+
+/* Десктопы (1024px+) */
+@media (min-width: 1025px) {
+    /* Полнофункциональный редактор для десктопов */
+    .tox-tinymce {
+        height: calc(100vh - 160px) !important;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+    }
+    
+    /* Полная панель инструментов */
+    .tox .tox-toolbar {
+        padding: 12px;
+        flex-wrap: wrap !important;
+        gap: 6px;
+    }
+    
+    .tox .tox-tbtn {
+        padding: 10px;
+        min-width: 40px;
+        min-height: 40px;
+    }
+    
+    .tox .tox-tbtn svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    /* Показываем все элементы */
+    .tox .tox-menubar {
+        display: block !important;
+    }
+    
+    .tox .tox-statusbar {
+        display: block !important;
+    }
+}
+
+/* ===== СПЕЦИАЛЬНЫЕ СТИЛИ ДЛЯ TOUCH-УСТРОЙСТВ ===== */
+
+/* Touch-устройства - улучшенная панель инструментов */
+@media (hover: none) and (pointer: coarse) {
+    .tox .tox-toolbar {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        white-space: nowrap !important;
+        padding: 12px !important;
+        scrollbar-width: thin !important;
+        -webkit-overflow-scrolling: touch !important;
+        background: linear-gradient(90deg, 
+            var(--editor-toolbar-bg) 0%, 
+            var(--editor-toolbar-bg) 95%, 
+            transparent 100%) !important;
+        position: relative !important;
+    }
+    
+    .tox .tox-toolbar::after {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+        width: 20px !important;
+        height: 100% !important;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            var(--editor-toolbar-bg) 100%) !important;
+        pointer-events: none !important;
+        z-index: 1 !important;
+    }
+    
+    .tox .tox-toolbar__group {
+        display: inline-block !important;
+        white-space: nowrap !important;
+        margin-right: 12px !important;
+        flex-shrink: 0 !important;
+        position: relative !important;
+        z-index: 2 !important;
+    }
+    
+    /* Увеличиваем размер кнопок для touch */
+    .tox .tox-tbtn {
+        width: 44px !important;
+        height: 44px !important;
+        padding: 10px !important;
+        margin: 3px !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease !important;
+        position: relative !important;
+        z-index: 2 !important;
+    }
+    
+    .tox .tox-tbtn:hover,
+    .tox .tox-tbtn:focus,
+    .tox .tox-tbtn:active {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        transform: scale(1.05) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    .tox .tox-tbtn svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+    
+    /* Улучшенные стили для скроллбара */
+    .tox .tox-toolbar::-webkit-scrollbar {
+        height: 8px !important;
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 4px !important;
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3) !important;
+        border-radius: 4px !important;
+        transition: background 0.2s ease !important;
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5) !important;
+    }
+    
+    /* Индикатор прокрутки */
+    .tox .tox-toolbar::before {
+        content: '← прокрутка →' !important;
+        position: absolute !important;
+        bottom: -20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        font-size: 10px !important;
+        color: var(--text-color) !important;
+        opacity: 0.6 !important;
+        pointer-events: none !important;
+        z-index: 1 !important;
+    }
+}
+
+/* ===== УЛУЧШЕННЫЕ СТИЛИ МЕНЮ РЕДАКТОРА ===== */
+
+/* Базовые стили для меню */
+.tox .tox-menubar {
+    background: linear-gradient(135deg, var(--editor-toolbar-bg) 0%, var(--editor-toolbar-bg) 100%) !important;
+    border-bottom: 1px solid var(--editor-toolbar-border) !important;
+    padding: 8px 12px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Стили для пунктов меню */
+.tox .tox-mbtn {
+    color: var(--text-color) !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    margin: 0 2px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.tox .tox-mbtn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.tox .tox-mbtn:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Эффект свечения при наведении */
+.tox .tox-mbtn::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+    transition: left 0.5s ease !important;
+}
+
+.tox .tox-mbtn:hover::before {
+    left: 100% !important;
+}
+
+/* Адаптивные стили для мобильных устройств */
+.tox .tox-menubar.mobile-menu {
+    display: none !important;
+}
+
+/* Стили для планшетов */
+.tox .tox-menubar.tablet-menu {
+    padding: 6px 8px !important;
+}
+
+.tox .tox-menubar.tablet-menu .tox-mbtn {
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    margin: 0 1px !important;
+}
+
+/* Стили для десктопа */
+.tox .tox-menubar.desktop-menu {
+    padding: 10px 16px !important;
+}
+
+.tox .tox-menubar.desktop-menu .tox-mbtn {
+    padding: 10px 16px !important;
+    font-size: 15px !important;
+    margin: 0 3px !important;
+}
+
+/* Стили для выпадающих меню */
+.tox .tox-collection {
+    background: var(--modal-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
+    padding: 8px !important;
+}
+
+.tox .tox-collection__item {
+    color: var(--text-color) !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    margin: 2px 0 !important;
+    transition: all 0.2s ease !important;
+}
+
+.tox .tox-collection__item:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: translateX(4px) !important;
+}
+
+.tox .tox-collection__item--active {
+    background: var(--primary-color) !important;
+    color: white !important;
+}
+
+/* Стили для разделителей в меню */
+.tox .tox-collection__separator {
+    background: var(--border-color) !important;
+    height: 1px !important;
+    margin: 6px 0 !important;
+}
+
+/* Анимация появления меню */
+.tox .tox-collection {
+    animation: menuSlideIn 0.2s ease-out !important;
+}
+
+@keyframes menuSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Улучшенные стили для иконок в меню */
+.tox .tox-mbtn svg {
+    width: 16px !important;
+    height: 16px !important;
+    margin-right: 6px !important;
+    transition: transform 0.2s ease !important;
+}
+
+.tox .tox-mbtn:hover svg {
+    transform: scale(1.1) !important;
+}
+
+/* Стили для активного пункта меню */
+.tox .tox-mbtn--active {
+    background: var(--primary-color) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3) !important;
+}
+
+/* Адаптивность для очень маленьких экранов */
+@media (max-width: 480px) {
+    .tox .tox-menubar {
+        display: none !important;
+    }
+}
+
+/* Стили для темной темы */
+[data-theme="dark"] .tox .tox-menubar {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%) !important;
+    border-bottom: 1px solid #404040 !important;
+}
+
+[data-theme="dark"] .tox .tox-mbtn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .tox .tox-collection {
+    background: #2d2d2d !important;
+    border: 1px solid #404040 !important;
+}
+
+/* Стили для светлой темы */
+[data-theme="light"] .tox .tox-menubar {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+/* Стили для иконок в темной теме */
+[data-theme="dark"] .tox .tox-tbtn svg,
+[data-theme="dark"] .tox .tox-mbtn svg,
+[data-theme="dark"] .tox .tox-tbtn .tox-icon,
+[data-theme="dark"] .tox .tox-mbtn .tox-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-tbtn:hover svg,
+[data-theme="dark"] .tox .tox-mbtn:hover svg,
+[data-theme="dark"] .tox .tox-tbtn:hover .tox-icon,
+[data-theme="dark"] .tox .tox-mbtn:hover .tox-icon {
+    fill: #aefc6e !important;
+    color: #aefc6e !important;
+    stroke: #aefc6e !important;
+}
+
+[data-theme="dark"] .tox .tox-tbtn--active svg,
+[data-theme="dark"] .tox .tox-mbtn--active svg,
+[data-theme="dark"] .tox .tox-tbtn--active .tox-icon,
+[data-theme="dark"] .tox .tox-mbtn--active .tox-icon {
+    fill: #aefc6e !important;
+    color: #aefc6e !important;
+    stroke: #aefc6e !important;
+}
+
+[data-theme="dark"] .tox .tox-tbtn--disabled svg,
+[data-theme="dark"] .tox .tox-mbtn--disabled svg,
+[data-theme="dark"] .tox .tox-tbtn--disabled .tox-icon,
+[data-theme="dark"] .tox .tox-mbtn--disabled .tox-icon {
+    fill: #666666 !important;
+    color: #666666 !important;
+    stroke: #666666 !important;
+    opacity: 0.5 !important;
+}
+
+/* Стили для иконок в светлой теме */
+[data-theme="light"] .tox .tox-tbtn svg,
+[data-theme="light"] .tox .tox-mbtn svg,
+[data-theme="light"] .tox .tox-tbtn .tox-icon,
+[data-theme="light"] .tox .tox-mbtn .tox-icon {
+    fill: #333333 !important;
+    color: #333333 !important;
+    stroke: #333333 !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn:hover svg,
+[data-theme="light"] .tox .tox-mbtn:hover svg,
+[data-theme="light"] .tox .tox-tbtn:hover .tox-icon,
+[data-theme="light"] .tox .tox-mbtn:hover .tox-icon {
+    fill: #007bff !important;
+    color: #007bff !important;
+    stroke: #007bff !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn--active svg,
+[data-theme="light"] .tox .tox-mbtn--active svg,
+[data-theme="light"] .tox .tox-tbtn--active .tox-icon,
+[data-theme="light"] .tox .tox-mbtn--active .tox-icon {
+    fill: #007bff !important;
+    color: #007bff !important;
+    stroke: #007bff !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn--disabled svg,
+[data-theme="light"] .tox .tox-mbtn--disabled svg,
+[data-theme="light"] .tox .tox-tbtn--disabled .tox-icon,
+[data-theme="light"] .tox .tox-mbtn--disabled .tox-icon {
+    fill: #999999 !important;
+    color: #999999 !important;
+    stroke: #999999 !important;
+    opacity: 0.5 !important;
+}
+
+/* Стили для разрыва страницы */
+.page-break {
+    page-break-before: always;
+    border-top: 2px dashed #ccc;
+    margin: 20px 0;
+    padding: 10px 0;
+    text-align: center;
+    color: #666;
+    font-size: 12px;
+}
+
+.page-break::before {
+    content: "--- Разрыв страницы ---";
+}
+
+[data-theme="dark"] .page-break {
+    border-top-color: #666;
+    color: #999;
+}
+
+[data-theme="dark"] .page-break::before {
+    content: "--- Page Break ---";
+}
+
+/* Дополнительные стили для иконок в темной теме */
+[data-theme="dark"] .tox .tox-toolbar .tox-tbtn svg,
+[data-theme="dark"] .tox .tox-toolbar .tox-tbtn .tox-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-toolbar .tox-tbtn:hover svg,
+[data-theme="dark"] .tox .tox-toolbar .tox-tbtn:hover .tox-icon {
+    fill: #aefc6e !important;
+    color: #aefc6e !important;
+}
+
+[data-theme="dark"] .tox .tox-toolbar .tox-tbtn--active svg,
+[data-theme="dark"] .tox .tox-toolbar .tox-tbtn--active .tox-icon {
+    fill: #aefc6e !important;
+    color: #aefc6e !important;
+}
+
+/* Стили для иконок в выпадающих меню */
+[data-theme="dark"] .tox .tox-collection .tox-collection__item svg,
+[data-theme="dark"] .tox .tox-collection .tox-collection__item .tox-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-collection .tox-collection__item:hover svg,
+[data-theme="dark"] .tox .tox-collection .tox-collection__item:hover .tox-icon {
+    fill: #aefc6e !important;
+    color: #aefc6e !important;
+}
+
+/* Стили для иконок в статус-баре */
+[data-theme="dark"] .tox .tox-statusbar svg,
+[data-theme="dark"] .tox .tox-statusbar .tox-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* Стили для иконок в мобильной версии */
+[data-theme="dark"] .tox .tox-menubar .tox-mbtn svg,
+[data-theme="dark"] .tox .tox-menubar .tox-mbtn .tox-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-menubar .tox-mbtn:hover svg,
+[data-theme="dark"] .tox .tox-menubar .tox-mbtn:hover .tox-icon {
+    fill: #aefc6e !important;
+    color: #aefc6e !important;
+}
+
+[data-theme="light"] .tox .tox-mbtn {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-mbtn:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .tox .tox-collection {
+    background: #ffffff !important;
+    border: 1px solid #dee2e6 !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
 }

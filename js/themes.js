@@ -120,7 +120,14 @@ class ThemeManager {
             });
         });
 
-        // Клик вне модального окна для закрытия
+        // Клик вне модального окна для закрытия с поддержкой Pointer Events
+        document.getElementById('themeModal').addEventListener('pointerdown', (e) => {
+            if (e.target.id === 'themeModal') {
+                this.hideThemeModal();
+            }
+        });
+        
+        // Fallback для старых браузеров
         document.getElementById('themeModal').addEventListener('click', (e) => {
             if (e.target.id === 'themeModal') {
                 this.hideThemeModal();

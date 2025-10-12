@@ -92,23 +92,25 @@ class SecurityManager {
             lastClickTime = now;
         });
 
-        // Monitor for console access attempts
-        const originalConsole = window.console;
-        window.console = new Proxy(originalConsole, {
-            get(target, prop) {
-                if (prop === 'log' || prop === 'warn' || prop === 'error') {
-                    return function(...args) {
-                        // Log console access for security monitoring
-                        if (args.some(arg => typeof arg === 'string' && 
-                            (arg.includes('password') || arg.includes('token') || arg.includes('key')))) {
-                            console.warn('Potential sensitive data in console');
-                        }
-                        return target[prop].apply(target, args);
-                    };
+        // Monitor for console access attempts (only in development)
+        if (window.location.hostname === 'localhost' || window.location.hostname.includes('dev')) {
+            const originalConsole = window.console;
+            window.console = new Proxy(originalConsole, {
+                get(target, prop) {
+                    if (prop === 'log' || prop === 'warn' || prop === 'error') {
+                        return function(...args) {
+                            // Log console access for security monitoring
+                            if (args.some(arg => typeof arg === 'string' && 
+                                (arg.includes('password') || arg.includes('token') || arg.includes('key')))) {
+                                console.warn('Potential sensitive data in console');
+                            }
+                            return target[prop].apply(target, args);
+                        };
+                    }
+                    return target[prop];
                 }
-                return target[prop];
-            }
-        });
+            });
+        }
     }
 
     // Validate file uploads

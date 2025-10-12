@@ -1152,7 +1152,7 @@ body.modal-open {
     margin: auto;
     padding: 0;
     border: 1px solid var(--modal-border);
-    border-radius: 8px;
+    border-radius: 12px;
     width: 85%;
     max-width: 600px;
     height: auto;
@@ -1165,7 +1165,8 @@ body.modal-open {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
 }
 
 .modal-content-inner {
@@ -1182,7 +1183,9 @@ body.modal-open {
     color: var(--modal-text);
     font-size: 1.5em;
     margin-bottom: 20px;
-    padding: 0 5px;
+    padding: 0 20px;
+    font-weight: 600;
+    line-height: 1.4;
 }
 
 /* Стили для предупреждений */
@@ -1225,9 +1228,11 @@ body.modal-open {
 .modal-content-inner p,
 .modal-content-error p {
     margin: 18px 0;
-    line-height: 1.6;
+    line-height: 1.7;
     color: var(--modal-text);
-    padding: 0 5px;
+    padding: 0 20px;
+    font-size: 16px;
+    text-align: left;
 }
 
 .modal-content-inner input,
@@ -1304,13 +1309,13 @@ body.modal-open {
     background: var(--primary-color);
     color: var(--bg-color);
     border: none;
-    padding: 16px 24px;
-    border-radius: 8px;
+    padding: 16px 32px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    margin: 0 5px;
-    transition: all 0.2s ease;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 10px;
+    transition: all 0.3s ease;
     min-width: 120px;
     max-width: 200px;
     flex: 1;
@@ -1318,12 +1323,14 @@ body.modal-open {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    letter-spacing: 0.5px;
 }
 
 .modal-content-error button:hover {
     background: var(--button-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
 .modal-content-error button.cancel {
@@ -3265,6 +3272,92 @@ input {
     backdrop-filter: none !important;
 }
 
+/* Специальные стили для модального окна с инструкциями */
+#customAlertModal .modal-content-error {
+    padding: 40px 30px 30px 30px;
+    text-align: center;
+}
+
+#customAlertModal .modal-content-error h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    padding: 0;
+    font-size: 1.6em;
+    font-weight: 700;
+}
+
+#customAlertModal .modal-content-error h3 span {
+    font-size: 28px;
+}
+
+#customAlertModal .modal-content-error p {
+    margin: 20px 0;
+    padding: 0 15px;
+    font-size: 16px;
+    line-height: 1.8;
+    text-align: left;
+    color: var(--modal-text);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    padding: 20px;
+    border-left: 4px solid var(--primary-color);
+}
+
+#customAlertModal .modal-content-error button {
+    margin-top: 25px;
+    padding: 18px 40px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
+}
+
+#customAlertModal .modal-content-error button:hover {
+    background: var(--button-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Адаптивность для модального окна с инструкциями */
+@media (max-width: 768px) {
+    #customAlertModal .modal-content-error {
+        padding: 30px 20px 25px 20px;
+        width: 95%;
+        max-width: none;
+    }
+    
+    #customAlertModal .modal-content-error h3 {
+        font-size: 1.4em;
+        gap: 10px;
+    }
+    
+    #customAlertModal .modal-content-error h3 span {
+        font-size: 24px;
+    }
+    
+    #customAlertModal .modal-content-error p {
+        padding: 15px;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+    
+    #customAlertModal .modal-content-error button {
+        padding: 16px 30px;
+        font-size: 15px;
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
 
 
 /* Иконки для кнопок выбора цвета через :before */
@@ -4092,5 +4185,362 @@ input {
     min-height: 300px !important;
     overflow-wrap: normal !important;
     word-wrap: normal !important;
+}
+
+/* Стили для приветственного сообщения в стиле сайта */
+.welcome-message {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background: var(--gradient-card);
+    border: 2px solid var(--note-border);
+    border-radius: var(--border-radius-medium);
+    box-shadow: var(--shadow-medium);
+    color: var(--note-text);
+    font-family: 'Golos Text', sans-serif;
+    animation: welcomeFadeIn 0.6s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--gradient-primary);
+    transition: var(--transition-medium);
+}
+
+@keyframes welcomeFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes welcomeTextFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes welcomeFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: welcomeTextFadeIn 0.8s ease-out 0.2s both;
+}
+
+.welcome-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: var(--primary-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: welcomeTextFadeIn 0.8s ease-out 0.4s both;
+}
+
+.welcome-subtitle {
+    font-size: 1.2rem;
+    margin: 0;
+    opacity: 0.8;
+    font-weight: 400;
+    color: var(--note-text);
+    animation: welcomeTextFadeIn 0.8s ease-out 0.6s both;
+}
+
+.welcome-section {
+    margin-bottom: 30px;
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--border-color);
+    transition: var(--transition-medium);
+    animation: welcomeTextFadeIn 0.8s ease-out both;
+}
+
+.welcome-section:nth-child(2) { animation-delay: 0.8s; }
+.welcome-section:nth-child(3) { animation-delay: 1.0s; }
+.welcome-section:nth-child(4) { animation-delay: 1.2s; }
+.welcome-section:nth-child(5) { animation-delay: 1.4s; }
+.welcome-section:nth-child(6) { animation-delay: 1.6s; }
+
+.welcome-section:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-soft);
+}
+
+.welcome-section-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.welcome-section-title::before {
+    content: '•';
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.welcome-description,
+.welcome-developer-info,
+.welcome-get-started {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    color: var(--note-text);
+}
+
+.welcome-features,
+.welcome-goals {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.welcome-features li,
+.welcome-goals li {
+    padding: 8px 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--note-text);
+    position: relative;
+    padding-left: 25px;
+}
+
+.welcome-features li::before,
+.welcome-goals li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.welcome-actions {
+    text-align: center;
+    margin-top: 40px;
+    animation: welcomeTextFadeIn 0.8s ease-out 1.8s both;
+}
+
+.welcome-dismiss-btn {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-border);
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    transition: var(--transition-medium);
+    font-family: 'Golos Text', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 auto;
+}
+
+.welcome-dismiss-btn:hover {
+    background: var(--button-hover);
+    border-color: var(--primary-color);
+}
+
+.welcome-dismiss-btn:active {
+    transform: translateY(1px);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .welcome-message {
+        margin: 10px;
+        padding: 30px 15px;
+        border-radius: var(--border-radius-small);
+    }
+    
+    .welcome-title {
+        font-size: 2rem;
+    }
+    
+    .welcome-subtitle {
+        font-size: 1rem;
+    }
+    
+    .welcome-section {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .welcome-section-title {
+        font-size: 1.2rem;
+    }
+    
+    .welcome-features li,
+    .welcome-goals li {
+        font-size: 0.9rem;
+    }
+    
+    .welcome-dismiss-btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+}
+
+/* Стили для прогресс-бара импорта */
+.progress-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.progress-modal-content {
+    background: var(--modal-bg);
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.progress-modal-content h3 {
+    margin: 0 0 20px 0;
+    color: var(--text-color);
+    font-size: 1.3rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #45a049);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    margin: 10px 0 5px 0;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.progress-details {
+    margin: 5px 0 0 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Стили для валидации пароля */
+.password-validation {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    background: var(--modal-bg);
+    border: 1px solid var(--border-color);
+}
+
+.validation-message {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.validation-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.validate-btn {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.validate-btn:hover {
+    background: #1976D2;
+}
+
+.skip-btn {
+    background: #FF9800;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.skip-btn:hover {
+    background: #F57C00;
+}
+
+#passwordInput {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+#passwordInput:focus {
+    outline: none;
+    border-color: #2196F3;
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
 }
 

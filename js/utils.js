@@ -29,21 +29,70 @@ class AppUtils {
         const btn = document.getElementById("toggleViewButton");
         if (!btn) return;
         
-        const currentLang = this.getCurrentLanguage();
         const notesContainer = document.getElementById("notesContainer");
         const isFullWidth = notesContainer && notesContainer.classList.contains("full-width-view");
         
-        if (isFullWidth) {
-            if (currentLang.startsWith("ru")) {
-                btn.innerHTML = '<i class="fas fa-list"></i> Переключить на сетку';
+        // Получаем переводы из глобального объекта translations
+        const currentLang = this.getCurrentLanguage();
+        let langTranslations = null;
+        
+        // Пытаемся получить переводы из разных источников
+        try {
+            if (typeof window.translations !== 'undefined' && window.translations && window.translations[currentLang]) {
+                langTranslations = window.translations[currentLang];
+            }
+        } catch (error) {
+            console.log("Error accessing translations:", error);
+            langTranslations = null;
+        }
+        
+        // Пробуем использовать функцию t() напрямую
+        if (typeof window.t === 'function') {
+            try {
+                if (isFullWidth) {
+                    // Текущий режим: полная ширина (список), показываем кнопку для переключения на сетку
+                    const gridText = window.t('viewModeGrid');
+                    btn.innerHTML = `<i class="fas fa-th"></i> ${gridText}`;
+                } else {
+                    // Текущий режим: сетка, показываем кнопку для переключения на список
+                    const listText = window.t('viewModeList');
+                    btn.innerHTML = `<i class="fas fa-list"></i> ${listText}`;
+                }
+            } catch (error) {
+                console.log("Error using t() function:", error);
+                // Fallback к старой логике
+                this.useFallbackText(btn, isFullWidth, currentLang);
+            }
+        } else if (langTranslations && langTranslations.viewModeGrid && langTranslations.viewModeList) {
+            // Используем переводы из объекта
+            if (isFullWidth) {
+                btn.innerHTML = `<i class="fas fa-th"></i> ${langTranslations.viewModeGrid}`;
             } else {
-                btn.innerHTML = '<i class="fas fa-list"></i> Switch to grid view';
+                btn.innerHTML = `<i class="fas fa-list"></i> ${langTranslations.viewModeList}`;
             }
         } else {
+            // Fallback для случаев, когда переводы недоступны
+            this.useFallbackText(btn, isFullWidth, currentLang);
+        }
+        
+        console.log("Button text updated:", btn.innerHTML, "isFullWidth:", isFullWidth);
+    }
+    
+    // Fallback метод для установки текста кнопки
+    useFallbackText(btn, isFullWidth, currentLang) {
+        if (isFullWidth) {
+            // Текущий режим: список, показываем кнопку для переключения на сетку
             if (currentLang.startsWith("ru")) {
-                btn.innerHTML = '<i class="fas fa-th"></i> Изменение способа отображения заметок';
+                btn.innerHTML = '<i class="fas fa-th"></i> Сетка';
             } else {
-                btn.innerHTML = '<i class="fas fa-th"></i> Changing the way notes are displayed';
+                btn.innerHTML = '<i class="fas fa-th"></i> Grid';
+            }
+        } else {
+            // Текущий режим: сетка, показываем кнопку для переключения на список
+            if (currentLang.startsWith("ru")) {
+                btn.innerHTML = '<i class="fas fa-list"></i> Список';
+            } else {
+                btn.innerHTML = '<i class="fas fa-list"></i> List';
             }
         }
     }
@@ -54,13 +103,22 @@ class AppUtils {
         if (!notesContainer) return;
         
         const isFullWidth = notesContainer.classList.contains("full-width-view");
-        notesContainer.classList.toggle("full-width-view");
-        notesContainer.classList.toggle("default-view");
         
-        // Обновляем текст кнопки
+        // Мгновенное переключение классов
+        if (isFullWidth) {
+            // Переключаемся с полной ширины на сетку
+            notesContainer.classList.remove("full-width-view");
+            notesContainer.classList.add("default-view");
+        } else {
+            // Переключаемся с сетки на полную ширину
+            notesContainer.classList.remove("default-view");
+            notesContainer.classList.add("full-width-view");
+        }
+        
+        // Обновляем текст кнопки сразу после переключения
         this.updateToggleViewButton();
         
-        console.log("Toggle view clicked - classes toggled, was:", isFullWidth, "now:", !isFullWidth);
+        console.log("Toggle view clicked - switched from", isFullWidth ? "full-width" : "grid", "to", !isFullWidth ? "full-width" : "grid");
     }
     
     // Инициализация обработчиков событий
@@ -68,16 +126,29 @@ class AppUtils {
         // Обработчик для кнопки переключения вида
         const toggleBtn = document.getElementById("toggleViewButton");
         if (toggleBtn) {
-            // Основной обработчик с поддержкой Pointer Events
-            toggleBtn.addEventListener("pointerdown", () => {
+            // Убираем все предыдущие обработчики
+            toggleBtn.removeEventListener("pointerdown", this.toggleNotesView);
+            toggleBtn.removeEventListener("click", this.toggleNotesView);
+            toggleBtn.removeEventListener("touchstart", this.toggleNotesView);
+            
+            // Простой обработчик клика без preventDefault для нормального поведения
+            toggleBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
                 this.toggleNotesView();
             });
             
-            // Fallback для старых браузеров
-            toggleBtn.addEventListener("click", () => {
+            // Обработчик для мобильных устройств
+            toggleBtn.addEventListener("touchend", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 this.toggleNotesView();
             });
         }
+    }
+    
+    // Принудительное обновление кнопки (для вызова после загрузки переводов)
+    forceUpdateToggleButton() {
+        this.updateToggleViewButton();
     }
     
     // Инициализация при загрузке страницы
@@ -85,6 +156,16 @@ class AppUtils {
         this.setCurrentYear();
         this.updateToggleViewButton();
         this.initEventListeners();
+        
+        // Обновляем кнопку через небольшую задержку, чтобы переводы успели загрузиться
+        setTimeout(() => {
+            this.updateToggleViewButton();
+        }, 100);
+        
+        // Дополнительное обновление через больший интервал для надежности
+        setTimeout(() => {
+            this.updateToggleViewButton();
+        }, 500);
         
         console.log("AppUtils initialized with language:", this.currentLang);
     }
@@ -100,3 +181,5 @@ document.addEventListener("DOMContentLoaded", function() {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = AppUtils;
 }
+
+

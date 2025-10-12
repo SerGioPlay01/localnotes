@@ -19,16 +19,16 @@ class ModernPreloader {
     createPreloaderHTML() {
         console.log('Preloader: createPreloaderHTML() called');
         const preloaderHTML = `
-            <div class="preloader" id="modernPreloader">
-                <div class="preloader-content">
-                    <div class="lottie-container" id="lottieContainer">
+            <div class="preloader" id="modernPreloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #0a0a0a; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.3s ease;">
+                <div class="preloader-content" style="text-align: center; color: #ffffff;">
+                    <div class="lottie-container" id="lottieContainer" style="width: 120px; height: 120px; margin: 0 auto 20px;">
                         <!-- Lottie animation will be loaded here -->
                     </div>
-                    <div class="loading-text">
+                    <div class="loading-text" style="font-size: 18px; margin-bottom: 20px;">
                         <span id="preloaderText">Loading<span class="loading-dots">...</span></span>
                     </div>
-                    <div class="progress-container">
-                        <div class="progress-bar"></div>
+                    <div class="progress-container" style="width: 200px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 0 auto; overflow: hidden;">
+                        <div class="progress-bar" style="height: 100%; background: #4CAF50; width: 0%; transition: width 0.1s ease;"></div>
                     </div>
                 </div>
             </div>
@@ -38,12 +38,6 @@ class ModernPreloader {
         this.preloader = document.getElementById('modernPreloader');
         
         console.log('Preloader: HTML created, preloader element:', this.preloader);
-        
-        // Показываем прелойдер сразу
-        if (this.preloader) {
-            this.preloader.style.display = 'flex';
-            this.preloader.style.opacity = '1';
-        }
         
         // Загружаем Lottie анимацию
         this.loadLottieAnimation();
@@ -57,7 +51,8 @@ class ModernPreloader {
         
         // Проверяем, доступна ли библиотека Lottie
         if (typeof lottie === 'undefined') {
-            console.error('Preloader: Lottie library not loaded');
+            console.warn('Preloader: Lottie library not loaded, using fallback');
+            this.showFallbackAnimation();
             return;
         }
         
@@ -73,25 +68,53 @@ class ModernPreloader {
         
         console.log('Preloader: Loading animation from:', animationPath);
         
-        // Загружаем и запускаем анимацию
-        this.lottieAnimation = lottie.loadAnimation({
-            container: lottieContainer,
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: animationPath
-        });
-        
-        // Обработчики событий анимации
-        this.lottieAnimation.addEventListener('complete', () => {
-            console.log('Preloader: Lottie animation completed');
-        });
-        
-        this.lottieAnimation.addEventListener('loopComplete', () => {
-            console.log('Preloader: Lottie animation loop completed');
-        });
-        
-        console.log('Preloader: Lottie animation loaded successfully');
+        try {
+            // Загружаем и запускаем анимацию
+            this.lottieAnimation = lottie.loadAnimation({
+                container: lottieContainer,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: animationPath
+            });
+            
+            // Обработчики событий анимации
+            this.lottieAnimation.addEventListener('complete', () => {
+                console.log('Preloader: Lottie animation completed');
+            });
+            
+            this.lottieAnimation.addEventListener('loopComplete', () => {
+                console.log('Preloader: Lottie animation loop completed');
+            });
+            
+            this.lottieAnimation.addEventListener('error', (error) => {
+                console.warn('Preloader: Lottie animation error:', error);
+                this.showFallbackAnimation();
+            });
+            
+            console.log('Preloader: Lottie animation loaded successfully');
+        } catch (error) {
+            console.warn('Preloader: Failed to load Lottie animation:', error);
+            this.showFallbackAnimation();
+        }
+    }
+
+    showFallbackAnimation() {
+        const lottieContainer = document.getElementById('lottieContainer');
+        if (lottieContainer) {
+            // Создаем простую CSS анимацию как fallback
+            lottieContainer.innerHTML = `
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 60px; height: 60px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                </div>
+                <style>
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                </style>
+            `;
+        }
     }
 
     updatePreloaderText() {
@@ -254,9 +277,9 @@ class ModernPreloader {
 
 
     startLoading() {
-        // Увеличенное время показа анимации
+        // Оптимизированное время показа анимации
         let progress = 0;
-        const totalDuration = 4000; // 4 секунды
+        const totalDuration = 2500; // 2.5 секунды (уменьшено для лучшего UX)
         const updateInterval = 16; // обновляем каждые 16мс (60fps)
         const progressStep = (100 / totalDuration) * updateInterval;
         

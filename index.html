@@ -3,16 +3,31 @@
 
 <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HR9HLBQFCR" onerror="console.log('Google Analytics failed to load')"></script>
     <script>
-        try {
-            window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', 'G-HR9HLBQFCR');
-        } catch (error) {
-            console.log('Google Analytics initialization failed:', error);
+        // Load Google Analytics with better error handling
+        function loadGoogleAnalytics() {
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-HR9HLBQFCR';
+            script.onload = function() {
+                try {
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag() { dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'G-HR9HLBQFCR');
+                    console.log('Google Analytics loaded successfully');
+                } catch (error) {
+                    console.warn('Google Analytics initialization failed:', error);
+                }
+            };
+            script.onerror = function() {
+                console.warn('Google Analytics script failed to load - continuing without analytics');
+            };
+            document.head.appendChild(script);
         }
+        
+        // Load analytics after a short delay to not block page load
+        setTimeout(loadGoogleAnalytics, 100);
     </script>
 
     <meta charset="UTF-8">

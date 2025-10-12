@@ -218,9 +218,7 @@ function initializeEventListeners() {
     e.preventDefault();
     openModal();
 });
-        console.log('addNoteButton event listener added');
     } else {
-        console.error('addNoteButton element not found');
     }
     
     // Обработчик для кнопки импорта
@@ -234,7 +232,6 @@ function initializeEventListeners() {
             }
         });
     } else {
-        console.error('importButton element not found');
     }
     
     // Обработчик для поля импорта
@@ -257,7 +254,6 @@ function initializeEventListeners() {
         });
     }
     
-    console.log('All event listeners initialized');
 }
 
 // Функция для показа модалки подтверждения очистки всех заметок
@@ -336,7 +332,6 @@ async function clearAllNotes() {
         await loadNotes(); // Обновляет отображение заметок
         showCustomAlert(t("success"), t("allNotesDeleted"), "success");
     } catch (error) {
-        console.error('Error clearing notes:', error);
         showCustomAlert(
             t("error"),
             t("errorClearingNotes"),
@@ -383,11 +378,6 @@ function getTinyMCELanguage() {
     };
     
     const result = langMap[currentLang] || 'en';
-    console.log('TinyMCE Language Detection:');
-    console.log('- window.currentLang:', window.currentLang);
-    console.log('- navigator.language:', navigator.language);
-    console.log('- currentLang:', currentLang);
-    console.log('- result:', result);
     return result;
 }
 
@@ -397,24 +387,18 @@ async function loadTinyMCETranslations() {
     
     // Если язык английский, переводы не нужны
     if (lang === 'en') {
-        console.log('TinyMCE: Using default English language');
         return Promise.resolve();
     }
     
     const translationUrl = `/editor_news/langs/${lang}.js`;
-    console.log('TinyMCE: Loading translations from:', translationUrl);
     
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = translationUrl;
         script.onload = () => {
-            console.log('TinyMCE: Translations loaded successfully for language:', lang);
-            console.log('TinyMCE: tinymce.addI18n available:', typeof tinymce !== 'undefined' && typeof tinymce.addI18n === 'function');
             resolve();
         };
         script.onerror = (error) => {
-            console.warn('TinyMCE: Failed to load translations for language:', lang, 'falling back to English');
-            console.warn('TinyMCE: Error details:', error);
             resolve(); // Не отклоняем промис, просто используем английский
         };
         document.head.appendChild(script);
@@ -1082,7 +1066,6 @@ function updateFileVersions() {
         }
     });
     
-    console.log('File versions updated with version:', version);
 }
 
 // Функция для очистки кеша браузера
@@ -1107,7 +1090,6 @@ function clearBrowserCache() {
         });
     }
     
-    console.log('Browser cache cleared');
 }
 
 // Функция для принудительного обновления ресурсов
@@ -1133,7 +1115,6 @@ function forceRefreshResources() {
         }
     });
     
-    console.log('Resources force refreshed');
 }
 
 // Функция для предзагрузки изображений
@@ -1153,17 +1134,13 @@ function preloadImages() {
         imageUrls.forEach(url => {
             const img = new Image();
             img.onload = () => {
-                console.log(`Image preloaded: ${url}`);
             };
             img.onerror = () => {
-                console.warn(`Failed to preload image: ${url}`);
             };
             img.src = url;
         });
         
-        console.log(`Preloading ${imageUrls.size} images`);
     } catch (error) {
-        console.error('Error preloading images:', error);
     }
 }
 
@@ -1175,7 +1152,6 @@ window.onload = async () => {
         if (typeof notesDB !== 'undefined') {
             await notesDB.init();
         } else {
-            console.error('notesDB is not defined');
             throw new Error('notesDB is not defined');
         }
         
@@ -1183,7 +1159,6 @@ window.onload = async () => {
         if (typeof tinymce !== 'undefined') {
             try {
                 await initTinyMCE();
-                console.log('TinyMCE initialized successfully');
                 
                 // Применяем сохраненную тему после инициализации
                 setTimeout(() => {
@@ -1191,10 +1166,8 @@ window.onload = async () => {
                 }, 500);
                 
             } catch (error) {
-                console.error('Error initializing TinyMCE:', error);
             }
         } else {
-            console.warn('TinyMCE library not loaded');
         }
         
         // Мигрируем данные из localStorage
@@ -1228,8 +1201,6 @@ window.onload = async () => {
         // Принудительно обновляем ресурсы
         forceRefreshResources();
     } catch (error) {
-        console.error('Error initializing application:', error);
-        console.error('Error stack:', error.stack);
         
         // Проверяем доступность функций для показа ошибки
         if (typeof showCustomAlert === 'function' && typeof t === 'function') {
@@ -1958,26 +1929,22 @@ function updateColorPickerStyles(theme) {
 // Инициализация редактора TinyMCE с улучшенной обработкой ошибок
 async function initTinyMCE() {
     if (typeof tinymce === 'undefined') {
-        console.error('TinyMCE library is not loaded');
         return false;
     }
     
     // Проверяем, не инициализирован ли уже редактор
     if (tinymceEditor && !tinymceEditor.destroyed) {
-        console.log('TinyMCE already initialized');
         return true;
     }
     
     // Проверяем наличие контейнера
     const container = document.querySelector('.tinymce');
     if (!container) {
-        console.error('TinyMCE container not found');
         return false;
     }
     
     try {
         const lang = getTinyMCELanguage();
-        console.log('TinyMCE: Starting initialization with language:', lang);
         
     tinymce.init({
         selector: '.tinymce',
@@ -2282,9 +2249,6 @@ async function initTinyMCE() {
             
             // Добавляем обработку ошибок
             init_instance_callback: function (editor) {
-                console.log('TinyMCE instance initialized successfully');
-                console.log('TinyMCE current language:', editor.getParam('language'));
-                console.log('TinyMCE language URL:', editor.getParam('language_url'));
                 
                 // Принудительно применяем стили темы
                 setTimeout(() => {
@@ -2442,7 +2406,6 @@ async function initTinyMCE() {
                     
                     // Проверяем доступность редактора
                     if (!editor.getContainer()) {
-                        console.error('TinyMCE container not found');
                         return;
                     }
                     
@@ -2646,6 +2609,13 @@ function openModal(noteId, noteContent, noteCreationTime) {
 
         modal.style.display = "none";
         document.body.classList.remove('modal-open');
+        
+        // Скрываем приветственное сообщение после создания первой заметки
+        const welcomeMessage = document.querySelector('.welcome-message');
+        if (welcomeMessage) {
+            dismissWelcomeMessage();
+        }
+        
         await loadNotes();
         } catch (error) {
             console.error('Error saving note:', error);
@@ -2720,15 +2690,11 @@ async function loadNotes() {
             }
         });
 
-    // Если массив заметок пуст, выводим соответствующее сообщение
+    // Если массив заметок пуст, показываем приветственное сообщение
         if (notes.length === 0) {
-        const noNotesMessage = document.createElement("p");
-        noNotesMessage.classList.add("noNotes");
-
-        // Устанавливаем текст в зависимости от языка
-        noNotesMessage.textContent = t("noNotesMessage");
+        showWelcomeMessage();
         viewer.style.display = "none";
-        notesContainer.appendChild(noNotesMessage);
+        return; // Выходим из функции, так как заметок нет
     }
 
         notes.forEach((note) => {
@@ -3323,10 +3289,8 @@ async function exportNote(noteContent, password) {
             finalData = JSON.stringify(exportData);
         }
         
-        // Определяем расширение файла в зависимости от устройства
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        const fileExtension = isMobile ? "json" : "note";
-        const filename = `encrypted_note_${timestamp}.${fileExtension}`;
+        // Всегда используем расширение .note для зашифрованных файлов
+        const filename = `encrypted_note_${timestamp}.note`;
         
         // Используем универсальную функцию скачивания
         const blob = new Blob([finalData], { type: "application/json" });
@@ -4023,8 +3987,142 @@ function showCustomAlert(title, message, type = 'info') {
 
 async function importNotes(event, password) {
     const files = event.target.files;
-    if (!files || files.length === 0) return;
+    if (!files || files.length === 0) {
+        return;
+    }
+    
+    // Сбрасываем значение input для возможности повторного импорта
+    event.target.value = '';
 
+    // Обрабатываем файлы последовательно с запросом пароля для каждого
+    
+    let importedCount = 0;
+    let errorCount = 0;
+    
+    // Обрабатываем каждый файл отдельно
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        
+        // Проверяем расширение файла
+        if (!file.name.endsWith('.note') && !file.name.endsWith('.json')) {
+            errorCount++;
+            showCustomAlert(t("error"), t("errorInvalidFile", { filename: file.name }), "error");
+            continue;
+        }
+        
+        // Запрашиваем пароль для каждого файла
+        const password = await new Promise((resolve) => {
+            const message = `${t("enterPasswordForFile")}:<br><strong>${file.name}</strong>`;
+            showPasswordPromptWithValidation(
+                t("decryptNote"),
+                message,
+                file,
+                (password) => {
+                    resolve(password ? password.trim() : null);
+                }
+            );
+        });
+        
+        if (!password) {
+            errorCount++;
+            continue;
+        }
+        
+        // Обрабатываем файл
+        try {
+            const reader = new FileReader();
+            await new Promise((resolve) => {
+                reader.onload = async function (e) {
+                    try {
+                        const fileContent = e.target.result;
+                        let encryptedText;
+                        let finalText;
+                        
+                        // Проверяем, является ли файл новым форматом (JSON с метаданными)
+                        try {
+                            const decompressedContent = decompressImportData(fileContent);
+                            const exportData = JSON.parse(decompressedContent);
+                            
+                            if (exportData.metadata && exportData.content) {
+                                encryptedText = exportData.content;
+                            } else {
+                                throw new Error('Invalid new format');
+                            }
+                        } catch (jsonError) {
+                            // Старый формат - просто зашифрованный текст
+                            encryptedText = fileContent;
+                        }
+                        
+                        // Расшифровываем
+                        const decryptedText = await advancedEncryption.decrypt(encryptedText, password);
+                        
+                        // Проверяем, нужно ли удалять обфускацию
+                        finalText = decryptedText;
+                        try {
+                            finalText = advancedEncryption.deobfuscateFile(decryptedText);
+                        } catch (obfuscationError) {
+                            // Если обфускация не удалась, используем исходный текст
+                            finalText = decryptedText;
+                        }
+                        
+                        // Создаем новую заметку
+                        const newId = 'note_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                        const noteObj = {
+                            id: newId,
+                            content: finalText,
+                            creationTime: Date.now(),
+                            lastModified: Date.now(),
+                            title: notesDB.extractTitle(finalText)
+                        };
+                        
+                        await notesDB.saveNote(noteObj);
+                        importedCount++;
+                        
+                    } catch (error) {
+                        errorCount++;
+                        showCustomAlert(
+                            t("error"),
+                            t("errorImport", { filename: file.name, message: error.message }),
+                            "error"
+                        );
+                    }
+                    
+                    resolve(true);
+                };
+                
+                reader.readAsText(file);
+            });
+            
+        } catch (error) {
+            errorCount++;
+        }
+    }
+    
+    // Показываем результат
+    if (importedCount > 0) {
+        showCustomAlert(
+            t("success"),
+            t("importCompleted", { count: importedCount }),
+            "success"
+        );
+        
+        // Перезагружаем заметки
+        await loadNotes();
+    }
+    
+    if (errorCount > 0) {
+        showCustomAlert(
+            t("warning"),
+            t("importWithErrors", { imported: importedCount, errors: errorCount }),
+            "warning"
+        );
+    }
+    
+}
+
+// Новая функция для импорта с индивидуальными паролями для каждого файла
+async function importNotesWithIndividualPasswords(files) {
+    console.log("Importing multiple files with individual passwords:", files.length);
     let importedCount = 0;
     let errorCount = 0;
     let totalFiles = files.length;
@@ -4142,6 +4240,521 @@ async function importNotes(event, password) {
     await Promise.all(promises);
 }
 
+// Новая функция для импорта с индивидуальными паролями для каждого файла
+async function importNotesWithIndividualPasswords(files) {
+    console.log("Importing multiple files with individual passwords:", files.length);
+    let importedCount = 0;
+    let errorCount = 0;
+    let totalFiles = files.length;
+    let processedFiles = 0;
+    
+    // Показываем прогресс-бар
+    const progressModal = document.createElement('div');
+    progressModal.className = 'progress-modal';
+    progressModal.innerHTML = `
+        <div class="progress-modal-content">
+            <h3>${t("importingFiles")}</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+            <p class="progress-text">${t("processingFile")} 1 ${t("of")} ${totalFiles}</p>
+            <p class="progress-details">${t("imported")}: ${importedCount}, ${t("errors")}: ${errorCount}</p>
+        </div>
+    `;
+    document.body.appendChild(progressModal);
+    
+    const progressFill = progressModal.querySelector('.progress-fill');
+    const progressText = progressModal.querySelector('.progress-text');
+    const progressDetails = progressModal.querySelector('.progress-details');
+    
+    // Функция для обновления прогресса
+    const updateProgress = () => {
+        const percentage = (processedFiles / totalFiles) * 100;
+        progressFill.style.width = percentage + '%';
+        progressText.textContent = `${t("processingFile")} ${processedFiles + 1} ${t("of")} ${totalFiles}`;
+        progressDetails.textContent = `${t("imported")}: ${importedCount}, ${t("errors")}: ${errorCount}`;
+    };
+    
+    // Обрабатываем файлы последовательно для запроса паролей
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        updateProgress();
+        
+        // Проверяем расширение файла
+        if (!file.name.endsWith('.note') && !file.name.endsWith('.json')) {
+            errorCount++;
+            showCustomAlert(t("error"), t("errorInvalidFile", { filename: file.name }), "error");
+            processedFiles++;
+            continue;
+        }
+        
+        // Запрашиваем пароль для каждого файла
+        const password = await new Promise((resolve) => {
+            const message = `${t("enterPasswordForFile")}:<br><strong>${file.name}</strong>`;
+            console.log("Message:", message);
+            showPasswordPromptWithValidation(
+                t("decryptNote"),
+                message,
+                file,
+                (password) => {
+                    resolve(password ? password.trim() : null);
+                }
+            );
+        });
+        
+        if (!password) {
+            errorCount++;
+            processedFiles++;
+            continue;
+        }
+        
+        // Обрабатываем файл
+        try {
+            const reader = new FileReader();
+            const fileProcessed = await new Promise((resolve) => {
+                reader.onload = async function (e) {
+                    try {
+                        const fileContent = e.target.result;
+                        let encryptedText;
+                        let finalText;
+                        
+                        // Проверяем, является ли файл новым форматом (JSON с метаданными)
+                        try {
+                            const decompressedContent = decompressImportData(fileContent);
+                            const exportData = JSON.parse(decompressedContent);
+                            
+                            if (exportData.metadata && exportData.content) {
+                                encryptedText = exportData.content;
+                            } else {
+                                throw new Error('Invalid new format');
+                            }
+                        } catch (jsonError) {
+                            // Старый формат - просто зашифрованный текст
+                            encryptedText = fileContent;
+                        }
+                        
+                        // Расшифровываем
+                        const decryptedText = await advancedEncryption.decrypt(encryptedText, password);
+                        
+                        // Проверяем, нужно ли удалять обфускацию
+                        finalText = decryptedText;
+                        try {
+                            finalText = advancedEncryption.deobfuscateFile(decryptedText);
+                        } catch (obfuscationError) {
+                            // Если обфускация не удалась, используем исходный текст
+                            finalText = decryptedText;
+                        }
+                        
+                        // Создаем новую заметку
+                        const newId = 'note_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                        const noteObj = {
+                            id: newId,
+                            content: finalText,
+                            creationTime: Date.now(),
+                            lastModified: Date.now(),
+                            title: notesDB.extractTitle(finalText)
+                        };
+                        
+                        await notesDB.saveNote(noteObj);
+                        importedCount++;
+                        
+                    } catch (error) {
+                        errorCount++;
+                        showCustomAlert(
+                            t("error"),
+                            t("errorImport", { filename: file.name, message: error.message }),
+                            "error"
+                        );
+                    }
+                    
+                    processedFiles++;
+                    resolve(true);
+                };
+                
+                reader.readAsText(file);
+            });
+            
+        } catch (error) {
+            errorCount++;
+            processedFiles++;
+        }
+    }
+    
+    // Удаляем прогресс-бар
+    document.body.removeChild(progressModal);
+    
+    // Показываем результат
+    if (importedCount > 0) {
+        showCustomAlert(
+            t("success"),
+            t("importCompleted", { count: importedCount }),
+            "success"
+        );
+        
+        // Перезагружаем заметки
+        await loadNotes();
+    }
+    
+    if (errorCount > 0) {
+        showCustomAlert(
+            t("warning"),
+            t("importWithErrors", { imported: importedCount, errors: errorCount }),
+            "warning"
+        );
+    }
+}
+
+// Функция для показа диалога ввода пароля с валидацией
+function showPasswordPromptWithValidation(title, message, file, callback) {
+    const promptModal = document.createElement('div');
+    promptModal.className = 'modal';
+    promptModal.id = 'passwordPromptModal';
+    promptModal.innerHTML = `
+        <div class="modal-content-error">
+            <div class="modal-content-inner">
+                <h3>${title}</h3>
+                <p>${message}</p>
+                <input type="password" id="passwordInput" placeholder="${t("password")}" autocomplete="off">
+                <div id="passwordValidation" class="password-validation" style="display: none;">
+                    <div class="validation-message"></div>
+                    <div class="validation-actions">
+                        <button id="validatePassword" class="btn validate-btn" style="display: none;">
+                            <i class="fas fa-check"></i> ${t("validatePassword")}
+                        </button>
+                        <button id="skipFile" class="btn skip-btn">
+                            <i class="fas fa-forward"></i> ${t("skipFile")}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-buttons-container">
+                <button id="passwordOk" class="btn" disabled><i class="fas fa-check"></i> ${t("ok")}</button>
+                <button id="passwordCancel" class="btn cancel"><i class="fas fa-times"></i> ${t("cancel")}</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(promptModal);
+    promptModal.style.display = "block";
+    
+    const input = document.getElementById('passwordInput');
+    const okButton = document.getElementById('passwordOk');
+    const cancelButton = document.getElementById('passwordCancel');
+    const validationDiv = document.getElementById('passwordValidation');
+    const validationMessage = validationDiv.querySelector('.validation-message');
+    const validateButton = document.getElementById('validatePassword');
+    const skipButton = document.getElementById('skipFile');
+    
+    let isValidPassword = false;
+    let validationInProgress = false;
+    
+    // Фокус на поле ввода
+    setTimeout(() => input.focus(), 100);
+    
+    // Debounce для валидации
+    let validationTimeout;
+    
+    // Обработчик ввода пароля
+    input.addEventListener('input', async (e) => {
+        const password = e.target.value.trim();
+        
+        if (password.length === 0) {
+            validationDiv.style.display = 'none';
+            okButton.disabled = true;
+            isValidPassword = false;
+            if (validationTimeout) {
+                clearTimeout(validationTimeout);
+            }
+            return;
+        }
+        
+        if (validationInProgress) return;
+        
+        // Очищаем предыдущий таймер
+        if (validationTimeout) {
+            clearTimeout(validationTimeout);
+        }
+        
+        // Устанавливаем задержку 500мс для валидации
+        validationTimeout = setTimeout(async () => {
+        
+        validationInProgress = true;
+        validationDiv.style.display = 'block';
+        validationMessage.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + t("validatingPassword");
+        validateButton.style.display = 'none';
+        okButton.disabled = true;
+        
+        try {
+            // Читаем файл для валидации
+            const reader = new FileReader();
+            const validationResult = await new Promise((resolve) => {
+                reader.onload = async function (e) {
+                    try {
+                        const fileContent = e.target.result;
+                        let encryptedText;
+                        
+                        // Проверяем формат файла
+                        try {
+                            const decompressedContent = decompressImportData(fileContent);
+                            const exportData = JSON.parse(decompressedContent);
+                            
+                            if (exportData.metadata && exportData.content) {
+                                encryptedText = exportData.content;
+                            } else {
+                                throw new Error('Invalid new format');
+                            }
+                        } catch (jsonError) {
+                            encryptedText = fileContent;
+                        }
+                        
+                        // Пробуем расшифровать для валидации
+                        const decryptedText = await advancedEncryption.validatePassword(encryptedText, password);
+                        
+                        // Сбрасываем попытки при успешной валидации
+                        advancedEncryption.resetAttempts('validation_' + file.name);
+                        
+                        // Если дошли до сюда, пароль правильный
+                        resolve({ success: true, decryptedText });
+                    } catch (error) {
+                        resolve({ success: false, error: error.message });
+                    }
+                };
+                
+                reader.readAsText(file);
+            });
+            
+            if (validationResult.success) {
+                validationMessage.innerHTML = '<i class="fas fa-check-circle" style="color: #4CAF50;"></i> ' + t("passwordValid");
+                validationMessage.style.color = '#4CAF50';
+                okButton.disabled = false;
+                isValidPassword = true;
+            } else {
+                validationMessage.innerHTML = '<i class="fas fa-times-circle" style="color: #f44336;"></i> ' + t("passwordInvalid");
+                validationMessage.style.color = '#f44336';
+                validateButton.style.display = 'inline-block';
+                okButton.disabled = true;
+                isValidPassword = false;
+            }
+            
+        } catch (error) {
+            validationMessage.innerHTML = '<i class="fas fa-exclamation-triangle" style="color: #ff9800;"></i> ' + t("validationError");
+            validationMessage.style.color = '#ff9800';
+            validateButton.style.display = 'inline-block';
+            okButton.disabled = true;
+            isValidPassword = false;
+        }
+        
+        validationInProgress = false;
+        }, 500); // Задержка 500мс
+    });
+    
+    // Обработчики кнопок
+    okButton.addEventListener('click', () => {
+        if (isValidPassword) {
+            if (validationTimeout) {
+                clearTimeout(validationTimeout);
+            }
+            document.body.removeChild(promptModal);
+            callback(input.value.trim());
+        }
+    });
+    
+    cancelButton.addEventListener('click', () => {
+        if (validationTimeout) {
+            clearTimeout(validationTimeout);
+        }
+        document.body.removeChild(promptModal);
+        callback(null);
+    });
+    
+    skipButton.addEventListener('click', () => {
+        if (validationTimeout) {
+            clearTimeout(validationTimeout);
+        }
+        document.body.removeChild(promptModal);
+        callback('SKIP');
+    });
+    
+    validateButton.addEventListener('click', () => {
+        input.dispatchEvent(new Event('input'));
+    });
+    
+    // Обработка Enter
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && isValidPassword) {
+            okButton.click();
+        }
+    });
+    
+    // Закрытие по клику вне модального окна
+    promptModal.addEventListener('click', (e) => {
+        if (e.target === promptModal) {
+            document.body.removeChild(promptModal);
+            callback(null);
+        }
+    });
+}
+
+// Функция для импорта файлов с индивидуальными паролями
+async function importNotesWithFiles(files) {
+    
+    let importedCount = 0;
+    let errorCount = 0;
+    let cancelledCount = 0;
+    let wrongPasswordCount = 0;
+    let invalidFileCount = 0;
+    let processingErrorCount = 0;
+    
+    // Обрабатываем каждый файл отдельно
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        
+        // Проверяем расширение файла
+        if (!file.name.endsWith('.note') && !file.name.endsWith('.json')) {
+            invalidFileCount++;
+            continue;
+        }
+        
+        // Запрашиваем пароль для каждого файла
+        const password = await new Promise((resolve) => {
+            const message = `${t("enterPasswordForFile")}:<br><strong>${file.name}</strong>`;
+            showPasswordPromptWithValidation(
+                t("decryptNote"),
+                message,
+                file,
+                (password) => {
+                    resolve(password ? password.trim() : null);
+                }
+            );
+        });
+        
+        if (password === 'SKIP') {
+            cancelledCount++;
+            continue;
+        }
+        
+        if (!password) {
+            cancelledCount++;
+            continue;
+        }
+        
+        // Обрабатываем файл
+        try {
+            const reader = new FileReader();
+            await new Promise((resolve) => {
+                reader.onload = async function (e) {
+                    try {
+                        const fileContent = e.target.result;
+                        let encryptedText;
+                        let finalText;
+                        
+                        // Проверяем, является ли файл новым форматом (JSON с метаданными)
+                        try {
+                            const decompressedContent = decompressImportData(fileContent);
+                            const exportData = JSON.parse(decompressedContent);
+                            
+                            if (exportData.metadata && exportData.content) {
+                                encryptedText = exportData.content;
+                            } else {
+                                throw new Error('Invalid new format');
+                            }
+                        } catch (jsonError) {
+                            // Старый формат - просто зашифрованный текст
+                            encryptedText = fileContent;
+                        }
+                        
+                        // Расшифровываем
+                        const decryptedText = await advancedEncryption.decrypt(encryptedText, password);
+                        
+                        // Проверяем, нужно ли удалять обфускацию
+                        finalText = decryptedText;
+                        try {
+                            finalText = advancedEncryption.deobfuscateFile(decryptedText);
+                        } catch (obfuscationError) {
+                            // Если обфускация не удалась, используем исходный текст
+                            finalText = decryptedText;
+                        }
+                        
+                        // Создаем новую заметку
+                        const newId = 'note_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                        const noteObj = {
+                            id: newId,
+                            content: finalText,
+                            creationTime: Date.now(),
+                            lastModified: Date.now(),
+                            title: notesDB.extractTitle(finalText)
+                        };
+                        
+                        await notesDB.saveNote(noteObj);
+                        importedCount++;
+                        
+                    } catch (error) {
+                        
+                        // Определяем тип ошибки
+                        if (error.message.includes('Invalid password') || error.message.includes('Too many failed attempts')) {
+                            wrongPasswordCount++;
+                        } else {
+                            processingErrorCount++;
+                        }
+                    }
+                    
+                    resolve(true);
+                };
+                
+                reader.readAsText(file);
+            });
+            
+        } catch (error) {
+            processingErrorCount++;
+        }
+    }
+    
+    // Показываем результат
+    const totalErrors = cancelledCount + wrongPasswordCount + invalidFileCount + processingErrorCount;
+    
+    if (importedCount > 0 && totalErrors === 0) {
+        // Все файлы успешно импортированы
+        showCustomAlert(
+            t("success"),
+            `${t("imported")}: ${importedCount} ${t("of")} ${files.length}`,
+            "success"
+        );
+        
+        // Перезагружаем заметки
+        await loadNotes();
+    } else if (importedCount > 0 && totalErrors > 0) {
+        // Частично успешный импорт
+        let details = `${t("imported")}: ${importedCount} ${t("of")} ${files.length}`;
+        
+        if (cancelledCount > 0) details += `<br>Отменено: ${cancelledCount}`;
+        if (wrongPasswordCount > 0) details += `<br>Неправильный пароль: ${wrongPasswordCount}`;
+        if (invalidFileCount > 0) details += `<br>Неверный формат: ${invalidFileCount}`;
+        if (processingErrorCount > 0) details += `<br>Ошибки обработки: ${processingErrorCount}`;
+        
+        showCustomAlert(
+            t("warning"),
+            details,
+            "warning"
+        );
+        
+        // Перезагружаем заметки
+        await loadNotes();
+    } else if (importedCount === 0 && totalErrors > 0) {
+        // Все файлы не удалось импортировать
+        let details = `Всего ошибок: ${totalErrors} ${t("of")} ${files.length}`;
+        
+        if (cancelledCount > 0) details += `<br>Отменено: ${cancelledCount}`;
+        if (wrongPasswordCount > 0) details += `<br>Неправильный пароль: ${wrongPasswordCount}`;
+        if (invalidFileCount > 0) details += `<br>Неверный формат: ${invalidFileCount}`;
+        if (processingErrorCount > 0) details += `<br>Ошибки обработки: ${processingErrorCount}`;
+        
+        showCustomAlert(
+            t("error"),
+            details,
+            "error"
+        );
+    }
+}
 
 function transliterate(text) {
     const translitMap = {
@@ -4222,8 +4835,7 @@ function exportNoteHTML(noteContent) {
 // }
 
 // Улучшенная функция импорта заметок (без шифрования)
-async function importNotesHTML(event) {
-    const files = event.target.files;
+async function importNotesHTML(files) {
     if (!files || files.length === 0) return;
 
     let importedCount = 0;
@@ -4301,7 +4913,15 @@ async function importNotesHTML(event) {
 // Улучшенная функция импорта с поддержкой разных форматов
 async function importNotesWithFormat(event) {
     const files = event.target.files;
-    if (!files || files.length === 0) return;
+    if (!files || files.length === 0) {
+        return;
+    }
+    
+    // Сохраняем файлы в переменную перед сбросом input
+    const filesArray = Array.from(files);
+    
+    // Сбрасываем значение input для возможности повторного импорта
+    event.target.value = '';
 
     // Показываем диалог выбора формата импорта
     const importModal = document.createElement('div');
@@ -4333,26 +4953,10 @@ async function importNotesWithFormat(event) {
             document.body.removeChild(importModal);
             
             if (format === 'encrypted') {
-                // Запрашиваем пароль для расшифровки
-                showCustomPrompt(
-                    t("decryptNote"),
-                    t("enterPassword"),
-                    t("password"),
-                    "",
-                    (password) => {
-                        if (password && password.trim()) {
-                            importNotes(event, password.trim());
-                        } else if (password !== null) {
-                            showCustomAlert(
-                                t("error"),
-                                t("errorEmptyPassword"),
-                                "error"
-                            );
-                        }
-                    }
-                );
+                // Для зашифрованных файлов используем новую логику с индивидуальными паролями
+                importNotesWithFiles(filesArray);
             } else if (format === 'html') {
-                importNotesHTML(event);
+                importNotesHTML(filesArray);
             }
         });
     });
@@ -4563,6 +5167,102 @@ class AdvancedEncryption {
         this.attempts.delete(identifier);
     }
 
+    // Функция для валидации пароля без блокировки
+    async validatePassword(encryptedText, password) {
+        try {
+            
+            // Используем ту же логику, что и в основной функции decrypt
+            try {
+                // Сначала пробуем новый алгоритм
+                // Декодируем из base64
+                const obfuscated = new Uint8Array(
+                    atob(encryptedText).split('').map(char => char.charCodeAt(0))
+                );
+                
+                // Деобфускация
+                const combined = this.deobfuscateData(obfuscated);
+                
+                // Извлекаем соль, IV и зашифрованные данные
+                const salt = combined.slice(0, this.saltLength);
+                const iv = combined.slice(this.saltLength, this.saltLength + this.ivLength);
+                const encrypted = combined.slice(this.saltLength + this.ivLength);
+                
+                // Получаем ключ
+                const key = await this.deriveKey(password, salt);
+                
+                // Расшифровываем с увеличенной длиной тега
+                const decrypted = await crypto.subtle.decrypt(
+                    { 
+                        name: 'AES-GCM', 
+                        iv: iv,
+                        tagLength: this.tagLength
+                    },
+                    key,
+                    encrypted
+                );
+                
+                const decoder = new TextDecoder();
+                const decryptedText = decoder.decode(decrypted);
+                return decryptedText;
+                
+            } catch (newAlgorithmError) {
+                
+                // Пробуем старый алгоритм
+                const encryptedData = JSON.parse(encryptedText);
+                
+                if (!encryptedData.iv || !encryptedData.ciphertext || !encryptedData.salt || !encryptedData.tag) {
+                    throw new Error('Invalid encrypted data format');
+                }
+                
+                // Конвертируем данные из base64
+                const iv = Uint8Array.from(atob(encryptedData.iv), c => c.charCodeAt(0));
+                const ciphertext = Uint8Array.from(atob(encryptedData.ciphertext), c => c.charCodeAt(0));
+                const salt = Uint8Array.from(atob(encryptedData.salt), c => c.charCodeAt(0));
+                const tag = Uint8Array.from(atob(encryptedData.tag), c => c.charCodeAt(0));
+                
+                // Генерируем ключ из пароля
+                const keyMaterial = await crypto.subtle.importKey(
+                    'raw',
+                    new TextEncoder().encode(password),
+                    'PBKDF2',
+                    false,
+                    ['deriveBits', 'deriveKey']
+                );
+                
+                const key = await crypto.subtle.deriveKey(
+                    {
+                        name: 'PBKDF2',
+                        salt: salt,
+                        iterations: 200000,
+                        hash: 'SHA-256'
+                    },
+                    keyMaterial,
+                    { name: 'AES-GCM', length: 256 },
+                    false,
+                    ['decrypt']
+                );
+                
+                // Пробуем расшифровать
+                const decryptedData = await crypto.subtle.decrypt(
+                    {
+                        name: 'AES-GCM',
+                        iv: iv,
+                        tagLength: 128
+                    },
+                    key,
+                    new Uint8Array([...ciphertext, ...tag])
+                );
+                
+                // Конвертируем в строку
+                const decryptedText = new TextDecoder().decode(decryptedData);
+                return decryptedText;
+            }
+            
+        } catch (error) {
+            throw new Error('Invalid password');
+        }
+    }
+
     // Улучшенная обфускация данных
     obfuscateData(data) {
         // Добавляем случайные данные в начале, середине и конце
@@ -4738,7 +5438,6 @@ class AdvancedEncryption {
                 this.recordFailedAttempt(identifier);
                 
                 // Если новый алгоритм не сработал, пробуем старый
-                console.log('Trying legacy decryption...');
                 return await this.decryptLegacy(encryptedData, password, identifier);
             }
         } catch (error) {
@@ -4891,7 +5590,7 @@ class AdvancedEncryption {
     }
 
     // Оптимизированное шифрование для медиа файлов
-    async encryptMedia(file, password, identifier = 'media') {
+    async encryptMedia(file, password) {
         try {
             // Проверяем размер файла
             if (file.size > this.maxMediaSize) {
@@ -5686,8 +6385,205 @@ function updateFooterTexts() {
         }
         
         console.log('Footer texts updated successfully');
+        
+        // Обновляем переводы в приветственном сообщении, если оно отображается
+        if (typeof updateWelcomeTranslations === 'function') {
+            updateWelcomeTranslations();
+        }
     } catch (error) {
         console.error('Error updating footer texts:', error);
+    }
+}
+
+// Функция для показа приветственного сообщения
+function showWelcomeMessage() {
+    const notesContainer = document.getElementById("notesContainer");
+    if (!notesContainer) {
+        return;
+    }
+    
+    // Проверяем, не показано ли уже приветственное сообщение
+    const existingWelcome = document.querySelector('.welcome-message');
+    if (existingWelcome) {
+        return; // Приветственное сообщение уже показано
+    }
+
+    // Функция для безопасного получения перевода
+    function getTranslation(key, fallback = key) {
+        try {
+            if (typeof t === 'function') {
+                const translation = t(key);
+                return translation && translation !== key ? translation : fallback;
+            }
+            return fallback;
+        } catch (error) {
+            return fallback;
+        }
+    }
+
+    // Создаем контейнер для приветственного сообщения
+    const welcomeContainer = document.createElement("div");
+    welcomeContainer.classList.add("welcome-message");
+    welcomeContainer.innerHTML = `
+        <div class="welcome-content">
+            <div class="welcome-header">
+                <h1 class="welcome-title">${getTranslation('welcomeTitle', 'Welcome to Local Notes')}</h1>
+                <p class="welcome-subtitle">${getTranslation('welcomeSubtitle', 'Secure, private note-taking in your browser')}</p>
+            </div>
+            
+            <div class="welcome-section">
+                <h2 class="welcome-section-title">${getTranslation('welcomeAbout', 'About Local Notes')}</h2>
+                <p class="welcome-description">${getTranslation('welcomeDescription', 'Local Notes is a secure web application for creating and storing notes directly in your browser. All data remains on your device with military-grade encryption.')}</p>
+            </div>
+            
+            <div class="welcome-section">
+                <h2 class="welcome-section-title">${getTranslation('welcomeFeatures', 'Key Features')}</h2>
+                <ul class="welcome-features">
+                    <li>${getTranslation('welcomeFeature1', 'Military-grade AES-256 encryption')}</li>
+                    <li>${getTranslation('welcomeFeature2', '12 languages supported')}</li>
+                    <li>${getTranslation('welcomeFeature3', 'PWA support - install as app')}</li>
+                    <li>${getTranslation('welcomeFeature4', 'Optimized performance')}</li>
+                    <li>${getTranslation('welcomeFeature5', 'Enhanced security protection')}</li>
+                    <li>${getTranslation('welcomeFeature6', 'Modern responsive design')}</li>
+                    <li>${getTranslation('welcomeFeature7', 'Offline operation support')}</li>
+                </ul>
+            </div>
+            
+            <div class="welcome-section">
+                <h2 class="welcome-section-title">${getTranslation('welcomeGoals', 'Project Goals')}</h2>
+                <ul class="welcome-goals">
+                    <li>${getTranslation('welcomeGoal1', 'Maximum privacy - data stays local')}</li>
+                    <li>${getTranslation('welcomeGoal2', 'Security - military-grade encryption')}</li>
+                    <li>${getTranslation('welcomeGoal3', 'Accessibility - 12 languages')}</li>
+                    <li>${getTranslation('welcomeGoal4', 'Universality - works everywhere')}</li>
+                    <li>${getTranslation('welcomeGoal5', 'Performance - fast operation')}</li>
+                    <li>${getTranslation('welcomeGoal6', 'Convenience - intuitive interface')}</li>
+                </ul>
+            </div>
+            
+            <div class="welcome-section">
+                <h2 class="welcome-section-title">${getTranslation('welcomeDeveloper', 'Developer')}</h2>
+                <p class="welcome-developer-info">${getTranslation('welcomeDeveloperInfo', 'Developed by SerGio Play. Open source project focused on privacy and security.')}</p>
+            </div>
+            
+            <div class="welcome-section">
+                <h2 class="welcome-section-title">${getTranslation('welcomeGetStarted', 'Get Started')}</h2>
+                <p class="welcome-get-started">${getTranslation('welcomeGetStartedText', 'Click \'Add Note\' to create your first note and start organizing your information securely.')}</p>
+            </div>
+            
+            <div class="welcome-actions">
+                <button class="welcome-dismiss-btn" onclick="showWelcomeInstructions()">
+                    ${getTranslation('welcomeDismiss', 'Show instructions')}
+                </button>
+            </div>
+        </div>
+    `;
+
+    notesContainer.appendChild(welcomeContainer);
+    
+    // Принудительно запускаем анимации после добавления в DOM
+    setTimeout(() => {
+        const welcomeMessage = document.querySelector('.welcome-message');
+        if (welcomeMessage) {
+            // Сбрасываем анимации и запускаем заново
+            const animatedElements = welcomeMessage.querySelectorAll('.welcome-header, .welcome-title, .welcome-subtitle, .welcome-section, .welcome-actions');
+            animatedElements.forEach((element, index) => {
+                element.style.animation = 'none';
+                element.offsetHeight; // Принудительный reflow
+                element.style.animation = null;
+            });
+        }
+    }, 50);
+    
+    // Обновляем переводы через небольшую задержку, если система переводов загрузится позже
+    setTimeout(() => {
+        updateWelcomeTranslations();
+    }, 100);
+}
+
+// Функция для обновления переводов в приветственном сообщении
+function updateWelcomeTranslations() {
+    const welcomeMessage = document.querySelector('.welcome-message');
+    if (!welcomeMessage || typeof t !== 'function') return;
+    
+    try {
+        // Обновляем все тексты
+        const titleElement = welcomeMessage.querySelector('.welcome-title');
+        if (titleElement) titleElement.textContent = t('welcomeTitle') || 'Welcome to Local Notes';
+        
+        const subtitleElement = welcomeMessage.querySelector('.welcome-subtitle');
+        if (subtitleElement) subtitleElement.textContent = t('welcomeSubtitle') || 'Secure, private note-taking in your browser';
+        
+        const aboutTitle = welcomeMessage.querySelector('.welcome-section:nth-child(2) .welcome-section-title');
+        if (aboutTitle) aboutTitle.textContent = t('welcomeAbout') || 'About Local Notes';
+        
+        const aboutDesc = welcomeMessage.querySelector('.welcome-section:nth-child(2) .welcome-description');
+        if (aboutDesc) aboutDesc.textContent = t('welcomeDescription') || 'Local Notes is a secure web application for creating and storing notes directly in your browser. All data remains on your device with military-grade encryption.';
+        
+        const featuresTitle = welcomeMessage.querySelector('.welcome-section:nth-child(3) .welcome-section-title');
+        if (featuresTitle) featuresTitle.textContent = t('welcomeFeatures') || 'Key Features';
+        
+        const featuresList = welcomeMessage.querySelectorAll('.welcome-features li');
+        const featureKeys = ['welcomeFeature1', 'welcomeFeature2', 'welcomeFeature3', 'welcomeFeature4', 'welcomeFeature5', 'welcomeFeature6', 'welcomeFeature7'];
+        featuresList.forEach((item, index) => {
+            if (featureKeys[index]) {
+                item.textContent = t(featureKeys[index]) || item.textContent;
+            }
+        });
+        
+        const goalsTitle = welcomeMessage.querySelector('.welcome-section:nth-child(4) .welcome-section-title');
+        if (goalsTitle) goalsTitle.textContent = t('welcomeGoals') || 'Project Goals';
+        
+        const goalsList = welcomeMessage.querySelectorAll('.welcome-goals li');
+        const goalKeys = ['welcomeGoal1', 'welcomeGoal2', 'welcomeGoal3', 'welcomeGoal4', 'welcomeGoal5', 'welcomeGoal6'];
+        goalsList.forEach((item, index) => {
+            if (goalKeys[index]) {
+                item.textContent = t(goalKeys[index]) || item.textContent;
+            }
+        });
+        
+        const developerTitle = welcomeMessage.querySelector('.welcome-section:nth-child(5) .welcome-section-title');
+        if (developerTitle) developerTitle.textContent = t('welcomeDeveloper') || 'Developer';
+        
+        const developerInfo = welcomeMessage.querySelector('.welcome-section:nth-child(5) .welcome-developer-info');
+        if (developerInfo) developerInfo.textContent = t('welcomeDeveloperInfo') || 'Developed by SerGio Play. Open source project focused on privacy and security.';
+        
+        const getStartedTitle = welcomeMessage.querySelector('.welcome-section:nth-child(6) .welcome-section-title');
+        if (getStartedTitle) getStartedTitle.textContent = t('welcomeGetStarted') || 'Get Started';
+        
+        const getStartedText = welcomeMessage.querySelector('.welcome-section:nth-child(6) .welcome-get-started');
+        if (getStartedText) getStartedText.textContent = t('welcomeGetStartedText') || 'Click \'Add Note\' to create your first note and start organizing your information securely.';
+        
+        const dismissBtn = welcomeMessage.querySelector('.welcome-dismiss-btn');
+        if (dismissBtn) dismissBtn.textContent = t('welcomeDismiss') || 'Show instructions';
+        
+    } catch (error) {
+        // Игнорируем ошибки обновления переводов
+    }
+}
+
+// Функция для показа инструкций в модальном окне
+function showWelcomeInstructions() {
+    const title = t('welcomeInstructionsTitle') || 'How to get started';
+    const message = t('welcomeInstructions') || 'To create your first note, click the \'Add Note\' button in the top panel. You can then write your content and save it securely.';
+    
+    if (typeof showCustomAlert === 'function') {
+        showCustomAlert(title, message, 'info');
+    } else {
+        alert(`${title}\n\n${message}`);
+    }
+}
+
+// Функция для скрытия приветственного сообщения (вызывается после создания первой заметки)
+function dismissWelcomeMessage() {
+    const welcomeMessage = document.querySelector('.welcome-message');
+    if (welcomeMessage) {
+        // Добавляем класс для анимации исчезновения
+        welcomeMessage.style.animation = 'welcomeFadeOut 0.3s ease-in-out forwards';
+        
+        setTimeout(() => {
+            welcomeMessage.remove();
+        }, 300);
     }
 }
 

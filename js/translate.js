@@ -203,7 +203,27 @@ function updateButtonTexts() {
         clearAllButton.innerHTML = `<i class="fas fa-trash-alt"></i> ${clearAllButton.textContent}`;
     }
     if (toggleViewButton) {
-        toggleViewButton.innerHTML = `<i class="fas fa-th"></i> ${toggleViewButton.textContent}`;
+        // Обновляем кнопку переключения вида с правильными переводами
+        const notesContainer = document.getElementById("notesContainer");
+        const isFullWidth = notesContainer && notesContainer.classList.contains("full-width-view");
+        
+        if (isFullWidth) {
+            toggleViewButton.innerHTML = `<i class="fas fa-th"></i> ${toggleViewButton.textContent}`;
+        } else {
+            toggleViewButton.innerHTML = `<i class="fas fa-list"></i> ${toggleViewButton.textContent}`;
+        }
+        
+        // Принудительно обновляем кнопку через AppUtils, если он доступен
+        if (window.appUtils && typeof window.appUtils.forceUpdateToggleButton === 'function') {
+            // Добавляем небольшую задержку, чтобы избежать ошибок
+            setTimeout(() => {
+                try {
+                    window.appUtils.forceUpdateToggleButton();
+                } catch (error) {
+                    console.log("Error updating toggle button:", error);
+                }
+            }, 50);
+        }
     }
     if (saveNoteButton) {
         saveNoteButton.innerHTML = `<i class="fas fa-save"></i> ${saveNoteButton.textContent}`;

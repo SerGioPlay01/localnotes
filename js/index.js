@@ -355,6 +355,11 @@ window.onload = async () => {
         if (typeof updateButtonTexts === 'function') {
             updateButtonTexts();
         }
+        
+        // Обновляем текст футера
+        if (typeof updateFooterTexts === 'function') {
+            updateFooterTexts();
+        }
     } catch (error) {
         console.error('Error initializing application:', error);
         console.error('Error stack:', error.stack);
@@ -449,7 +454,7 @@ function initTinyMCE() {
             'autosave', 'directionality', 'visualchars'
         ],
         toolbar: isMobile ? 
-            'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | numlist bullist | forecolor backcolor | charmap emoticons | link image | code help' :
+            'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | numlist bullist | forecolor backcolor | charmap emoticons | link image | code' :
             'undo redo | blocks fontfamily fontsize | ' +
             'bold italic underline strikethrough superscript subscript | ' +
             'alignleft aligncenter alignright alignjustify | ' +
@@ -458,7 +463,7 @@ function initTinyMCE() {
             'pagebreak | charmap emoticons | ' +
             'fullscreen preview | insertfile image media link anchor codesample | ' +
             'ltr rtl | code | help',
-        toolbar_mode: 'wrap',
+        toolbar_mode: isMobile ? 'sliding' : 'wrap',
         toolbar_sticky: !isMobile,
         language: getTinyMCELanguage(),
         license_key: 'gpl',
@@ -470,6 +475,8 @@ function initTinyMCE() {
         quickbars_selection_toolbar: isTouch ? 'bold italic | quicklink h2 h3 blockquote quickimage quicktable' : false,
         quickbars_insert_toolbar: isTouch ? 'quickimage quicktable' : false,
         contextmenu: isTouch ? 'link image imagetools table' : 'link image imagetools table',
+        mobile: isMobile,
+        touch: isTouch,
         menubar: 'file edit view insert format tools table help',
         menu: {
             file: { title: getTinyMCETranslation('File'), items: 'newdocument restoredraft | preview | export | deleteallconversations' },
@@ -2287,4 +2294,50 @@ function showExportOptions(noteContent) {
             document.body.removeChild(exportModal);
         }
     });
+}
+
+// Функция для обновления текста футера
+function updateFooterTexts() {
+    if (typeof t === 'undefined') {
+        console.log('Translation function not available');
+        return;
+    }
+    
+    try {
+        // Обновляем описание проекта
+        const footerDescription = document.getElementById('footerDescription');
+        if (footerDescription) {
+            footerDescription.textContent = t('footerDescription');
+        }
+        
+        // Обновляем ссылки
+        const cookiePolicyLink = document.getElementById('cookiePolicyLink');
+        if (cookiePolicyLink) {
+            cookiePolicyLink.textContent = t('cookiePolicy');
+        }
+        
+        const termsOfUseLink = document.getElementById('termsOfUseLink');
+        if (termsOfUseLink) {
+            termsOfUseLink.textContent = t('termsOfUse');
+        }
+        
+        const privacyPolicyLink = document.getElementById('privacyPolicyLink');
+        if (privacyPolicyLink) {
+            privacyPolicyLink.textContent = t('privacyPolicy');
+        }
+        
+        const byAuthorLink = document.getElementById('byAuthorLink');
+        if (byAuthorLink) {
+            byAuthorLink.textContent = t('byAuthor');
+        }
+        
+        const allRightsReserved = document.getElementById('allRightsReserved');
+        if (allRightsReserved) {
+            allRightsReserved.textContent = t('allRightsReserved');
+        }
+        
+        console.log('Footer texts updated successfully');
+    } catch (error) {
+        console.error('Error updating footer texts:', error);
+    }
 }

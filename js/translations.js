@@ -76,7 +76,15 @@ const translations = {
         exportEncrypted: "Encrypted",
         exportHtml: "HTML",
         exportEncryptedDesc: "Encrypted files (.note)",
-        exportHtmlDesc: "HTML files"
+        exportHtmlDesc: "HTML files",
+        
+        // Футер
+        footerDescription: "Local Notes is a simple and convenient tool for creating notes right in your browser. All notes are saved in your browser. Save your thoughts, ideas, and stories, structuring them with headings, text formatting, lists, and more. Export notes to an file and share them with friends anonymously - just send the file, and they can open it by importing it into the web application. With Local Notes, your notes are always at hand, organized, and secure.",
+        cookiePolicy: "Cookie Policy",
+        termsOfUse: "Terms of Use",
+        privacyPolicy: "Privacy Policy",
+        allRightsReserved: "All rights reserved. Local Notes",
+        byAuthor: "By SerGio Play"
     },
     
     ru: {
@@ -155,7 +163,15 @@ const translations = {
         exportEncrypted: "Зашифрованный",
         exportHtml: "HTML",
         exportEncryptedDesc: "Зашифрованные файлы (.note)",
-        exportHtmlDesc: "HTML файлы"
+        exportHtmlDesc: "HTML файлы",
+        
+        // Футер
+        footerDescription: "Local Notes — это простое и удобное средство для создания заметок прямо в браузере. Все заметки сохраняются в вашем браузере. Сохраняйте свои мысли, идеи и истории, структурируя их с помощью заголовков, форматирования текста, списков и многого другого. Экспортируйте заметки в файл и делитесь ими с друзьями анонимно — просто отправьте файл, и они смогут открыть его, импортировав в веб-приложение. С Local Notes ваши заметки всегда под рукой, организованы и защищены.",
+        cookiePolicy: "Политика Cookie",
+        termsOfUse: "Условия использования",
+        privacyPolicy: "Политика конфиденциальности",
+        allRightsReserved: "Все права защищены. Local Notes",
+        byAuthor: "Автор: SerGio Play"
     },
     
     ua: {
@@ -234,7 +250,15 @@ const translations = {
         exportEncrypted: "Зашифрований",
         exportHtml: "HTML",
         exportEncryptedDesc: "Зашифровані файли (.note)",
-        exportHtmlDesc: "HTML файли"
+        exportHtmlDesc: "HTML файли",
+        
+        // Футер
+        footerDescription: "Local Notes — це простий і зручний інструмент для створення нотаток прямо в браузері. Всі нотатки зберігаються у вашому браузері. Зберігайте свої думки, ідеї та історії, структуруючи їх за допомогою заголовків, форматування тексту, списків та багато іншого. Експортуйте нотатки у файл і діліться ними з друзями анонімно — просто надішліть файл, і вони зможуть відкрити його, імпортувавши в веб-додаток. З Local Notes ваші нотатки завжди під рукою, організовані та захищені.",
+        cookiePolicy: "Політика Cookie",
+        termsOfUse: "Умови використання",
+        privacyPolicy: "Політика конфіденційності",
+        allRightsReserved: "Всі права захищені. Local Notes",
+        byAuthor: "Автор: SerGio Play"
     },
     
     pl: {
@@ -313,7 +337,15 @@ const translations = {
         exportEncrypted: "Zaszyfrowany",
         exportHtml: "HTML",
         exportEncryptedDesc: "Zaszyfrowane pliki (.note)",
-        exportHtmlDesc: "Pliki HTML"
+        exportHtmlDesc: "Pliki HTML",
+        
+        // Футер
+        footerDescription: "Local Notes to proste i wygodne narzędzie do tworzenia notatek bezpośrednio w przeglądarce. Wszystkie notatki są zapisywane w Twojej przeglądarce. Zapisuj swoje myśli, pomysły i historie, strukturyzując je za pomocą nagłówków, formatowania tekstu, list i wiele więcej. Eksportuj notatki do pliku i dziel się nimi z przyjaciółmi anonimowo — po prostu wyślij plik, a oni będą mogli go otworzyć, importując do aplikacji internetowej. Z Local Notes Twoje notatki są zawsze pod ręką, zorganizowane i bezpieczne.",
+        cookiePolicy: "Polityka Cookie",
+        termsOfUse: "Warunki użytkowania",
+        privacyPolicy: "Polityka prywatności",
+        allRightsReserved: "Wszystkie prawa zastrzeżone. Local Notes",
+        byAuthor: "Autor: SerGio Play"
     },
     
     cs: {
@@ -392,7 +424,15 @@ const translations = {
         exportEncrypted: "Šifrovaný",
         exportHtml: "HTML",
         exportEncryptedDesc: "Šifrované soubory (.note)",
-        exportHtmlDesc: "HTML soubory"
+        exportHtmlDesc: "HTML soubory",
+        
+        // Футер
+        footerDescription: "Local Notes je jednoduchý a pohodlný nástroj pro vytváření poznámek přímo v prohlížeči. Všechny poznámky jsou uloženy ve vašem prohlížeči. Ukládejte své myšlenky, nápady a příběhy, strukturované pomocí nadpisů, formátování textu, seznamů a mnoho dalšího. Exportujte poznámky do souboru a sdílejte je s přáteli anonymně — prostě pošlete soubor a oni ho mohou otevřít importem do webové aplikace. S Local Notes jsou vaše poznámky vždy po ruce, organizované a bezpečné.",
+        cookiePolicy: "Zásady Cookie",
+        termsOfUse: "Podmínky použití",
+        privacyPolicy: "Zásady ochrany osobních údajů",
+        allRightsReserved: "Všechna práva vyhrazena. Local Notes",
+        byAuthor: "Autor: SerGio Play"
     },
     
     sk: {
@@ -469,7 +509,15 @@ const translations = {
         export: "Exportovať",
         exportClose: "Zavrieť",
         exportEncrypted: "Šifrovaný",
-        exportHtml: "HTML"
+        exportHtml: "HTML",
+        
+        // Футер
+        footerDescription: "Local Notes je jednoduchý a pohodlný nástroj na vytváranie poznámok priamo v prehliadači. Všetky poznámky sú uložené vo vašom prehliadači. Ukladajte svoje myšlienky, nápady a príbehy, štruktúrované pomocou nadpisov, formátovania textu, zoznamov a mnoho ďalšieho. Exportujte poznámky do súboru a zdieľajte ich s priateľmi anonymne — jednoducho pošlite súbor a oni ho môžu otvoriť importom do webovej aplikácie. S Local Notes sú vaše poznámky vždy po ruke, organizované a bezpečné.",
+        cookiePolicy: "Zásady Cookie",
+        termsOfUse: "Podmienky použitia",
+        privacyPolicy: "Zásady ochrany osobných údajov",
+        allRightsReserved: "Všetky práva vyhradené. Local Notes",
+        byAuthor: "Autor: SerGio Play"
     },
     
     bg: {
@@ -546,7 +594,15 @@ const translations = {
         export: "Експорт",
         exportClose: "Затвори",
         exportEncrypted: "Криптиран",
-        exportHtml: "HTML"
+        exportHtml: "HTML",
+        
+        // Футер
+        footerDescription: "Local Notes е прост и удобен инструмент за създаване на бележки директно в браузъра. Всички бележки се запазват във вашия браузър. Запазвайте мислите, идеите и историите си, структурирани с помощта на заглавия, форматиране на текст, списъци и много други. Експортирайте бележките във файл и споделяйте ги с приятели анонимно — просто изпратете файла и те ще могат да го отворят чрез импортиране в уеб приложението. С Local Notes бележките ви са винаги под ръка, организирани и сигурни.",
+        cookiePolicy: "Политика за Cookie",
+        termsOfUse: "Условия за ползване",
+        privacyPolicy: "Политика за поверителност",
+        allRightsReserved: "Всички права запазени. Local Notes",
+        byAuthor: "Автор: SerGio Play"
     },
     
     hr: {
@@ -623,7 +679,15 @@ const translations = {
         export: "Izvezi",
         exportClose: "Zatvori",
         exportEncrypted: "Šifriran",
-        exportHtml: "HTML"
+        exportHtml: "HTML",
+        
+        // Футер
+        footerDescription: "Local Notes je jednostavan i prikladan alat za stvaranje bilješki izravno u pregledniku. Sve bilješke se spremaju u vašem pregledniku. Spremajte svoje misli, ideje i priče, strukturirane pomoću naslova, formatiranja teksta, popisa i mnogo više. Izvezite bilješke u datoteku i podijelite ih s prijateljima anonimno — jednostavno pošaljite datoteku i oni je mogu otvoriti uvozom u web aplikaciju. S Local Notes vaše bilješke su uvijek pri ruci, organizirane i sigurne.",
+        cookiePolicy: "Politika Cookie",
+        termsOfUse: "Uvjeti korištenja",
+        privacyPolicy: "Politika privatnosti",
+        allRightsReserved: "Sva prava pridržana. Local Notes",
+        byAuthor: "Autor: SerGio Play"
     },
     
     sr: {
@@ -700,7 +764,15 @@ const translations = {
         export: "Извези",
         exportClose: "Затвори",
         exportEncrypted: "Шифрован",
-        exportHtml: "HTML"
+        exportHtml: "HTML",
+        
+        // Футер
+        footerDescription: "Local Notes је једноставан и прикладан алат за стварање бележака директно у прегледачу. Све белешке се чувају у вашем прегледачу. Чувајте своје мисли, идеје и приче, структуриране помоћу наслова, форматирања текста, листа и много више. Извезите белешке у фајл и поделите их са пријатељима анонимно — једноставно пошаљите фајл и они га могу отворити увозом у веб апликацију. Са Local Notes ваше белешке су увек при руци, организоване и сигурне.",
+        cookiePolicy: "Политика Cookie",
+        termsOfUse: "Услови коришћења",
+        privacyPolicy: "Политика приватности",
+        allRightsReserved: "Сва права задржана. Local Notes",
+        byAuthor: "Аутор: SerGio Play"
     },
     
     bs: {
@@ -777,7 +849,15 @@ const translations = {
         export: "Izvezi",
         exportClose: "Zatvori",
         exportEncrypted: "Šifriran",
-        exportHtml: "HTML"
+        exportHtml: "HTML",
+        
+        // Футер
+        footerDescription: "Local Notes je jednostavan i prikladan alat za stvaranje bilješki izravno u pregledniku. Sve bilješke se spremaju u vašem pregledniku. Spremajte svoje misli, ideje i priče, strukturirane pomoću naslova, formatiranja teksta, popisa i mnogo više. Izvezite bilješke u datoteku i podijelite ih s prijateljima anonimno — jednostavno pošaljite datoteku i oni je mogu otvoriti uvozom u web aplikaciju. S Local Notes vaše bilješke su uvijek pri ruci, organizirane i sigurne.",
+        cookiePolicy: "Politika Cookie",
+        termsOfUse: "Uvjeti korištenja",
+        privacyPolicy: "Politika privatnosti",
+        allRightsReserved: "Sva prava pridržana. Local Notes",
+        byAuthor: "Autor: SerGio Play"
     },
     
     mk: {
@@ -854,7 +934,15 @@ const translations = {
         export: "Извези",
         exportClose: "Затвори",
         exportEncrypted: "Шифриран",
-        exportHtml: "HTML"
+        exportHtml: "HTML",
+        
+        // Футер
+        footerDescription: "Local Notes е едноставен и погоден алат за создавање на белешки директно во прелистувачот. Сите белешки се зачувани во вашиот прелистувач. Зачувајте ги вашите мисли, идеи и приказни, структурирани со помош на наслови, форматирање на текст, листи и многу повеќе. Извезите ги белешките во датотека и споделете ги со пријателите анонимно — едноставно испратете ја датотеката и тие ќе можат да ја отворат со увоз во веб апликацијата. Со Local Notes вашите белешки се секогаш при рака, организирани и безбедни.",
+        cookiePolicy: "Политика за Cookie",
+        termsOfUse: "Услови за користење",
+        privacyPolicy: "Политика за приватност",
+        allRightsReserved: "Сите права задржани. Local Notes",
+        byAuthor: "Автор: SerGio Play"
     },
     
     sl: {
@@ -931,7 +1019,15 @@ const translations = {
         export: "Izvozi",
         exportClose: "Zapri",
         exportEncrypted: "Šifriran",
-        exportHtml: "HTML"
+        exportHtml: "HTML",
+        
+        // Футер
+        footerDescription: "Local Notes je preprosto in priročno orodje za ustvarjanje zapiskov neposredno v brskalniku. Vsi zapiski so shranjeni v vašem brskalniku. Shranjujte svoje misli, ideje in zgodbe, strukturirane z naslovi, oblikovanjem besedila, seznami in veliko več. Izvozite zapiske v datoteko in jih delite s prijatelji anonimno — preprosto pošljite datoteko in jo bodo lahko odprli z uvozom v spletno aplikacijo. Z Local Notes so vaši zapiski vedno pri roki, organizirani in varni.",
+        cookiePolicy: "Pravilnik o Cookie",
+        termsOfUse: "Pogoji uporabe",
+        privacyPolicy: "Pravilnik o zasebnosti",
+        allRightsReserved: "Vse pravice pridržane. Local Notes",
+        byAuthor: "Avtor: SerGio Play"
     }
 };
 

@@ -58,6 +58,52 @@ body {
     overflow-wrap: break-word;
 }
 
+/* Улучшенные стили для мобильных устройств */
+@media (max-width: 767px) {
+    /* Улучшаем общий вид */
+    .app-notes-center {
+        padding: 0 12px;
+    }
+    
+    /* Улучшаем заметки */
+    .note {
+        background: var(--note-bg);
+        border: 1px solid var(--note-border);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px var(--shadow-color);
+        transition: all 0.3s ease;
+    }
+    
+    .note:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px var(--shadow-color);
+    }
+    
+    .note h3 {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+    
+    .note .note-content {
+        color: var(--note-text);
+        line-height: 1.6;
+    }
+    
+    .note .note-meta {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 8px 12px;
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--text-color);
+        opacity: 0.8;
+    }
+}
+
 /* CSS переменные для темной темы (по умолчанию) */
 :root {
     --primary-color: #aefc6e;
@@ -1932,46 +1978,67 @@ input {
     
     /* Заголовок */
     .app-notes-header {
-        padding: 10px 0;
-        margin-bottom: 15px;
+        padding: 15px 0;
+        margin-bottom: 20px;
         text-align: center;
+        background: var(--header-bg);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px var(--shadow-color);
     }
     
     .app-notes-header h1 {
-        font-size: 1.6rem;
-        margin-bottom: 8px;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
         line-height: 1.2;
+        color: var(--primary-color);
+        font-weight: 600;
     }
     
     .app-notes-header p {
-        font-size: 13px;
-        line-height: 1.3;
+        font-size: 14px;
+        line-height: 1.4;
+        color: var(--text-color);
+        opacity: 0.8;
     }
     
     /* Поиск и кнопки */
     .search-container {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        margin-bottom: 15px;
+        gap: 12px;
+        margin-bottom: 20px;
         width: 100%;
+        background: var(--card-bg);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px var(--shadow-color);
     }
     
     .search-input {
         width: 100%;
         max-width: 100%;
         font-size: 16px;
-        padding: 12px 15px;
+        padding: 14px 16px;
         border-radius: 8px;
         box-sizing: border-box;
         margin: 0;
+        background: var(--input-bg);
+        color: var(--input-text);
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+    }
+    
+    .search-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(174, 252, 110, 0.2);
     }
     
     .button-group {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 10px;
         width: 100%;
         justify-content: center;
     }
@@ -1980,13 +2047,24 @@ input {
         flex: 1;
         min-width: 120px;
         max-width: 150px;
-        font-size: 12px;
-        padding: 10px 8px;
-        border-radius: 6px;
+        font-size: 13px;
+        padding: 12px 10px;
+        border-radius: 8px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         box-sizing: border-box;
+        background: var(--button-bg);
+        color: var(--button-text);
+        border: 1px solid var(--button-border);
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .button-group button:hover {
+        background: var(--button-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px var(--shadow-color);
     }
     
     /* Контейнер заметок */
@@ -2037,7 +2115,7 @@ input {
         width: 98%;
         max-width: 100%;
         margin: 1% auto;
-        padding: 15px;
+        padding: 20px;
         max-height: 98vh;
         overflow-y: auto;
         box-sizing: border-box;
@@ -2046,18 +2124,40 @@ input {
         left: 1%;
         right: 1%;
         bottom: 1%;
+        background: var(--modal-bg);
+        border: 1px solid var(--modal-border);
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
     
     .modal h2 {
-        font-size: 1.3rem;
-        margin-bottom: 12px;
+        font-size: 1.4rem;
+        margin-bottom: 16px;
         text-align: center;
+        color: var(--primary-color);
+        font-weight: 600;
     }
     
     .modal-content {
         max-height: 80vh;
         overflow-y: auto;
         box-sizing: border-box;
+        padding: 10px 0;
+    }
+    
+    /* Кнопки в модальных окнах */
+    .modal .btn {
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin: 5px;
+    }
+    
+    .modal .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px var(--shadow-color);
     }
     
     /* TinyMCE редактор для мобильных */
@@ -2068,59 +2168,112 @@ input {
         box-sizing: border-box;
     }
     
+    /* Горизонтальная прокрутка тулбара в один ряд */
     .tox .tox-toolbar {
-        padding: 6px;
-        flex-wrap: wrap;
-        gap: 2px;
-        overflow-x: auto;
+        padding: 8px;
+        flex-wrap: nowrap !important;
+        gap: 4px;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        white-space: nowrap !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar {
+        height: 4px;
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        border-radius: 2px;
     }
     
     .tox .tox-toolbar__group {
-        margin: 1px;
-        flex-shrink: 0;
+        margin: 0 2px;
+        flex-shrink: 0 !important;
+        display: inline-flex !important;
     }
     
     .tox .tox-tbtn {
-        padding: 4px;
-        min-width: 28px;
-        min-height: 28px;
+        padding: 6px;
+        min-width: 32px;
+        min-height: 32px;
+        flex-shrink: 0;
     }
     
     .tox .tox-tbtn svg {
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
     }
     
     /* Скрываем некоторые кнопки на мобильных */
     .tox .tox-tbtn[title*="Fullscreen"],
     .tox .tox-tbtn[title*="Preview"],
-    .tox .tox-tbtn[title*="Help"] {
-        display: none;
+    .tox .tox-tbtn[title*="Help"],
+    .tox .tox-tbtn[title*="Word count"] {
+        display: none !important;
+    }
+    
+    /* Скрываем меню на мобильных */
+    .tox .tox-menubar {
+        display: none !important;
     }
     
     /* Футер */
     .app-notes-footer {
-        padding: 10px 0;
-        margin-top: 15px;
+        padding: 15px 0;
+        margin-top: 20px;
         text-align: center;
         width: 100%;
         box-sizing: border-box;
+        background: var(--footer-bg);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px var(--shadow-color);
     }
     
     .app-notes-footer p {
-        font-size: 11px;
-        line-height: 1.3;
+        font-size: 12px;
+        line-height: 1.4;
         margin: 0;
+        color: var(--text-color);
+        opacity: 0.8;
+    }
+    
+    .app-notes-footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .app-notes-footer a:hover {
+        color: var(--primary-hover);
+        text-decoration: underline;
     }
     
     /* Переключатель тем */
     .theme-toggle {
-        bottom: 15px;
-        right: 15px;
-        width: 45px;
-        height: 45px;
-        font-size: 18px;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
         z-index: 1000;
+        background: var(--button-bg);
+        border: 1px solid var(--button-border);
+        border-radius: 50%;
+        box-shadow: 0 4px 12px var(--shadow-color);
+        transition: all 0.3s ease;
+    }
+    
+    .theme-toggle:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 16px var(--shadow-color);
     }
 }
 
@@ -2193,18 +2346,28 @@ input {
     }
     
     .tox .tox-toolbar {
-        padding: 4px;
+        padding: 6px;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        white-space: nowrap !important;
     }
     
     .tox .tox-tbtn {
-        padding: 3px;
-        min-width: 24px;
-        min-height: 24px;
+        padding: 4px;
+        min-width: 28px;
+        min-height: 28px;
+        flex-shrink: 0;
     }
     
     .tox .tox-tbtn svg {
-        width: 12px;
-        height: 12px;
+        width: 14px;
+        height: 14px;
+    }
+    
+    /* Скрываем меню на очень маленьких экранах */
+    .tox .tox-menubar {
+        display: none !important;
     }
 }
 
@@ -2275,6 +2438,17 @@ input {
     /* TinyMCE редактор */
     .tox-tinymce {
         height: 300px !important;
+    }
+    
+    .tox .tox-toolbar {
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        white-space: nowrap !important;
+    }
+    
+    .tox .tox-menubar {
+        display: none !important;
     }
     
     /* Футер */

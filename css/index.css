@@ -1750,6 +1750,615 @@ input {
     color: var(--text-color);
 }
 
+/* ===== АДАПТИВНОСТЬ ДЛЯ ПЛАНШЕТОВ (768px - 1024px) ===== */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Основной контейнер */
+    .app-notes-center {
+        width: 95%;
+        max-width: 900px;
+        padding: 0 20px;
+    }
+    
+    /* Заголовок */
+    .app-notes-header {
+        padding: 20px 0;
+        margin-bottom: 20px;
+    }
+    
+    .app-notes-header h1 {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+    }
+    
+    /* Поиск и кнопки */
+    .search-container {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+    
+    .search-input {
+        width: 100%;
+        max-width: 500px;
+        font-size: 16px;
+        padding: 12px 16px;
+    }
+    
+    .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .button-group button {
+        flex: 1;
+        min-width: 120px;
+        font-size: 14px;
+        padding: 12px 16px;
+    }
+    
+    /* Контейнер заметок */
+    #notesContainer {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    /* Заметки */
+    .note {
+        padding: 20px;
+        border-radius: 12px;
+    }
+    
+    .note h3 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+    
+    .note .note-content {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+    
+    .note .note-meta {
+        font-size: 13px;
+        margin-top: 15px;
+    }
+    
+    /* Модальные окна */
+    .modal {
+        width: 90%;
+        max-width: 800px;
+        margin: 5% auto;
+        padding: 25px;
+    }
+    
+    .modal h2 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
+    /* TinyMCE редактор */
+    .tox-tinymce {
+        border-radius: 8px;
+    }
+    
+    .tox .tox-toolbar {
+        padding: 10px;
+    }
+    
+    .tox .tox-tbtn {
+        padding: 8px;
+    }
+    
+    /* Футер */
+    .app-notes-footer {
+        padding: 20px 0;
+        margin-top: 30px;
+    }
+    
+    .app-notes-footer p {
+        font-size: 14px;
+    }
+}
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ (320px - 767px) ===== */
+@media (max-width: 767px) {
+    /* Основной контейнер */
+    .app-notes-center {
+        width: 100%;
+        padding: 0 15px;
+    }
+    
+    /* Заголовок */
+    .app-notes-header {
+        padding: 15px 0;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    
+    .app-notes-header h1 {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        line-height: 1.3;
+    }
+    
+    .app-notes-header p {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    
+    /* Поиск и кнопки */
+    .search-container {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+    
+    .search-input {
+        width: 100%;
+        font-size: 16px; /* Предотвращает zoom на iOS */
+        padding: 14px 16px;
+        border-radius: 8px;
+    }
+    
+    .button-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .button-group button {
+        font-size: 13px;
+        padding: 12px 8px;
+        border-radius: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Контейнер заметок */
+    #notesContainer {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    /* Заметки */
+    .note {
+        padding: 15px;
+        border-radius: 10px;
+        margin: 0;
+    }
+    
+    .note h3 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        line-height: 1.3;
+    }
+    
+    .note .note-content {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    .note .note-meta {
+        font-size: 12px;
+        margin-top: 12px;
+        padding: 8px;
+        border-radius: 6px;
+    }
+    
+    /* Модальные окна */
+    .modal {
+        width: 95%;
+        max-width: none;
+        margin: 2% auto;
+        padding: 20px;
+        max-height: 95vh;
+        overflow-y: auto;
+    }
+    
+    .modal h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    
+    .modal-content {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+    
+    /* TinyMCE редактор для мобильных */
+    .tox-tinymce {
+        border-radius: 6px;
+        height: 400px !important;
+    }
+    
+    .tox .tox-toolbar {
+        padding: 8px;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    
+    .tox .tox-toolbar__group {
+        margin: 2px;
+    }
+    
+    .tox .tox-tbtn {
+        padding: 6px;
+        min-width: 32px;
+        min-height: 32px;
+    }
+    
+    .tox .tox-tbtn svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    /* Скрываем некоторые кнопки на мобильных */
+    .tox .tox-tbtn[title*="Fullscreen"],
+    .tox .tox-tbtn[title*="Preview"] {
+        display: none;
+    }
+    
+    /* Футер */
+    .app-notes-footer {
+        padding: 15px 0;
+        margin-top: 20px;
+        text-align: center;
+    }
+    
+    .app-notes-footer p {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+    
+    /* Переключатель тем */
+    .theme-toggle {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+}
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ ОЧЕНЬ МАЛЕНЬКИХ ЭКРАНОВ (320px - 480px) ===== */
+@media (max-width: 480px) {
+    /* Основной контейнер */
+    .app-notes-center {
+        padding: 0 10px;
+    }
+    
+    /* Заголовок */
+    .app-notes-header h1 {
+        font-size: 1.6rem;
+    }
+    
+    .app-notes-header p {
+        font-size: 13px;
+    }
+    
+    /* Кнопки */
+    .button-group {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .button-group button {
+        font-size: 12px;
+        padding: 10px 8px;
+    }
+    
+    /* Заметки */
+    .note {
+        padding: 12px;
+    }
+    
+    .note h3 {
+        font-size: 1.1rem;
+    }
+    
+    .note .note-content {
+        font-size: 13px;
+    }
+    
+    /* Модальные окна */
+    .modal {
+        width: 98%;
+        padding: 15px;
+        margin: 1% auto;
+    }
+    
+    .modal h2 {
+        font-size: 1.3rem;
+    }
+    
+    /* TinyMCE редактор */
+    .tox-tinymce {
+        height: 350px !important;
+    }
+    
+    .tox .tox-toolbar {
+        padding: 6px;
+    }
+    
+    .tox .tox-tbtn {
+        padding: 4px;
+        min-width: 28px;
+        min-height: 28px;
+    }
+    
+    .tox .tox-tbtn svg {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ LANDSCAPE ОРИЕНТАЦИИ ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+    /* Заголовок */
+    .app-notes-header {
+        padding: 10px 0;
+        margin-bottom: 10px;
+    }
+    
+    .app-notes-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+    
+    .app-notes-header p {
+        font-size: 12px;
+    }
+    
+    /* Поиск и кнопки */
+    .search-container {
+        margin-bottom: 10px;
+    }
+    
+    .button-group {
+        gap: 6px;
+    }
+    
+    .button-group button {
+        padding: 8px 6px;
+        font-size: 11px;
+    }
+    
+    /* Контейнер заметок */
+    #notesContainer {
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    
+    /* Заметки */
+    .note {
+        padding: 10px;
+    }
+    
+    .note h3 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+    
+    .note .note-content {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+    
+    /* Модальные окна */
+    .modal {
+        margin: 1% auto;
+        padding: 15px;
+        max-height: 98vh;
+    }
+    
+    .modal h2 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+    
+    /* TinyMCE редактор */
+    .tox-tinymce {
+        height: 300px !important;
+    }
+    
+    /* Футер */
+    .app-notes-footer {
+        padding: 10px 0;
+        margin-top: 10px;
+    }
+    
+    .app-notes-footer p {
+        font-size: 11px;
+    }
+}
+
+/* ===== ОПТИМИЗАЦИЯ ДЛЯ TOUCH-УСТРОЙСТВ ===== */
+@media (hover: none) and (pointer: coarse) {
+    /* Увеличиваем размеры кнопок для touch */
+    button {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation;
+    }
+    
+    .button-group button {
+        min-height: 48px;
+        padding: 12px 16px;
+    }
+    
+    /* Улучшаем hover эффекты для touch */
+    .note:hover {
+        transform: none;
+        box-shadow: var(--shadow-color) 0 4px 12px;
+    }
+    
+    /* Увеличиваем область нажатия для ссылок */
+    a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Оптимизируем TinyMCE для touch */
+    .tox .tox-tbtn {
+        min-width: 44px;
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+    
+    /* Улучшаем модальные окна для touch */
+    .modal {
+        touch-action: pan-y;
+    }
+    
+    .modal-content {
+        touch-action: pan-y;
+    }
+}
+
+/* ===== ОПТИМИЗАЦИЯ ДЛЯ МОБИЛЬНЫХ БРАУЗЕРОВ ===== */
+@media (max-width: 767px) {
+    /* Предотвращаем zoom при фокусе на input */
+    input[type="text"],
+    input[type="password"],
+    textarea,
+    select {
+        font-size: 16px;
+        transform: translateZ(0);
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 8px;
+    }
+    
+    /* Улучшаем скролл на iOS */
+    .modal-content,
+    #notesContainer {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    /* Оптимизируем анимации для производительности */
+    .note,
+    .modal,
+    button {
+        will-change: transform;
+        transform: translateZ(0);
+    }
+    
+    /* Улучшаем отзывчивость кнопок */
+    button:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+    
+    /* Оптимизируем TinyMCE для мобильных */
+    .tox-tinymce {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    .tox .tox-edit-area {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Улучшаем модальные окна */
+    .modal {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    /* Оптимизируем поиск */
+    .search-input {
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 8px;
+    }
+    
+    /* Улучшаем заметки */
+    .note {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+}
+
+/* ===== ОПТИМИЗАЦИЯ ДЛЯ ВЫСОКОПЛОТНЫХ ЭКРАНОВ ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Улучшаем четкость границ */
+    .note,
+    .modal,
+    button,
+    .search-input {
+        border-width: 0.5px;
+    }
+    
+    /* Оптимизируем иконки */
+    .tox .tox-tbtn svg {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* ===== ОПТИМИЗАЦИЯ ДЛЯ SAFARI НА iOS ===== */
+@supports (-webkit-touch-callout: none) {
+    /* Исправляем проблемы с viewport на iOS */
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        max-height: 100vh;
+        max-width: 100vw;
+    }
+    
+    /* Улучшаем скролл в Safari */
+    .modal-content {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    /* Исправляем проблемы с input на iOS */
+    input[type="text"],
+    input[type="password"],
+    textarea {
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 8px;
+    }
+    
+    /* Улучшаем TinyMCE в Safari */
+    .tox-tinymce {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* ===== ОПТИМИЗАЦИЯ ДЛЯ ANDROID CHROME ===== */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    /* Улучшаем производительность на Android */
+    .note,
+    .modal,
+    button {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+    
+    /* Оптимизируем скролл на Android */
+    .modal-content,
+    #notesContainer {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+}
+
 /* Адаптивность для переключателя тем */
 @media (max-width: 768px) {
     .theme-toggle {

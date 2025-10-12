@@ -1,5 +1,26 @@
-document.getElementById("addNoteButton").addEventListener("click", () => openModal());
-document.getElementById("importButton").addEventListener("click", () => document.getElementById("importInput").click());
+// Оптимизация для мобильных устройств
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+// Добавляем классы для мобильных устройств
+if (isMobile) {
+    document.documentElement.classList.add('mobile-device');
+}
+if (isTouch) {
+    document.documentElement.classList.add('touch-device');
+}
+
+// Оптимизация событий для touch-устройств
+const eventType = isTouch ? 'touchstart' : 'click';
+
+document.getElementById("addNoteButton").addEventListener(eventType, (e) => {
+    e.preventDefault();
+    openModal();
+});
+document.getElementById("importButton").addEventListener(eventType, (e) => {
+    e.preventDefault();
+    document.getElementById("importInput").click();
+});
 document.getElementById("importInput").addEventListener("change", importNotesWithFormat);
 document.getElementById("searchInput").addEventListener("input", filterNotes);
 
@@ -419,7 +440,7 @@ function initTinyMCE() {
         suffix: '.min',
         height: '100%',
         width: '100%',
-        menubar: true,
+        menubar: !isMobile,
         plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
@@ -427,7 +448,9 @@ function initTinyMCE() {
             'codesample', 'pagebreak', 'nonbreaking', 'quickbars', 'accordion',
             'autosave', 'directionality', 'visualchars'
         ],
-        toolbar: 'undo redo | blocks fontfamily fontsize | ' +
+        toolbar: isMobile ? 
+            'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | numlist bullist | forecolor backcolor | charmap emoticons | link image | code help' :
+            'undo redo | blocks fontfamily fontsize | ' +
             'bold italic underline strikethrough superscript subscript | ' +
             'alignleft aligncenter alignright alignjustify | ' +
             'outdent indent | numlist bullist | ' +
@@ -436,14 +459,17 @@ function initTinyMCE() {
             'fullscreen preview | insertfile image media link anchor codesample | ' +
             'ltr rtl | code | help',
         toolbar_mode: 'wrap',
-        toolbar_sticky: true,
+        toolbar_sticky: !isMobile,
         language: getTinyMCELanguage(),
         license_key: 'gpl',
         branding: false,
         promotion: false,
-        resize: true,
-        elementpath: true,
-        statusbar: true,
+        resize: !isMobile,
+        elementpath: !isMobile,
+        statusbar: !isMobile,
+        quickbars_selection_toolbar: isTouch ? 'bold italic | quicklink h2 h3 blockquote quickimage quicktable' : false,
+        quickbars_insert_toolbar: isTouch ? 'quickimage quicktable' : false,
+        contextmenu: isTouch ? 'link image imagetools table' : 'link image imagetools table',
         menubar: 'file edit view insert format tools table help',
         menu: {
             file: { title: getTinyMCETranslation('File'), items: 'newdocument restoredraft | preview | export | deleteallconversations' },

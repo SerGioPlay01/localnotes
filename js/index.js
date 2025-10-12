@@ -1709,7 +1709,7 @@ async function exportNote(noteContent, password) {
         // Улучшенное шифрование с обфускацией
         const encrypted = await advancedEncryption.encrypt(obfuscatedContent, password);
         
-        const blob = new Blob([encrypted], { type: "text/plain" });
+        const blob = new Blob([encrypted], { type: "application/octet-stream" });
     const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
     link.download = `encrypted_note_${timestamp}.note`;
@@ -1745,10 +1745,10 @@ function showCustomPrompt(title, message, placeholder = "", defaultValue = "", c
         <div class="modal-content-error">
             <h3>${title}</h3>
             <p>${message}</p>
-            <input type="text" id="customPromptInput" placeholder="${placeholder}" value="${defaultValue}" style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #404040; background: #2a2a2a; color: #ffffff; border-radius: 5px; font-size: 14px;">
-            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
-                <button id="customPromptOk" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">${t("ok")}</button>
-                <button id="customPromptCancel" style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">${t("cancel")}</button>
+            <input type="text" id="customPromptInput" placeholder="${placeholder}" value="${defaultValue}">
+            <div class="modal-buttons-container">
+                <button id="customPromptOk" class="btn"><i class="fas fa-check"></i> ${t("ok")}</button>
+                <button id="customPromptCancel" class="btn cancel"><i class="fas fa-times"></i> ${t("cancel")}</button>
             </div>
         </div>
     `;

@@ -2,36 +2,29 @@
 
 class ModernPreloader {
     constructor() {
+        console.log('Preloader: Constructor called');
         this.preloader = null;
         this.particles = [];
-        this.cipherChars = ['A', 'E', 'S', '2', '5', '6'];
         // Задержка для инициализации, чтобы система переводов успела загрузиться
         setTimeout(() => {
+            console.log('Preloader: Starting initialization');
             this.init();
         }, 100);
     }
 
     init() {
+        console.log('Preloader: init() called');
         this.createPreloaderHTML();
-        this.createParticles();
         this.startLoading();
     }
 
     createPreloaderHTML() {
+        console.log('Preloader: createPreloaderHTML() called');
         const preloaderHTML = `
             <div class="preloader" id="modernPreloader">
-                <div class="particles" id="particles"></div>
                 <div class="preloader-content">
-                    <div class="lock-container">
-                        <div class="lock-body">
-                            <div class="lock-shackle"></div>
-                            <div class="lock-keyhole"></div>
-                        </div>
-                    </div>
-                    <div class="cipher-container" id="cipherContainer">
-                        ${this.cipherChars.map((char, index) => 
-                            `<div class="cipher-char" style="--delay: ${index}">${char}</div>`
-                        ).join('')}
+                    <div class="lottie-container" id="lottieContainer">
+                        <!-- Lottie animation will be loaded here -->
                     </div>
                     <div class="loading-text">
                         <span id="preloaderText">Loading<span class="loading-dots">...</span></span>
@@ -46,8 +39,55 @@ class ModernPreloader {
         document.body.insertAdjacentHTML('afterbegin', preloaderHTML);
         this.preloader = document.getElementById('modernPreloader');
         
+        console.log('Preloader: HTML created, preloader element:', this.preloader);
+        
+        // Загружаем Lottie анимацию
+        this.loadLottieAnimation();
+        
         // Обновляем текст прелоадера в зависимости от языка
         this.updatePreloaderText();
+    }
+
+    loadLottieAnimation() {
+        console.log('Preloader: Loading Lottie animation');
+        
+        // Проверяем, доступна ли библиотека Lottie
+        if (typeof lottie === 'undefined') {
+            console.error('Preloader: Lottie library not loaded');
+            return;
+        }
+        
+        const lottieContainer = document.getElementById('lottieContainer');
+        if (!lottieContainer) {
+            console.error('Preloader: Lottie container not found');
+            return;
+        }
+        
+        // Определяем путь к анимации в зависимости от текущей страницы
+        const isLanguagePage = window.location.pathname.match(/^\/([a-z]{2})\//);
+        const animationPath = isLanguagePage ? '../lottiesnimstion/password_security.json' : '/lottiesnimstion/password_security.json';
+        
+        console.log('Preloader: Loading animation from:', animationPath);
+        
+        // Загружаем и запускаем анимацию
+        this.lottieAnimation = lottie.loadAnimation({
+            container: lottieContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: animationPath
+        });
+        
+        // Обработчики событий анимации
+        this.lottieAnimation.addEventListener('complete', () => {
+            console.log('Preloader: Lottie animation completed');
+        });
+        
+        this.lottieAnimation.addEventListener('loopComplete', () => {
+            console.log('Preloader: Lottie animation loop completed');
+        });
+        
+        console.log('Preloader: Lottie animation loaded successfully');
     }
 
     updatePreloaderText() {
@@ -208,33 +248,32 @@ class ModernPreloader {
         }
     }
 
-    createParticles() {
-        const particlesContainer = document.getElementById('particles');
-        
-        for (let i = 0; i < 9; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particlesContainer.appendChild(particle);
-        }
-    }
 
     startLoading() {
-        // Симуляция загрузки
+        // Симуляция загрузки с фиксированным временем
         let progress = 0;
+        const totalDuration = 3000; // 3 секунды
+        const updateInterval = 50; // обновляем каждые 50мс
+        const progressStep = (100 / totalDuration) * updateInterval;
+        
         const loadingInterval = setInterval(() => {
-            progress += Math.random() * 15;
+            progress += progressStep;
             
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(loadingInterval);
-                this.hidePreloader();
+                // Небольшая задержка перед скрытием прелойдера
+                setTimeout(() => {
+                    this.hidePreloader();
+                }, 500);
             }
             
             this.updateProgress(progress);
-        }, 200);
+        }, updateInterval);
 
         // Обновление текста загрузки
         const loadingTexts = this.getLoadingTexts();
+        const textUpdateInterval = totalDuration / loadingTexts.length;
 
         let textIndex = 0;
         const textInterval = setInterval(() => {
@@ -244,7 +283,7 @@ class ModernPreloader {
             } else {
                 clearInterval(textInterval);
             }
-        }, 800);
+        }, textUpdateInterval);
     }
 
     updateProgress(progress) {
@@ -267,6 +306,12 @@ class ModernPreloader {
 
     hidePreloader() {
         if (this.preloader) {
+            // Останавливаем Lottie анимацию
+            if (this.lottieAnimation) {
+                this.lottieAnimation.destroy();
+                this.lottieAnimation = null;
+            }
+            
             this.preloader.classList.add('fade-out');
             
             setTimeout(() => {
@@ -285,14 +330,35 @@ class ModernPreloader {
 
 // Инициализация прелоадера
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Preloader: DOMContentLoaded event fired');
+    
     // Проверяем, нужно ли показывать прелоадер
     const shouldShowPreloader = !sessionStorage.getItem('preloaderShown');
     
+    console.log('Preloader: shouldShowPreloader =', shouldShowPreloader);
+    console.log('Preloader: sessionStorage preloaderShown =', sessionStorage.getItem('preloaderShown'));
+    
     if (shouldShowPreloader) {
+        console.log('Preloader: Creating new ModernPreloader instance');
         new ModernPreloader();
         sessionStorage.setItem('preloaderShown', 'true');
+    } else {
+        console.log('Preloader: Skipping preloader (already shown in this session)');
     }
 });
+
+// Функция для принудительного сброса прелойдера (для тестирования)
+window.resetPreloader = function() {
+    console.log('Preloader: Resetting preloader');
+    sessionStorage.removeItem('preloaderShown');
+    console.log('Preloader: sessionStorage cleared, preloader will show on next page load');
+};
+
+// Функция для принудительного показа прелойдера
+window.showPreloader = function() {
+    console.log('Preloader: Manually showing preloader');
+    new ModernPreloader();
+};
 
 // Экспорт для использования в других модулях
 window.ModernPreloader = ModernPreloader;

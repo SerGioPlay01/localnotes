@@ -78,11 +78,12 @@ function updateInterface(langData, language) {
         metaOgTitle.setAttribute('content', langData.metaOgtitle);
     }
 
-    // Обновление текста в preloader
+    // Обновление текста в preloader (если элемент существует)
     const preloaderText = document.getElementById('preloaderText');
     if (preloaderText) {
         preloaderText.innerHTML = langData.preloaderText;
     }
+    // Примечание: прелойдер сам управляет своим текстом через updatePreloaderText()
 
     // Обновление других элементов интерфейса
     const nameApp = document.querySelector('.name-app');

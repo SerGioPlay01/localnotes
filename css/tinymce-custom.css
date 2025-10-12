@@ -1,0 +1,1432 @@
+/* Кастомные стили для TinyMCE редактора */
+
+/* Скрываем оригинальный textarea */
+#editorContainer {
+    display: none !important;
+}
+
+/* Основной контейнер редактора */
+.tox-tinymce,
+.tox-tinymce-aux {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Контейнер редактора */
+.tox-tinymce {
+    flex: 1 !important;
+    min-height: 0 !important;
+}
+
+/* Тулбар */
+.tox .tox-toolbar,
+.tox .tox-toolbar__primary {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 8px 0 !important;
+}
+
+/* Кнопки тулбара */
+.tox .tox-tbtn {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 4px !important;
+    margin: 0 2px !important;
+    padding: 6px 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Темная тема */
+[data-theme="dark"] .tox .tox-tbtn {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-tbtn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-tbtn:focus {
+    background: rgba(255, 255, 255, 0.1) !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+[data-theme="dark"] .tox .tox-tbtn--enabled {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+/* Светлая тема */
+[data-theme="light"] .tox .tox-tbtn {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn:focus {
+    background: rgba(0, 0, 0, 0.05) !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn--enabled {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+/* Иконки - темная тема */
+[data-theme="dark"] .tox .tox-icon,
+[data-theme="dark"] .tox .tox-tbtn svg,
+[data-theme="dark"] .tox .tox-tbtn .tox-icon,
+[data-theme="dark"] .tox .tox-tbtn__icon-wrap svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-tbtn:hover .tox-icon,
+[data-theme="dark"] .tox .tox-tbtn:hover svg,
+[data-theme="dark"] .tox .tox-tbtn:hover .tox-tbtn__icon-wrap svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-tbtn--enabled .tox-icon,
+[data-theme="dark"] .tox .tox-tbtn--enabled svg,
+[data-theme="dark"] .tox .tox-tbtn--enabled .tox-tbtn__icon-wrap svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* Иконки - светлая тема */
+[data-theme="light"] .tox .tox-icon,
+[data-theme="light"] .tox .tox-tbtn svg,
+[data-theme="light"] .tox .tox-tbtn .tox-icon,
+[data-theme="light"] .tox .tox-tbtn__icon-wrap svg {
+    fill: #212529 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn:hover .tox-icon,
+[data-theme="light"] .tox .tox-tbtn:hover svg,
+[data-theme="light"] .tox .tox-tbtn:hover .tox-tbtn__icon-wrap svg {
+    fill: #212529 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn--enabled .tox-icon,
+[data-theme="light"] .tox .tox-tbtn--enabled svg,
+[data-theme="light"] .tox .tox-tbtn--enabled .tox-tbtn__icon-wrap svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* Разделители групп */
+.tox .tox-toolbar__group {
+    border: none !important;
+    background: transparent !important;
+}
+
+/* Выпадающие кнопки */
+.tox .tox-tbtn--select {
+    background: transparent !important;
+}
+
+[data-theme="dark"] .tox .tox-tbtn--select {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn--select {
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+.tox .tox-tbtn--select:hover {
+    border-color: #28a745 !important;
+}
+
+/* Область редактирования */
+.tox .tox-edit-area {
+    background: transparent !important;
+    border: none !important;
+    flex: 1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.tox .tox-edit-area__iframe {
+    background: transparent !important;
+    flex: 1 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+}
+
+.tox .tox-edit-area iframe {
+    background: transparent !important;
+    height: 100% !important;
+    min-height: 300px !important;
+    width: 100% !important;
+}
+
+/* Диалоги и выпадающие меню */
+.tox .tox-collection,
+.tox .tox-collection__item,
+.tox .tox-dialog,
+.tox .tox-dialog__header,
+.tox .tox-dialog__body,
+.tox .tox-dialog__footer,
+.tox .tox-pop,
+.tox .tox-pop__dialog {
+    background: var(--modal-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+.tox .tox-collection__item:hover {
+    background: var(--button-hover) !important;
+}
+
+/* Стили для темной темы - диалоги */
+[data-theme="dark"] .tox .tox-dialog,
+[data-theme="dark"] .tox .tox-dialog__header,
+[data-theme="dark"] .tox .tox-dialog__body,
+[data-theme="dark"] .tox .tox-dialog__footer {
+    background: #2d2d2d !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-collection,
+[data-theme="dark"] .tox .tox-pop__dialog {
+    background: #2d2d2d !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-collection__item {
+    background: #2d2d2d !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-collection__item:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+/* Стили для светлой темы - диалоги */
+[data-theme="light"] .tox .tox-dialog,
+[data-theme="light"] .tox .tox-dialog__header,
+[data-theme="light"] .tox .tox-dialog__body,
+[data-theme="light"] .tox .tox-dialog__footer {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-collection,
+[data-theme="light"] .tox .tox-pop__dialog {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-collection__item {
+    background: #ffffff !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-collection__item:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #212529 !important;
+}
+
+/* Дополнительные стили для выпадающих списков параграфов */
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-label,
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-checkmark,
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-icon,
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-text {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-label,
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-checkmark,
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-icon,
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-text {
+    color: #212529 !important;
+}
+
+/* Стили для текста внутри элементов выпадающего меню */
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-label p,
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-label h1,
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-label h2,
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-label h3,
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-label h4,
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-label h5,
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-label h6,
+[data-theme="light"] .tox .tox-collection__item .tox-collection__item-label pre {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-label p,
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-label h1,
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-label h2,
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-label h3,
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-label h4,
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-label h5,
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-label h6,
+[data-theme="light"] .tox .tox-collection__item:hover .tox-collection__item-label pre {
+    color: #212529 !important;
+}
+
+/* Стили для темной темы */
+[data-theme="dark"] .tox .tox-collection__item .tox-collection__item-label p,
+[data-theme="dark"] .tox .tox-collection__item .tox-collection__item-label h1,
+[data-theme="dark"] .tox .tox-collection__item .tox-collection__item-label h2,
+[data-theme="dark"] .tox .tox-collection__item .tox-collection__item-label h3,
+[data-theme="dark"] .tox .tox-collection__item .tox-collection__item-label h4,
+[data-theme="dark"] .tox .tox-collection__item .tox-collection__item-label h5,
+[data-theme="dark"] .tox .tox-collection__item .tox-collection__item-label h6,
+[data-theme="dark"] .tox .tox-collection__item .tox-collection__item-label pre {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-collection__item:hover .tox-collection__item-label p,
+[data-theme="dark"] .tox .tox-collection__item:hover .tox-collection__item-label h1,
+[data-theme="dark"] .tox .tox-collection__item:hover .tox-collection__item-label h2,
+[data-theme="dark"] .tox .tox-collection__item:hover .tox-collection__item-label h3,
+[data-theme="dark"] .tox .tox-collection__item:hover .tox-collection__item-label h4,
+[data-theme="dark"] .tox .tox-collection__item:hover .tox-collection__item-label h5,
+[data-theme="dark"] .tox .tox-collection__item:hover .tox-collection__item-label h6,
+[data-theme="dark"] .tox .tox-collection__item:hover .tox-collection__item-label pre {
+    color: #ffffff !important;
+}
+
+/* Стили для всплывающих панелей таблицы */
+.tox .tox-pop__dialog {
+    background: var(--modal-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 6px !important;
+    padding: 8px !important;
+}
+
+.tox .tox-pop__dialog .tox-toolbar {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+}
+
+.tox .tox-pop__dialog .tox-toolbar__group {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 4px !important;
+}
+
+.tox .tox-pop__dialog .tox-tbtn {
+    background: var(--button-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: none !important;
+    border-radius: 4px !important;
+    margin: 2px !important;
+    padding: 6px 8px !important;
+    transition: all 0.2s ease !important;
+    color: var(--text-color) !important;
+}
+
+.tox .tox-pop__dialog .tox-tbtn:hover {
+    background: var(--button-hover) !important;
+    border-color: #28a745 !important;
+    color: var(--text-color) !important;
+}
+
+.tox .tox-pop__dialog .tox-tbtn .tox-icon {
+    color: var(--text-color) !important;
+}
+
+.tox .tox-pop__dialog .tox-tbtn .tox-icon svg {
+    fill: var(--text-color) !important;
+}
+
+.tox .tox-pop__dialog .tox-tbtn:hover .tox-icon {
+    color: var(--text-color) !important;
+}
+
+.tox .tox-pop__dialog .tox-tbtn:hover .tox-icon svg {
+    fill: var(--text-color) !important;
+}
+
+/* Темная тема для всплывающих панелей */
+[data-theme="dark"] .tox .tox-pop__dialog {
+    background: #2d2d2d !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .tox .tox-pop__dialog .tox-tbtn {
+    background: #3d3d3d !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-pop__dialog .tox-tbtn:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: #28a745 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-pop__dialog .tox-tbtn .tox-icon {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-pop__dialog .tox-tbtn .tox-icon svg {
+    fill: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-pop__dialog .tox-tbtn:hover .tox-icon {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-pop__dialog .tox-tbtn:hover .tox-icon svg {
+    fill: #ffffff !important;
+}
+
+/* Светлая тема для всплывающих панелей */
+[data-theme="light"] .tox .tox-pop__dialog {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme="light"] .tox .tox-pop__dialog .tox-tbtn {
+    background: #f8f9fa !important;
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-pop__dialog .tox-tbtn:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: #28a745 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-pop__dialog .tox-tbtn .tox-icon {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-pop__dialog .tox-tbtn .tox-icon svg {
+    fill: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-pop__dialog .tox-tbtn:hover .tox-icon {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-pop__dialog .tox-tbtn:hover .tox-icon svg {
+    fill: #212529 !important;
+}
+
+/* Стили для отключенных кнопок во всплывающих панелях */
+.tox .tox-pop__dialog .tox-tbtn--disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    background: var(--button-bg) !important;
+    border-color: var(--border-color) !important;
+}
+
+.tox .tox-pop__dialog .tox-tbtn--disabled .tox-icon {
+    color: #6c757d !important;
+}
+
+.tox .tox-pop__dialog .tox-tbtn--disabled .tox-icon svg {
+    fill: #6c757d !important;
+}
+
+[data-theme="dark"] .tox .tox-pop__dialog .tox-tbtn--disabled {
+    background: #3d3d3d !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .tox .tox-pop__dialog .tox-tbtn--disabled .tox-icon {
+    color: #adb5bd !important;
+}
+
+[data-theme="dark"] .tox .tox-pop__dialog .tox-tbtn--disabled .tox-icon svg {
+    fill: #adb5bd !important;
+}
+
+[data-theme="light"] .tox .tox-pop__dialog .tox-tbtn--disabled {
+    background: #f8f9fa !important;
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Стили для автоматического скрытия всплывающих панелей */
+.tox .tox-pop__dialog--hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.2s ease, visibility 0.2s ease !important;
+}
+
+.tox .tox-pop__dialog {
+    transition: opacity 0.2s ease, visibility 0.2s ease !important;
+}
+
+/* Восстановлено отображение всплывающих панелей */
+
+/* Стили для всплывающих подсказок */
+.tox .tox-tooltip {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    color: #212529 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    font-size: 12px !important;
+    padding: 6px 8px !important;
+    z-index: 10000 !important;
+}
+
+.tox .tox-tooltip__body {
+    color: #212529 !important;
+    background: transparent !important;
+}
+
+.tox .tox-tooltip__arrow {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Темная тема для подсказок */
+[data-theme="dark"] .tox .tox-tooltip {
+    background: #2d2d2d !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .tox .tox-tooltip__body {
+    color: #ffffff !important;
+    background: transparent !important;
+}
+
+[data-theme="dark"] .tox .tox-tooltip__arrow {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Светлая тема для подсказок */
+[data-theme="light"] .tox .tox-tooltip {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    color: #212529 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme="light"] .tox .tox-tooltip__body {
+    color: #212529 !important;
+    background: transparent !important;
+}
+
+[data-theme="light"] .tox .tox-tooltip__arrow {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Дополнительные стили для обеспечения видимости подсказок */
+.tox .tox-tooltip * {
+    color: inherit !important;
+    background: transparent !important;
+}
+
+[data-theme="dark"] .tox .tox-tooltip * {
+    color: #ffffff !important;
+    background: transparent !important;
+}
+
+[data-theme="light"] .tox .tox-tooltip * {
+    color: #212529 !important;
+    background: transparent !important;
+}
+
+/* Стили для всех всплывающих элементов с текстом */
+.tox .tox-pop,
+.tox .tox-collection,
+.tox .tox-menu {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    color: #212529 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.tox .tox-pop *,
+.tox .tox-collection *,
+.tox .tox-menu * {
+    color: #212529 !important;
+    background: transparent !important;
+}
+
+/* Темная тема для всех всплывающих элементов */
+[data-theme="dark"] .tox .tox-pop,
+[data-theme="dark"] .tox .tox-collection,
+[data-theme="dark"] .tox .tox-menu {
+    background: #2d2d2d !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .tox .tox-pop *,
+[data-theme="dark"] .tox .tox-collection *,
+[data-theme="dark"] .tox .tox-menu * {
+    color: #ffffff !important;
+    background: transparent !important;
+}
+
+/* Светлая тема для всех всплывающих элементов */
+[data-theme="light"] .tox .tox-pop,
+[data-theme="light"] .tox .tox-collection,
+[data-theme="light"] .tox .tox-menu {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    color: #212529 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme="light"] .tox .tox-pop *,
+[data-theme="light"] .tox .tox-collection *,
+[data-theme="light"] .tox .tox-menu * {
+    color: #212529 !important;
+    background: transparent !important;
+}
+
+/* Дополнительные правила для быстрых панелей - удалены для восстановления подсказок */
+
+/* Кнопки в диалогах */
+.tox .tox-button {
+    background: #28a745 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 8px 16px !important;
+    transition: all 0.2s ease !important;
+}
+
+.tox .tox-button:hover {
+    background: #218838 !important;
+    opacity: 0.9 !important;
+}
+
+.tox .tox-button--secondary {
+    background: transparent !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.tox .tox-button--secondary:hover {
+    background: var(--button-hover) !important;
+    border-color: #28a745 !important;
+}
+
+/* Поля ввода */
+.tox .tox-textfield,
+.tox .tox-textarea {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+    border-radius: 4px !important;
+}
+
+.tox .tox-textfield:focus,
+.tox .tox-textarea:focus {
+    border-color: #28a745 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2) !important;
+}
+
+/* Статусная строка */
+.tox .tox-statusbar {
+    background: transparent !important;
+    border-top: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+/* Убираем все тени и градиенты */
+.tox * {
+    box-shadow: none !important;
+    background-image: none !important;
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+    .tox .tox-toolbar {
+        padding: 4px 0 !important;
+    }
+    
+    .tox .tox-tbtn {
+        padding: 4px 6px !important;
+        margin: 0 1px !important;
+        font-size: 12px !important;
+    }
+    
+    .tox .tox-toolbar__group {
+        margin: 0 2px !important;
+    }
+}
+
+/* Специальные стили для split-кнопок */
+.tox .tox-split-button .tox-tbtn {
+    background: transparent !important;
+}
+
+.tox .tox-split-button__chevron {
+    background: transparent !important;
+}
+
+[data-theme="dark"] .tox .tox-split-button__chevron svg {
+    fill: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron svg {
+    fill: #212529 !important;
+}
+
+/* Стили для отключенных кнопок */
+.tox .tox-tbtn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}
+
+/* Стили для активных состояний */
+.tox .tox-tbtn--active {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+.tox .tox-tbtn--active .tox-icon,
+.tox .tox-tbtn--active svg {
+    fill: #ffffff !important;
+}
+
+/* Стили для выпадающих списков */
+.tox .tox-listboxfield .tox-listbox--select {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select:hover {
+    border-color: #28a745 !important;
+}
+
+/* Стили для цветовых палитр */
+.tox .tox-swatch {
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .tox .tox-swatch {
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+[data-theme="light"] .tox .tox-swatch {
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+.tox .tox-swatch:hover {
+    border-color: #28a745 !important;
+    transform: scale(1.1) !important;
+}
+
+/* Стили для палитры цветов */
+.tox .tox-swatch__grid {
+    background: var(--modal-bg) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+[data-theme="dark"] .tox .tox-swatch__grid {
+    background: #2d2d2d !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="light"] .tox .tox-swatch__grid {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Стили для кнопок цветовой палитры */
+.tox .tox-swatch__select-btn {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+[data-theme="dark"] .tox .tox-swatch__select-btn {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-swatch__select-btn {
+    background: transparent !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    color: #212529 !important;
+}
+
+.tox .tox-swatch__select-btn:hover {
+    background: var(--button-hover) !important;
+    border-color: #28a745 !important;
+}
+
+/* Стили для стрелок цветовых палитр */
+[data-theme="dark"] .tox .tox-swatch__select-btn svg,
+[data-theme="dark"] .tox .tox-swatch__select-btn .tox-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-swatch__select-btn:hover svg,
+[data-theme="dark"] .tox .tox-swatch__select-btn:hover .tox-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-swatch__select-btn svg,
+[data-theme="light"] .tox .tox-swatch__select-btn .tox-icon {
+    fill: #212529 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-swatch__select-btn:hover svg,
+[data-theme="light"] .tox .tox-swatch__select-btn:hover .tox-icon {
+    fill: #212529 !important;
+    color: #212529 !important;
+}
+
+/* Дополнительные стили для стрелок в кнопках цветов */
+[data-theme="dark"] .tox .tox-tbtn[aria-label*="color"] svg,
+[data-theme="dark"] .tox .tox-tbtn[aria-label*="Color"] svg,
+[data-theme="dark"] .tox .tox-tbtn[title*="color"] svg,
+[data-theme="dark"] .tox .tox-tbtn[title*="Color"] svg {
+    fill: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn[aria-label*="color"] svg,
+[data-theme="light"] .tox .tox-tbtn[aria-label*="Color"] svg,
+[data-theme="light"] .tox .tox-tbtn[title*="color"] svg,
+[data-theme="light"] .tox .tox-tbtn[title*="Color"] svg {
+    fill: #212529 !important;
+}
+
+/* Стили для split-кнопок и их стрелок */
+[data-theme="dark"] .tox .tox-split-button__chevron {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-split-button__chevron svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-split-button__chevron svg path {
+    fill: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-split-button__chevron:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-split-button__chevron:hover svg {
+    fill: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-split-button__chevron:hover svg path {
+    fill: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron svg {
+    fill: #212529 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron svg path {
+    fill: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron:hover svg {
+    fill: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron:hover svg path {
+    fill: #212529 !important;
+}
+
+/* Принудительные стили для переопределения inline стилей */
+[data-theme="dark"] .tox .tox-split-button__chevron[style*="color: rgb(255, 255, 255)"] {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-split-button__chevron[style*="color: rgb(255, 255, 255)"] svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-split-button__chevron[style*="color: rgb(255, 255, 255)"] svg path {
+    fill: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron[style*="color: rgb(33, 37, 41)"] {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron[style*="color: rgb(33, 37, 41)"] svg {
+    fill: #212529 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron[style*="color: rgb(33, 37, 41)"] svg path {
+    fill: #212529 !important;
+}
+
+/* Дополнительные селекторы для максимальной специфичности */
+[data-theme="dark"] .tox .tox-toolbar .tox .tox-split-button__chevron {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-toolbar .tox .tox-split-button__chevron svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-toolbar .tox .tox-split-button__chevron svg path {
+    fill: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-toolbar .tox .tox-split-button__chevron {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-toolbar .tox .tox-split-button__chevron svg {
+    fill: #212529 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-toolbar .tox .tox-split-button__chevron svg path {
+    fill: #212529 !important;
+}
+
+/* Скрываем стрелки split button */
+.tox .tox-split-button__chevron {
+    display: none !important;
+}
+
+/* Убираем отступы у split button, так как нет стрелки */
+.tox .tox-split-button {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.tox .tox-split-button .tox-tbtn:first-child {
+    border-radius: 4px !important;
+    border-top-right-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+}
+
+/* Максимально агрессивные стили для переопределения inline стилей */
+[data-theme="dark"] .tox .tox-split-button__chevron,
+[data-theme="dark"] .tox .tox-split-button__chevron * {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-split-button__chevron svg,
+[data-theme="dark"] .tox .tox-split-button__chevron svg * {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-split-button__chevron path,
+[data-theme="dark"] .tox .tox-split-button__chevron svg path {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron,
+[data-theme="light"] .tox .tox-split-button__chevron * {
+    color: #212529 !important;
+    fill: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron svg,
+[data-theme="light"] .tox .tox-split-button__chevron svg * {
+    color: #212529 !important;
+    fill: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-split-button__chevron path,
+[data-theme="light"] .tox .tox-split-button__chevron svg path {
+    fill: #212529 !important;
+    color: #212529 !important;
+}
+
+/* Дополнительные селекторы для максимальной специфичности */
+[data-theme="dark"] .tox-tinymce .tox .tox-split-button__chevron,
+[data-theme="dark"] .tox-tinymce .tox .tox-split-button__chevron *,
+[data-theme="dark"] .tox-tinymce .tox .tox-split-button__chevron svg,
+[data-theme="dark"] .tox-tinymce .tox .tox-split-button__chevron svg *,
+[data-theme="dark"] .tox-tinymce .tox .tox-split-button__chevron path {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
+[data-theme="light"] .tox-tinymce .tox .tox-split-button__chevron,
+[data-theme="light"] .tox-tinymce .tox .tox-split-button__chevron *,
+[data-theme="light"] .tox-tinymce .tox .tox-split-button__chevron svg,
+[data-theme="light"] .tox-tinymce .tox .tox-split-button__chevron svg *,
+[data-theme="light"] .tox-tinymce .tox .tox-split-button__chevron path {
+    color: #212529 !important;
+    fill: #212529 !important;
+}
+
+/* Дополнительные стили для всех стрелок в кнопках */
+[data-theme="dark"] .tox .tox-tbtn svg,
+[data-theme="dark"] .tox .tox-tbtn .tox-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-tbtn svg path {
+    fill: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn svg,
+[data-theme="light"] .tox .tox-tbtn .tox-icon {
+    fill: #212529 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn svg path {
+    fill: #212529 !important;
+}
+
+/* Стили для кастомной иконки iframe */
+[data-theme="dark"] .tox .tox-tbtn[data-alloy-tabstop="true"] svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-tbtn[data-alloy-tabstop="true"] svg path {
+    fill: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn[data-alloy-tabstop="true"] svg {
+    fill: #212529 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn[data-alloy-tabstop="true"] svg path {
+    fill: #212529 !important;
+}
+
+/* Дополнительные стили для иконки iframe */
+.tox .tox-tbtn[title*="видео"] svg,
+.tox .tox-tbtn[title*="video"] svg,
+.tox .tox-tbtn[title*="Video"] svg {
+    fill: currentColor !important;
+}
+
+.tox .tox-tbtn[title*="видео"] svg path,
+.tox .tox-tbtn[title*="video"] svg path,
+.tox .tox-tbtn[title*="Video"] svg path {
+    fill: currentColor !important;
+}
+
+/* Стили для полей ввода цвета */
+.tox .tox-textfield[type="color"] {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+[data-theme="dark"] .tox .tox-textfield[type="color"] {
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-textfield[type="color"] {
+    background: transparent !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    color: #212529 !important;
+}
+
+/* Дополнительные стили для содержимого редактора */
+.tox-edit-area iframe {
+    background: transparent !important;
+}
+
+/* Принудительные стили для содержимого в темной теме */
+[data-theme="dark"] .tox-edit-area iframe body {
+    background: transparent !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body * {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body a {
+    color: #28a745 !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body code,
+[data-theme="dark"] .tox-edit-area iframe body pre {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+/* Принудительные стили для содержимого в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body {
+    background: transparent !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body * {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body a {
+    color: #28a745 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body code,
+[data-theme="light"] .tox-edit-area iframe body pre {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #212529 !important;
+}
+
+/* Стили для iframe в редакторе */
+.tox-edit-area iframe body iframe {
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    margin: 10px 0 !important;
+    display: block !important;
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body iframe {
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body iframe {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Стили для селектора таблиц TinyMCE */
+.tox .tox-insert-table-picker {
+    background: var(--modal-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    padding: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    display: grid !important;
+    grid-template-columns: repeat(10, 1fr) !important;
+    gap: 1px !important;
+    width: 130px !important;
+    height: 130px !important;
+}
+
+.tox .tox-insert-table-picker__selected {
+    background: #28a745 !important;
+    border: 1px solid #28a745 !important;
+    border-radius: 2px !important;
+    margin: 1px !important;
+    width: 12px !important;
+    height: 12px !important;
+    display: inline-block !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.tox .tox-insert-table-picker__selected:hover {
+    background: #218838 !important;
+    border-color: #218838 !important;
+    transform: scale(1.1) !important;
+}
+
+/* Стили для невыделенных ячеек селектора таблиц */
+.tox .tox-insert-table-picker [role="button"]:not(.tox-insert-table-picker__selected) {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 2px !important;
+    margin: 1px !important;
+    width: 12px !important;
+    height: 12px !important;
+    display: inline-block !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.tox .tox-insert-table-picker [role="button"]:not(.tox-insert-table-picker__selected):hover {
+    background: var(--button-hover) !important;
+    border-color: #28a745 !important;
+    transform: scale(1.05) !important;
+}
+
+.tox .tox-insert-table-picker__label {
+    color: var(--text-color) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    margin-top: 4px !important;
+    text-align: center !important;
+    display: block !important;
+    grid-column: 1 / -1 !important;
+    margin-top: 8px !important;
+}
+
+/* Темная тема для селектора таблиц */
+[data-theme="dark"] .tox .tox-insert-table-picker {
+    background: #2d2d2d !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .tox .tox-insert-table-picker [role="button"]:not(.tox-insert-table-picker__selected) {
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+[data-theme="dark"] .tox .tox-insert-table-picker [role="button"]:not(.tox-insert-table-picker__selected):hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: #28a745 !important;
+}
+
+/* Светлая тема для селектора таблиц */
+[data-theme="light"] .tox .tox-insert-table-picker {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="light"] .tox .tox-insert-table-picker [role="button"]:not(.tox-insert-table-picker__selected) {
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="light"] .tox .tox-insert-table-picker [role="button"]:not(.tox-insert-table-picker__selected):hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: #28a745 !important;
+}
+
+/* Стили для модалок TinyMCE в строгом стиле */
+.tox .tox-dialog {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.tox .tox-dialog__header {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 18px 25px !important;
+}
+
+.tox .tox-dialog__header h1,
+.tox .tox-dialog__header h2,
+.tox .tox-dialog__header h3,
+.tox .tox-dialog__header h4,
+.tox .tox-dialog__header h5,
+.tox .tox-dialog__header h6 {
+    color: var(--text-color) !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+}
+
+.tox .tox-dialog__body {
+    background: transparent !important;
+    border: none !important;
+    padding: 25px 30px !important;
+}
+
+.tox .tox-dialog__body p,
+.tox .tox-dialog__body label,
+.tox .tox-dialog__body span {
+    color: var(--text-color) !important;
+    margin: 8px 0 !important;
+    line-height: 1.5 !important;
+    padding: 0 2px !important;
+}
+
+.tox .tox-dialog__footer {
+    background: transparent !important;
+    border: none !important;
+    border-top: 1px solid var(--border-color) !important;
+    padding: 18px 25px !important;
+}
+
+/* Стили для кнопок в модалках */
+.tox .tox-dialog__footer .tox-button {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+    border-radius: 0 !important;
+    padding: 10px 18px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+}
+
+.tox .tox-dialog__footer .tox-button:hover {
+    background: var(--button-hover) !important;
+    border-color: #28a745 !important;
+    color: var(--text-color) !important;
+}
+
+.tox .tox-dialog__footer .tox-button--primary {
+    background: #28a745 !important;
+    border-color: #28a745 !important;
+    color: #ffffff !important;
+}
+
+.tox .tox-dialog__footer .tox-button--primary:hover {
+    background: #218838 !important;
+    border-color: #1e7e34 !important;
+}
+
+/* Стили для полей ввода в модалках */
+.tox .tox-dialog .tox-textfield,
+.tox .tox-dialog .tox-textarea,
+.tox .tox-dialog .tox-selectfield select {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+    border-radius: 0 !important;
+    padding: 10px 15px !important;
+}
+
+.tox .tox-dialog .tox-textfield:focus,
+.tox .tox-dialog .tox-textarea:focus,
+.tox .tox-dialog .tox-selectfield select:focus {
+    border-color: #28a745 !important;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2) !important;
+    outline: none !important;
+}
+
+/* Стили для лейблов в модалках */
+.tox .tox-dialog .tox-label {
+    color: var(--text-color) !important;
+    font-weight: 500 !important;
+    margin-bottom: 10px !important;
+    display: block !important;
+    padding: 0 2px !important;
+}
+
+/* Стили для чекбоксов и радиокнопок в модалках */
+.tox .tox-dialog .tox-checkbox,
+.tox .tox-dialog .tox-radio {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.tox .tox-dialog .tox-checkbox:checked,
+.tox .tox-dialog .tox-radio:checked {
+    background: #28a745 !important;
+    border-color: #28a745 !important;
+}
+
+/* Стили для селектов в модалках */
+.tox .tox-dialog .tox-selectfield {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0 !important;
+}
+
+.tox .tox-dialog .tox-selectfield select {
+    background: transparent !important;
+    color: var(--text-color) !important;
+}
+
+/* Стили для коллекций в модалках */
+.tox .tox-collection {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.tox .tox-collection__item {
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-color) !important;
+    padding: 8px 12px !important;
+}
+
+.tox .tox-collection__item:hover {
+    background: var(--button-hover) !important;
+    color: var(--text-color) !important;
+}
+
+/* Стили для попапов в модалках */
+.tox .tox-pop {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.tox .tox-pop__dialog {
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Темная тема для модалок */
+[data-theme="dark"] .tox .tox-dialog {
+    --text-color: #ffffff;
+    --border-color: rgba(255, 255, 255, 0.2);
+    --button-hover: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .tox .tox-dialog__header {
+    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .tox .tox-dialog__footer {
+    border-top-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Светлая тема для модалок */
+[data-theme="light"] .tox .tox-dialog {
+    --text-color: #212529;
+    --border-color: rgba(0, 0, 0, 0.2);
+    --button-hover: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .tox .tox-dialog__header {
+    border-bottom-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="light"] .tox .tox-dialog__footer {
+    border-top-color: rgba(0, 0, 0, 0.2) !important;
+}

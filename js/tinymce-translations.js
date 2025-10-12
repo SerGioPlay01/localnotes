@@ -1,4 +1,5 @@
 // Переводы для TinyMCE
+if (typeof tinymceTranslations === 'undefined') {
 const tinymceTranslations = {
     en: {
         // Меню
@@ -293,3 +294,4 @@ function getTinyMCETranslation(key) {
     const langTranslations = tinymceTranslations[currentLang] || tinymceTranslations.en;
     return langTranslations[key] || key;
 }
+} // Закрываем блок if (typeof tinymceTranslations === 'undefined')

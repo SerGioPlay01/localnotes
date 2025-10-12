@@ -131,6 +131,50 @@ function updateInterface(langData, language) {
     if (author) {
         author.textContent = langData.author;
     }
+
+    // Обновляем текст кнопок с иконками
+    updateButtonTexts();
+}
+
+// Функция для обновления текста кнопок с иконками
+function updateButtonTexts() {
+    const addNoteButton = document.getElementById("addNoteButton");
+    const importButton = document.getElementById("importButton");
+    const clearAllButton = document.getElementById("clearAllButton");
+    const toggleViewButton = document.getElementById("toggleViewButton");
+    const saveNoteButton = document.getElementById("saveNoteButton");
+    const cancelNoteButton = document.getElementById("cancelNoteButton");
+    const confirmYesButton = document.getElementById("confirmYes");
+    const confirmNoButton = document.getElementById("confirmNo");
+    const okButton = document.getElementById("ok");
+    
+    if (addNoteButton) {
+        addNoteButton.innerHTML = `<i class="fas fa-plus"></i> ${addNoteButton.textContent}`;
+    }
+    if (importButton) {
+        importButton.innerHTML = `<i class="fas fa-upload"></i> ${importButton.textContent}`;
+    }
+    if (clearAllButton) {
+        clearAllButton.innerHTML = `<i class="fas fa-trash-alt"></i> ${clearAllButton.textContent}`;
+    }
+    if (toggleViewButton) {
+        toggleViewButton.innerHTML = `<i class="fas fa-th"></i> ${toggleViewButton.textContent}`;
+    }
+    if (saveNoteButton) {
+        saveNoteButton.innerHTML = `<i class="fas fa-save"></i> ${saveNoteButton.textContent}`;
+    }
+    if (cancelNoteButton) {
+        cancelNoteButton.innerHTML = `<i class="fas fa-times"></i> ${cancelNoteButton.textContent}`;
+    }
+    if (confirmYesButton) {
+        confirmYesButton.innerHTML = `<i class="fas fa-check"></i> ${confirmYesButton.textContent}`;
+    }
+    if (confirmNoButton) {
+        confirmNoButton.innerHTML = `<i class="fas fa-times"></i> ${confirmNoButton.textContent}`;
+    }
+    if (okButton) {
+        okButton.innerHTML = `<i class="fas fa-check"></i> ${okButton.textContent}`;
+    }
 }
 
 // Глобальная переменная для хранения текущего языка
@@ -138,10 +182,54 @@ window.currentLang = null;
 
 // Функция для определения языка браузера пользователя
 function getCurrentLanguage() {
-    const userLang = navigator.language || navigator.userLanguage;  // Получаем язык пользователя
-    const lang = userLang.startsWith('ru') ? 'ru' : 'en';  // Если язык "ru", используем русский, иначе английский
-    window.currentLang = lang;  // Сохраняем в глобальной переменной
-    return lang;
+    // Проверяем, установлен ли язык в window.currentLang (для языковых версий)
+    if (window.currentLang) {
+        return window.currentLang;
+    }
+    
+    // Проверяем URL параметр
+    const urlParams = new URLSearchParams(window.location.search);
+    const langParam = urlParams.get('lang');
+    if (langParam) {
+        window.currentLang = langParam;
+        return langParam;
+    }
+    
+    // Проверяем localStorage
+    const savedLang = localStorage.getItem('preferredLanguage');
+    if (savedLang) {
+        window.currentLang = savedLang;
+        return savedLang;
+    }
+    
+    // Определяем язык по браузеру
+    const userLang = navigator.language || navigator.userLanguage;
+    const langCode = userLang.split('-')[0].toLowerCase();
+    
+    // Поддерживаемые языки
+    const supportedLanguages = ['en', 'ru', 'ua', 'pl', 'cs', 'sk', 'bg', 'hr', 'sr', 'bs', 'mk', 'sl'];
+    
+    if (supportedLanguages.includes(langCode)) {
+        window.currentLang = langCode;
+        return langCode;
+    }
+    
+    // Проверяем для специальных случаев
+    const countryCode = userLang.split('-')[1]?.toLowerCase();
+    if (countryCode) {
+        if (countryCode === 'ua') {
+            window.currentLang = 'ua';
+            return 'ua';
+        }
+        if (['by', 'kz', 'md'].includes(countryCode)) {
+            window.currentLang = 'ru';
+            return 'ru';
+        }
+    }
+    
+    // По умолчанию английский
+    window.currentLang = 'en';
+    return 'en';
 }
 
 // Функция для периодической проверки языка
@@ -160,11 +248,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Добавляем небольшую задержку для полной загрузки DOM
     setTimeout(() => {
         try {
-            checkAndUpdateLanguage();  // Начальная проверка языка при загрузке
-            const currentLang = getCurrentLanguage();
-            setPageLanguage(currentLang);
+            // Проверяем, не находимся ли мы на языковой версии страницы
+            const currentPath = window.location.pathname;
+            const isLanguagePage = currentPath.match(/^\/([a-z]{2})\//);
+            
+            if (isLanguagePage) {
+                // Если мы на языковой странице, устанавливаем язык из URL
+                const langFromPath = isLanguagePage[1];
+                window.currentLang = langFromPath;
+                setPageLanguage(langFromPath);
+                // Обновляем интерфейс для языковой версии
+                changeLanguage(langFromPath);
+            } else {
+                // Если мы на главной странице, используем стандартную логику
+                checkAndUpdateLanguage();
+                const currentLang = getCurrentLanguage();
+                setPageLanguage(currentLang);
+            }
         } catch (error) {
             console.error('Error initializing language:', error);
+            // Fallback на английский
+            window.currentLang = 'en';
+            setPageLanguage('en');
         }
     }, 100);
 });

@@ -1,7 +1,7 @@
 {
-    "name": "Local Notes - Secure Note Taking App",
+    "name": "Local Notes - Secure Note Taking App v1.0.2",
     "short_name": "Local Notes",
-    "description": "Secure local note-taking application with encryption and multi-language support",
+    "description": "Secure local note-taking application with encryption, multi-language support, and performance optimizations",
     "theme_color": "#060116",
     "background_color": "#060116",
     "display": "standalone",

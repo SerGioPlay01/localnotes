@@ -65,80 +65,22 @@ class ResponsiveManager {
     
     updateEditorLayout() {
         if (tinymceEditor && !tinymceEditor.destroyed) {
-            // Обновляем настройки редактора в зависимости от размера экрана
-            const newToolbar = this.getToolbarForBreakpoint();
-            const newToolbarMode = this.getToolbarModeForBreakpoint();
-            const newMenubar = this.getMenubarForBreakpoint();
-            const fullscreenSettings = this.getFullscreenSettings();
             
-            // Проверяем, что TinyMCE редактор существует
-            if (tinymceEditor && tinymceEditor.settings) {
-                tinymceEditor.settings.toolbar = newToolbar;
-                tinymceEditor.settings.toolbar_mode = newToolbarMode;
-                tinymceEditor.settings.menubar = newMenubar;
-                tinymceEditor.settings.resize = this.isDesktop;
-                tinymceEditor.settings.elementpath = this.isDesktop;
-                tinymceEditor.settings.height = fullscreenSettings.height;
-                tinymceEditor.settings.width = fullscreenSettings.width;
-                tinymceEditor.settings.menubar_height = fullscreenSettings.menubar_height;
-                tinymceEditor.settings.toolbar_height = fullscreenSettings.toolbar_height;
-            }
-            
-            // Применяем адаптивные стили меню
-            this.applyMenuStyles();
-            
-            // Применяем полноэкранные стили
-            this.applyFullscreenStyles();
             
             // Перезагружаем редактор с новыми настройками
             const currentContent = tinymceEditor.getContent();
             tinymceEditor.destroy();
             
-            setTimeout(() => {
-                initTinyMCE();
+            setTimeout(async () => {
+                await initTinyMCE();
                 if (tinymceEditor && currentContent) {
                     tinymceEditor.setContent(currentContent);
                 }
-                // Повторно применяем стили после перезагрузки
-                setTimeout(() => {
-                    this.applyMenuStyles();
-                    this.applyFullscreenStyles();
-                }, 200);
             }, 100);
         }
     }
     
-    getToolbarForBreakpoint() {
-        if (this.isMobile || this.isTouch) {
-            // Для touch-устройств создаем одну длинную строку с прокруткой - ВСЕ функции
-            return 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough superscript subscript | ' +
-                   'alignleft aligncenter alignright alignjustify | outdent indent | ' +
-                   'numlist bullist | forecolor backcolor removeformat | charmap emoticons | ' +
-                   'link image media table | mceInsertTableSimple | mceInsertTableCustom | code | help | fullscreen preview | insertfile anchor codesample | ' +
-                   'ltr rtl | pagebreak | visualblocks visualchars | searchreplace | wordcount';
-        } else if (this.isTablet) {
-            return 'undo redo | blocks fontfamily fontsize | bold italic underline | alignleft aligncenter alignright | numlist bullist | forecolor backcolor | charmap emoticons | link image media table | mceInsertTableSimple | mceInsertTableCustom | code | help';
-        } else {
-            return 'undo redo | blocks fontfamily fontsize | ' +
-                   'bold italic underline strikethrough superscript subscript | ' +
-                   'alignleft aligncenter alignright alignjustify | ' +
-                   'outdent indent | numlist bullist | ' +
-                   'forecolor backcolor removeformat | ' +
-                   'pagebreak | charmap emoticons | ' +
-                   'fullscreen preview | insertfile image media link anchor codesample table | mceInsertTableSimple | mceInsertTableCustom | ' +
-                   'ltr rtl | code | help';
-        }
-    }
     
-    getToolbarModeForBreakpoint() {
-        if (this.isMobile || this.isTouch) {
-            return 'wrap'; // Для touch-устройств используем wrap для горизонтальной прокрутки
-        } else if (this.isTablet) {
-            return 'wrap';
-        } else {
-            return 'floating';
-        }
-    }
     
     getEventType() {
         // Используем современный Pointer Events API
@@ -149,150 +91,9 @@ class ResponsiveManager {
         return this.isTouch ? 'touchstart' : 'click';
     }
     
-    getMenubarForBreakpoint() {
-        if (this.isMobile) {
-            return 'file edit view insert format tools'; // Показываем упрощенное меню на мобильных
-        } else if (this.isTablet) {
-            return 'file edit view insert format tools'; // Упрощенное меню для планшетов
-        } else {
-            return 'file edit view insert format tools table help'; // Полное меню для десктопа
-        }
-    }
     
-    getFullscreenSettings() {
-        // Вычисляем общую высоту хедера и навигации с дополнительным отступом
-        const headerHeight = 100; // .info-app height
-        const navHeight = 80; // .center_nav approximate height (20px padding * 2 + content)
-        const extraMargin = 40; // Дополнительный отступ для предотвращения перекрытия
-        const totalHeaderHeight = headerHeight + navHeight + extraMargin;
-        
-        return {
-            height: `calc(100vh - ${totalHeaderHeight}px)`,
-            width: '100vw',
-            menubar_height: 40,
-            toolbar_height: 50,
-            statusbar_height: 30,
-            header_offset: totalHeaderHeight
-        };
-    }
     
-    applyMenuStyles() {
-        // Применяем адаптивные стили к меню
-        const menubar = document.querySelector('.tox .tox-menubar');
-        if (menubar) {
-            // Добавляем классы для адаптивности
-            menubar.classList.remove('mobile-menu', 'tablet-menu', 'desktop-menu');
-            
-            if (this.isMobile) {
-                menubar.classList.add('mobile-menu');
-            } else if (this.isTablet) {
-                menubar.classList.add('tablet-menu');
-            } else {
-                menubar.classList.add('desktop-menu');
-            }
-            
-            // Применяем стили в зависимости от темы
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-            this.updateMenuTheme(menubar, currentTheme);
-        }
-    }
     
-    updateMenuTheme(menubar, theme) {
-        if (!menubar) return;
-        
-        if (theme === 'light') {
-            menubar.style.background = 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)';
-            menubar.style.borderBottom = '1px solid #dee2e6';
-        } else {
-            menubar.style.background = 'linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%)';
-            menubar.style.borderBottom = '1px solid #404040';
-        }
-        
-        // Обновляем стили пунктов меню
-        const menuItems = menubar.querySelectorAll('.tox-mbtn');
-        menuItems.forEach(item => {
-            if (theme === 'light') {
-                item.style.color = '#212529';
-                item.style.borderRadius = '4px';
-                item.style.transition = 'all 0.2s ease';
-            } else {
-                item.style.color = '#ffffff';
-                item.style.borderRadius = '4px';
-                item.style.transition = 'all 0.2s ease';
-            }
-            
-            // Добавляем hover эффекты с поддержкой Pointer Events
-            item.addEventListener('pointerenter', () => {
-                if (theme === 'light') {
-                    item.style.background = 'rgba(0, 0, 0, 0.05)';
-                } else {
-                    item.style.background = 'rgba(255, 255, 255, 0.1)';
-                }
-            });
-            
-            item.addEventListener('pointerleave', () => {
-                item.style.background = 'transparent';
-            });
-            
-            // Fallback для старых браузеров
-            item.addEventListener('mouseenter', () => {
-                if (theme === 'light') {
-                    item.style.background = 'rgba(0, 0, 0, 0.05)';
-                } else {
-                    item.style.background = 'rgba(255, 255, 255, 0.1)';
-                }
-            });
-            
-            item.addEventListener('mouseleave', () => {
-                item.style.background = 'transparent';
-            });
-        });
-    }
-    
-    applyFullscreenStyles() {
-        // Применяем полноэкранные стили к редактору
-        const editorContainer = document.querySelector('.tox-tinymce');
-        if (editorContainer) {
-            // Добавляем класс для полноэкранного режима
-            editorContainer.classList.add('fullscreen-editor');
-            
-            // Применяем стили в зависимости от размера экрана
-            if (this.isMobile) {
-                editorContainer.style.setProperty('--menubar-height', '50px'); // Показываем меню на мобильных
-                editorContainer.style.setProperty('--toolbar-height', '60px');
-                editorContainer.style.setProperty('--statusbar-height', '30px');
-                editorContainer.style.setProperty('--header-offset', '200px');
-            } else if (this.isTablet) {
-                editorContainer.style.setProperty('--menubar-height', '35px');
-                editorContainer.style.setProperty('--toolbar-height', '45px');
-                editorContainer.style.setProperty('--statusbar-height', '30px');
-                editorContainer.style.setProperty('--header-offset', '190px');
-            } else {
-                editorContainer.style.setProperty('--menubar-height', '40px');
-                editorContainer.style.setProperty('--toolbar-height', '50px');
-                editorContainer.style.setProperty('--statusbar-height', '30px');
-                editorContainer.style.setProperty('--header-offset', '180px');
-            }
-        }
-        
-        // Применяем стили к контейнеру TinyMCE
-        const tinymceContainer = document.querySelector('.tinymce');
-        if (tinymceContainer) {
-            tinymceContainer.classList.add('fullscreen-container');
-            
-            // Применяем отступы в зависимости от размера экрана
-            if (this.isMobile) {
-                tinymceContainer.style.marginTop = '240px';
-                tinymceContainer.style.height = 'calc(100vh - 240px)';
-            } else if (this.isTablet) {
-                tinymceContainer.style.marginTop = '230px';
-                tinymceContainer.style.height = 'calc(100vh - 230px)';
-            } else {
-                tinymceContainer.style.marginTop = '220px';
-                tinymceContainer.style.height = 'calc(100vh - 220px)';
-            }
-        }
-    }
     
     resetEditorStyles() {
         // Сбрасываем стили редактора для исправления проблем
@@ -452,25 +253,76 @@ function initializeEventListeners() {
     const clearAllButton = document.getElementById("clearAllButton");
     if (clearAllButton) {
         clearAllButton.addEventListener("click", () => {
-            // Определяем сообщение подтверждения
-            const confirmationMessage = t("confirmDeleteAll");
-            
-            showCustomPrompt(
-                t("confirmDeleteAllTitle"),
-                confirmationMessage,
-                t("confirmDeleteAllPlaceholder"),
-                (password) => {
-                    if (password === "DELETE ALL") {
-                        clearAllNotes();
-                    } else {
-                        showCustomAlert(t("error"), t("invalidPassword"), "error");
-                    }
-                }
-            );
+            showClearAllConfirmationModal();
         });
     }
     
     console.log('All event listeners initialized');
+}
+
+// Функция для показа модалки подтверждения очистки всех заметок
+function showClearAllConfirmationModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'block';
+    
+    modal.innerHTML = `
+        <div class="modal-content modal-content-warning">
+            <div class="modal-content-inner">
+                <h3><i class="fas fa-exclamation-triangle"></i> ${t("confirmDeleteAllTitle")}</h3>
+                <p>${t("confirmDeleteAll")}</p>
+                <div class="warning-details">
+                    <p><strong>⚠️ ${t("warning")}:</strong> ${t("clearAllWarning")}</p>
+                    <ul>
+                        <li>${t("clearAllWarning1")}</li>
+                        <li>${t("clearAllWarning2")}</li>
+                        <li>${t("clearAllWarning3")}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-buttons-container">
+                <button id="confirmClearAllBtn" class="btn cancel">
+                    <i class="fas fa-trash"></i> ${t("deleteAll")}
+                </button>
+                <button id="cancelClearAllBtn" class="btn save">
+                    <i class="fas fa-times"></i> ${t("cancel")}
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    document.body.classList.add('modal-open');
+    
+    // Обработчики кнопок
+    document.getElementById('confirmClearAllBtn').addEventListener('click', () => {
+                        clearAllNotes();
+        closeModal();
+    });
+    
+    document.getElementById('cancelClearAllBtn').addEventListener('click', () => {
+        closeModal();
+    });
+    
+    // Закрытие по клику вне модалки
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    
+    // Закрытие по Escape
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    });
+    
+    function closeModal() {
+        document.body.removeChild(modal);
+        document.body.classList.remove('modal-open');
+    }
 }
 
 // Функция для очистки всех заметок
@@ -513,7 +365,7 @@ function getTinyMCELanguage() {
     const currentLang = window.currentLang || navigator.language || 'en';
     const langMap = {
         'ru': 'ru',
-        'ua': 'uk', 
+        'ua': 'ua', 
         'pl': 'pl',
         'cs': 'cs',
         'bg': 'bg',
@@ -525,7 +377,375 @@ function getTinyMCELanguage() {
         'sk': 'sk'
     };
     
-    return langMap[currentLang] || 'en';
+    const result = langMap[currentLang] || 'en';
+    console.log('TinyMCE Language Detection:');
+    console.log('- window.currentLang:', window.currentLang);
+    console.log('- navigator.language:', navigator.language);
+    console.log('- currentLang:', currentLang);
+    console.log('- result:', result);
+    return result;
+}
+
+// Функция для загрузки файлов переводов TinyMCE
+async function loadTinyMCETranslations() {
+    const lang = getTinyMCELanguage();
+    
+    // Если язык английский, переводы не нужны
+    if (lang === 'en') {
+        console.log('TinyMCE: Using default English language');
+        return Promise.resolve();
+    }
+    
+    const translationUrl = `/editor_news/langs/${lang}.js`;
+    console.log('TinyMCE: Loading translations from:', translationUrl);
+    
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = translationUrl;
+        script.onload = () => {
+            console.log('TinyMCE: Translations loaded successfully for language:', lang);
+            console.log('TinyMCE: tinymce.addI18n available:', typeof tinymce !== 'undefined' && typeof tinymce.addI18n === 'function');
+            resolve();
+        };
+        script.onerror = (error) => {
+            console.warn('TinyMCE: Failed to load translations for language:', lang, 'falling back to English');
+            console.warn('TinyMCE: Error details:', error);
+            resolve(); // Не отклоняем промис, просто используем английский
+        };
+        document.head.appendChild(script);
+    });
+}
+
+// Функция для настройки переводов выпадающих меню стилей
+function setupStyleMenuTranslations(editor) {
+    // Словарь переводов для элементов стилей
+    const styleTranslations = {
+        'Paragraph': 'Абзац',
+        'Heading 1': 'Заголовок 1',
+        'Heading 2': 'Заголовок 2', 
+        'Heading 3': 'Заголовок 3',
+        'Heading 4': 'Заголовок 4',
+        'Heading 5': 'Заголовок 5',
+        'Heading 6': 'Заголовок 6',
+        'Preformatted': 'Предварительно отформатированный'
+    };
+    
+    // Функция для перевода элементов в выпадающих меню
+    function translateStyleMenuItems() {
+        // Ищем все выпадающие меню стилей
+        const styleMenus = document.querySelectorAll('.tox-menu, .tox-collection');
+        
+        styleMenus.forEach(menu => {
+            // Ищем элементы с текстом стилей
+            const items = menu.querySelectorAll('.tox-collection__item-label p, .tox-collection__item-label h1, .tox-collection__item-label h2, .tox-collection__item-label h3, .tox-collection__item-label h4, .tox-collection__item-label h5, .tox-collection__item-label h6, .tox-collection__item-label pre');
+            
+            items.forEach(item => {
+                const text = item.textContent.trim();
+                if (styleTranslations[text]) {
+                    item.textContent = styleTranslations[text];
+                }
+            });
+        });
+    }
+    
+    // Наблюдатель за изменениями DOM для отслеживания появления новых меню
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === 1) { // Element node
+                        if (node.classList && (
+                            node.classList.contains('tox-menu') ||
+                            node.classList.contains('tox-collection') ||
+                            node.querySelector('.tox-menu') ||
+                            node.querySelector('.tox-collection')
+                        )) {
+                            // Небольшая задержка для полной загрузки содержимого
+                            setTimeout(translateStyleMenuItems, 50);
+                        }
+                    }
+                });
+            }
+        });
+    });
+    
+    // Начинаем наблюдение за изменениями в документе
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
+    // Также переводим при открытии редактора
+    setTimeout(translateStyleMenuItems, 200);
+    
+    // Переводим при изменении выделения (когда могут появляться новые меню)
+    editor.on('selectionchange', function() {
+        setTimeout(translateStyleMenuItems, 100);
+    });
+}
+
+// Функция для настройки обработчиков скрытия всех всплывающих панелей
+function setupPopupCloseHandlers(editor) {
+    let isMouseOverPopup = false;
+    let isMouseOverToolbar = false;
+    
+    // Обработчик клика вне области редактора
+    document.addEventListener('click', function(e) {
+        const editorContainer = editor.getContainer();
+        const isClickInsideEditor = editorContainer && editorContainer.contains(e.target);
+        
+        if (!isClickInsideEditor && !isMouseOverPopup) {
+            hideAllPopups();
+        }
+    });
+    
+    // Обработчик движения мыши для отслеживания нахождения над всплывающими панелями
+    document.addEventListener('mouseover', function(e) {
+        const target = e.target;
+        const popup = target.closest('.tox-pop, .tox-tooltip, .tox-collection, .tox-menu, .tox-swatches');
+        
+        if (popup) {
+            isMouseOverPopup = true;
+        } else {
+            isMouseOverPopup = false;
+        }
+    });
+    
+    // Обработчик движения мыши для отслеживания нахождения над тулбаром
+    document.addEventListener('mouseover', function(e) {
+        const target = e.target;
+        const toolbar = target.closest('.tox-toolbar');
+        
+        if (toolbar) {
+            isMouseOverToolbar = true;
+        } else {
+            isMouseOverToolbar = false;
+        }
+    });
+    
+    // Обработчик потери фокуса редактора
+    editor.on('blur', function() {
+        setTimeout(() => {
+            if (!isMouseOverPopup && !isMouseOverToolbar) {
+                hideAllPopups();
+            }
+        }, 100);
+    });
+    
+    // Обработчик изменения выделения в редакторе
+    editor.on('selectionchange', function() {
+        setTimeout(() => {
+            if (!isMouseOverPopup && !isMouseOverToolbar) {
+                hideAllPopups();
+            }
+        }, 50);
+    });
+    
+    // Обработчик клика внутри редактора
+    editor.on('click', function(e) {
+        const target = e.target;
+        const isClickOnTable = target.closest('table');
+        const isClickOnToolbar = target.closest('.tox-toolbar');
+        const isClickOnPopup = target.closest('.tox-pop, .tox-tooltip, .tox-collection, .tox-menu, .tox-swatches');
+        
+        // Если клик не на таблице, тулбаре или всплывающей панели, скрываем только нежелательные панели
+        if (!isClickOnTable && !isClickOnToolbar && !isClickOnPopup) {
+            hideAllPopups();
+        }
+    });
+    
+    // Обработчик нажатия клавиш
+    document.addEventListener('keydown', function(e) {
+        // ESC - скрыть все всплывающие панели
+        if (e.key === 'Escape') {
+            hideAllPopups();
+        }
+    });
+}
+
+// Функция для скрытия всех всплывающих панелей
+function hideAllPopups() {
+    // Скрываем только нежелательные всплывающие панели, но не контекстные панели таблиц
+    const unwantedPopups = document.querySelectorAll('.tox-tooltip:not(.tox-pop__dialog), .tox-collection:not(.tox-pop__dialog), .tox-menu:not(.tox-pop__dialog), .tox-swatches');
+    unwantedPopups.forEach(popup => {
+        // Не скрываем контекстные панели таблиц
+        if (!popup.closest('.tox-pop[data-alloy-placement]')) {
+            popup.style.display = 'none';
+            popup.style.visibility = 'hidden';
+            popup.style.opacity = '0';
+            popup.classList.add('tox-pop__dialog--hidden');
+        }
+    });
+}
+
+// Функция для настройки обработчиков всплывающих панелей таблицы
+function setupTableToolbarHandlers(editor) {
+    // Скрываем всплывающие панели при клике вне таблицы
+    editor.on('click', function(e) {
+        const target = e.target;
+        const isTableElement = target.closest('table') || target.closest('.tox-pop__dialog');
+        
+        if (!isTableElement) {
+            // Скрываем все всплывающие панели
+            const popups = document.querySelectorAll('.tox-pop__dialog');
+            popups.forEach(popup => {
+                popup.style.display = 'none';
+                popup.classList.remove('tox-pop__dialog--active');
+                popup.classList.add('tox-pop__dialog--hidden');
+            });
+        }
+    });
+    
+    // Скрываем панели при изменении позиции курсора
+    editor.on('SelectionChange', function(e) {
+        const selection = editor.selection;
+        const node = selection.getNode();
+        const isTableElement = node.closest('table');
+        
+        if (!isTableElement) {
+            // Скрываем все всплывающие панели
+            const popups = document.querySelectorAll('.tox-pop__dialog');
+            popups.forEach(popup => {
+                popup.style.display = 'none';
+                popup.classList.remove('tox-pop__dialog--active');
+                popup.classList.add('tox-pop__dialog--hidden');
+            });
+        }
+    });
+    
+    // Скрываем только нежелательные панели при потере фокуса
+    editor.on('Blur', function() {
+        const unwantedPopups = document.querySelectorAll('.tox-pop__dialog:not(.tox-pop[data-alloy-placement] .tox-pop__dialog)');
+        unwantedPopups.forEach(popup => {
+            popup.style.display = 'none';
+            popup.classList.remove('tox-pop__dialog--active');
+            popup.classList.add('tox-pop__dialog--hidden');
+        });
+    });
+    
+    // Скрываем только нежелательные панели при нажатии Escape
+    editor.on('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const unwantedPopups = document.querySelectorAll('.tox-pop__dialog:not(.tox-pop[data-alloy-placement] .tox-pop__dialog)');
+            unwantedPopups.forEach(popup => {
+                popup.style.display = 'none';
+                popup.classList.remove('tox-pop__dialog--active');
+                popup.classList.add('tox-pop__dialog--hidden');
+            });
+        }
+    });
+    
+    // Глобальный обработчик клика для скрытия нежелательных панелей при клике вне редактора
+    document.addEventListener('click', function(e) {
+        const isInsideEditor = e.target.closest('.tox-tinymce') || e.target.closest('.tox-pop__dialog');
+        
+        if (!isInsideEditor) {
+            const unwantedPopups = document.querySelectorAll('.tox-pop__dialog:not(.tox-pop[data-alloy-placement] .tox-pop__dialog)');
+            unwantedPopups.forEach(popup => {
+                popup.style.display = 'none';
+                popup.classList.remove('tox-pop__dialog--active');
+                popup.classList.add('tox-pop__dialog--hidden');
+            });
+        }
+    });
+}
+
+// Функция для отключения нежелательных всплывающих подсказок
+function disableAllTooltips(editor) {
+    // Отключаем всплывающие подсказки только для основных кнопок, но не для контекстных панелей
+    editor.on('init', function() {
+        const mainToolbar = editor.getContainer().querySelector('.tox-toolbar:not(.tox-pop__dialog .tox-toolbar)');
+        if (mainToolbar) {
+            const buttons = mainToolbar.querySelectorAll('.tox-tbtn');
+            buttons.forEach(button => {
+                button.removeAttribute('title');
+                button.removeAttribute('aria-label');
+            });
+        }
+    });
+    
+    // Скрываем только нежелательные всплывающие подсказки при их появлении
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === 1) { // Element node
+                        if (node.classList && (
+                            node.classList.contains('tox-tooltip') ||
+                            node.classList.contains('tox-collection') ||
+                            node.classList.contains('tox-menu') ||
+                            node.classList.contains('tox-swatches')
+                        )) {
+                            // Не скрываем контекстные панели таблиц
+                            if (!node.closest('.tox-pop[data-alloy-placement]')) {
+                                // Агрессивное скрытие только нежелательных элементов
+                                node.style.display = 'none';
+                                node.style.visibility = 'hidden';
+                                node.style.opacity = '0';
+                                node.style.pointerEvents = 'none';
+                                node.style.position = 'absolute';
+                                node.style.left = '-9999px';
+                                node.style.top = '-9999px';
+                                node.style.width = '0';
+                                node.style.height = '0';
+                                node.style.overflow = 'hidden';
+                                node.style.zIndex = '-1';
+                                node.remove();
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    });
+    
+    // Наблюдаем за изменениями в DOM
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
+    // Скрываем только нежелательные существующие подсказки
+    const unwantedTooltips = document.querySelectorAll('.tox-tooltip:not(.tox-pop__dialog), .tox-collection:not(.tox-pop__dialog), .tox-menu:not(.tox-pop__dialog), .tox-swatches');
+    unwantedTooltips.forEach(tooltip => {
+        // Не скрываем контекстные панели таблиц
+        if (!tooltip.closest('.tox-pop[data-alloy-placement]')) {
+            tooltip.style.display = 'none';
+            tooltip.style.visibility = 'hidden';
+            tooltip.style.opacity = '0';
+            tooltip.style.pointerEvents = 'none';
+            tooltip.style.position = 'absolute';
+            tooltip.style.left = '-9999px';
+            tooltip.style.top = '-9999px';
+            tooltip.style.width = '0';
+            tooltip.style.height = '0';
+            tooltip.style.overflow = 'hidden';
+            tooltip.style.zIndex = '-1';
+            tooltip.remove();
+        }
+    });
+    
+    // Дополнительная проверка каждые 100мс - только для нежелательных элементов
+    setInterval(function() {
+        const unwantedElements = document.querySelectorAll('.tox-tooltip:not(.tox-pop__dialog), .tox-collection:not(.tox-pop__dialog), .tox-menu:not(.tox-pop__dialog)');
+        unwantedElements.forEach(element => {
+            // Скрываем только нежелательные элементы, но не контекстные панели таблиц
+            if (!element.closest('.tox-pop[data-alloy-placement]')) {
+                element.style.display = 'none';
+                element.style.visibility = 'hidden';
+                element.style.opacity = '0';
+                element.style.pointerEvents = 'none';
+                element.style.position = 'absolute';
+                element.style.left = '-9999px';
+                element.style.top = '-9999px';
+                element.style.width = '0';
+                element.style.height = '0';
+                element.style.overflow = 'hidden';
+                element.style.zIndex = '-1';
+                element.remove();
+            }
+        });
+    }, 100);
 }
 
 function getTinyMCETranslation(key) {
@@ -657,237 +877,10 @@ function getTinyMCETranslation(key) {
     return translations[langCode]?.[key] || translations['en'][key] || key;
 }
 
-function getTinyMCESkin() {
-    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-    return currentTheme === 'light' ? 'oxide' : 'oxide-dark';
-}
 
-function getTinyMCEContentCSS() {
-    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-    return currentTheme === 'light' ? 'default' : 'dark';
-}
 
-function getTinyMCEContentStyle() {
-    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-    
-    if (currentTheme === 'light') {
-        return `
-            body { 
-                font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; 
-                font-size: 14px; 
-                line-height: 1.6; 
-                margin: 0; 
-                padding: 20px; 
-                background-color: #ffffff;
-                color: #212529;
-            }
-            h1, h2, h3, h4, h5, h6 { color: #212529; }
-            p { color: #212529; }
-            a { color: #007bff; }
-            blockquote { 
-                border-left: 4px solid #007bff; 
-                background-color: #f8f9fa; 
-                color: #212529; 
-                padding: 16px 20px; 
-                margin: 16px 0; 
-            }
-            code { 
-                background-color: #f8f9fa; 
-                color: #e83e8c; 
-                padding: 2px 4px; 
-                border-radius: 3px; 
-            }
-            pre { 
-                background-color: #f8f9fa; 
-                color: #212529; 
-                padding: 16px; 
-                border-radius: 6px; 
-                border: 1px solid #dee2e6; 
-            }
-        `;
-    } else {
-        return `
-            body { 
-                font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; 
-                font-size: 14px; 
-                line-height: 1.6; 
-                margin: 0; 
-                padding: 20px; 
-                background-color: #1e1e1e;
-                color: #ffffff;
-            }
-            h1, h2, h3, h4, h5, h6 { color: #ffffff; }
-            p { color: #ffffff; }
-            a { color: #58a6ff; }
-            blockquote { 
-                border-left: 4px solid #58a6ff; 
-                background-color: #161b22; 
-                color: #e6edf3; 
-                padding: 16px 20px; 
-                margin: 16px 0; 
-            }
-            code { 
-                background-color: #0d1117; 
-                color: #e6edf3; 
-                padding: 2px 4px; 
-                border-radius: 3px; 
-                border: 1px solid #30363d; 
-            }
-            pre { 
-                background-color: #0d1117; 
-                color: #e6edf3; 
-                padding: 16px; 
-                border-radius: 6px; 
-                border: 1px solid #30363d; 
-            }
-        `;
-    }
-}
 
-// Улучшенная функция для мгновенного обновления темы TinyMCE
-function updateTinyMCETheme() {
-    if (tinymceEditor && !tinymceEditor.destroyed) {
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        
-        try {
-            // Мгновенное обновление CSS переменных в редакторе
-            const editorContainer = tinymceEditor.getContainer();
-            if (editorContainer) {
-                // Обновляем стили контейнера
-                editorContainer.style.setProperty('--editor-bg', currentTheme === 'light' ? '#ffffff' : '#1e1e1e');
-                editorContainer.style.setProperty('--editor-text', currentTheme === 'light' ? '#212529' : '#ffffff');
-                editorContainer.style.setProperty('--editor-toolbar-bg', currentTheme === 'light' ? '#f8f9fa' : 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)');
-                editorContainer.style.setProperty('--editor-toolbar-border', currentTheme === 'light' ? '#dee2e6' : '#404040');
-            }
-            
-            // Обновляем iframe редактора
-            const editorIframe = editorContainer?.querySelector('iframe');
-            if (editorIframe && editorIframe.contentDocument) {
-                const editorDoc = editorIframe.contentDocument;
-                const editorBody = editorDoc.body;
-                
-                if (editorBody) {
-                    // Применяем новые стили к телу редактора
-                    editorBody.style.backgroundColor = currentTheme === 'light' ? '#ffffff' : '#1e1e1e';
-                    editorBody.style.color = currentTheme === 'light' ? '#212529' : '#ffffff';
-                    
-                    // Обновляем стили для различных элементов
-                    const style = editorDoc.createElement('style');
-                    style.textContent = getTinyMCEContentStyle();
-                    
-                    // Удаляем старые стили
-                    const oldStyle = editorDoc.querySelector('style[data-theme]');
-                    if (oldStyle) {
-                        oldStyle.remove();
-                    }
-                    
-                    // Добавляем новые стили
-                    style.setAttribute('data-theme', currentTheme);
-                    editorDoc.head.appendChild(style);
-                }
-            }
-            
-            // Обновляем панель инструментов
-            updateToolbarTheme(currentTheme);
-            
-            // Обновляем стили меню
-            const menubar = document.querySelector('.tox .tox-menubar');
-            if (menubar && responsiveManager) {
-                responsiveManager.updateMenuTheme(menubar, currentTheme);
-            }
-            
-            // Сохраняем тему в localStorage для восстановления после перезагрузки
-            localStorage.setItem('editorTheme', currentTheme);
-            
-            console.log('TinyMCE theme updated instantly to:', currentTheme);
-            
-        } catch (error) {
-            console.error('Error updating TinyMCE theme:', error);
-            // Fallback к перезагрузке редактора
-            fallbackThemeUpdate();
-        }
-    }
-}
 
-// Функция для обновления темы панели инструментов
-function updateToolbarTheme(theme) {
-    const toolbar = document.querySelector('.tox .tox-toolbar');
-    if (toolbar) {
-        if (theme === 'light') {
-            toolbar.style.background = '#f8f9fa';
-            toolbar.style.borderBottom = '1px solid #dee2e6';
-        } else {
-            toolbar.style.background = 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)';
-            toolbar.style.borderBottom = '1px solid #404040';
-        }
-    }
-    
-    // Обновляем кнопки
-    const buttons = document.querySelectorAll('.tox .tox-tbtn');
-    buttons.forEach(button => {
-        if (theme === 'light') {
-            button.style.color = '#212529';
-        } else {
-            button.style.color = '#ffffff';
-        }
-    });
-}
-
-// Fallback функция для перезагрузки редактора
-function fallbackThemeUpdate() {
-    if (tinymceEditor && !tinymceEditor.destroyed) {
-        const currentContent = tinymceEditor.getContent();
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        
-        // Обновляем настройки
-        tinymceEditor.settings.skin = getTinyMCESkin();
-        tinymceEditor.settings.content_css = getTinyMCEContentCSS();
-        tinymceEditor.settings.content_style = getTinyMCEContentStyle();
-        
-        // Перезагружаем редактор
-        tinymceEditor.destroy();
-        setTimeout(() => {
-            initTinyMCE();
-            if (tinymceEditor && currentContent) {
-                tinymceEditor.setContent(currentContent);
-            }
-        }, 100);
-    }
-}
-
-// Функция для принудительного обновления темы TinyMCE
-function forceUpdateTinyMCETheme() {
-    if (tinymceEditor) {
-        // Принудительно обновляем CSS переменные в редакторе
-        const editorIframe = tinymceEditor.getContainer().querySelector('iframe');
-        if (editorIframe && editorIframe.contentDocument) {
-            const editorDoc = editorIframe.contentDocument;
-            const editorBody = editorDoc.body;
-            
-            // Обновляем стили в iframe
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-            if (currentTheme === 'light') {
-                editorBody.style.backgroundColor = '#ffffff';
-                editorBody.style.color = '#212529';
-            } else {
-                editorBody.style.backgroundColor = '#1e1e1e';
-                editorBody.style.color = '#ffffff';
-            }
-        }
-    }
-}
-
-// Функция для восстановления темы редактора после перезагрузки
-function restoreEditorTheme() {
-    const savedTheme = localStorage.getItem('editorTheme');
-    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-    
-    if (savedTheme && savedTheme !== currentTheme) {
-        // Если сохраненная тема отличается от текущей, обновляем
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        console.log('Restored editor theme from localStorage:', savedTheme);
-    }
-}
 
 // Функция для генерации версии файлов (cache busting)
 function generateFileVersion() {
@@ -1004,8 +997,6 @@ function preloadImages() {
 // Инициализация приложения
 window.onload = async () => {
     try {
-        // Восстанавливаем тему редактора
-        restoreEditorTheme();
         
         // Инициализируем IndexedDB
         if (typeof notesDB !== 'undefined') {
@@ -1018,15 +1009,12 @@ window.onload = async () => {
         // Инициализируем TinyMCE
         if (typeof tinymce !== 'undefined') {
             try {
-                initTinyMCE();
+                await initTinyMCE();
                 console.log('TinyMCE initialized successfully');
                 
                 // Применяем сохраненную тему после инициализации
                 setTimeout(() => {
                     const savedTheme = localStorage.getItem('editorTheme');
-                    if (savedTheme) {
-                        updateTinyMCETheme();
-                    }
                 }, 500);
                 
             } catch (error) {
@@ -1117,57 +1105,549 @@ function showEmojiPicker() {
     });
 }
 
-// Функция для закрытия всех плавающих панелей TinyMCE
-function closeAllFloatingPanels() {
-    const floatingPanels = document.querySelectorAll('.tox-pop:not(.tox-pop--hidden)');
-    floatingPanels.forEach(panel => {
-        panel.classList.add('tox-pop--hidden');
-        panel.style.display = 'none';
-    });
+
+
+// Функция для настройки высоты редактора
+function adjustEditorHeight() {
+    const editorContainer = document.querySelector('.tinymce');
+    const tinyMCEContainer = document.querySelector('.tox-tinymce');
+    const editArea = document.querySelector('.tox .tox-edit-area');
+    const iframe = document.querySelector('.tox .tox-edit-area iframe');
     
-    // Также закрываем все диалоги
-    const dialogs = document.querySelectorAll('.tox-dialog');
-    dialogs.forEach(dialog => {
-        dialog.style.display = 'none';
-    });
+    // Скрываем оригинальный textarea
+    const originalTextarea = document.getElementById('editorContainer');
+    if (originalTextarea) {
+        originalTextarea.style.display = 'none';
+    }
     
-    // Закрываем все коллекции
-    const collections = document.querySelectorAll('.tox-collection');
-    collections.forEach(collection => {
-        collection.style.display = 'none';
-    });
+    if (editorContainer && tinyMCEContainer && editArea) {
+        // Устанавливаем высоту контейнера
+        editorContainer.style.height = 'auto';
+        editorContainer.style.minHeight = '0';
+        editorContainer.style.display = 'flex';
+        editorContainer.style.flexDirection = 'column';
+        
+        // Устанавливаем высоту TinyMCE
+        tinyMCEContainer.style.height = '100%';
+        tinyMCEContainer.style.display = 'flex';
+        tinyMCEContainer.style.flexDirection = 'column';
+        
+        // Устанавливаем высоту области редактирования
+        editArea.style.flex = '1';
+        editArea.style.height = 'auto';
+        editArea.style.minHeight = '0';
+        editArea.style.display = 'flex';
+        editArea.style.flexDirection = 'column';
+        
+        // Устанавливаем высоту iframe
+        if (iframe) {
+            iframe.style.height = '100%';
+            iframe.style.minHeight = '300px';
+        }
+        
+        // Принудительно обновляем размеры
+        setTimeout(() => {
+            if (window.tinymce && window.tinymce.activeEditor) {
+                window.tinymce.activeEditor.getBody().style.minHeight = '300px';
+            }
+        }, 200);
+    }
 }
 
-// Функция для добавления обработчиков событий с поддержкой Pointer Events
-function addPointerEventListeners() {
-    // Обработчик для закрытия плавающих панелей
-    const handlePanelClose = function(e) {
-        // Если клик не по плавающей панели, закрываем все панели
-        if (!e.target.closest('.tox-pop') && !e.target.closest('.tox-toolbar')) {
-            closeAllFloatingPanels();
+// Функция для принудительного применения стилей темы к TinyMCE
+function applyThemeToTinyMCE() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    
+    // Применяем стили ко всем элементам TinyMCE
+    const allTinyMCEElements = document.querySelectorAll('.tox *');
+    
+    allTinyMCEElements.forEach(element => {
+        // Убираем все фоны и границы
+        element.style.background = 'transparent';
+        element.style.border = 'none';
+        element.style.boxShadow = 'none';
+        
+        // Применяем цвета в зависимости от темы
+        if (element.classList.contains('tox-tbtn') || element.classList.contains('tox-toolbar')) {
+            if (currentTheme === 'dark') {
+                element.style.color = '#ffffff';
+            } else {
+                element.style.color = '#212529';
+            }
         }
-    };
-    
-    // Добавляем обработчики с поддержкой Pointer Events
-    document.addEventListener('pointerdown', handlePanelClose);
-    
-    // Fallback для старых браузеров
-    document.addEventListener('click', handlePanelClose);
-    
-    // Обработчик для кнопок закрытия
-    const handleCloseButtons = function(e) {
-        if (e.target.closest('.tox-button[aria-label*="close"]') || 
-            e.target.closest('.tox-button[title*="close"]')) {
-            closeAllFloatingPanels();
+        
+        // Специальная обработка для SVG иконок
+        if (element.tagName === 'svg' || element.classList.contains('tox-icon')) {
+            if (currentTheme === 'dark') {
+                element.style.fill = '#ffffff';
+                element.style.color = '#ffffff';
+            } else {
+                element.style.fill = '#212529';
+                element.style.color = '#212529';
+            }
         }
-    };
+    });
     
-    document.addEventListener('pointerdown', handleCloseButtons);
-    document.addEventListener('click', handleCloseButtons);
+    // Дополнительная обработка для кнопок
+    const buttons = document.querySelectorAll('.tox .tox-tbtn');
+    buttons.forEach(button => {
+        button.style.background = 'transparent';
+        button.style.border = 'none';
+        
+        if (currentTheme === 'dark') {
+            button.style.color = '#ffffff';
+        } else {
+            button.style.color = '#212529';
+        }
+        
+        // Обработка иконок внутри кнопок
+        const icons = button.querySelectorAll('svg, .tox-icon');
+        icons.forEach(icon => {
+            if (currentTheme === 'dark') {
+                icon.style.fill = '#ffffff';
+                icon.style.color = '#ffffff';
+            } else {
+                icon.style.fill = '#212529';
+                icon.style.color = '#212529';
+            }
+        });
+    });
+    
+    // Принудительное обновление через CSS переменные
+    const style = document.createElement('style');
+    style.textContent = `
+        [data-theme="${currentTheme}"] .tox .tox-tbtn {
+            color: ${currentTheme === 'dark' ? '#ffffff' : '#212529'} !important;
+        }
+        [data-theme="${currentTheme}"] .tox .tox-tbtn svg,
+        [data-theme="${currentTheme}"] .tox .tox-icon {
+            fill: ${currentTheme === 'dark' ? '#ffffff' : '#212529'} !important;
+        }
+        
+        /* Стили для содержимого редактора */
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body {
+            color: ${currentTheme === 'dark' ? '#ffffff' : '#212529'} !important;
+            background: transparent !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body p,
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body h1,
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body h2,
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body h3,
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body h4,
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body h5,
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body h6,
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body li,
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body td,
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body th {
+            color: ${currentTheme === 'dark' ? '#ffffff' : '#212529'} !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body a {
+            color: #28a745 !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body code,
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body pre {
+            background: ${currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'} !important;
+            color: ${currentTheme === 'dark' ? '#ffffff' : '#212529'} !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body table td,
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body table th {
+            border-color: ${currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'} !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox-edit-area iframe body hr {
+            border-color: ${currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'} !important;
+        }
+        
+        /* Стили для цветовых палитр */
+        [data-theme="${currentTheme}"] .tox .tox-dialog,
+        [data-theme="${currentTheme}"] .tox .tox-dialog__header,
+        [data-theme="${currentTheme}"] .tox .tox-dialog__body,
+        [data-theme="${currentTheme}"] .tox .tox-dialog__footer {
+            background: ${currentTheme === 'dark' ? '#2d2d2d' : '#ffffff'} !important;
+            border: 1px solid ${currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'} !important;
+            color: ${currentTheme === 'dark' ? '#ffffff' : '#212529'} !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox .tox-collection,
+        [data-theme="${currentTheme}"] .tox .tox-pop__dialog {
+            background: ${currentTheme === 'dark' ? '#2d2d2d' : '#ffffff'} !important;
+            border: 1px solid ${currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'} !important;
+            color: ${currentTheme === 'dark' ? '#ffffff' : '#212529'} !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox .tox-collection__item {
+            background: ${currentTheme === 'dark' ? '#2d2d2d' : '#ffffff'} !important;
+            color: ${currentTheme === 'dark' ? '#ffffff' : '#212529'} !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox .tox-collection__item:hover {
+            background: ${currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'} !important;
+            color: ${currentTheme === 'dark' ? '#ffffff' : '#212529'} !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox .tox-swatch__grid {
+            background: ${currentTheme === 'dark' ? '#2d2d2d' : '#ffffff'} !important;
+            border: 1px solid ${currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'} !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox .tox-swatch {
+            border: 1px solid ${currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.2)'} !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox .tox-swatch__select-btn {
+            background: transparent !important;
+            border: 1px solid ${currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'} !important;
+            color: ${currentTheme === 'dark' ? '#ffffff' : '#212529'} !important;
+        }
+        
+        [data-theme="${currentTheme}"] .tox .tox-textfield,
+        [data-theme="${currentTheme}"] .tox .tox-textarea {
+            background: ${currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'} !important;
+            border: 1px solid ${currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'} !important;
+            color: ${currentTheme === 'dark' ? '#ffffff' : '#212529'} !important;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Удаляем старый стиль если есть
+    const oldStyle = document.querySelector('#tinymce-theme-style');
+    if (oldStyle) {
+        oldStyle.remove();
+    }
+    style.id = 'tinymce-theme-style';
+    
+    // Принудительно обновляем стили цветовых палитр
+    updateColorPickerStyles(currentTheme);
+    
+                // Принудительно обновляем стили split button
+                forceUpdateSplitButtonStyles(currentTheme);
+                
+                // Добавляем обработчики кликов для split button
+                addSplitButtonClickHandlers();
+}
+
+// Функция для принудительного обновления стилей split button
+function forceUpdateSplitButtonStyles(theme) {
+    // Ждем немного, чтобы TinyMCE успел отрендерить элементы
+    setTimeout(() => {
+        const splitButtons = document.querySelectorAll('.tox .tox-split-button__chevron');
+        splitButtons.forEach(button => {
+            // Принудительно удаляем все inline стили
+            button.removeAttribute('style');
+            
+            // Применяем новые стили
+            if (theme === 'dark') {
+                button.style.setProperty('color', '#ffffff', 'important');
+                button.style.setProperty('background', 'transparent', 'important');
+                button.style.setProperty('border', 'none', 'important');
+                button.style.setProperty('box-shadow', 'none', 'important');
+            } else {
+                button.style.setProperty('color', '#212529', 'important');
+                button.style.setProperty('background', 'transparent', 'important');
+                button.style.setProperty('border', 'none', 'important');
+                button.style.setProperty('box-shadow', 'none', 'important');
+            }
+            
+            // Обновляем все дочерние элементы
+            const allChildren = button.querySelectorAll('*');
+            allChildren.forEach(child => {
+                child.removeAttribute('style');
+                if (theme === 'dark') {
+                    child.style.setProperty('color', '#ffffff', 'important');
+                    child.style.setProperty('fill', '#ffffff', 'important');
+                } else {
+                    child.style.setProperty('color', '#212529', 'important');
+                    child.style.setProperty('fill', '#212529', 'important');
+                }
+            });
+        });
+    }, 100);
+}
+
+// Функция для добавления обработчиков кликов на split button
+function addSplitButtonClickHandlers() {
+    // Ждем немного, чтобы TinyMCE успел отрендерить элементы
+    setTimeout(() => {
+        // Находим все split button для цветов
+        const splitButtons = document.querySelectorAll('.tox .tox-split-button[data-mce-name="forecolor"], .tox .tox-split-button[data-mce-name="backcolor"]');
+        
+        splitButtons.forEach(splitButton => {
+            // Находим основную кнопку (первую кнопку в split button)
+            const mainButton = splitButton.querySelector('.tox-tbtn:first-child');
+            
+            if (mainButton && !mainButton.hasAttribute('data-click-handler-added')) {
+                // Добавляем обработчик клика
+                mainButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Определяем тип кнопки (цвет текста или фона)
+                    const isForeColor = splitButton.getAttribute('data-mce-name') === 'forecolor';
+                    
+                    // Открываем цветовую палитру
+                    if (tinymceEditor) {
+                        if (isForeColor) {
+                            // Открываем диалог выбора цвета текста
+                            tinymceEditor.windowManager.open({
+                                title: 'Выбор цвета текста',
+                                body: {
+                                    type: 'panel',
+                                    items: [
+                                        {
+                                            type: 'colorinput',
+                                            name: 'color',
+                                            label: 'Цвет текста',
+                                            value: '#000000'
+                                        }
+                                    ]
+                                },
+                                buttons: [
+                                    {
+                                        type: 'submit',
+                                        text: 'Применить'
+                                    },
+                                    {
+                                        type: 'cancel',
+                                        text: 'Отмена'
+                                    }
+                                ],
+                                onSubmit: function(api) {
+                                    const color = api.getData().color;
+                                    tinymceEditor.execCommand('ForeColor', false, color);
+                                    api.close();
+                                }
+                            });
+                        } else {
+                            // Открываем диалог выбора цвета фона
+                            tinymceEditor.windowManager.open({
+                                title: 'Выбор цвета фона',
+                                body: {
+                                    type: 'panel',
+                                    items: [
+                                        {
+                                            type: 'colorinput',
+                                            name: 'color',
+                                            label: 'Цвет фона',
+                                            value: '#ffffff'
+                                        }
+                                    ]
+                                },
+                                buttons: [
+                                    {
+                                        type: 'submit',
+                                        text: 'Применить'
+                                    },
+                                    {
+                                        type: 'cancel',
+                                        text: 'Отмена'
+                                    }
+                                ],
+                                onSubmit: function(api) {
+                                    const color = api.getData().color;
+                                    tinymceEditor.execCommand('HiliteColor', false, color);
+                                    api.close();
+                                }
+                            });
+                        }
+                    }
+                });
+                
+                // Помечаем, что обработчик уже добавлен
+                mainButton.setAttribute('data-click-handler-added', 'true');
+            }
+        });
+    }, 200);
+}
+
+// Функция для обновления стилей цветовых палитр
+function updateColorPickerStyles(theme) {
+    // Обновляем стили всех диалогов
+    const dialogs = document.querySelectorAll('.tox .tox-dialog');
+    dialogs.forEach(dialog => {
+        if (theme === 'dark') {
+            dialog.style.setProperty('--text-color', '#ffffff');
+            dialog.style.setProperty('--border-color', 'rgba(255, 255, 255, 0.2)');
+            dialog.style.setProperty('--button-hover', 'rgba(255, 255, 255, 0.1)');
+        } else {
+            dialog.style.setProperty('--text-color', '#212529');
+            dialog.style.setProperty('--border-color', 'rgba(0, 0, 0, 0.2)');
+            dialog.style.setProperty('--button-hover', 'rgba(0, 0, 0, 0.05)');
+        }
+    });
+    
+    // Обновляем стили заголовков диалогов
+    const headers = document.querySelectorAll('.tox .tox-dialog__header');
+    headers.forEach(header => {
+        if (theme === 'dark') {
+            header.style.borderBottomColor = 'rgba(255, 255, 255, 0.2)';
+        } else {
+            header.style.borderBottomColor = 'rgba(0, 0, 0, 0.2)';
+        }
+    });
+    
+    // Обновляем стили футеров диалогов
+    const footers = document.querySelectorAll('.tox .tox-dialog__footer');
+    footers.forEach(footer => {
+        if (theme === 'dark') {
+            footer.style.borderTopColor = 'rgba(255, 255, 255, 0.2)';
+        } else {
+            footer.style.borderTopColor = 'rgba(0, 0, 0, 0.2)';
+        }
+    });
+    
+    // Обновляем стили текста в диалогах
+    const dialogTexts = document.querySelectorAll('.tox .tox-dialog p, .tox .tox-dialog label, .tox .tox-dialog span, .tox .tox-dialog h1, .tox .tox-dialog h2, .tox .tox-dialog h3, .tox .tox-dialog h4, .tox .tox-dialog h5, .tox .tox-dialog h6');
+    dialogTexts.forEach(text => {
+        text.style.color = theme === 'dark' ? '#ffffff' : '#212529';
+    });
+    
+    // Обновляем стили кнопок в диалогах
+    const dialogButtons = document.querySelectorAll('.tox .tox-dialog .tox-button');
+    dialogButtons.forEach(button => {
+        if (theme === 'dark') {
+            button.style.color = '#ffffff';
+            button.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        } else {
+            button.style.color = '#212529';
+            button.style.borderColor = 'rgba(0, 0, 0, 0.2)';
+        }
+    });
+    
+    // Обновляем стили полей ввода в диалогах
+    const dialogInputs = document.querySelectorAll('.tox .tox-dialog .tox-textfield, .tox .tox-dialog .tox-textarea, .tox .tox-dialog .tox-selectfield select');
+    dialogInputs.forEach(input => {
+        if (theme === 'dark') {
+            input.style.color = '#ffffff';
+            input.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+        } else {
+            input.style.color = '#212529';
+            input.style.borderColor = 'rgba(0, 0, 0, 0.2)';
+        }
+    });
+    
+    // Обновляем стили цветовых палитр
+    const colorGrids = document.querySelectorAll('.tox .tox-swatch__grid');
+    colorGrids.forEach(grid => {
+        if (theme === 'dark') {
+            grid.style.background = '#2d2d2d';
+            grid.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+        } else {
+            grid.style.background = '#ffffff';
+            grid.style.border = '1px solid rgba(0, 0, 0, 0.2)';
+        }
+    });
+    
+    // Обновляем стили кнопок цветовой палитры
+    const colorButtons = document.querySelectorAll('.tox .tox-swatch__select-btn');
+    colorButtons.forEach(button => {
+        if (theme === 'dark') {
+            button.style.background = 'transparent';
+            button.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+            button.style.color = '#ffffff';
+        } else {
+            button.style.background = 'transparent';
+            button.style.border = '1px solid rgba(0, 0, 0, 0.2)';
+            button.style.color = '#212529';
+        }
+        
+        // Обновляем стили для стрелок в кнопках
+        const svg = button.querySelector('svg');
+        const icon = button.querySelector('.tox-icon');
+        if (svg) {
+            svg.style.fill = theme === 'dark' ? '#ffffff' : '#212529';
+        }
+        if (icon) {
+            icon.style.color = theme === 'dark' ? '#ffffff' : '#212529';
+        }
+    });
+    
+    // Обновляем стили для стрелок в кнопках цветов в тулбаре
+    const toolbarColorButtons = document.querySelectorAll('.tox .tox-tbtn[aria-label*="color"], .tox .tox-tbtn[aria-label*="Color"], .tox .tox-tbtn[title*="color"], .tox .tox-tbtn[title*="Color"]');
+    toolbarColorButtons.forEach(button => {
+        const svg = button.querySelector('svg');
+        if (svg) {
+            svg.style.fill = theme === 'dark' ? '#ffffff' : '#212529';
+        }
+    });
+    
+    // Обновляем стили для split-кнопок
+    const splitButtons = document.querySelectorAll('.tox .tox-split-button__chevron');
+    splitButtons.forEach(button => {
+        if (theme === 'dark') {
+            button.style.setProperty('color', '#ffffff', 'important');
+            button.style.setProperty('background', 'transparent', 'important');
+            button.style.setProperty('border', 'none', 'important');
+            button.style.setProperty('box-shadow', 'none', 'important');
+        } else {
+            button.style.setProperty('color', '#212529', 'important');
+            button.style.setProperty('background', 'transparent', 'important');
+            button.style.setProperty('border', 'none', 'important');
+            button.style.setProperty('box-shadow', 'none', 'important');
+        }
+        
+        const svg = button.querySelector('svg');
+        if (svg) {
+            svg.style.setProperty('fill', theme === 'dark' ? '#ffffff' : '#212529', 'important');
+            svg.style.setProperty('color', theme === 'dark' ? '#ffffff' : '#212529', 'important');
+            svg.style.setProperty('background', 'transparent', 'important');
+            svg.style.setProperty('border', 'none', 'important');
+            svg.style.setProperty('box-shadow', 'none', 'important');
+            
+            const path = svg.querySelector('path');
+            if (path) {
+                path.style.setProperty('fill', theme === 'dark' ? '#ffffff' : '#212529', 'important');
+                path.style.setProperty('background', 'transparent', 'important');
+                path.style.setProperty('border', 'none', 'important');
+                path.style.setProperty('box-shadow', 'none', 'important');
+            }
+        }
+        
+        // Принудительно обновляем все дочерние элементы
+        const allChildren = button.querySelectorAll('*');
+        allChildren.forEach(child => {
+            if (theme === 'dark') {
+                child.style.setProperty('color', '#ffffff', 'important');
+                child.style.setProperty('fill', '#ffffff', 'important');
+            } else {
+                child.style.setProperty('color', '#212529', 'important');
+                child.style.setProperty('fill', '#212529', 'important');
+            }
+        });
+    });
+    
+    // Обновляем стили для всех SVG в кнопках
+    const allButtonSvgs = document.querySelectorAll('.tox .tox-tbtn svg');
+    allButtonSvgs.forEach(svg => {
+        svg.style.setProperty('fill', theme === 'dark' ? '#ffffff' : '#212529', 'important');
+        svg.style.setProperty('color', theme === 'dark' ? '#ffffff' : '#212529', 'important');
+        
+        const path = svg.querySelector('path');
+        if (path) {
+            path.style.setProperty('fill', theme === 'dark' ? '#ffffff' : '#212529', 'important');
+        }
+    });
+    
+    // Обновляем стили полей ввода
+    const textFields = document.querySelectorAll('.tox .tox-textfield, .tox .tox-textarea');
+    textFields.forEach(field => {
+        if (theme === 'dark') {
+            field.style.background = 'rgba(255, 255, 255, 0.1)';
+            field.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+            field.style.color = '#ffffff';
+        } else {
+            field.style.background = 'rgba(0, 0, 0, 0.05)';
+            field.style.border = '1px solid rgba(0, 0, 0, 0.2)';
+            field.style.color = '#212529';
+        }
+    });
 }
 
 // Инициализация редактора TinyMCE с улучшенной обработкой ошибок
-function initTinyMCE() {
+async function initTinyMCE() {
     if (typeof tinymce === 'undefined') {
         console.error('TinyMCE library is not loaded');
         return false;
@@ -1187,50 +1667,48 @@ function initTinyMCE() {
     }
     
     try {
+        const lang = getTinyMCELanguage();
+        console.log('TinyMCE: Starting initialization with language:', lang);
+        
     tinymce.init({
         selector: '.tinymce',
         base_url: '/editor_news',
         suffix: '.min',
-            height: responsiveManager.getFullscreenSettings().height,
-            width: responsiveManager.getFullscreenSettings().width,
-            menubar: responsiveManager.getMenubarForBreakpoint(),
         plugins: [
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'anchor', 'searchreplace', 'visualblocks', 'code',
             'insertdatetime', 'media', 'table', 'help', 'wordcount', 'emoticons',
             'codesample', 'pagebreak', 'nonbreaking', 'quickbars', 'accordion',
             'autosave', 'directionality', 'visualchars'
         ],
-            toolbar: responsiveManager.getToolbarForBreakpoint(),
-            toolbar_mode: responsiveManager.getToolbarModeForBreakpoint(),
+        toolbar: [
+            'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough superscript subscript | ' +
+            'alignleft aligncenter alignright alignjustify | outdent indent | ' +
+            'numlist bullist | forecolor backcolor removeformat | ' +
+            'link image media | table | charmap emoticons | ' +
+            'code | preview | insertfile anchor codesample | ' +
+            'ltr rtl | pagebreak | visualblocks visualchars | searchreplace | wordcount | help'
+        ],
+        toolbar_mode: 'sliding',
             toolbar_sticky: responsiveManager.isDesktop,
-        language: getTinyMCELanguage(),
+        language: lang,
+        language_url: lang !== 'en' ? `/editor_news/langs/${lang}.js` : undefined,
         license_key: 'gpl',
         branding: false,
         promotion: false,
-            resize: responsiveManager.isDesktop,
+        tooltip: true,
+        quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+        quickbars_image_toolbar: 'alignleft aligncenter alignright | imageoptions',
+            resize: false,
+            height: '100%',
+            min_height: 400,
             elementpath: responsiveManager.isDesktop,
         statusbar: false,
-            quickbars_selection_toolbar: (responsiveManager.isTouch || pointerManager.isTouch()) ? 'bold italic | quicklink h2 h3 blockquote quickimage quicktable' : false,
-            quickbars_insert_toolbar: (responsiveManager.isTouch || pointerManager.isTouch()) ? 'quickimage quicktable' : false,
+            quickbars_insert_toolbar: 'quickimage quicktable',
             contextmenu: (responsiveManager.isTouch || pointerManager.isTouch()) ? 'link image imagetools table' : 'link image imagetools table',
             mobile: responsiveManager.isMobile,
             touch: responsiveManager.isTouch || pointerManager.isTouch(),
-            menubar_height: responsiveManager.getFullscreenSettings().menubar_height,
-            toolbar_height: responsiveManager.getFullscreenSettings().toolbar_height,
-        menu: {
-            file: { title: getTinyMCETranslation('File'), items: 'newdocument restoredraft | preview | export | deleteallconversations' },
-            edit: { title: getTinyMCETranslation('Edit'), items: 'undo redo | cut copy paste pastetext | selectall | searchreplace' },
-            view: { title: getTinyMCETranslation('View'), items: 'code | visualaid visualchars visualblocks | spellchecker | preview fullscreen | showcomments' },
-            insert: { title: getTinyMCETranslation('Insert'), items: 'image link media codesample inserttable | charmap emoticons | pagebreak nonbreaking anchor | insertdatetime' },
-            format: { title: getTinyMCETranslation('Format'), items: 'bold italic underline strikethrough superscript subscript codeformat | blocks fontfamily fontsize align lineheight | forecolor backcolor | removeformat' },
-            tools: { title: getTinyMCETranslation('Tools'), items: 'spellchecker spellcheckerlanguage | a11ycheck code wordcount' },
-                table: { title: getTinyMCETranslation('Table'), items: 'inserttable | mceInsertTableSimple | mceInsertTableCustom | cell row column | advtablesort | tableprops deletetable' },
-            help: { title: getTinyMCETranslation('Help'), items: 'help' }
-        },
-        content_style: getTinyMCEContentStyle(),
-        skin: getTinyMCESkin(),
-        content_css: getTinyMCEContentCSS(),
+        menubar: false,
             // Настройки для таблиц
             table_default_attributes: {
                 border: '1'
@@ -1239,7 +1717,7 @@ function initTinyMCE() {
                 'border-collapse': 'collapse',
                 'width': '100%'
             },
-            table_cell_advtab: false,
+            table_cell_advtab: true,
             table_cell_class_list: [
                 {title: 'None', value: ''},
                 {title: 'Header', value: 'header'},
@@ -1253,58 +1731,267 @@ function initTinyMCE() {
             table_appearance_options: true,
             table_grid: true,
             table_tab_navigation: true,
+            table_clone_elements: 'strong em b i span font h1 h2 h3 h4 h5 h6 p div',
+            table_cell_advtab: true,
+            table_row_advtab: true,
+            table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+            table_context_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+            
+            // Настройки для изображений
+            image_advtab: true,
+            image_caption: true,
+            image_description: true,
+            image_title: true,
+            image_uploadtab: true,
+            
+            // Настройки для ссылок
+            link_assume_external_targets: true,
+            link_context_toolbar: true,
+            link_default_protocol: 'https',
+            
+            // Настройки для текста
+            textpattern_patterns: [
+                {start: '*', end: '*', format: 'italic'},
+                {start: '**', end: '**', format: 'bold'},
+                {start: '#', format: 'h1'},
+                {start: '##', format: 'h2'},
+                {start: '###', format: 'h3'},
+                {start: '####', format: 'h4'},
+                {start: '#####', format: 'h5'},
+                {start: '######', format: 'h6'},
+                {start: '1. ', cmd: 'InsertOrderedList'},
+                {start: '* ', cmd: 'InsertUnorderedList'},
+                {start: '- ', cmd: 'InsertUnorderedList'}
+            ],
+            
+            // Настройки для пасты (базовые)
+            paste_data_images: true,
+            paste_as_text: false,
+            
+            // Настройки для автосохранения
+            autosave_ask_before_unload: true,
+            autosave_interval: '30s',
+            autosave_prefix: '{path}{query}-{id}-',
+            autosave_retention: '2m',
+            autosave_restore_when_empty: false,
+            
+            // Настройки для кода
+            codesample_languages: [
+                {text: 'HTML/XML', value: 'markup'},
+                {text: 'JavaScript', value: 'javascript'},
+                {text: 'CSS', value: 'css'},
+                {text: 'PHP', value: 'php'},
+                {text: 'Ruby', value: 'ruby'},
+                {text: 'Python', value: 'python'},
+                {text: 'Java', value: 'java'},
+                {text: 'C', value: 'c'},
+                {text: 'C#', value: 'csharp'},
+                {text: 'C++', value: 'cpp'}
+            ],
+            
+            // Настройки для медиа
+            media_live_embeds: true,
+            media_url_resolver: function (data, resolve) {
+                let url = data.url;
+                
+                // YouTube
+                if (url.indexOf('youtube.com/watch') > 0 || url.indexOf('youtu.be/') > 0) {
+                    let videoId = '';
+                    if (url.indexOf('youtu.be/') > 0) {
+                        videoId = url.split('youtu.be/')[1].split('?')[0];
+                    } else if (url.indexOf('youtube.com/watch') > 0) {
+                        videoId = url.split('v=')[1].split('&')[0];
+                    }
+                    resolve({
+                        html: '<iframe src="https://www.youtube.com/embed/' + videoId + '" width="560" height="315" frameborder="0" allowfullscreen></iframe>'
+                    });
+                }
+                // Vimeo
+                else if (url.indexOf('vimeo.com/') > 0) {
+                    let videoId = url.split('vimeo.com/')[1].split('?')[0];
+                    resolve({
+                        html: '<iframe src="https://player.vimeo.com/video/' + videoId + '" width="560" height="315" frameborder="0" allowfullscreen></iframe>'
+                    });
+                }
+                // Общие iframe
+                else if (url.indexOf('iframe') > 0 || url.indexOf('embed') > 0) {
+                    resolve({
+                        html: '<iframe src="' + url + '" width="560" height="315" frameborder="0" allowfullscreen></iframe>'
+                    });
+                }
+                else {
+                    resolve({html: ''});
+                }
+            },
+            
+            // Кастомные стили для содержимого редактора
+            content_style: `
+                body {
+                    background: transparent !important;
+                    color: #212529 !important;
+                    font-family: inherit !important;
+                    font-size: 14px !important;
+                    line-height: 1.6 !important;
+                    margin: 0 !important;
+                    padding: 16px !important;
+                }
+                
+                p {
+                    margin: 0 0 12px 0 !important;
+                    color: #212529 !important;
+                }
+                
+                h1, h2, h3, h4, h5, h6 {
+                    color: #212529 !important;
+                    margin: 16px 0 8px 0 !important;
+                }
+                
+                a {
+                    color: #28a745 !important;
+                    text-decoration: none !important;
+                }
+                
+                a:hover {
+                    text-decoration: underline !important;
+                }
+                
+                blockquote {
+                    border-left: 4px solid #28a745 !important;
+                    margin: 16px 0 !important;
+                    padding: 8px 16px !important;
+                    background: transparent !important;
+                    color: #212529 !important;
+                }
+                
+                code {
+                    background: rgba(0, 0, 0, 0.1) !important;
+                    color: #212529 !important;
+                    padding: 2px 4px !important;
+                    border-radius: 3px !important;
+                    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+                }
+                
+                pre {
+                    background: rgba(0, 0, 0, 0.1) !important;
+                    color: #212529 !important;
+                    padding: 12px !important;
+                    border-radius: 4px !important;
+                    overflow-x: auto !important;
+                    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+                }
+                
+                table {
+                    border-collapse: collapse !important;
+                    width: 100% !important;
+                    margin: 16px 0 !important;
+                }
+                
+                table td, table th {
+                    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+                    padding: 8px 12px !important;
+                    color: #212529 !important;
+                }
+                
+                table th {
+                    background: rgba(0, 0, 0, 0.1) !important;
+                    font-weight: bold !important;
+                }
+                
+                ul, ol {
+                    margin: 12px 0 !important;
+                    padding-left: 24px !important;
+                    color: #212529 !important;
+                }
+                
+                li {
+                    margin: 4px 0 !important;
+                    color: #212529 !important;
+                }
+                
+                img {
+                    max-width: 100% !important;
+                    height: auto !important;
+                    border-radius: 4px !important;
+                }
+                
+                hr {
+                    border: none !important;
+                    border-top: 1px solid rgba(0, 0, 0, 0.2) !important;
+                    margin: 16px 0 !important;
+                }
+                
+                input, textarea {
+                    background: transparent !important;
+                    color: #212529 !important;
+                    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+                }
+                
+                input:focus, textarea:focus {
+                    border-color: #28a745 !important;
+                    outline: none !important;
+                }
+            `,
+            
             // Добавляем обработку ошибок
             init_instance_callback: function (editor) {
                 console.log('TinyMCE instance initialized successfully');
+                console.log('TinyMCE current language:', editor.getParam('language'));
+                console.log('TinyMCE language URL:', editor.getParam('language_url'));
                 
-                // Проверяем, что меню создано
+                // Принудительно применяем стили темы
                 setTimeout(() => {
-                    const menubar = document.querySelector('.tox .tox-menubar');
-                    if (menubar) {
-                        console.log('Menubar found:', menubar);
-                        menubar.style.display = 'flex';
-                        menubar.style.visibility = 'visible';
-                        menubar.style.opacity = '1';
-                    } else {
-                        console.warn('Menubar not found');
+                    applyThemeToTinyMCE();
+                    adjustEditorHeight();
+                    
+                    // Скрываем оригинальный textarea
+                    const originalTextarea = document.getElementById('editorContainer');
+                    if (originalTextarea) {
+                        originalTextarea.style.display = 'none';
                     }
+                    
+                    // Добавляем обработчики для скрытия всплывающих панелей
+                    setupTableToolbarHandlers(editor);
+                    
+                    // Добавляем обработчики для скрытия всех всплывающих панелей при клике/фокусе вне области
+                    setupPopupCloseHandlers(editor);
+                    
+                    // Добавляем переводы для выпадающих меню стилей
+                    setupStyleMenuTranslations(editor);
+                    
+                    // Отключаем все всплывающие подсказки
+                    // disableAllTooltips(editor); // Закомментировано для восстановления подсказок
                 }, 100);
                 
-                // Заменяем стандартные диалоги на кастомные
-                editor.on('BeforeOpenDialog', function(e) {
-                    e.preventDefault();
-                    
-                    if (e.dialogName === 'image') {
-                        showCustomImageDialog(editor);
-                    } else if (e.dialogName === 'link') {
-                        showCustomLinkDialog(editor);
-                    } else if (e.dialogName === 'table') {
-                        showCustomTableDialog(editor);
-                    } else if (e.dialogName === 'media') {
-                        showCustomMediaDialog(editor);
-                    } else if (e.dialogName === 'anchor') {
-                        showCustomAnchorDialog(editor);
-                    } else if (e.dialogName === 'codesample') {
-                        showCustomCodeDialog(editor);
-                    }
+                // Добавляем обработчики для диалогов
+                editor.on('OpenDialog', function(e) {
+                    setTimeout(() => {
+                        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                        updateColorPickerStyles(currentTheme);
+                    }, 50);
                 });
+                
+                editor.on('CloseDialog', function(e) {
+                    setTimeout(() => {
+                        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                        updateColorPickerStyles(currentTheme);
+                    }, 50);
+                });
+                
+                // Добавляем обработчик для конвертации blob URL при изменении контента
+                editor.on('Change', async function(e) {
+                    // Конвертируем blob URL в base64 при изменении контента
+                    const body = editor.getBody();
+                    await convertBlobUrlsToBase64InElement(body);
+                });
+                
+                // Обработчик для конвертации blob URL при изменении контента
+                editor.on('Change', async function(e) {
+                    await convertBlobUrlsToBase64InElement(editor.getBody());
+                });
+                
+                
                 
                 // Добавляем обработчики для кнопок
-                editor.addCommand('mcePageBreak', function() {
-                    insertPageBreak();
-                });
-                
-                editor.addCommand('mceInsertTable', function() {
-                    insertTable();
-                });
-                
-                editor.addCommand('mceInsertTableSimple', function() {
-                    insertTableAlternative();
-                });
-                
-                editor.addCommand('mceInsertTableCustom', function() {
-                    insertTableWithSize();
-                });
                 
                 editor.addCommand('mceInsertImage', function() {
                     insertImage();
@@ -1318,6 +2005,10 @@ function initTinyMCE() {
                     insertMedia();
                 });
                 
+                editor.addCommand('mceInsertIframe', function() {
+                    insertIframe();
+                });
+                
                 editor.addCommand('mceInsertAnchor', function() {
                     insertAnchor();
                 });
@@ -1327,6 +2018,18 @@ function initTinyMCE() {
                 });
             },
         setup: function (editor) {
+                // Добавляем кастомную иконку для iframe
+                editor.ui.registry.addIcon('iframe', '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><rect x="6" y="6" width="12" height="8" rx="1" fill="currentColor" opacity="0.3"/><path d="M8 8h8M8 12h6M8 16h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>');
+                
+                // Регистрируем кнопку iframe
+                editor.ui.registry.addButton('iframe', {
+                    icon: 'iframe',
+                    tooltip: currentLang.startsWith("ru") ? 'Вставить видео' : 'Insert Video',
+                    onAction: function() {
+                        insertIframe();
+                    }
+                });
+                
                 // Обработка ошибок инициализации
             editor.on('init', function() {
                     console.log('TinyMCE editor initialized');
@@ -1337,48 +2040,8 @@ function initTinyMCE() {
                         return;
                     }
                     
-                // Добавляем обработчики событий с поддержкой Pointer Events
-                addPointerEventListeners();
                 
-                // Добавляем обработчики для меню
-                editor.on('init', function() {
-                    console.log('Editor init event fired');
-                    
-                    // Принудительно показываем меню
-                    setTimeout(() => {
-                        const menubar = document.querySelector('.tox .tox-menubar');
-                        if (menubar) {
-                            menubar.style.display = 'flex !important';
-                            menubar.style.visibility = 'visible !important';
-                            menubar.style.opacity = '1 !important';
-                            
-                            // Добавляем обработчики кликов для пунктов меню
-                            const menuItems = menubar.querySelectorAll('.tox-mbtn');
-                            menuItems.forEach(item => {
-                                item.style.pointerEvents = 'auto';
-                                item.style.cursor = 'pointer';
-                            });
-                        }
-                    }, 200);
-                });
                 
-                // Закрываем панели при нажатии Escape
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        closeAllFloatingPanels();
-                    }
-                });
-                
-                // Добавляем обработчик для кнопок закрытия
-                document.addEventListener('click', function(e) {
-                    if (e.target.closest('.tox-button[aria-label*="close"]') || 
-                        e.target.closest('.tox-button[title*="close"]')) {
-                        const panel = e.target.closest('.tox-pop');
-                        if (panel) {
-                            panel.classList.add('tox-pop--hidden');
-            }
-        }
-    });
                 
                 // Исправляем z-index для всех плавающих элементов
                 const observer = new MutationObserver(function(mutations) {
@@ -1407,10 +2070,6 @@ function initTinyMCE() {
                     
                     // Применяем адаптивные стили меню после инициализации
                     setTimeout(() => {
-                        if (responsiveManager) {
-                            responsiveManager.applyMenuStyles();
-                            responsiveManager.applyFullscreenStyles();
-                        }
                     }, 300);
                     
                     // Добавляем обработчик для изменения системной темы
@@ -1418,27 +2077,10 @@ function initTinyMCE() {
                         const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
                         mediaQuery.addEventListener('change', function(e) {
                             const currentTheme = document.documentElement.getAttribute('data-theme');
-                            if (currentTheme === 'auto') {
-            setTimeout(() => {
-                                    updateTinyMCETheme();
-                                }, 200);
-                            }
                         });
                     }
                 });
                 
-                // Обработка ошибок
-                editor.on('error', function(e) {
-                    console.error('TinyMCE error:', e);
-                });
-                
-                editor.on('change', function () {
-                    try {
-                        editor.save();
-                    } catch (error) {
-                        console.error('Error saving TinyMCE content:', error);
-                    }
-                });
                 
                 // Сохраняем ссылку на редактор
                 tinymceEditor = editor;
@@ -1464,7 +2106,7 @@ function openModal(noteId, noteContent, noteCreationTime) {
     let initAttempts = 0;
     const maxInitAttempts = 3;
     
-    const tryInitTinyMCE = () => {
+    const tryInitTinyMCE = async () => {
         if (initAttempts >= maxInitAttempts) {
             console.error('Failed to initialize TinyMCE after multiple attempts');
             showCustomAlert(
@@ -1478,7 +2120,8 @@ function openModal(noteId, noteContent, noteCreationTime) {
         initAttempts++;
         
         if (!tinymceEditor || tinymceEditor.destroyed) {
-            if (!initTinyMCE()) {
+            const result = await initTinyMCE();
+            if (!result) {
                 // Повторная попытка через 500мс
                 setTimeout(tryInitTinyMCE, 500);
                 return false;
@@ -1488,9 +2131,11 @@ function openModal(noteId, noteContent, noteCreationTime) {
         return true;
     };
     
-    if (!tryInitTinyMCE()) {
+    tryInitTinyMCE().then(result => {
+        if (!result) {
         return;
     }
+    });
 
     // Ждем полной инициализации редактора
     const waitForEditor = () => {
@@ -1523,7 +2168,9 @@ function openModal(noteId, noteContent, noteCreationTime) {
         .then(() => {
             try {
                 if (noteId && noteContent) {
-        tinymceEditor.setContent(noteContent);
+        // Валидируем и исправляем изображения перед загрузкой в редактор
+        const validatedContent = validateAndFixImages(noteContent);
+        tinymceEditor.setContent(validatedContent);
         currentNoteId = noteId;
     } else {
         tinymceEditor.setContent("");
@@ -1554,8 +2201,6 @@ function openModal(noteId, noteContent, noteCreationTime) {
         });
 
     document.getElementById("saveNoteButton").onclick = async function () {
-        // Закрываем все плавающие панели перед сохранением
-        closeAllFloatingPanels();
         
         let content;
         if (tinymceEditor) {
@@ -1572,6 +2217,12 @@ function openModal(noteId, noteContent, noteCreationTime) {
 
             return;
         }
+        
+        // Конвертируем все blob URL в base64 перед сохранением
+        content = await convertBlobUrlsToBase64InContent(content);
+        
+        // Проверяем и исправляем поврежденные изображения
+        content = validateAndFixImages(content);
 
         const timestamp = Date.now();
 
@@ -1602,8 +2253,6 @@ function openModal(noteId, noteContent, noteCreationTime) {
 
     // Отмена редактирования/добавления
     document.getElementById("cancelNoteButton").onclick = function () {
-        // Закрываем все плавающие панели TinyMCE
-        closeAllFloatingPanels();
         
         modal.style.display = "none";
         document.body.classList.remove('modal-open');
@@ -1657,6 +2306,13 @@ async function loadNotes() {
         
         // Сортируем по времени последнего изменения
         notes.sort((a, b) => b.lastModified - a.lastModified);
+        
+        // Валидируем и исправляем изображения в каждой заметке
+        notes.forEach(note => {
+            if (note.content) {
+                note.content = validateAndFixImages(note.content);
+            }
+        });
 
     // Если массив заметок пуст, выводим соответствующее сообщение
         if (notes.length === 0) {
@@ -1664,7 +2320,7 @@ async function loadNotes() {
         noNotesMessage.classList.add("noNotes");
 
         // Устанавливаем текст в зависимости от языка
-        noNotesMessage.textContent = t("noNotesToDisplay");
+        noNotesMessage.textContent = t("noNotesMessage");
         viewer.style.display = "none";
         notesContainer.appendChild(noNotesMessage);
     }
@@ -1790,11 +2446,398 @@ async function loadNotes() {
     }
 }
 
+// Функция для обработки медиа-контента перед экспортом
+async function processMediaContent(content) {
+    try {
+        // Находим все изображения в контенте
+        const imgRegex = /<img[^>]+src="([^"]+)"[^>]*>/gi;
+        const images = [];
+        let match;
+        
+        while ((match = imgRegex.exec(content)) !== null) {
+            images.push(match[1]);
+        }
+        
+        // Находим все видео в контенте
+        const videoRegex = /<video[^>]+src="([^"]+)"[^>]*>/gi;
+        const videos = [];
+        
+        while ((match = videoRegex.exec(content)) !== null) {
+            videos.push(match[1]);
+        }
+        
+        // Находим все аудио в контенте
+        const audioRegex = /<audio[^>]+src="([^"]+)"[^>]*>/gi;
+        const audios = [];
+        
+        while ((match = audioRegex.exec(content)) !== null) {
+            audios.push(match[1]);
+        }
+        
+        let processedContent = content;
+        
+        // Обрабатываем изображения
+        for (const imgSrc of images) {
+            if (imgSrc.startsWith('data:')) {
+                // Изображение уже в base64, оставляем как есть
+                continue;
+            } else if (imgSrc.startsWith('blob:')) {
+                // Конвертируем blob в base64
+                try {
+                    const response = await fetch(imgSrc);
+                    const blob = await response.blob();
+                    const base64 = await blobToBase64(blob);
+                    processedContent = processedContent.replace(imgSrc, base64);
+                } catch (error) {
+                    console.warn('Failed to convert blob to base64:', error);
+                }
+            }
+        }
+        
+        // Обрабатываем видео
+        for (const videoSrc of videos) {
+            if (videoSrc.startsWith('data:')) {
+                continue;
+            } else if (videoSrc.startsWith('blob:')) {
+                try {
+                    const response = await fetch(videoSrc);
+                    const blob = await response.blob();
+                    const base64 = await blobToBase64(blob);
+                    processedContent = processedContent.replace(videoSrc, base64);
+                } catch (error) {
+                    console.warn('Failed to convert video blob to base64:', error);
+                }
+            }
+        }
+        
+        // Обрабатываем аудио
+        for (const audioSrc of audios) {
+            if (audioSrc.startsWith('data:')) {
+                continue;
+            } else if (audioSrc.startsWith('blob:')) {
+                try {
+                    const response = await fetch(audioSrc);
+                    const blob = await response.blob();
+                    const base64 = await blobToBase64(blob);
+                    processedContent = processedContent.replace(audioSrc, base64);
+                } catch (error) {
+                    console.warn('Failed to convert audio blob to base64:', error);
+                }
+            }
+        }
+        
+        return processedContent;
+    } catch (error) {
+        console.error('Error processing media content:', error);
+        return content; // Возвращаем оригинальный контент в случае ошибки
+    }
+}
+
+// Функция для конвертации blob в base64
+function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        if (!blob || blob.size === 0) {
+            reject(new Error('Empty or invalid blob'));
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = () => {
+            if (reader.result && reader.result.length > 0) {
+                resolve(reader.result);
+            } else {
+                reject(new Error('Empty result from FileReader'));
+            }
+        };
+        reader.onerror = (error) => {
+            console.error('FileReader error:', error);
+            reject(error);
+        };
+        reader.onabort = () => {
+            reject(new Error('FileReader aborted'));
+        };
+        
+        try {
+            reader.readAsDataURL(blob);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+// Функция для конвертации blob URL в base64 в элементе
+async function convertBlobUrlsToBase64InElement(element) {
+    if (!element) return;
+    
+    // Обрабатываем изображения
+    const images = element.querySelectorAll('img[src^="blob:"]');
+    for (const img of images) {
+        try {
+            // Проверяем, что изображение еще не конвертировано
+            if (img.src.startsWith('data:')) continue;
+            
+            const response = await fetch(img.src);
+            if (!response.ok) {
+                console.warn('Failed to fetch image blob:', response.status);
+                continue;
+            }
+            
+            const blob = await response.blob();
+            if (blob.size === 0) {
+                console.warn('Empty blob for image:', img.src);
+                continue;
+            }
+            
+            // Проверяем тип файла
+            if (!blob.type.startsWith('image/')) {
+                console.warn('Invalid image type:', blob.type);
+                continue;
+            }
+            
+            const base64 = await blobToBase64(blob);
+            if (base64 && base64.length > 0) {
+                img.src = base64;
+                console.log('Successfully converted image blob to base64');
+            } else {
+                console.warn('Failed to convert image to base64 - empty result');
+            }
+        } catch (error) {
+            console.warn('Failed to convert image blob to base64:', error);
+            // Добавляем placeholder для поврежденного изображения
+            img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgRXJyb3I8L3RleHQ+PC9zdmc+';
+            img.alt = 'Image Error';
+        }
+    }
+    
+    // Обрабатываем видео
+    const videos = element.querySelectorAll('video source[src^="blob:"], video[src^="blob:"]');
+    for (const video of videos) {
+        try {
+            if (video.src.startsWith('data:')) continue;
+            
+            const response = await fetch(video.src);
+            if (!response.ok) continue;
+            
+            const blob = await response.blob();
+            if (blob.size === 0) continue;
+            
+            if (!blob.type.startsWith('video/')) continue;
+            
+            const base64 = await blobToBase64(blob);
+            if (base64 && base64.length > 0) {
+                video.src = base64;
+                console.log('Successfully converted video blob to base64');
+            }
+        } catch (error) {
+            console.warn('Failed to convert video blob to base64:', error);
+        }
+    }
+    
+    // Обрабатываем аудио
+    const audios = element.querySelectorAll('audio source[src^="blob:"], audio[src^="blob:"]');
+    for (const audio of audios) {
+        try {
+            if (audio.src.startsWith('data:')) continue;
+            
+            const response = await fetch(audio.src);
+            if (!response.ok) continue;
+            
+            const blob = await response.blob();
+            if (blob.size === 0) continue;
+            
+            if (!blob.type.startsWith('audio/')) continue;
+            
+            const base64 = await blobToBase64(blob);
+            if (base64 && base64.length > 0) {
+                audio.src = base64;
+                console.log('Successfully converted audio blob to base64');
+            }
+        } catch (error) {
+            console.warn('Failed to convert audio blob to base64:', error);
+        }
+    }
+}
+
+// Функция для конвертации всех blob URL в base64 в контенте
+async function convertBlobUrlsToBase64InContent(content) {
+    if (!content) return content;
+    
+    // Создаем временный элемент для парсинга HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = content;
+    
+    // Конвертируем все blob URL
+    await convertBlobUrlsToBase64InElement(tempDiv);
+    
+    return tempDiv.innerHTML;
+}
+
+// Функция для проверки и восстановления поврежденных изображений
+function validateAndFixImages(content) {
+    if (!content) return content;
+    
+    // Создаем временный элемент для парсинга HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = content;
+    
+    // Находим все изображения
+    const images = tempDiv.querySelectorAll('img');
+    images.forEach(img => {
+        // Проверяем, что изображение имеет корректный src
+        if (!img.src || img.src === '' || img.src === 'undefined') {
+            // Заменяем на placeholder
+            img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgRXJyb3I8L3RleHQ+PC9zdmc+';
+            img.alt = 'Image Error';
+        }
+        
+        // Проверяем, что base64 изображение корректно
+        if (img.src.startsWith('data:image/')) {
+            // Проверяем, что base64 строка не повреждена
+            const base64Part = img.src.split(',')[1];
+            if (!base64Part || base64Part.length < 100) {
+                // Заменяем на placeholder
+                img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgRXJyb3I8L3RleHQ+PC9zdmc+';
+                img.alt = 'Image Error';
+            }
+        }
+    });
+    
+    return tempDiv.innerHTML;
+}
+
+// Функция для сжатия данных экспорта
+function compressExportData(exportData) {
+    const jsonString = JSON.stringify(exportData);
+    
+    // Простая компрессия: заменяем часто встречающиеся строки на короткие коды
+    const commonStrings = [
+        'data:image/',
+        'data:video/',
+        'data:audio/',
+        'base64,',
+        '<!-- Exported on',
+        '-->',
+        'src="',
+        'alt="',
+        'class="',
+        'style="',
+        'width="',
+        'height="'
+    ];
+    
+    let compressed = jsonString;
+    const replacements = {};
+    
+    // Создаем словарь замен
+    commonStrings.forEach((str, index) => {
+        const code = `__${index.toString(36)}__`;
+        replacements[code] = str;
+        compressed = compressed.replace(new RegExp(str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), code);
+    });
+    
+    // Создаем финальный объект с компрессией
+    const compressedData = {
+        compressed: true,
+        replacements: replacements,
+        data: compressed
+    };
+    
+    return JSON.stringify(compressedData);
+}
+
+// Универсальная функция для скачивания файлов с поддержкой мобильных устройств
+function downloadFile(blob, filename, mimeType = "application/octet-stream") {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+    
+    // Создаем ссылку для скачивания
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    
+    // Настраиваем MIME-тип для лучшей совместимости
+    if (mimeType) {
+        blob = new Blob([blob], { type: mimeType });
+        link.href = URL.createObjectURL(blob);
+    }
+    
+    if (isMobile) {
+        // На мобильных устройствах добавляем дополнительные атрибуты
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener');
+        
+        if (isIOS) {
+            // iOS требует специальной обработки
+            const tempLink = document.createElement('a');
+            tempLink.href = link.href;
+            tempLink.download = link.download;
+            tempLink.style.display = 'none';
+            document.body.appendChild(tempLink);
+            
+            // Имитируем клик пользователя
+            const clickEvent = new MouseEvent('click', {
+                view: window,
+                bubbles: true,
+                cancelable: true
+            });
+            tempLink.dispatchEvent(clickEvent);
+            
+            // Удаляем временную ссылку
+            setTimeout(() => {
+                if (document.body.contains(tempLink)) {
+                    document.body.removeChild(tempLink);
+                }
+            }, 100);
+        } else if (isAndroid) {
+            // Android - стандартный подход
+            link.click();
+        } else {
+            // Другие мобильные браузеры
+            link.click();
+        }
+    } else {
+        // Десктоп - стандартный подход
+        link.click();
+    }
+    
+    // Очищаем URL после скачивания
+    setTimeout(() => {
+        URL.revokeObjectURL(link.href);
+    }, 1000);
+}
+
+// Функция для декомпрессии данных импорта
+function decompressImportData(compressedString) {
+    try {
+        const compressedData = JSON.parse(compressedString);
+        
+        if (!compressedData.compressed) {
+            return compressedString; // Не сжатые данные
+        }
+        
+        let decompressed = compressedData.data;
+        
+        // Восстанавливаем замененные строки
+        Object.entries(compressedData.replacements).forEach(([code, original]) => {
+            decompressed = decompressed.replace(new RegExp(code.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), original);
+        });
+        
+        return decompressed;
+    } catch (error) {
+        console.warn('Decompression failed:', error);
+        return compressedString; // Возвращаем исходные данные
+    }
+}
+
 async function exportNote(noteContent, password) {
     try {
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const uniqueTag = `<!-- Exported on ${timestamp} -->\n`;
-    const contentWithTag = uniqueTag + noteContent;
+        
+        // Обрабатываем медиа-контент перед экспортом
+        const processedContent = await processMediaContent(noteContent);
+        const contentWithTag = uniqueTag + processedContent;
 
         // Дополнительная обфускация файла
         const obfuscatedContent = advancedEncryption.obfuscateFile(contentWithTag);
@@ -1802,11 +2845,51 @@ async function exportNote(noteContent, password) {
         // Улучшенное шифрование с обфускацией
         const encrypted = await advancedEncryption.encrypt(obfuscatedContent, password);
         
-        const blob = new Blob([encrypted], { type: "application/octet-stream" });
-    const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-    link.download = `encrypted_note_${timestamp}.note`;
-    link.click();
+        // Создаем метаданные для экспорта
+        const exportMetadata = {
+            version: "2.0",
+            timestamp: timestamp,
+            hasMedia: processedContent !== noteContent,
+            encryption: "AES-GCM-256",
+            compression: "gzip",
+            mediaCount: {
+                images: (processedContent.match(/<img[^>]+>/gi) || []).length,
+                videos: (processedContent.match(/<video[^>]+>/gi) || []).length,
+                audios: (processedContent.match(/<audio[^>]+>/gi) || []).length
+            },
+            contentSize: processedContent.length,
+            encryptedSize: encrypted.length
+        };
+        
+        // Создаем архив с зашифрованным контентом и метаданными
+        const exportData = {
+            metadata: exportMetadata,
+            content: encrypted
+        };
+        
+        // Сжимаем данные если они большие
+        let finalData;
+        if (JSON.stringify(exportData).length > 1024 * 1024) { // Больше 1MB
+            try {
+                // Используем простую компрессию через замену повторяющихся строк
+                finalData = compressExportData(exportData);
+                exportData.metadata.compression = "custom";
+            } catch (compressionError) {
+                console.warn('Compression failed, using uncompressed data:', compressionError);
+                finalData = JSON.stringify(exportData);
+            }
+        } else {
+            finalData = JSON.stringify(exportData);
+        }
+        
+        // Определяем расширение файла в зависимости от устройства
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const fileExtension = isMobile ? "json" : "note";
+        const filename = `encrypted_note_${timestamp}.${fileExtension}`;
+        
+        // Используем универсальную функцию скачивания
+        const blob = new Blob([finalData], { type: "application/json" });
+        downloadFile(blob, filename, "application/json");
         
         // Показываем уведомление об успехе
         showCustomAlert(
@@ -1829,6 +2912,7 @@ function closeModal() {
     document.getElementById("error").style.display = "none";
 }
 
+
 // Собственная система модальных окон
 function showCustomPrompt(title, message, placeholder = "", defaultValue = "", callback) {
     const promptModal = document.createElement('div');
@@ -1836,15 +2920,18 @@ function showCustomPrompt(title, message, placeholder = "", defaultValue = "", c
     promptModal.id = 'customPromptModal';
     promptModal.innerHTML = `
         <div class="modal-content-error">
-            <h3>${title}</h3>
-            <p>${message}</p>
-            <input type="text" id="customPromptInput" placeholder="${placeholder}" value="${defaultValue}">
+            <div class="modal-content-inner">
+                <h3>${title}</h3>
+                <p>${message}</p>
+                <input type="text" id="customPromptInput" placeholder="${placeholder}" value="${defaultValue}">
+            </div>
             <div class="modal-buttons-container">
                 <button id="customPromptOk" class="btn"><i class="fas fa-check"></i> ${t("ok")}</button>
                 <button id="customPromptCancel" class="btn cancel"><i class="fas fa-times"></i> ${t("cancel")}</button>
             </div>
         </div>
     `;
+    
     
     document.body.appendChild(promptModal);
     promptModal.style.display = "block";
@@ -1862,12 +2949,18 @@ function showCustomPrompt(title, message, placeholder = "", defaultValue = "", c
     // Обработчики событий
     const handleOk = () => {
         const value = input.value.trim();
-        document.body.removeChild(promptModal);
+        // Удаляем модальное окно
+        if (promptModal && promptModal.parentNode) {
+            promptModal.parentNode.removeChild(promptModal);
+        }
         if (callback) callback(value);
     };
     
     const handleCancel = () => {
-        document.body.removeChild(promptModal);
+        // Удаляем модальное окно
+        if (promptModal && promptModal.parentNode) {
+            promptModal.parentNode.removeChild(promptModal);
+        }
         if (callback) callback(null);
     };
     
@@ -1882,19 +2975,22 @@ function showCustomPrompt(title, message, placeholder = "", defaultValue = "", c
     });
     
     // Закрытие по Escape
-    document.addEventListener('keydown', function escapeHandler(e) {
+    const handleEscape = (e) => {
         if (e.key === 'Escape') {
-            document.removeEventListener('keydown', escapeHandler);
             handleCancel();
+            document.removeEventListener('keydown', handleEscape);
         }
-    });
+    };
+    document.addEventListener('keydown', handleEscape);
     
-    // Закрытие по клику вне модального окна с поддержкой Pointer Events
-    promptModal.addEventListener('pointerdown', (e) => {
+    // Закрытие по клику вне модального окна
+    const handleBackdropClick = (e) => {
         if (e.target === promptModal) {
             handleCancel();
         }
-    });
+    };
+    promptModal.addEventListener('click', handleBackdropClick);
+    
     
     // Fallback для старых браузеров
     promptModal.addEventListener('click', (e) => {
@@ -2100,6 +3196,149 @@ function showCustomTableDialog(editor) {
     tableModal.addEventListener('click', (e) => {
         if (e.target === tableModal) handleCancel();
     });
+}
+
+// Функция для создания модального окна iframe
+function showCustomIframeDialog(editor) {
+    const iframeModal = document.createElement('div');
+    iframeModal.className = 'modal';
+    iframeModal.id = 'customIframeModal';
+    iframeModal.innerHTML = `
+        <div class="modal-content-error">
+            <h3>${currentLang.startsWith("ru") ? "Вставка видео" : "Insert Video"}</h3>
+            <p>${currentLang.startsWith("ru") ? "Выберите платформу:" : "Select platform:"}</p>
+            <select id="platformSelect">
+                <option value="youtube">YouTube</option>
+                <option value="rutube">Rutube</option>
+                <option value="vk">VK Video</option>
+                <option value="vimeo">Vimeo</option>
+            </select>
+            <p>${currentLang.startsWith("ru") ? "Введите URL видео:" : "Enter video URL:"}</p>
+            <input type="url" id="videoUrlInput" placeholder="https://www.youtube.com/watch?v=...">
+            <div class="modal-buttons-container">
+                <button id="iframeInsertBtn" class="btn"><i class="fas fa-check"></i> ${currentLang.startsWith("ru") ? "Вставить" : "Insert"}</button>
+                <button id="iframeCancelBtn" class="btn cancel"><i class="fas fa-times"></i> ${currentLang.startsWith("ru") ? "Отмена" : "Cancel"}</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(iframeModal);
+    iframeModal.style.display = "block";
+    
+    const platformSelect = document.getElementById('platformSelect');
+    const urlInput = document.getElementById('videoUrlInput');
+    const insertBtn = document.getElementById('iframeInsertBtn');
+    const cancelBtn = document.getElementById('iframeCancelBtn');
+    
+    // Обновляем placeholder при изменении платформы
+    platformSelect.addEventListener('change', function() {
+        const platform = this.value;
+        const placeholders = {
+            youtube: 'https://www.youtube.com/watch?v=...',
+            rutube: 'https://rutube.ru/video/...',
+            vk: 'https://vk.com/video...',
+            vimeo: 'https://vimeo.com/...'
+        };
+        urlInput.placeholder = placeholders[platform];
+    });
+    
+    setTimeout(() => urlInput.focus(), 100);
+    
+    const handleInsert = () => {
+        const url = urlInput.value.trim();
+        const platform = platformSelect.value;
+        
+        if (url) {
+            const iframeCode = generateIframeCode(url, platform);
+            if (iframeCode) {
+                editor.insertContent(iframeCode);
+            } else {
+                showCustomAlert(
+                    t("error"),
+                    currentLang.startsWith("ru") ? "Неверный URL для выбранной платформы" : "Invalid URL for selected platform",
+                    "error"
+                );
+            }
+        }
+        document.body.removeChild(iframeModal);
+    };
+    
+    const handleCancel = () => {
+        document.body.removeChild(iframeModal);
+    };
+    
+    insertBtn.addEventListener('click', handleInsert);
+    cancelBtn.addEventListener('click', handleCancel);
+    
+    // Закрытие по Enter
+    urlInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleInsert();
+        }
+    });
+    
+    // Закрытие по Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && iframeModal.parentNode) {
+            handleCancel();
+        }
+    });
+    
+    // Закрытие по клику вне модального окна
+    const handleBackdropClick = (e) => {
+        if (e.target === iframeModal) {
+            handleCancel();
+        }
+    };
+    iframeModal.addEventListener('click', handleBackdropClick);
+}
+
+// Функция для генерации iframe кода
+function generateIframeCode(url, platform) {
+    try {
+        let embedUrl = '';
+        let width = '560';
+        let height = '315';
+        
+        switch (platform) {
+            case 'youtube':
+                const youtubeMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
+                if (youtubeMatch) {
+                    embedUrl = `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+                }
+                break;
+                
+            case 'rutube':
+                const rutubeMatch = url.match(/rutube\.ru\/video\/([^\/\?]+)/);
+                if (rutubeMatch) {
+                    embedUrl = `https://rutube.ru/play/embed/${rutubeMatch[1]}`;
+                }
+                break;
+                
+            case 'vk':
+                const vkMatch = url.match(/vk\.com\/video(-?\d+_\d+)/);
+                if (vkMatch) {
+                    embedUrl = `https://vk.com/video_ext.php?oid=${vkMatch[1].split('_')[0]}&id=${vkMatch[1].split('_')[1]}&hd=2`;
+                }
+                break;
+                
+            case 'vimeo':
+                const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+                if (vimeoMatch) {
+                    embedUrl = `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+                }
+                break;
+        }
+        
+        if (embedUrl) {
+            return `<iframe src="${embedUrl}" width="${width}" height="${height}" frameborder="0" allowfullscreen style="border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);"></iframe>`;
+        }
+        
+        return null;
+    } catch (error) {
+        console.error('Error generating iframe code:', error);
+        return null;
+    }
 }
 
 // Дополнительные кастомные диалоги
@@ -2363,14 +3602,41 @@ async function importNotes(event, password) {
         const reader = new FileReader();
         reader.onload = async function (e) {
             try {
-                // Читаем зашифрованные данные как текст
-                const encryptedText = e.target.result;
+                // Читаем данные как текст
+                const fileContent = e.target.result;
+                
+                let encryptedText;
+                let finalText;
+                
+                // Проверяем, является ли файл новым форматом (JSON с метаданными)
+                try {
+                    // Сначала пробуем декомпрессию
+                    const decompressedContent = decompressImportData(fileContent);
+                    const exportData = JSON.parse(decompressedContent);
+                    
+                    if (exportData.metadata && exportData.content) {
+                        // Новый формат с метаданными
+                        encryptedText = exportData.content;
+                        console.log('Importing new format with metadata:', exportData.metadata);
+                        
+                        // Показываем информацию о медиа-контенте
+                        if (exportData.metadata.hasMedia) {
+                            const mediaInfo = exportData.metadata.mediaCount;
+                            console.log('Media content detected:', mediaInfo);
+                        }
+                    } else {
+                        throw new Error('Invalid new format');
+                    }
+                } catch (jsonError) {
+                    // Старый формат - просто зашифрованный текст
+                    encryptedText = fileContent;
+                }
                 
                 // Расшифровываем с помощью улучшенного шифрования (с поддержкой старых файлов)
                 const decryptedText = await advancedEncryption.decrypt(encryptedText, password);
                 
                 // Проверяем, нужно ли удалять обфускацию (только для новых файлов)
-                let finalText = decryptedText;
+                finalText = decryptedText;
                 try {
                     // Пробуем удалить обфускацию
                     finalText = advancedEncryption.deobfuscateFile(decryptedText);
@@ -2487,14 +3753,9 @@ function exportNoteHTML(noteContent) {
     const uniqueTag = `<!-- Exported on ${timestamp} -->\n`;
     const contentWithTag = uniqueTag + noteContent;
 
+    const filename = `note_${timestamp}.html`;
     const blob = new Blob([contentWithTag], { type: "text/html" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `note_${timestamp}.html`;
-    link.click();
-    
-    // Очищаем URL после скачивания
-    setTimeout(() => URL.revokeObjectURL(link.href), 100);
+    downloadFile(blob, filename, "text/html");
 }
 
 // function showCustomAlert(message) {
@@ -2724,30 +3985,7 @@ function showWordCount() {
     showCustomAlert(t("info"), message, "info");
 }
 
-// Функция для полноэкранного режима
-function toggleFullscreen() {
-    const modal = document.getElementById("editModal");
-    const modalContent = modal.querySelector(".modal-content");
-    
-    if (modalContent.classList.contains('fullscreen')) {
-        modalContent.classList.remove('fullscreen');
-        modalContent.style.width = '95%';
-        modalContent.style.height = '88.5%';
-        modalContent.style.margin = '1% auto';
-    } else {
-        modalContent.classList.add('fullscreen');
-        modalContent.style.width = '100%';
-        modalContent.style.height = '100%';
-        modalContent.style.margin = '0';
-    }
-}
 
-// Функция для вставки разрыва страницы
-function insertPageBreak() {
-    if (tinymceEditor) {
-        tinymceEditor.insertContent('<div class="page-break"></div>');
-    }
-}
 
 // Функция для вставки изображения
 function insertImage() {
@@ -2770,6 +4008,13 @@ function insertMedia() {
     }
 }
 
+// Функция для вставки iframe
+function insertIframe() {
+    if (tinymceEditor) {
+        showCustomIframeDialog(tinymceEditor);
+    }
+}
+
 // Функция для вставки якоря
 function insertAnchor() {
     if (tinymceEditor) {
@@ -2784,44 +4029,6 @@ function insertCode() {
     }
 }
 
-// Функция для вставки таблицы
-function insertTable() {
-    if (tinymceEditor) {
-        showCustomTableDialog(tinymceEditor);
-    }
-}
-
-// Альтернативный способ вставки таблицы
-function insertTableAlternative() {
-    if (tinymceEditor) {
-        showCustomTableDialog(tinymceEditor);
-    }
-}
-
-// Способ 3: Создание таблицы с выбором размера
-function insertTableWithSize() {
-    if (tinymceEditor) {
-        showCustomTableDialog(tinymceEditor);
-    }
-}
-
-// Функция создания таблицы с заданными размерами
-function createTable(rows, cols) {
-    if (tinymceEditor) {
-        let tableHtml = '<table style="border-collapse: collapse; width: 100%;"><tbody>';
-        
-        for (let i = 0; i < rows; i++) {
-            tableHtml += '<tr>';
-            for (let j = 0; j < cols; j++) {
-                tableHtml += '<td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>';
-            }
-            tableHtml += '</tr>';
-        }
-        
-        tableHtml += '</tbody></table>';
-        tinymceEditor.insertContent(tableHtml);
-    }
-}
 
 // Функция для тестирования модальных окон
 function testModals() {
@@ -2837,11 +4044,9 @@ function testModals() {
         { name: 'Image', func: insertImage },
         { name: 'Link', func: insertLink },
         { name: 'Media', func: insertMedia },
+        { name: 'Iframe', func: insertIframe },
         { name: 'Anchor', func: insertAnchor },
         { name: 'Code', func: insertCode },
-        { name: 'Table', func: insertTable },
-        { name: 'Table Simple', func: insertTableAlternative },
-        { name: 'Table Custom', func: insertTableWithSize }
     ];
     
     testFunctions.forEach((test, index) => {
@@ -2857,31 +4062,15 @@ function testModals() {
     });
 }
 
-// Функция для проверки состояния TinyMCE
-function checkTinyMCEStatus() {
-    console.log('TinyMCE Status Check:');
-    console.log('- Editor initialized:', !!tinymceEditor);
-    console.log('- Editor destroyed:', tinymceEditor ? tinymceEditor.destroyed : 'N/A');
-    console.log('- TinyMCE version:', typeof tinymce !== 'undefined' ? tinymce.majorVersion : 'Not loaded');
-    
-    if (tinymceEditor) {
-        console.log('- Editor container:', tinymceEditor.getContainer());
-        console.log('- Editor content:', tinymceEditor.getContent().length > 0 ? 'Has content' : 'Empty');
-        console.log('- Available commands:', Object.keys(tinymceEditor.commands || {}));
-    }
-}
 
 // Делаем функции доступными в глобальной области для тестирования
 window.testModals = testModals;
-window.checkTinyMCEStatus = checkTinyMCEStatus;
 window.insertImage = insertImage;
 window.insertLink = insertLink;
 window.insertMedia = insertMedia;
+window.insertIframe = insertIframe;
 window.insertAnchor = insertAnchor;
 window.insertCode = insertCode;
-window.insertTable = insertTable;
-window.insertTableAlternative = insertTableAlternative;
-window.insertTableWithSize = insertTableWithSize;
 
 // Улучшенная система шифрования с обфускацией и поддержкой медиа
 class AdvancedEncryption {
@@ -3715,11 +4904,9 @@ function exportToMarkdown(noteContent) {
         .trim();
     
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const filename = `note_${timestamp}.md`;
     const blob = new Blob([markdown], { type: "text/markdown" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `note_${timestamp}.md`;
-    link.click();
+    downloadFile(blob, filename, "text/markdown");
 }
 
 function exportToHTML(noteContent) {

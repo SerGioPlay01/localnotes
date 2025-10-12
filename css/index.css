@@ -1,5 +1,5 @@
 @import url(/fonts/golos_web/golostext.css);
-@import url(/fonts//intro/intro.css);
+@import url(/fonts/intro/intro.css);
 @import url(/fonts/lekton-nerd-font-mono/lekton-nerd-font-mono.css);
 
 /* Базовые стили для предотвращения горизонтальной прокрутки */
@@ -321,145 +321,6 @@ body.modal-open {
     filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
 }
 
-/* Специальные стили TinyMCE для светлой темы */
-[data-theme="light"] .tox .tox-editor-header {
-    background: #f8f9fa !important;
-    border-bottom: 1px solid #dee2e6 !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-}
-
-[data-theme="light"] .tox .tox-toolbar {
-    background: #f8f9fa !important;
-    border-bottom: 1px solid #dee2e6 !important;
-    overflow: visible !important;
-    flex-wrap: wrap !important;
-    min-height: auto !important;
-}
-
-[data-theme="light"] .tox .tox-toolbar__group {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow: visible !important;
-}
-
-[data-theme="light"] .tox .tox-toolbar__group:not(:last-child) {
-    margin-right: 8px !important;
-}
-
-[data-theme="light"] .tox .tox-toolbar__group:not(:first-child) {
-    border-left: 1px solid #dee2e6 !important;
-    padding-left: 8px !important;
-}
-
-[data-theme="light"] .tox .tox-toolbar__overflow {
-    display: none !important;
-}
-
-[data-theme="light"] .tox .tox-toolbar__overflow--open {
-    display: none !important;
-}
-
-[data-theme="light"] .tox .tox-tbtn {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-[data-theme="light"] .tox .tox-tbtn--disabled {
-    opacity: 0.5 !important;
-}
-
-[data-theme="light"] .tox .tox-menubar {
-    background: #f8f9fa !important;
-    border-bottom: 1px solid #dee2e6 !important;
-    color: #212529 !important;
-}
-
-[data-theme="light"] .tox .tox-menubar .tox-mbtn {
-    color: #212529 !important;
-}
-
-[data-theme="light"] .tox .tox-menubar .tox-mbtn:hover {
-    background: #e9ecef !important;
-}
-
-[data-theme="light"] .tox .tox-statusbar {
-    background: #f8f9fa !important;
-    border-top: 1px solid #dee2e6 !important;
-    color: #6c757d !important;
-}
-
-[data-theme="light"] .tox .tox-button {
-    color: #212529 !important;
-}
-
-[data-theme="light"] .tox .tox-button:hover {
-    background: #e9ecef !important;
-    border-color: #28a745 !important;
-}
-
-[data-theme="light"] .tox .tox-button:focus {
-    background: #e9ecef !important;
-    border-color: #28a745 !important;
-    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2) !important;
-}
-
-[data-theme="light"] .tox .tox-button--enabled {
-    background: #28a745 !important;
-    color: #ffffff !important;
-}
-
-[data-theme="light"] .tox .tox-collection {
-    background: #ffffff !important;
-    border: 1px solid #dee2e6 !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
-}
-
-[data-theme="light"] .tox .tox-collection__item {
-    color: #212529 !important;
-}
-
-[data-theme="light"] .tox .tox-collection__item:hover {
-    background: #e9ecef !important;
-}
-
-[data-theme="light"] .tox .tox-collection__item--active {
-    background: #28a745 !important;
-    color: #ffffff !important;
-}
-
-[data-theme="light"] .tox .tox-dialog {
-    background: #ffffff !important;
-    border: 1px solid #dee2e6 !important;
-    box-shadow: 0 16px 64px rgba(0, 0, 0, 0.1) !important;
-}
-
-[data-theme="light"] .tox .tox-dialog__header {
-    background: #ffffff !important;
-    border-bottom: 1px solid #dee2e6 !important;
-    color: #212529 !important;
-}
-
-[data-theme="light"] .tox .tox-dialog__body {
-    background: #ffffff !important;
-    color: #212529 !important;
-}
-
-[data-theme="light"] .tox .tox-dialog__footer {
-    background: #ffffff !important;
-    border-top: 1px solid #dee2e6 !important;
-}
-
-[data-theme="light"] .tox .tox-textfield {
-    background: #ffffff !important;
-    border: 1px solid #dee2e6 !important;
-    color: #212529 !important;
-}
-
-[data-theme="light"] .tox .tox-textfield:focus {
-    border-color: #28a745 !important;
-    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2) !important;
-}
 
 /* Темная тема (по умолчанию) */
 [data-theme="dark"] {
@@ -1017,14 +878,16 @@ body.modal-open {
     margin: 0;
     padding: 0;
     border: 1px solid var(--border-color);
-    border-radius: 16px;
+    border-radius: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    backdrop-filter: none;
     position: relative;
     z-index: 50;
+    display: flex;
+    flex-direction: column;
     animation: none;
     position: fixed;
     top: 0;
@@ -1045,21 +908,85 @@ body.modal-open {
     margin-top: 0 !important;
 }
 
+/* Стили для редактора TinyMCE */
+.tinymce {
+    flex: 1;
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Скрываем оригинальный textarea, который заменяется TinyMCE */
+#editorContainer {
+    display: none !important;
+}
+
+/* Показываем TinyMCE контейнер */
+#editorContainer + .tox-tinymce {
+    display: flex !important;
+}
+
+/* Контейнер TinyMCE */
+.tox-tinymce {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100% !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+/* Тулбар TinyMCE */
+.tox .tox-toolbar {
+    flex-shrink: 0;
+    height: auto !important;
+    min-height: 50px;
+}
+
+/* Область редактирования */
+.tox .tox-edit-area {
+    flex: 1;
+    height: auto !important;
+    min-height: 0;
+}
+
+/* Iframe редактора */
+.tox .tox-edit-area__iframe {
+    height: 100% !important;
+}
+
+.tox .tox-edit-area iframe {
+    height: 100% !important;
+    min-height: 300px;
+}
+
+/* Блок кнопок внутри модального окна - удален дублирующийся блок */
+
+/* Старые стили для совместимости */
+.modal-buttons {
+    display: none;
+}
+
 /* Стили для кнопок модального окна редактора */
 .modal-buttons-container {
     display: flex;
-    gap: 12px;
-    padding: 16px 20px;
-    background: var(--card-bg);
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--modal-bg);
     border-top: 1px solid var(--border-color);
-    border-radius: 0 0 16px 16px;
+    border-radius: 0;
     position: relative;
     z-index: 60;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .modal-buttons-container button {
     flex: 1;
-    padding: 12px 20px;
+    min-width: 120px;
+    max-width: 200px;
+    padding: 16px 24px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background: var(--button-bg);
@@ -1072,6 +999,10 @@ body.modal-open {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .modal-buttons-container button:hover {
@@ -1215,77 +1146,142 @@ body.modal-open {
     }
 }
 
-.modal-content-error {
+.modal-content-error,
+.modal-content-warning {
     background-color: var(--modal-bg);
-    margin: 20% auto;
-    padding: 25px;
+    margin: auto;
+    padding: 0;
     border: 1px solid var(--modal-border);
-    border-radius: 5px;
-    width: 80%;
+    border-radius: 8px;
+    width: 85%;
+    max-width: 600px;
     height: auto;
+    max-height: 80vh;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content-inner {
+    padding: 30px 35px;
+    flex: 1;
+    padding-bottom: 90px; /* Отступ для кнопок */
 }
 
 /* Общие стили для всех модальных окон */
-.modal-content-error h3 {
+.modal-content-inner h3,
+.modal-content-error h3,
+.modal-content-warning h3 {
     margin-top: 0;
     color: var(--modal-text);
     font-size: 1.5em;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    padding: 0 5px;
 }
 
-.modal-content-error p {
-    margin: 15px 0;
+/* Стили для предупреждений */
+.warning-details {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 6px;
+    padding: 15px 20px;
+    margin: 20px 0;
+}
+
+.warning-details p {
+    margin: 10px 0;
+    font-weight: 600;
+    color: #856404;
+}
+
+.warning-details ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.warning-details li {
+    margin: 8px 0;
+    color: #856404;
     line-height: 1.5;
-    color: var(--modal-text);
 }
 
+/* Темная тема для предупреждений */
+[data-theme="dark"] .warning-details {
+    background: rgba(255, 193, 7, 0.15);
+    border-color: rgba(255, 193, 7, 0.4);
+}
+
+[data-theme="dark"] .warning-details p,
+[data-theme="dark"] .warning-details li {
+    color: #ffc107;
+}
+
+.modal-content-inner p,
+.modal-content-error p {
+    margin: 18px 0;
+    line-height: 1.6;
+    color: var(--modal-text);
+    padding: 0 5px;
+}
+
+.modal-content-inner input,
 .modal-content-error input {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+    padding: 12px 15px;
+    margin: 12px 0;
     border: 1px solid var(--border-color);
     background: var(--input-bg);
     color: var(--input-text);
-    border-radius: 5px;
+    border-radius: 6px;
     font-size: 14px;
     box-sizing: border-box;
 }
 
+.modal-content-inner input:focus,
 .modal-content-error input:focus {
     outline: none;
     border-color: var(--primary-color);
 }
 
+.modal-content-inner input::placeholder,
 .modal-content-error input::placeholder {
     color: var(--secondary-color);
 }
 
+.modal-content-inner select,
 .modal-content-error select {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+    padding: 12px 15px;
+    margin: 12px 0;
     border: 1px solid var(--border-color);
     background: var(--input-bg);
     color: var(--input-text);
-    border-radius: 5px;
+    border-radius: 6px;
     font-size: 14px;
     box-sizing: border-box;
 }
 
+.modal-content-inner select:focus,
 .modal-content-error select:focus {
     outline: none;
     border-color: var(--primary-color);
 }
 
+.modal-content-inner textarea,
 .modal-content-error textarea {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
+    padding: 12px 15px;
+    margin: 12px 0;
     border: 1px solid var(--border-color);
     background: var(--input-bg);
     color: var(--input-text);
-    border-radius: 5px;
+    border-radius: 6px;
     font-size: 14px;
     box-sizing: border-box;
     resize: vertical;
@@ -1293,11 +1289,13 @@ body.modal-open {
     font-family: monospace;
 }
 
+.modal-content-inner textarea:focus,
 .modal-content-error textarea:focus {
     outline: none;
     border-color: var(--primary-color);
 }
 
+.modal-content-inner textarea::placeholder,
 .modal-content-error textarea::placeholder {
     color: var(--secondary-color);
 }
@@ -1306,17 +1304,26 @@ body.modal-open {
     background: var(--primary-color);
     color: var(--bg-color);
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 16px 24px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: 500;
     margin: 0 5px;
-    transition: background-color 0.3s;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    max-width: 200px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .modal-content-error button:hover {
     background: var(--button-hover);
-    opacity: 0.8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .modal-content-error button.cancel {
@@ -1324,333 +1331,26 @@ body.modal-open {
 }
 
 .modal-content-error button.cancel:hover {
-    background: var(--button-hover);
-    opacity: 0.8;
+    background: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 
-.modal .tinymce {
-    flex: 1;
-    overflow: visible;
-    position: relative;
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    width: 100%;
-    height: 100%;
-}
-
-/* Стили для TinyMCE */
-.tox-tinymce {
-    border: none !important;
-    border-radius: 0 !important;
-    margin-top: 60px !important;
-    margin-bottom: 80px !important;
-    z-index: 100 !important;
-}
-
-/* Исправляем позиционирование плавающих панелей TinyMCE */
-.tox-pop {
-    z-index: 10000 !important;
-}
-
-.tox-collection {
-    z-index: 10000 !important;
-}
-
-.tox-dialog {
-    z-index: 10000 !important;
-}
-
-/* Скрываем плавающие панели по умолчанию */
-.tox-pop.tox-pop--hidden {
-    display: none !important;
-}
-
-/* Исправляем перекрытие с поисковой строкой */
-.tox-tinymce .tox-toolbar {
-    position: relative !important;
-    z-index: 100 !important;
-}
-
-/* Исправляем позиционирование плавающих панелей относительно поисковой строки */
-.tox-pop[data-alloy-tabstop="true"] {
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-}
-
-/* Специальные стили для панелей выбора цвета */
-.tox-swatches {
-    z-index: 10000 !important;
-}
-
-.tox-swatch {
-    z-index: 10000 !important;
-}
-
-/* Исправляем позиционирование панелей выбора шрифта */
-.tox-collection--list {
-    z-index: 10000 !important;
-    max-height: 200px !important;
-    overflow-y: auto !important;
-}
-
-/* Стили для панелей вставки */
-.tox-collection--grid {
-    z-index: 10000 !important;
-}
-
-/* Исправляем перекрытие с основным интерфейсом */
-.tox-pop.tox-pop--bottom {
-    margin-top: 5px !important;
-}
-
-.tox-pop.tox-pop--top {
-    margin-bottom: 5px !important;
-}
-
-/* Исправляем перекрытие с поисковой строкой */
-.tox-pop {
-    max-width: 90vw !important;
-    max-height: 80vh !important;
-    overflow: auto !important;
-}
-
-/* Специальные стили для панелей выбора цвета */
-.tox-swatches .tox-swatch {
-    margin: 2px !important;
-}
-
-/* Исправляем позиционирование панелей относительно кнопок */
-.tox-toolbar .tox-pop {
-    position: absolute !important;
-    z-index: 10000 !important;
-}
-
-/* Стили для панелей выбора шрифта и размера */
-.tox-collection--list .tox-collection__item {
-    padding: 8px 12px !important;
-    white-space: nowrap !important;
-}
-
-/* Исправляем отображение панелей вставки */
-.tox-collection--grid .tox-collection__item {
-    padding: 8px !important;
-    text-align: center !important;
-}
-
-/* Стили для кнопки закрытия плавающих панелей */
-.tox-pop .tox-button[aria-label*="close"],
-.tox-pop .tox-button[aria-label*="Close"],
-.tox-pop .tox-button[title*="close"],
-.tox-pop .tox-button[title*="Close"] {
-    position: absolute !important;
-    top: 5px !important;
-    right: 5px !important;
-    z-index: 10001 !important;
-}
-
-/* Улучшенные стили TinyMCE для адаптации под темы */
-.tox .tox-editor-header {
-    background: var(--editor-toolbar-bg) !important;
-    border-bottom: 1px solid var(--editor-toolbar-border) !important;
-    box-shadow: 0 2px 4px var(--shadow-color) !important;
-}
-
-.tox .tox-toolbar {
-    background: var(--editor-toolbar-bg) !important;
-    border-bottom: 1px solid var(--editor-toolbar-border) !important;
-    overflow: visible !important;
-    flex-wrap: wrap !important;
-    min-height: auto !important;
-    max-height: none !important;
-    height: auto !important;
-    padding: 8px !important;
-}
-
-/* Обеспечиваем отображение всех элементов toolbar */
-.tox .tox-toolbar__group {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow: visible !important;
-}
-
-.tox .tox-toolbar__group:not(:last-child) {
-    margin-right: 8px !important;
-}
-
-.tox .tox-toolbar__group:not(:first-child) {
-    border-left: 1px solid var(--editor-toolbar-border) !important;
-    padding-left: 8px !important;
-}
-
-/* Убираем скрытие элементов при переполнении */
-.tox .tox-toolbar__overflow {
-    display: none !important;
-}
-
-.tox .tox-toolbar__overflow--open {
-    display: none !important;
-}
-
-/* Обеспечиваем видимость всех кнопок */
-.tox .tox-tbtn {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-.tox .tox-tbtn--disabled {
-    opacity: 0.5 !important;
-}
-
-/* Стили для групп кнопок */
-.tox .tox-tbtn--select {
-    min-width: auto !important;
-}
-
-.tox .tox-tbtn--bespoke {
-    min-width: auto !important;
-}
-
-.tox .tox-edit-area__iframe {
-    background: var(--editor-bg) !important;
-}
-
-.tox .tox-menubar {
-    background: var(--editor-toolbar-bg) !important;
-    border-bottom: 1px solid var(--editor-toolbar-border) !important;
-    color: var(--editor-text) !important;
-}
-
-.tox .tox-menubar .tox-mbtn {
-    color: var(--editor-text) !important;
-}
-
-.tox .tox-menubar .tox-mbtn:hover {
-    background: var(--button-hover) !important;
-}
-
-.tox .tox-statusbar {
-    background: var(--editor-toolbar-bg) !important;
-    border-top: 1px solid var(--editor-toolbar-border) !important;
-    color: var(--editor-text) !important;
-}
-
-.tox .tox-button {
-    color: var(--editor-text) !important;
-    background: transparent !important;
-    border: 1px solid transparent !important;
-    border-radius: 4px !important;
-    transition: all 0.2s ease !important;
-}
-
-.tox .tox-button:hover {
-    background: var(--button-hover) !important;
-    border-color: var(--primary-color) !important;
-}
-
-.tox .tox-button:focus {
-    background: var(--button-hover) !important;
-    border-color: var(--primary-color) !important;
-    box-shadow: 0 0 0 2px rgba(174, 252, 110, 0.2) !important;
-}
-
-.tox .tox-button--enabled {
-    background: var(--primary-color) !important;
-    color: var(--bg-color) !important;
-}
-
-.tox .tox-collection {
-    background: var(--modal-bg) !important;
-    border: 1px solid var(--modal-border) !important;
-    border-radius: 8px !important;
-    box-shadow: 0 8px 32px var(--shadow-color) !important;
-}
-
-.tox .tox-collection__item {
-    color: var(--modal-text) !important;
-    border-radius: 4px !important;
-    margin: 2px !important;
-    transition: all 0.2s ease !important;
-}
-
-.tox .tox-collection__item:hover {
-    background: var(--button-hover) !important;
-}
-
-.tox .tox-collection__item--active {
-    background: var(--primary-color) !important;
-    color: var(--bg-color) !important;
-}
-
-/* Стили для выпадающих списков */
-.tox .tox-listboxfield .tox-listbox--select {
-    background: var(--modal-bg) !important;
-    border: 1px solid var(--modal-border) !important;
-    color: var(--modal-text) !important;
-}
-
-.tox .tox-listboxfield .tox-listbox--select:hover {
-    border-color: var(--primary-color) !important;
-}
-
-/* Стили для полей ввода */
-.tox .tox-textfield {
-    background: var(--input-bg) !important;
-    border: 1px solid var(--modal-border) !important;
-    color: var(--input-text) !important;
-}
-
-.tox .tox-textfield:focus {
-    border-color: var(--primary-color) !important;
-    box-shadow: 0 0 0 2px rgba(174, 252, 110, 0.2) !important;
-}
-
-/* Стили для диалогов */
-.tox .tox-dialog {
-    background: var(--modal-bg) !important;
-    border: 1px solid var(--modal-border) !important;
-    border-radius: 12px !important;
-    box-shadow: 0 16px 64px var(--shadow-color) !important;
-}
-
-.tox .tox-dialog__header {
-    background: var(--modal-bg) !important;
-    border-bottom: 1px solid var(--modal-border) !important;
-    color: var(--modal-text) !important;
-}
-
-.tox .tox-dialog__body {
-    background: var(--modal-bg) !important;
-    color: var(--modal-text) !important;
-}
-
-.tox .tox-dialog__footer {
-    background: var(--modal-bg) !important;
-    border-top: 1px solid var(--modal-border) !important;
-}
 
 /* Контейнер для кнопок */
 .modal-buttons-container {
-    padding: 15px 30px !important;
+    padding: 20px 35px !important;
     border-top: 1px solid var(--modal-border) !important;
     background: var(--modal-bg) !important;
     border-radius: 0 !important;
     flex-shrink: 0 !important;
     display: flex !important;
-    justify-content: center !important;
+    justify-content: space-between !important;
     align-items: center !important;
-    gap: 30px !important;
+    gap: 20px !important;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.1) !important;
     margin-top: auto !important;
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 1000 !important;
 }
 
 input {
@@ -2380,8 +2080,14 @@ input {
         width: 95%;
     }
 
-    .modal-content-error {
-        margin: 80% auto;
+    .modal-content-error,
+    .modal-content-warning {
+        width: 95%;
+        max-width: none;
+        max-height: 90vh;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
     #saveNoteButton,
@@ -2479,6 +2185,12 @@ input {
         gap: 15px;
     }
     
+    .modal-buttons-container button {
+        min-width: auto;
+        max-width: none;
+        width: 100%;
+    }
+    
     #saveNoteButton,
     #cancelNoteButton {
         width: 100%;
@@ -2547,12 +2259,9 @@ input {
 
 /* Стили для переключателя тем */
 .theme-toggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 48px;
-    height: 48px;
-    border-radius: 4px; /* Убрали круглую форму */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     border: 1px solid var(--border-color);
     background-color: var(--button-bg);
     color: var(--button-text);
@@ -2560,11 +2269,11 @@ input {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    transition: background-color 0.2s ease; /* Упростили анимацию */
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Уменьшили тень */
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 
 .theme-toggle:hover {
     background-color: var(--button-hover);
@@ -2750,18 +2459,6 @@ input {
         margin-bottom: 20px;
     }
     
-    /* TinyMCE редактор */
-    .tox-tinymce {
-        border-radius: 8px;
-    }
-    
-    .tox .tox-toolbar {
-        padding: 10px;
-    }
-    
-    .tox .tox-tbtn {
-        padding: 8px;
-    }
     
     /* Футер */
     .app-notes-footer {
@@ -3048,88 +2745,6 @@ input {
         box-shadow: 0 4px 12px var(--shadow-color);
     }
     
-    /* TinyMCE редактор для мобильных */
-    .tox-tinymce {
-        border-radius: 8px;
-        height: calc(100vh - 200px) !important;
-        width: 100% !important;
-        box-sizing: border-box;
-        border: 1px solid var(--border-color);
-    }
-    
-    /* Скрываем лишние элементы TinyMCE */
-    .tox .tox-statusbar {
-        display: none !important;
-    }
-    
-    .tox .tox-statusbar__text-container {
-        display: none !important;
-    }
-    
-    .tox .tox-statusbar__path {
-        display: none !important;
-    }
-    
-    .tox .tox-statusbar__wordcount {
-        display: none !important;
-    }
-    
-    /* Горизонтальная прокрутка тулбара в один ряд */
-    .tox .tox-toolbar {
-        padding: 8px;
-        flex-wrap: nowrap !important;
-        gap: 4px;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        white-space: nowrap !important;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: thin;
-        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-    }
-    
-    .tox .tox-toolbar::-webkit-scrollbar {
-        height: 4px;
-    }
-    
-    .tox .tox-toolbar::-webkit-scrollbar-track {
-        background: var(--scrollbar-track);
-    }
-    
-    .tox .tox-toolbar::-webkit-scrollbar-thumb {
-        background: var(--scrollbar-thumb);
-        border-radius: 2px;
-    }
-    
-    .tox .tox-toolbar__group {
-        margin: 0 2px;
-        flex-shrink: 0 !important;
-        display: inline-flex !important;
-    }
-    
-    .tox .tox-tbtn {
-        padding: 6px;
-        min-width: 32px;
-        min-height: 32px;
-        flex-shrink: 0;
-    }
-    
-    .tox .tox-tbtn svg {
-        width: 16px;
-        height: 16px;
-    }
-    
-    /* Скрываем некоторые кнопки на мобильных */
-    .tox .tox-tbtn[title*="Fullscreen"],
-    .tox .tox-tbtn[title*="Preview"],
-    .tox .tox-tbtn[title*="Help"],
-    .tox .tox-tbtn[title*="Word count"] {
-        display: none !important;
-    }
-    
-    /* Скрываем меню на мобильных */
-    .tox .tox-menubar {
-        display: none !important;
-    }
     
     /* Футер */
     .app-notes-footer {
@@ -3164,17 +2779,14 @@ input {
     
     /* Переключатель тем */
     .theme-toggle {
-        bottom: 20px;
-        right: 20px;
-        width: 48px;
-        height: 48px;
-        font-size: 18px;
-        z-index: 1000;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
         background: var(--button-bg);
         border: 1px solid var(--button-border);
-        border-radius: 4px; /* Убрали круглую форму */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Уменьшили тень */
-        transition: background-color 0.2s ease; /* Упростили анимацию */
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.2s ease;
     }
     
     .theme-toggle:hover {
@@ -3250,54 +2862,6 @@ input {
         font-size: 1.2rem;
     }
     
-    /* TinyMCE редактор */
-    .tox-tinymce {
-        height: calc(100vh - 120px) !important;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-    }
-    
-    /* Скрываем лишние элементы TinyMCE */
-    .tox .tox-statusbar {
-        display: none !important;
-    }
-    
-    .tox .tox-statusbar__text-container {
-        display: none !important;
-    }
-    
-    .tox .tox-statusbar__path {
-        display: none !important;
-    }
-    
-    .tox .tox-statusbar__wordcount {
-        display: none !important;
-    }
-    
-    .tox .tox-toolbar {
-        padding: 6px;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        white-space: nowrap !important;
-    }
-    
-    .tox .tox-tbtn {
-        padding: 4px;
-        min-width: 28px;
-        min-height: 28px;
-        flex-shrink: 0;
-    }
-    
-    .tox .tox-tbtn svg {
-        width: 14px;
-        height: 14px;
-    }
-    
-    /* Скрываем меню на очень маленьких экранах */
-    .tox .tox-menubar {
-        display: none !important;
-    }
 }
 
 /* ===== АДАПТИВНОСТЬ ДЛЯ LANDSCAPE ОРИЕНТАЦИИ ===== */
@@ -3374,40 +2938,6 @@ input {
         margin-bottom: 10px;
     }
     
-    /* TinyMCE редактор */
-    .tox-tinymce {
-        height: calc(100vh - 100px) !important;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-    }
-    
-    /* Скрываем лишние элементы TinyMCE */
-    .tox .tox-statusbar {
-        display: none !important;
-    }
-    
-    .tox .tox-statusbar__text-container {
-        display: none !important;
-    }
-    
-    .tox .tox-statusbar__path {
-        display: none !important;
-    }
-    
-    .tox .tox-statusbar__wordcount {
-        display: none !important;
-    }
-    
-    .tox .tox-toolbar {
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        white-space: nowrap !important;
-    }
-    
-    .tox .tox-menubar {
-        display: none !important;
-    }
     
     /* Футер */
     .app-notes-footer {
@@ -3449,11 +2979,6 @@ input {
     }
     
     /* Оптимизируем TinyMCE для touch */
-    .tox .tox-tbtn {
-        min-width: 44px;
-        min-height: 44px;
-        touch-action: manipulation;
-    }
     
     /* Улучшаем модальные окна для touch */
     .modal {
@@ -3500,15 +3025,6 @@ input {
         transition: transform 0.1s ease;
     }
     
-    /* Оптимизируем TinyMCE для мобильных */
-    .tox-tinymce {
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior: contain;
-    }
-    
-    .tox .tox-edit-area {
-        -webkit-overflow-scrolling: touch;
-    }
     
     /* Улучшаем модальные окна */
     .modal {
@@ -3540,11 +3056,6 @@ input {
         border-width: 0.5px;
     }
     
-    /* Оптимизируем иконки */
-    .tox .tox-tbtn svg {
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: crisp-edges;
-    }
 }
 
 /* ===== ОПТИМИЗАЦИЯ ДЛЯ SAFARI НА iOS ===== */
@@ -3576,10 +3087,6 @@ input {
         border-radius: 8px;
     }
     
-    /* Улучшаем TinyMCE в Safari */
-    .tox-tinymce {
-        -webkit-overflow-scrolling: touch;
-    }
 }
 
 /* ===== ОПТИМИЗАЦИЯ ДЛЯ ANDROID CHROME ===== */
@@ -3603,12 +3110,10 @@ input {
 /* Адаптивность для переключателя тем */
 @media (max-width: 768px) {
     .theme-toggle {
-        bottom: 15px;
-        right: 15px;
-        width: 44px;
-        height: 44px;
-        font-size: 16px;
-        border-radius: 4px; /* Убрали круглую форму */
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+        border-radius: 50%;
     }
     
     .theme-modal-content {
@@ -4368,499 +3873,11 @@ input {
 /* ===== АДАПТИВНЫЕ СТИЛИ ДЛЯ РЕДАКТОРА ===== */
 
 /* Мобильные устройства (до 768px) */
-@media (max-width: 767px) {
-    /* Адаптивный редактор для мобильных */
-    .tox-tinymce {
-        height: calc(100vh - 120px) !important;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-    }
-    
-    /* Скрываем лишние элементы на мобильных */
-    .tox .tox-menubar {
-        display: none !important;
-    }
-    
-    .tox .tox-statusbar {
-        display: none !important;
-    }
-    
-    /* Адаптивная панель инструментов */
-    .tox .tox-toolbar {
-        padding: 8px;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        white-space: nowrap !important;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: thin;
-        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-    }
-    
-    .tox .tox-toolbar::-webkit-scrollbar {
-        height: 4px;
-    }
-    
-    .tox .tox-toolbar::-webkit-scrollbar-track {
-        background: var(--scrollbar-track);
-    }
-    
-    .tox .tox-toolbar::-webkit-scrollbar-thumb {
-        background: var(--scrollbar-thumb);
-        border-radius: 2px;
-    }
-    
-    .tox .tox-toolbar__group {
-        margin: 0 2px;
-        flex-shrink: 0 !important;
-        display: inline-flex !important;
-    }
-    
-    .tox .tox-tbtn {
-        padding: 6px;
-        min-width: 32px;
-        min-height: 32px;
-        flex-shrink: 0;
-    }
-    
-    .tox .tox-tbtn svg {
-        width: 16px;
-        height: 16px;
-    }
-    
-    /* Скрываем некоторые кнопки на мобильных */
-    .tox .tox-tbtn[title*="Fullscreen"],
-    .tox .tox-tbtn[title*="Preview"],
-    .tox .tox-tbtn[title*="Help"],
-    .tox .tox-tbtn[title*="Word count"] {
-        display: none !important;
-    }
-}
 
-/* Планшеты (768px - 1024px) */
-@media (min-width: 768px) and (max-width: 1024px) {
-    /* Адаптивный редактор для планшетов */
-    .tox-tinymce {
-        height: calc(100vh - 140px) !important;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-    }
-    
-    /* Упрощенная панель инструментов */
-    .tox .tox-toolbar {
-        padding: 10px;
-        flex-wrap: wrap !important;
-        gap: 4px;
-    }
-    
-    .tox .tox-tbtn {
-        padding: 8px;
-        min-width: 36px;
-        min-height: 36px;
-    }
-    
-    .tox .tox-tbtn svg {
-        width: 18px;
-        height: 18px;
-    }
-    
-    /* Скрываем некоторые элементы на планшетах */
-    .tox .tox-statusbar {
-        display: none !important;
-    }
-}
 
-/* Десктопы (1024px+) */
-@media (min-width: 1025px) {
-    /* Полнофункциональный редактор для десктопов */
-    .tox-tinymce {
-        height: calc(100vh - 160px) !important;
-        border-radius: 8px;
-        border: 1px solid var(--border-color);
-    }
-    
-    /* Полная панель инструментов */
-    .tox .tox-toolbar {
-        padding: 12px;
-        flex-wrap: wrap !important;
-        gap: 6px;
-    }
-    
-    .tox .tox-tbtn {
-        padding: 10px;
-        min-width: 40px;
-        min-height: 40px;
-    }
-    
-    .tox .tox-tbtn svg {
-        width: 20px;
-        height: 20px;
-    }
-    
-    /* Показываем все элементы */
-    .tox .tox-menubar {
-        display: block !important;
-    }
-    
-    .tox .tox-statusbar {
-        display: block !important;
-    }
-}
 
-/* ===== СПЕЦИАЛЬНЫЕ СТИЛИ ДЛЯ TOUCH-УСТРОЙСТВ ===== */
 
-/* Touch-устройства - улучшенная панель инструментов */
-@media (hover: none) and (pointer: coarse) {
-    .tox .tox-toolbar {
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        white-space: nowrap !important;
-        padding: 12px !important;
-        scrollbar-width: thin !important;
-        -webkit-overflow-scrolling: touch !important;
-        background: linear-gradient(90deg, 
-            var(--editor-toolbar-bg) 0%, 
-            var(--editor-toolbar-bg) 95%, 
-            transparent 100%) !important;
-        position: relative !important;
-    }
-    
-    .tox .tox-toolbar::after {
-        content: '' !important;
-        position: absolute !important;
-        top: 0 !important;
-        right: 0 !important;
-        width: 20px !important;
-        height: 100% !important;
-        background: linear-gradient(90deg, 
-            transparent 0%, 
-            var(--editor-toolbar-bg) 100%) !important;
-        pointer-events: none !important;
-        z-index: 1 !important;
-    }
-    
-    .tox .tox-toolbar__group {
-        display: inline-block !important;
-        white-space: nowrap !important;
-        margin-right: 12px !important;
-        flex-shrink: 0 !important;
-        position: relative !important;
-        z-index: 2 !important;
-    }
-    
-    /* Увеличиваем размер кнопок для touch */
-    .tox .tox-tbtn {
-        width: 44px !important;
-        height: 44px !important;
-        padding: 10px !important;
-        margin: 3px !important;
-        border-radius: 8px !important;
-        transition: all 0.2s ease !important;
-        position: relative !important;
-        z-index: 2 !important;
-    }
-    
-    .tox .tox-tbtn:hover,
-    .tox .tox-tbtn:focus,
-    .tox .tox-tbtn:active {
-        background-color: rgba(255, 255, 255, 0.15) !important;
-        transform: scale(1.05) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
-    }
-    
-    .tox .tox-tbtn svg {
-        width: 20px !important;
-        height: 20px !important;
-    }
-    
-    /* Улучшенные стили для скроллбара */
-    .tox .tox-toolbar::-webkit-scrollbar {
-        height: 8px !important;
-    }
-    
-    .tox .tox-toolbar::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1) !important;
-        border-radius: 4px !important;
-    }
-    
-    .tox .tox-toolbar::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3) !important;
-        border-radius: 4px !important;
-        transition: background 0.2s ease !important;
-    }
-    
-    .tox .tox-toolbar::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.5) !important;
-    }
-    
-    /* Индикатор прокрутки */
-    .tox .tox-toolbar::before {
-        content: '← прокрутка →' !important;
-        position: absolute !important;
-        bottom: -20px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        font-size: 10px !important;
-        color: var(--text-color) !important;
-        opacity: 0.6 !important;
-        pointer-events: none !important;
-        z-index: 1 !important;
-    }
-}
 
-/* ===== УЛУЧШЕННЫЕ СТИЛИ МЕНЮ РЕДАКТОРА ===== */
-
-/* Базовые стили для меню */
-.tox .tox-menubar {
-    background: linear-gradient(135deg, var(--editor-toolbar-bg) 0%, var(--editor-toolbar-bg) 100%) !important;
-    border-bottom: 1px solid var(--editor-toolbar-border) !important;
-    padding: 8px 12px !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    transition: all 0.3s ease !important;
-}
-
-/* Стили для пунктов меню */
-.tox .tox-mbtn {
-    color: var(--text-color) !important;
-    background: transparent !important;
-    border: none !important;
-    border-radius: 6px !important;
-    padding: 8px 12px !important;
-    margin: 0 2px !important;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    transition: all 0.2s ease !important;
-    position: relative !important;
-    overflow: hidden !important;
-}
-
-.tox .tox-mbtn:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-}
-
-.tox .tox-mbtn:active {
-    transform: translateY(0) !important;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* Эффект свечения при наведении */
-.tox .tox-mbtn::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: -100% !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
-    transition: left 0.5s ease !important;
-}
-
-.tox .tox-mbtn:hover::before {
-    left: 100% !important;
-}
-
-/* Адаптивные стили для мобильных устройств */
-.tox .tox-menubar.mobile-menu {
-    display: none !important;
-}
-
-/* Стили для планшетов */
-.tox .tox-menubar.tablet-menu {
-    padding: 6px 8px !important;
-}
-
-.tox .tox-menubar.tablet-menu .tox-mbtn {
-    padding: 6px 10px !important;
-    font-size: 13px !important;
-    margin: 0 1px !important;
-}
-
-/* Стили для десктопа */
-.tox .tox-menubar.desktop-menu {
-    padding: 10px 16px !important;
-}
-
-.tox .tox-menubar.desktop-menu .tox-mbtn {
-    padding: 10px 16px !important;
-    font-size: 15px !important;
-    margin: 0 3px !important;
-}
-
-/* Стили для выпадающих меню */
-.tox .tox-collection {
-    background: var(--modal-bg) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 8px !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
-    backdrop-filter: blur(10px) !important;
-    padding: 8px !important;
-}
-
-.tox .tox-collection__item {
-    color: var(--text-color) !important;
-    border-radius: 6px !important;
-    padding: 8px 12px !important;
-    margin: 2px 0 !important;
-    transition: all 0.2s ease !important;
-}
-
-.tox .tox-collection__item:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    transform: translateX(4px) !important;
-}
-
-.tox .tox-collection__item--active {
-    background: var(--primary-color) !important;
-    color: white !important;
-}
-
-/* Стили для разделителей в меню */
-.tox .tox-collection__separator {
-    background: var(--border-color) !important;
-    height: 1px !important;
-    margin: 6px 0 !important;
-}
-
-/* Анимация появления меню */
-.tox .tox-collection {
-    animation: menuSlideIn 0.2s ease-out !important;
-}
-
-@keyframes menuSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Улучшенные стили для иконок в меню */
-.tox .tox-mbtn svg {
-    width: 16px !important;
-    height: 16px !important;
-    margin-right: 6px !important;
-    transition: transform 0.2s ease !important;
-}
-
-.tox .tox-mbtn:hover svg {
-    transform: scale(1.1) !important;
-}
-
-/* Стили для активного пункта меню */
-.tox .tox-mbtn--active {
-    background: var(--primary-color) !important;
-    color: white !important;
-    box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3) !important;
-}
-
-/* Адаптивность для очень маленьких экранов */
-@media (max-width: 480px) {
-    .tox .tox-menubar {
-        display: none !important;
-    }
-}
-
-/* Стили для темной темы */
-[data-theme="dark"] .tox .tox-menubar {
-    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%) !important;
-    border-bottom: 1px solid #404040 !important;
-}
-
-[data-theme="dark"] .tox .tox-mbtn:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-}
-
-[data-theme="dark"] .tox .tox-collection {
-    background: #2d2d2d !important;
-    border: 1px solid #404040 !important;
-}
-
-/* Стили для светлой темы */
-[data-theme="light"] .tox .tox-menubar {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-    border-bottom: 1px solid #dee2e6 !important;
-}
-
-/* Стили для иконок в темной теме */
-[data-theme="dark"] .tox .tox-tbtn svg,
-[data-theme="dark"] .tox .tox-mbtn svg,
-[data-theme="dark"] .tox .tox-tbtn .tox-icon,
-[data-theme="dark"] .tox .tox-mbtn .tox-icon {
-    fill: #ffffff !important;
-    color: #ffffff !important;
-    stroke: #ffffff !important;
-}
-
-[data-theme="dark"] .tox .tox-tbtn:hover svg,
-[data-theme="dark"] .tox .tox-mbtn:hover svg,
-[data-theme="dark"] .tox .tox-tbtn:hover .tox-icon,
-[data-theme="dark"] .tox .tox-mbtn:hover .tox-icon {
-    fill: #aefc6e !important;
-    color: #aefc6e !important;
-    stroke: #aefc6e !important;
-}
-
-[data-theme="dark"] .tox .tox-tbtn--active svg,
-[data-theme="dark"] .tox .tox-mbtn--active svg,
-[data-theme="dark"] .tox .tox-tbtn--active .tox-icon,
-[data-theme="dark"] .tox .tox-mbtn--active .tox-icon {
-    fill: #aefc6e !important;
-    color: #aefc6e !important;
-    stroke: #aefc6e !important;
-}
-
-[data-theme="dark"] .tox .tox-tbtn--disabled svg,
-[data-theme="dark"] .tox .tox-mbtn--disabled svg,
-[data-theme="dark"] .tox .tox-tbtn--disabled .tox-icon,
-[data-theme="dark"] .tox .tox-mbtn--disabled .tox-icon {
-    fill: #666666 !important;
-    color: #666666 !important;
-    stroke: #666666 !important;
-    opacity: 0.5 !important;
-}
-
-/* Стили для иконок в светлой теме */
-[data-theme="light"] .tox .tox-tbtn svg,
-[data-theme="light"] .tox .tox-mbtn svg,
-[data-theme="light"] .tox .tox-tbtn .tox-icon,
-[data-theme="light"] .tox .tox-mbtn .tox-icon {
-    fill: #333333 !important;
-    color: #333333 !important;
-    stroke: #333333 !important;
-}
-
-[data-theme="light"] .tox .tox-tbtn:hover svg,
-[data-theme="light"] .tox .tox-mbtn:hover svg,
-[data-theme="light"] .tox .tox-tbtn:hover .tox-icon,
-[data-theme="light"] .tox .tox-mbtn:hover .tox-icon {
-    fill: #007bff !important;
-    color: #007bff !important;
-    stroke: #007bff !important;
-}
-
-[data-theme="light"] .tox .tox-tbtn--active svg,
-[data-theme="light"] .tox .tox-mbtn--active svg,
-[data-theme="light"] .tox .tox-tbtn--active .tox-icon,
-[data-theme="light"] .tox .tox-mbtn--active .tox-icon {
-    fill: #007bff !important;
-    color: #007bff !important;
-    stroke: #007bff !important;
-}
-
-[data-theme="light"] .tox .tox-tbtn--disabled svg,
-[data-theme="light"] .tox .tox-mbtn--disabled svg,
-[data-theme="light"] .tox .tox-tbtn--disabled .tox-icon,
-[data-theme="light"] .tox .tox-mbtn--disabled .tox-icon {
-    fill: #999999 !important;
-    color: #999999 !important;
-    stroke: #999999 !important;
-    opacity: 0.5 !important;
-}
 
 /* Стили для разрыва страницы */
 .page-break {
@@ -4886,68 +3903,3 @@ input {
     content: "--- Page Break ---";
 }
 
-/* Дополнительные стили для иконок в темной теме */
-[data-theme="dark"] .tox .tox-toolbar .tox-tbtn svg,
-[data-theme="dark"] .tox .tox-toolbar .tox-tbtn .tox-icon {
-    fill: #ffffff !important;
-    color: #ffffff !important;
-}
-
-[data-theme="dark"] .tox .tox-toolbar .tox-tbtn:hover svg,
-[data-theme="dark"] .tox .tox-toolbar .tox-tbtn:hover .tox-icon {
-    fill: #aefc6e !important;
-    color: #aefc6e !important;
-}
-
-[data-theme="dark"] .tox .tox-toolbar .tox-tbtn--active svg,
-[data-theme="dark"] .tox .tox-toolbar .tox-tbtn--active .tox-icon {
-    fill: #aefc6e !important;
-    color: #aefc6e !important;
-}
-
-/* Стили для иконок в выпадающих меню */
-[data-theme="dark"] .tox .tox-collection .tox-collection__item svg,
-[data-theme="dark"] .tox .tox-collection .tox-collection__item .tox-icon {
-    fill: #ffffff !important;
-    color: #ffffff !important;
-}
-
-[data-theme="dark"] .tox .tox-collection .tox-collection__item:hover svg,
-[data-theme="dark"] .tox .tox-collection .tox-collection__item:hover .tox-icon {
-    fill: #aefc6e !important;
-    color: #aefc6e !important;
-}
-
-/* Стили для иконок в статус-баре */
-[data-theme="dark"] .tox .tox-statusbar svg,
-[data-theme="dark"] .tox .tox-statusbar .tox-icon {
-    fill: #ffffff !important;
-    color: #ffffff !important;
-}
-
-/* Стили для иконок в мобильной версии */
-[data-theme="dark"] .tox .tox-menubar .tox-mbtn svg,
-[data-theme="dark"] .tox .tox-menubar .tox-mbtn .tox-icon {
-    fill: #ffffff !important;
-    color: #ffffff !important;
-}
-
-[data-theme="dark"] .tox .tox-menubar .tox-mbtn:hover svg,
-[data-theme="dark"] .tox .tox-menubar .tox-mbtn:hover .tox-icon {
-    fill: #aefc6e !important;
-    color: #aefc6e !important;
-}
-
-[data-theme="light"] .tox .tox-mbtn {
-    color: #212529 !important;
-}
-
-[data-theme="light"] .tox .tox-mbtn:hover {
-    background: rgba(0, 0, 0, 0.05) !important;
-}
-
-[data-theme="light"] .tox .tox-collection {
-    background: #ffffff !important;
-    border: 1px solid #dee2e6 !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
-}

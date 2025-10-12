@@ -1,7 +1,8 @@
 // Service Worker для Local Notes
-const CACHE_NAME = 'local-notes-v1.0.1';
-const STATIC_CACHE = 'static-v1.0.1';
-const DYNAMIC_CACHE = 'dynamic-v1.0.1';
+const CACHE_NAME = 'local-notes-v1.0.2';
+const STATIC_CACHE = 'static-v1.0.2';
+const DYNAMIC_CACHE = 'dynamic-v1.0.2';
+const CACHE_LIMIT = 50; // Максимальное количество файлов в динамическом кэше
 
 // Файлы для кэширования
 const STATIC_FILES = [
@@ -11,10 +12,10 @@ const STATIC_FILES = [
     '/css/img.css',
     '/css/preloader.css',
     '/css/highlight.css',
+    '/css/tinymce-custom.css',
     '/js/index.js',
     '/js/magicurl.js',
     '/js/highlight.min.js',
-    '/js/script.js',
     '/js/img.js',
     '/js/preloader.js',
     '/js/translations.js',
@@ -45,6 +46,16 @@ const LANGUAGE_VERSIONS = [
     '/mk/',
     '/sl/'
 ];
+
+// Функция для ограничения размера кэша
+async function limitCacheSize(cacheName, limit) {
+    const cache = await caches.open(cacheName);
+    const keys = await cache.keys();
+    if (keys.length > limit) {
+        await cache.delete(keys[0]);
+        await limitCacheSize(cacheName, limit);
+    }
+}
 
 // Установка Service Worker
 self.addEventListener('install', event => {
@@ -178,6 +189,8 @@ async function networkFirst(request) {
         if (networkResponse.ok) {
             const cache = await caches.open(DYNAMIC_CACHE);
             cache.put(request, networkResponse.clone());
+            // Ограничиваем размер кэша
+            await limitCacheSize(DYNAMIC_CACHE, CACHE_LIMIT);
         }
         return networkResponse;
     } catch (error) {

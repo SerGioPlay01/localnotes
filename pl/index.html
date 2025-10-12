@@ -12,8 +12,28 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta http-equiv="Permissions-Policy" content="browsing-topics=(), run-ad-auction=()">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Permissions-Policy" content="browsing-topics=(), run-ad-auction=(), camera=(), microphone=(), geolocation=()">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com chrome-extension:; connect-src 'self' https://www.google-analytics.com https://analytics.google.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    
+    <!-- Cache busting meta tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="cache-buster" content="<script>document.write(Date.now())</script>">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    
+    <!-- Mobile Optimization -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Local Notes">
+    <meta name="msapplication-TileColor" content="#0a0a0a">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="msapplication-navbutton-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- SEO Meta Tags -->
     <meta property="og:title" content="Lokalne Notatki - Zapisz ważne notatki bezpośrednio w przeglądarce">
@@ -32,11 +52,21 @@
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow">
 
+    <!-- Critical CSS loaded first -->
     <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="/css/pointer-events.css">
-    <link rel="stylesheet" href="/css/img.css">
     <link rel="stylesheet" href="/css/preloader.css">
-    <link rel="stylesheet" href="/css/highlight.css">
+    
+    <!-- Non-critical CSS loaded asynchronously -->
+    <link rel="preload" href="/css/img.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/highlight.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/tinymce-custom.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- Fallback for browsers that don't support preload -->
+    <noscript>
+        <link rel="stylesheet" href="/css/img.css">
+        <link rel="stylesheet" href="/css/highlight.css">
+        <link rel="stylesheet" href="/css/tinymce-custom.css">
+    </noscript>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
@@ -103,7 +133,7 @@
             <div id="editModal" class="modal">
                 <div class="modal-content">
                     <h2 class="modal_h2">Edytor</h2>
-                    <div id="editorContainer" class="quillEditor"></div>
+                    <textarea id="editorContainer" class="tinymce"></textarea>
                     <div class="modal-buttons-container">
                         <button id="saveNoteButton"><i class="fas fa-save"></i> Zapisz notatkę</button>
                         <button id="cancelNoteButton" class="btn cancel"><i class="fas fa-times"></i> Anuluj</button>
@@ -155,21 +185,41 @@
         window.currentLang = 'pl';
     </script>
     
-    <!-- Core utilities -->
+    <!-- Critical JavaScript loaded first -->
     <script src="/js/utils.js"></script>
     <script src="/js/selectors.js"></script>
     <script src="/js/translate.js"></script>
     <script src="/js/themes.js"></script>
+    <script src="/js/performance.js"></script>
+    <script src="/js/security.js"></script>
     
-    <!-- TinyMCE -->
-    <script src="/editor_news/tinymce.min.js"></script>
-    <script src="/js/magicurl.js"></script>
-    <script src="/js/highlight.min.js"></script>
-    <script src="/js/translations.js"></script>
-    <script src="/js/tinymce-translations.js"></script>
-    <script src="/js/index.js"></script>
-    <script src="/js/img.js"></script>
-    <script src="/js/preloader.js"></script>
+    <!-- TinyMCE loaded with defer for better performance -->
+    <script src="/editor_news/tinymce.min.js" defer></script>
+    
+    <!-- Non-critical JavaScript loaded asynchronously -->
+    <script>
+        // Load non-critical scripts asynchronously
+        function loadScript(src, callback) {
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            if (callback) script.onload = callback;
+            document.head.appendChild(script);
+        }
+        
+        // Load scripts after DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            loadScript('/js/magicurl.js');
+            loadScript('/js/highlight.min.js');
+            loadScript('/js/translations.js');
+            loadScript('/js/tinymce-translations.js');
+            loadScript('/js/img.js');
+            loadScript('/js/preloader.js');
+            
+            // Load main script last
+            loadScript('/js/index.js');
+        });
+    </script>
     
     <!-- Service Worker Registration -->
     <script>

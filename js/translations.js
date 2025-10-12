@@ -1,4 +1,5 @@
 // Система переводов для динамического текста
+if (typeof translations === 'undefined') {
 const translations = {
     en: {
         // Общие сообщения
@@ -37,10 +38,18 @@ const translations = {
         importCompleted: "The import has been successfully completed. Number of notes added: {count}",
         
         // Подтверждения
-        confirmDeleteAll: "Are you sure you want to delete all notes?",
+        confirmDeleteAll: "Do you really want to delete ALL notes?",
+        confirmDeleteAllTitle: "Delete All Notes",
+        confirmDeleteAllPlaceholder: "Type 'DELETE ALL' to confirm",
+        deleteAll: "Delete All",
+        clearAllWarning: "This action is irreversible!",
+        clearAllWarning1: "All your notes will be permanently deleted",
+        clearAllWarning2: "Data recovery will be impossible",
+        clearAllWarning3: "It is recommended to create a backup before deletion",
+        invalidPassword: "Invalid password. Please try again.",
         
         // Интерфейс
-        noNotesToDisplay: "No notes to display",
+        noNotesMessage: "No notes to display",
         chooseImportFormat: "Choose import format",
         encryptedFiles: "Encrypted files (.note)",
         htmlFiles: "HTML files",
@@ -85,7 +94,15 @@ const translations = {
         termsOfUse: "Terms of Use",
         privacyPolicy: "Privacy Policy",
         allRightsReserved: "All rights reserved. Local Notes",
-        byAuthor: "By SerGio Play"
+        byAuthor: "By SerGio Play",
+        
+        // Прелоадер
+        preloaderText: "Wait! <br> Getting ready to record.",
+        preloaderInit: "Initializing encryption...",
+        preloaderModules: "Loading modules...",
+        preloaderSecurity: "Security check...",
+        preloaderInterface: "Preparing interface...",
+        preloaderComplete: "Loading complete..."
     },
     
     ru: {
@@ -125,10 +142,18 @@ const translations = {
         importCompleted: "Импорт успешно завершен. Количество добавленных заметок: {count}",
         
         // Подтверждения
-        confirmDeleteAll: "Вы уверены, что хотите удалить все заметки?",
+        confirmDeleteAll: "Вы действительно хотите удалить ВСЕ заметки?",
+        confirmDeleteAllTitle: "Удалить все заметки",
+        confirmDeleteAllPlaceholder: "Введите 'DELETE ALL' для подтверждения",
+        deleteAll: "Удалить все",
+        clearAllWarning: "Это действие необратимо!",
+        clearAllWarning1: "Все ваши заметки будут безвозвратно удалены",
+        clearAllWarning2: "Восстановление данных будет невозможно",
+        clearAllWarning3: "Рекомендуется создать резервную копию перед удалением",
+        invalidPassword: "Неверный пароль. Попробуйте еще раз.",
         
         // Интерфейс
-        noNotesToDisplay: "Нет заметок для отображения",
+        noNotesMessage: "Нет заметок для отображения",
         chooseImportFormat: "Выберите формат импорта",
         encryptedFiles: "Зашифрованные файлы (.note)",
         htmlFiles: "HTML файлы",
@@ -173,7 +198,23 @@ const translations = {
         termsOfUse: "Условия использования",
         privacyPolicy: "Политика конфиденциальности",
         allRightsReserved: "Все права защищены. Local Notes",
-        byAuthor: "Автор: SerGio Play"
+        byAuthor: "Автор: SerGio Play",
+        
+        // Дополнительные переводы для lang.json
+        pageTitle: "Локальные заметки (Local Notes)",
+        metaDescription: "Локальные заметки (Local Notes) - это приложение для создания и хранения заметок в браузере.",
+        metaKeywords: "локальные заметки, заметки, заметки в браузере, приложение для заметок, заметки онлайн, Local Notes",
+        metaOgtitle: "Локальные заметки - сохраняйте важные заметки прямо в вашем браузере",
+        metaOgDescript: "Локальные заметки - это приложение для создания и хранения заметок в браузере.",
+        appName: "Локальные заметки",
+        searchPlaceholder: "Поиск по заметкам...",
+        editModalTitle: "Редактор",
+        preloaderText: "Подождите! <br> Подготавливаемся к вашим заметкам.",
+        preloaderInit: "Инициализация шифрования...",
+        preloaderModules: "Загрузка модулей...",
+        preloaderSecurity: "Проверка безопасности...",
+        preloaderInterface: "Подготовка интерфейса...",
+        preloaderComplete: "Завершение загрузки...",
     },
     
     ua: {
@@ -213,9 +254,17 @@ const translations = {
         
         // Подтверждения
         confirmDeleteAll: "Ви впевнені, що хочете видалити всі нотатки?",
+        confirmDeleteAllTitle: "Видалити всі нотатки",
+        confirmDeleteAllPlaceholder: "Введіть 'DELETE ALL' для підтвердження",
+        deleteAll: "Видалити все",
+        clearAllWarning: "Ця дія незворотна!",
+        clearAllWarning1: "Всі ваші нотатки будуть безповоротно видалені",
+        clearAllWarning2: "Відновлення даних буде неможливим",
+        clearAllWarning3: "Рекомендується створити резервну копію перед видаленням",
+        invalidPassword: "Невірний пароль. Спробуйте ще раз.",
         
         // Интерфейс
-        noNotesToDisplay: "Немає нотаток для відображення",
+        noNotesMessage: "Немає нотаток для відображення",
         chooseImportFormat: "Виберіть формат імпорту",
         encryptedFiles: "Зашифровані файли (.note)",
         htmlFiles: "HTML файли",
@@ -260,7 +309,15 @@ const translations = {
         termsOfUse: "Умови використання",
         privacyPolicy: "Політика конфіденційності",
         allRightsReserved: "Всі права захищені. Local Notes",
-        byAuthor: "Автор: SerGio Play"
+        byAuthor: "Автор: SerGio Play",
+        
+        // Прелоадер
+        preloaderText: "Зачекайте! <br> Підготовлюємося до ваших нотаток.",
+        preloaderInit: "Ініціалізація шифрування...",
+        preloaderModules: "Завантаження модулів...",
+        preloaderSecurity: "Перевірка безпеки...",
+        preloaderInterface: "Підготовка інтерфейсу...",
+        preloaderComplete: "Завершення завантаження..."
     },
     
     pl: {
@@ -300,9 +357,17 @@ const translations = {
         
         // Подтверждения
         confirmDeleteAll: "Czy na pewno chcesz usunąć wszystkie notatki?",
+        confirmDeleteAllTitle: "Usuń wszystkie notatki",
+        confirmDeleteAllPlaceholder: "Wpisz 'DELETE ALL' aby potwierdzić",
+        deleteAll: "Usuń wszystko",
+        clearAllWarning: "Ta akcja jest nieodwracalna!",
+        clearAllWarning1: "Wszystkie notatki zostaną trwale usunięte",
+        clearAllWarning2: "Odzyskanie danych będzie niemożliwe",
+        clearAllWarning3: "Zaleca się utworzenie kopii zapasowej przed usunięciem",
+        invalidPassword: "Nieprawidłowe hasło. Spróbuj ponownie.",
         
         // Интерфейс
-        noNotesToDisplay: "Brak notatek do wyświetlenia",
+        noNotesMessage: "Brak notatek do wyświetlenia",
         chooseImportFormat: "Wybierz format importu",
         encryptedFiles: "Zaszyfrowane pliki (.note)",
         htmlFiles: "Pliki HTML",
@@ -347,7 +412,15 @@ const translations = {
         termsOfUse: "Warunki użytkowania",
         privacyPolicy: "Polityka prywatności",
         allRightsReserved: "Wszystkie prawa zastrzeżone. Local Notes",
-        byAuthor: "Autor: SerGio Play"
+        byAuthor: "Autor: SerGio Play",
+        
+        // Прелоадер
+        preloaderText: "Czekaj! <br> Przygotowujemy się do Twoich notatek.",
+        preloaderInit: "Inicjalizacja szyfrowania...",
+        preloaderModules: "Ładowanie modułów...",
+        preloaderSecurity: "Sprawdzanie bezpieczeństwa...",
+        preloaderInterface: "Przygotowywanie interfejsu...",
+        preloaderComplete: "Kończenie ładowania..."
     },
     
     cs: {
@@ -387,9 +460,17 @@ const translations = {
         
         // Подтверждения
         confirmDeleteAll: "Jste si jisti, že chcete smazat všechny poznámky?",
+        confirmDeleteAllTitle: "Smazat všechny poznámky",
+        confirmDeleteAllPlaceholder: "Zadejte 'DELETE ALL' pro potvrzení",
+        deleteAll: "Smazat vše",
+        clearAllWarning: "Tato akce je nevratná!",
+        clearAllWarning1: "Všechny poznámky budou trvale smazány",
+        clearAllWarning2: "Obnovení dat bude nemožné",
+        clearAllWarning3: "Doporučuje se vytvořit zálohu před smazáním",
+        invalidPassword: "Neplatné heslo. Zkuste to znovu.",
         
         // Интерфейс
-        noNotesToDisplay: "Žádné poznámky k zobrazení",
+        noNotesMessage: "Žádné poznámky k zobrazení",
         chooseImportFormat: "Vyberte formát importu",
         encryptedFiles: "Šifrované soubory (.note)",
         htmlFiles: "HTML soubory",
@@ -434,7 +515,15 @@ const translations = {
         termsOfUse: "Podmínky použití",
         privacyPolicy: "Zásady ochrany osobních údajů",
         allRightsReserved: "Všechna práva vyhrazena. Local Notes",
-        byAuthor: "Autor: SerGio Play"
+        byAuthor: "Autor: SerGio Play",
+        
+        // Прелоадер
+        preloaderText: "Počkejte! <br> Připravujeme se na vaše poznámky.",
+        preloaderInit: "Inicializace šifrování...",
+        preloaderModules: "Načítání modulů...",
+        preloaderSecurity: "Kontrola bezpečnosti...",
+        preloaderInterface: "Příprava rozhraní...",
+        preloaderComplete: "Dokončování načítání..."
     },
     
     sk: {
@@ -474,9 +563,17 @@ const translations = {
         
         // Подтверждения
         confirmDeleteAll: "Ste si istí, že chcete zmazať všetky poznámky?",
+        confirmDeleteAllTitle: "Zmazať všetky poznámky",
+        confirmDeleteAllPlaceholder: "Zadajte 'DELETE ALL' pre potvrdenie",
+        deleteAll: "Zmazať všetko",
+        clearAllWarning: "Táto akcia je nevratná!",
+        clearAllWarning1: "Všetky poznámky budú trvalo zmazané",
+        clearAllWarning2: "Obnovenie dát bude nemožné",
+        clearAllWarning3: "Odporúča sa vytvoriť zálohu pred zmazaním",
+        invalidPassword: "Neplatné heslo. Skúste to znovu.",
         
         // Интерфейс
-        noNotesToDisplay: "Žiadne poznámky na zobrazenie",
+        noNotesMessage: "Žiadne poznámky na zobrazenie",
         chooseImportFormat: "Vyberte formát importu",
         encryptedFiles: "Šifrované súbory (.note)",
         htmlFiles: "HTML súbory",
@@ -519,7 +616,15 @@ const translations = {
         termsOfUse: "Podmienky použitia",
         privacyPolicy: "Zásady ochrany osobných údajov",
         allRightsReserved: "Všetky práva vyhradené. Local Notes",
-        byAuthor: "Autor: SerGio Play"
+        byAuthor: "Autor: SerGio Play",
+        
+        // Прелоадер
+        preloaderText: "Počkajte! <br> Pripravujeme sa na vaše poznámky.",
+        preloaderInit: "Inicializácia šifrovania...",
+        preloaderModules: "Načítavanie modulov...",
+        preloaderSecurity: "Kontrola bezpečnosti...",
+        preloaderInterface: "Príprava rozhrania...",
+        preloaderComplete: "Dokončovanie načítavania..."
     },
     
     bg: {
@@ -559,9 +664,17 @@ const translations = {
         
         // Подтверждения
         confirmDeleteAll: "Сигурни ли сте, че искате да изтриете всички бележки?",
+        confirmDeleteAllTitle: "Изтрий всички бележки",
+        confirmDeleteAllPlaceholder: "Въведете 'DELETE ALL' за потвърждение",
+        deleteAll: "Изтрий всичко",
+        clearAllWarning: "Това действие е необратимо!",
+        clearAllWarning1: "Всички ваши бележки ще бъдат безвъзвратно изтрити",
+        clearAllWarning2: "Възстановяването на данните ще бъде невъзможно",
+        clearAllWarning3: "Препоръчва се да създадете резервно копие преди изтриване",
+        invalidPassword: "Невалидна парола. Опитайте отново.",
         
         // Интерфейс
-        noNotesToDisplay: "Няма бележки за показване",
+        noNotesMessage: "Няма бележки за показване",
         chooseImportFormat: "Изберете формат за импорт",
         encryptedFiles: "Криптирани файлове (.note)",
         htmlFiles: "HTML файлове",
@@ -604,7 +717,15 @@ const translations = {
         termsOfUse: "Условия за ползване",
         privacyPolicy: "Политика за поверителност",
         allRightsReserved: "Всички права запазени. Local Notes",
-        byAuthor: "Автор: SerGio Play"
+        byAuthor: "Автор: SerGio Play",
+        
+        // Прелоадер
+        preloaderText: "Изчакайте! <br> Подготвяме се за вашите бележки.",
+        preloaderInit: "Инициализиране на криптирането...",
+        preloaderModules: "Зареждане на модули...",
+        preloaderSecurity: "Проверка на сигурността...",
+        preloaderInterface: "Подготовка на интерфейса...",
+        preloaderComplete: "Завършване на зареждането..."
     },
     
     hr: {
@@ -646,7 +767,7 @@ const translations = {
         confirmDeleteAll: "Jeste li sigurni da želite obrisati sve bilješke?",
         
         // Интерфейс
-        noNotesToDisplay: "Nema bilješki za prikaz",
+        noNotesMessage: "Nema bilješki za prikaz",
         chooseImportFormat: "Odaberite format uvoza",
         encryptedFiles: "Šifrirane datoteke (.note)",
         htmlFiles: "HTML datoteke",
@@ -689,7 +810,15 @@ const translations = {
         termsOfUse: "Uvjeti korištenja",
         privacyPolicy: "Politika privatnosti",
         allRightsReserved: "Sva prava pridržana. Local Notes",
-        byAuthor: "Autor: SerGio Play"
+        byAuthor: "Autor: SerGio Play",
+        
+        // Прелоадер
+        preloaderText: "Pričekajte! <br> Pripremamo se za vaše bilješke.",
+        preloaderInit: "Inicijalizacija šifriranja...",
+        preloaderModules: "Učitavanje modula...",
+        preloaderSecurity: "Provjera sigurnosti...",
+        preloaderInterface: "Priprema sučelja...",
+        preloaderComplete: "Završavanje učitavanja..."
     },
     
     sr: {
@@ -731,7 +860,7 @@ const translations = {
         confirmDeleteAll: "Да ли сте сигурни да желите обрисати све белешке?",
         
         // Интерфейс
-        noNotesToDisplay: "Нема белешки за приказ",
+        noNotesMessage: "Нема белешки за приказ",
         chooseImportFormat: "Изаберите формат увоза",
         encryptedFiles: "Шифроване датотеке (.note)",
         htmlFiles: "HTML датотеке",
@@ -774,7 +903,15 @@ const translations = {
         termsOfUse: "Услови коришћења",
         privacyPolicy: "Политика приватности",
         allRightsReserved: "Сва права задржана. Local Notes",
-        byAuthor: "Аутор: SerGio Play"
+        byAuthor: "Аутор: SerGio Play",
+        
+        // Прелоадер
+        preloaderText: "Сачекајте! <br> Припремамо се за ваше белешке.",
+        preloaderInit: "Иницијализација шифровања...",
+        preloaderModules: "Учитавање модула...",
+        preloaderSecurity: "Провера безбедности...",
+        preloaderInterface: "Припрема интерфејса...",
+        preloaderComplete: "Завршавање учитавања..."
     },
     
     bs: {
@@ -816,7 +953,7 @@ const translations = {
         confirmDeleteAll: "Jeste li sigurni da želite obrisati sve bilješke?",
         
         // Интерфейс
-        noNotesToDisplay: "Nema bilješki za prikaz",
+        noNotesMessage: "Nema bilješki za prikaz",
         chooseImportFormat: "Odaberite format uvoza",
         encryptedFiles: "Šifrirane datoteke (.note)",
         htmlFiles: "HTML datoteke",
@@ -859,7 +996,15 @@ const translations = {
         termsOfUse: "Uvjeti korištenja",
         privacyPolicy: "Politika privatnosti",
         allRightsReserved: "Sva prava pridržana. Local Notes",
-        byAuthor: "Autor: SerGio Play"
+        byAuthor: "Autor: SerGio Play",
+        
+        // Прелоадер
+        preloaderText: "Pričekajte! <br> Pripremamo se za vaše bilješke.",
+        preloaderInit: "Inicijalizacija šifriranja...",
+        preloaderModules: "Učitavanje modula...",
+        preloaderSecurity: "Provjera sigurnosti...",
+        preloaderInterface: "Priprema sučelja...",
+        preloaderComplete: "Završavanje učitavanja..."
     },
     
     mk: {
@@ -901,7 +1046,7 @@ const translations = {
         confirmDeleteAll: "Дали сте сигурни дека сакате да ги избришете сите белешки?",
         
         // Интерфейс
-        noNotesToDisplay: "Нема белешки за приказ",
+        noNotesMessage: "Нема белешки за приказ",
         chooseImportFormat: "Изберете формат за увоз",
         encryptedFiles: "Шифрирани датотеки (.note)",
         htmlFiles: "HTML датотеки",
@@ -944,7 +1089,15 @@ const translations = {
         termsOfUse: "Услови за користење",
         privacyPolicy: "Политика за приватност",
         allRightsReserved: "Сите права задржани. Local Notes",
-        byAuthor: "Автор: SerGio Play"
+        byAuthor: "Автор: SerGio Play",
+        
+        // Прелоадер
+        preloaderText: "Почекајте! <br> Подготвуваме се за вашите белешки.",
+        preloaderInit: "Иницијализација на шифрирање...",
+        preloaderModules: "Вчитување модули...",
+        preloaderSecurity: "Проверка на безбедност...",
+        preloaderInterface: "Подготовка на интерфејс...",
+        preloaderComplete: "Завршување на вчитување..."
     },
     
     sl: {
@@ -986,7 +1139,7 @@ const translations = {
         confirmDeleteAll: "Ali ste prepričani, da želite izbrisati vse opombe?",
         
         // Интерфейс
-        noNotesToDisplay: "Ni opomb za prikaz",
+        noNotesMessage: "Ni opomb za prikaz",
         chooseImportFormat: "Izberite format uvoza",
         encryptedFiles: "Šifrirane datoteke (.note)",
         htmlFiles: "HTML datoteke",
@@ -1029,7 +1182,15 @@ const translations = {
         termsOfUse: "Pogoji uporabe",
         privacyPolicy: "Pravilnik o zasebnosti",
         allRightsReserved: "Vse pravice pridržane. Local Notes",
-        byAuthor: "Avtor: SerGio Play"
+        byAuthor: "Avtor: SerGio Play",
+        
+        // Прелоадер
+        preloaderText: "Počakajte! <br> Pripravljamo se za vaše opombe.",
+        preloaderInit: "Inicializacija šifriranja...",
+        preloaderModules: "Nalaganje modulov...",
+        preloaderSecurity: "Preverjanje varnosti...",
+        preloaderInterface: "Priprava vmesnika...",
+        preloaderComplete: "Zaključevanje nalaganja..."
     }
 };
 
@@ -1041,6 +1202,9 @@ function t(key, params = {}) {
     // Заменяем параметры в тексте
     return translation.replace(/\{(\w+)\}/g, (match, param) => params[param] || match);
 }
+
+// Экспортируем функцию в глобальную область
+window.t = t;
 
 // Функция для получения текущего языка
 function getCurrentLanguage() {
@@ -1087,3 +1251,4 @@ function updateButtonTexts() {
         okButton.innerHTML = `<i class="fas fa-check"></i> ${t("ok")}`;
     }
 }
+} // Закрываем блок if (typeof translations === 'undefined')

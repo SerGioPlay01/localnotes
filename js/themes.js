@@ -1,4 +1,5 @@
 // Система управления темами
+if (typeof ThemeManager === 'undefined') {
 class ThemeManager {
     constructor() {
         this.currentTheme = this.getStoredTheme() || this.getSystemTheme();
@@ -9,7 +10,7 @@ class ThemeManager {
     init() {
         console.log('ThemeManager: Initializing with theme:', this.currentTheme);
         this.applyTheme(this.currentTheme);
-        this.createThemeToggle();
+        // this.createThemeToggle(); // Убираем фиксированную кнопку смены темы
         this.createThemeModal();
         this.setupEventListeners();
     }
@@ -49,6 +50,24 @@ class ThemeManager {
         // Обновление активной опции в модальном окне
         this.updateActiveThemeOption();
         
+        // Обновление стилей TinyMCE
+        setTimeout(() => {
+            if (typeof applyThemeToTinyMCE === 'function') {
+                applyThemeToTinyMCE();
+            }
+        if (typeof forceUpdateSplitButtonStyles === 'function') {
+            forceUpdateSplitButtonStyles(theme);
+        }
+        
+        // Добавляем обработчики кликов для split button
+        if (typeof addSplitButtonClickHandlers === 'function') {
+            addSplitButtonClickHandlers();
+        }
+            if (typeof adjustEditorHeight === 'function') {
+                adjustEditorHeight();
+            }
+        }, 100);
+        
         // Обновление темы TinyMCE редактора
         if (typeof updateTinyMCETheme === 'function') {
             setTimeout(() => {
@@ -59,6 +78,12 @@ class ThemeManager {
 
     // Создание кнопки переключения тем
     createThemeToggle() {
+        // Проверяем, не существует ли уже кнопка
+        if (document.getElementById('themeToggle')) {
+            console.log('Theme toggle button already exists, skipping creation');
+            return;
+        }
+        
         const toggle = document.createElement('button');
         toggle.className = 'theme-toggle';
         toggle.id = 'themeToggle';
@@ -106,10 +131,13 @@ class ThemeManager {
 
     // Настройка обработчиков событий
     setupEventListeners() {
-        // Клик по кнопке переключения
-        document.getElementById('themeToggle').addEventListener('click', () => {
-            this.showThemeModal();
-        });
+        // Клик по кнопке переключения (если она существует)
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                this.showThemeModal();
+            });
+        }
 
         // Клик по опциям темы
         document.querySelectorAll('.theme-option').forEach(option => {
@@ -156,14 +184,20 @@ class ThemeManager {
 
     // Показать модальное окно выбора темы
     showThemeModal() {
-        document.getElementById('themeModal').style.display = 'block';
-        document.body.style.overflow = 'hidden';
+        const modal = document.getElementById('themeModal');
+        if (modal) {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
     }
 
     // Скрыть модальное окно выбора темы
     hideThemeModal() {
-        document.getElementById('themeModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
+        const modal = document.getElementById('themeModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
     }
 
     // Обновление иконки переключателя
@@ -230,10 +264,13 @@ class ThemeManager {
 
 // Инициализация системы тем при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    window.themeManager = new ThemeManager();
+    if (!window.themeManager) {
+        window.themeManager = new ThemeManager();
+    }
 });
 
 // Экспорт для использования в других модулях
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ThemeManager;
 }
+} // Закрываем блок if (typeof ThemeManager === 'undefined')

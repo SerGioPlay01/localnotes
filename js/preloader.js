@@ -5,7 +5,10 @@ class ModernPreloader {
         this.preloader = null;
         this.particles = [];
         this.cipherChars = ['A', 'E', 'S', '2', '5', '6'];
-        this.init();
+        // Задержка для инициализации, чтобы система переводов успела загрузиться
+        setTimeout(() => {
+            this.init();
+        }, 100);
     }
 
     init() {
@@ -50,34 +53,158 @@ class ModernPreloader {
     updatePreloaderText() {
         const preloaderText = document.getElementById('preloaderText');
         if (preloaderText) {
-            const currentLang = window.currentLang || 'en';
+            // Определяем язык из URL или глобальной переменной
+            let currentLang = window.currentLang;
+            if (!currentLang) {
+                const path = window.location.pathname;
+                const langMatch = path.match(/\/([a-z]{2})\//);
+                currentLang = langMatch ? langMatch[1] : 'en';
+            }
+            
             let text = 'Loading';
             
-            if (currentLang === 'ru') {
-                text = 'Загрузка';
-            } else if (currentLang === 'ua') {
-                text = 'Завантаження';
-            } else if (currentLang === 'pl') {
-                text = 'Ładowanie';
-            } else if (currentLang === 'cs') {
-                text = 'Načítání';
-            } else if (currentLang === 'sk') {
-                text = 'Načítanie';
-            } else if (currentLang === 'bg') {
-                text = 'Зареждане';
-            } else if (currentLang === 'hr') {
-                text = 'Učitavanje';
-            } else if (currentLang === 'sr') {
-                text = 'Учитавање';
-            } else if (currentLang === 'bs') {
-                text = 'Učitavanje';
-            } else if (currentLang === 'mk') {
-                text = 'Вчитување';
-            } else if (currentLang === 'sl') {
-                text = 'Nalaganje';
+            // Получаем перевод из системы переводов
+            if (window.t && typeof window.t === 'function' && window.translations) {
+                text = window.t('preloaderText') || 'Loading';
+                console.log('Preloader: Using t() for main text:', text);
+            } else {
+                // Fallback для случаев, когда система переводов еще не загружена
+                const translations = {
+                    'en': 'Loading',
+                    'ru': 'Загрузка',
+                    'ua': 'Завантаження',
+                    'pl': 'Ładowanie',
+                    'cs': 'Načítání',
+                    'sk': 'Načítanie',
+                    'bg': 'Зареждане',
+                    'hr': 'Učitavanje',
+                    'sr': 'Учитавање',
+                    'bs': 'Učitavanje',
+                    'mk': 'Вчитување',
+                    'sl': 'Nalaganje'
+                };
+                text = translations[currentLang] || 'Loading';
+                console.log('Preloader: Using fallback for main text:', text, 'for language:', currentLang);
             }
             
             preloaderText.innerHTML = `${text}<span class="loading-dots">...</span>`;
+        }
+    }
+
+    getLoadingTexts() {
+        // Определяем язык из URL или глобальной переменной
+        let currentLang = window.currentLang;
+        if (!currentLang) {
+            const path = window.location.pathname;
+            const langMatch = path.match(/\/([a-z]{2})\//);
+            currentLang = langMatch ? langMatch[1] : 'en';
+        }
+        
+        console.log('Preloader: Current language:', currentLang);
+        
+        // Получаем переводы из системы переводов
+        if (window.t && typeof window.t === 'function' && window.translations) {
+            const texts = [
+                window.t('preloaderInit') || 'Initializing encryption...',
+                window.t('preloaderModules') || 'Loading modules...',
+                window.t('preloaderSecurity') || 'Security check...',
+                window.t('preloaderInterface') || 'Preparing interface...',
+                window.t('preloaderComplete') || 'Loading complete...'
+            ];
+            console.log('Preloader: Using t() function, texts:', texts);
+            return texts;
+        } else {
+            // Fallback переводы для каждого языка
+            const translations = {
+                'en': [
+                    'Initializing encryption...',
+                    'Loading modules...',
+                    'Security check...',
+                    'Preparing interface...',
+                    'Loading complete...'
+                ],
+                'ru': [
+                    'Инициализация шифрования...',
+                    'Загрузка модулей...',
+                    'Проверка безопасности...',
+                    'Подготовка интерфейса...',
+                    'Завершение загрузки...'
+                ],
+                'ua': [
+                    'Ініціалізація шифрування...',
+                    'Завантаження модулів...',
+                    'Перевірка безпеки...',
+                    'Підготовка інтерфейсу...',
+                    'Завершення завантаження...'
+                ],
+                'pl': [
+                    'Inicjalizacja szyfrowania...',
+                    'Ładowanie modułów...',
+                    'Sprawdzanie bezpieczeństwa...',
+                    'Przygotowywanie interfejsu...',
+                    'Kończenie ładowania...'
+                ],
+                'cs': [
+                    'Inicializace šifrování...',
+                    'Načítání modulů...',
+                    'Kontrola bezpečnosti...',
+                    'Příprava rozhraní...',
+                    'Dokončování načítání...'
+                ],
+                'sk': [
+                    'Inicializácia šifrovania...',
+                    'Načítavanie modulov...',
+                    'Kontrola bezpečnosti...',
+                    'Príprava rozhrania...',
+                    'Dokončovanie načítavania...'
+                ],
+                'bg': [
+                    'Инициализиране на криптирането...',
+                    'Зареждане на модули...',
+                    'Проверка на сигурността...',
+                    'Подготовка на интерфейса...',
+                    'Завършване на зареждането...'
+                ],
+                'hr': [
+                    'Inicijalizacija šifriranja...',
+                    'Učitavanje modula...',
+                    'Provjera sigurnosti...',
+                    'Priprema sučelja...',
+                    'Završavanje učitavanja...'
+                ],
+                'sr': [
+                    'Иницијализација шифровања...',
+                    'Учитавање модула...',
+                    'Провера безбедности...',
+                    'Припрема интерфејса...',
+                    'Завршавање учитавања...'
+                ],
+                'bs': [
+                    'Inicijalizacija šifriranja...',
+                    'Učitavanje modula...',
+                    'Provjera sigurnosti...',
+                    'Priprema sučelja...',
+                    'Završavanje učitavanja...'
+                ],
+                'mk': [
+                    'Иницијализација на шифрирање...',
+                    'Вчитување модули...',
+                    'Проверка на безбедност...',
+                    'Подготовка на интерфејс...',
+                    'Завршување на вчитување...'
+                ],
+                'sl': [
+                    'Inicializacija šifriranja...',
+                    'Nalaganje modulov...',
+                    'Preverjanje varnosti...',
+                    'Priprava vmesnika...',
+                    'Zaključevanje nalaganja...'
+                ]
+            };
+            
+            const result = translations[currentLang] || translations['en'];
+            console.log('Preloader: Using fallback translations for', currentLang, ':', result);
+            return result;
         }
     }
 
@@ -107,13 +234,7 @@ class ModernPreloader {
         }, 200);
 
         // Обновление текста загрузки
-        const loadingTexts = [
-            'Инициализация шифрования...',
-            'Загрузка модулей...',
-            'Проверка безопасности...',
-            'Подготовка интерфейса...',
-            'Завершение загрузки...'
-        ];
+        const loadingTexts = this.getLoadingTexts();
 
         let textIndex = 0;
         const textInterval = setInterval(() => {

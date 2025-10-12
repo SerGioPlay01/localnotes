@@ -1690,7 +1690,32 @@ input {
     border-radius: 6px;
     box-shadow: 0 2px 8px var(--shadow-color);
     border: 1px solid var(--border-color);
-    transition: all 0.2s ease;
+    transition: all 0.2s ease, opacity 0.3s ease;
+    opacity: 0;
+    background: linear-gradient(90deg, var(--input-bg) 25%, var(--border-color) 50%, var(--input-bg) 75%);
+    background-size: 200% 100%;
+    animation: loading-shimmer 1.5s infinite;
+}
+
+.note img.loaded {
+    opacity: 1;
+    animation: none;
+    background: none;
+}
+
+.note img.error {
+    opacity: 0.5;
+    background: var(--input-bg);
+    animation: none;
+}
+
+@keyframes loading-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
 }
 
 .note img:hover {

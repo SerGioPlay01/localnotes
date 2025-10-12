@@ -970,6 +970,37 @@ function forceRefreshResources() {
     console.log('Resources force refreshed');
 }
 
+// Функция для предзагрузки изображений
+function preloadImages() {
+    try {
+        const notes = document.querySelectorAll('.note img');
+        const imageUrls = new Set();
+        
+        // Собираем все уникальные URL изображений
+        notes.forEach(img => {
+            if (img.src && !imageUrls.has(img.src)) {
+                imageUrls.add(img.src);
+            }
+        });
+        
+        // Предзагружаем изображения
+        imageUrls.forEach(url => {
+            const img = new Image();
+            img.onload = () => {
+                console.log(`Image preloaded: ${url}`);
+            };
+            img.onerror = () => {
+                console.warn(`Failed to preload image: ${url}`);
+            };
+            img.src = url;
+        });
+        
+        console.log(`Preloading ${imageUrls.size} images`);
+    } catch (error) {
+        console.error('Error preloading images:', error);
+    }
+}
+
 // Инициализация приложения
 window.onload = async () => {
     try {
@@ -1010,6 +1041,9 @@ window.onload = async () => {
         
         // Загружаем заметки
         await loadNotes();
+        
+        // Предзагружаем изображения для лучшей производительности
+        preloadImages();
         
         // Обновляем текст кнопок
         if (typeof updateButtonTexts === 'function') {
@@ -1235,6 +1269,19 @@ function initTinyMCE() {
                         console.warn('Menubar not found');
                     }
                 }, 100);
+                
+                // Заменяем стандартные диалоги на кастомные
+                editor.on('BeforeOpenDialog', function(e) {
+                    e.preventDefault();
+                    
+                    if (e.dialogName === 'image') {
+                        showCustomImageDialog(editor);
+                    } else if (e.dialogName === 'link') {
+                        showCustomLinkDialog(editor);
+                    } else if (e.dialogName === 'table') {
+                        showCustomTableDialog(editor);
+                    }
+                });
                 
                 // Добавляем обработчики для кнопок
                 editor.addCommand('mcePageBreak', function() {
@@ -1640,6 +1687,46 @@ async function loadNotes() {
         const notePreview = document.createElement("div");
         notePreview.classList.add("noteContent");
             notePreview.innerHTML = note.content;
+            
+            // Улучшаем загрузку изображений
+            setTimeout(() => {
+                const images = notePreview.querySelectorAll('img');
+                images.forEach(img => {
+                    // Добавляем обработчики для изображений
+                    img.addEventListener('load', () => {
+                        img.classList.add('loaded');
+                        img.classList.remove('error');
+                    });
+                    
+                    img.addEventListener('error', () => {
+                        img.classList.add('error');
+                        img.classList.remove('loaded');
+                        img.alt = currentLang.startsWith("ru") ? "Ошибка загрузки изображения" : "Image load error";
+                        img.title = currentLang.startsWith("ru") ? "Не удалось загрузить изображение" : "Failed to load image";
+                    });
+                    
+                    // Если изображение уже загружено
+                    if (img.complete && img.naturalHeight !== 0) {
+                        img.classList.add('loaded');
+                    }
+                    
+                    // Добавляем обработчик клика для полноэкранного просмотра
+                    img.addEventListener('click', handleImageClick);
+                    
+                    // Предзагружаем изображение если оно еще не загружено
+                    if (!img.complete) {
+                        const newImg = new Image();
+                        newImg.onload = () => {
+                            img.classList.add('loaded');
+                        };
+                        newImg.onerror = () => {
+                            img.classList.add('error');
+                        };
+                        newImg.src = img.src;
+                    }
+                });
+            }, 100);
+            
             noteElement.appendChild(notePreview);
 
             // Создаем контейнер для кнопок
@@ -1808,6 +1895,204 @@ function showCustomPrompt(title, message, placeholder = "", defaultValue = "", c
         if (e.target === promptModal) {
             handleCancel();
         }
+    });
+}
+
+// Кастомные диалоги для TinyMCE
+function showCustomImageDialog(editor) {
+    const imageModal = document.createElement('div');
+    imageModal.className = 'modal';
+    imageModal.id = 'customImageModal';
+    imageModal.innerHTML = `
+        <div class="modal-content-error">
+            <h3>${currentLang.startsWith("ru") ? "Вставка изображения" : "Insert Image"}</h3>
+            <p>${currentLang.startsWith("ru") ? "Введите URL изображения:" : "Enter image URL:"}</p>
+            <input type="url" id="imageUrlInput" placeholder="https://example.com/image.jpg">
+            <div class="modal-buttons-container">
+                <button id="imageInsertBtn" class="btn"><i class="fas fa-check"></i> ${currentLang.startsWith("ru") ? "Вставить" : "Insert"}</button>
+                <button id="imageCancelBtn" class="btn cancel"><i class="fas fa-times"></i> ${currentLang.startsWith("ru") ? "Отмена" : "Cancel"}</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(imageModal);
+    imageModal.style.display = "block";
+    
+    const urlInput = document.getElementById('imageUrlInput');
+    const insertBtn = document.getElementById('imageInsertBtn');
+    const cancelBtn = document.getElementById('imageCancelBtn');
+    
+    setTimeout(() => urlInput.focus(), 100);
+    
+    const handleInsert = () => {
+        const url = urlInput.value.trim();
+        if (url) {
+            editor.insertContent(`<img src="${url}" alt="Image" style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);">`);
+        }
+        document.body.removeChild(imageModal);
+    };
+    
+    const handleCancel = () => {
+        document.body.removeChild(imageModal);
+    };
+    
+    insertBtn.addEventListener('click', handleInsert);
+    cancelBtn.addEventListener('click', handleCancel);
+    
+    urlInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleInsert();
+    });
+    
+    imageModal.addEventListener('click', (e) => {
+        if (e.target === imageModal) handleCancel();
+    });
+}
+
+function showCustomLinkDialog(editor) {
+    const linkModal = document.createElement('div');
+    linkModal.className = 'modal';
+    linkModal.id = 'customLinkModal';
+    linkModal.innerHTML = `
+        <div class="modal-content-error">
+            <h3>${currentLang.startsWith("ru") ? "Вставка ссылки" : "Insert Link"}</h3>
+            <p>${currentLang.startsWith("ru") ? "Введите URL ссылки:" : "Enter link URL:"}</p>
+            <input type="url" id="linkUrlInput" placeholder="https://example.com">
+            <p>${currentLang.startsWith("ru") ? "Текст ссылки (необязательно):" : "Link text (optional):"}</p>
+            <input type="text" id="linkTextInput" placeholder="${currentLang.startsWith("ru") ? "Текст ссылки" : "Link text"}">
+            <div class="modal-buttons-container">
+                <button id="linkInsertBtn" class="btn"><i class="fas fa-check"></i> ${currentLang.startsWith("ru") ? "Вставить" : "Insert"}</button>
+                <button id="linkCancelBtn" class="btn cancel"><i class="fas fa-times"></i> ${currentLang.startsWith("ru") ? "Отмена" : "Cancel"}</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(linkModal);
+    linkModal.style.display = "block";
+    
+    const urlInput = document.getElementById('linkUrlInput');
+    const textInput = document.getElementById('linkTextInput');
+    const insertBtn = document.getElementById('linkInsertBtn');
+    const cancelBtn = document.getElementById('linkCancelBtn');
+    
+    setTimeout(() => urlInput.focus(), 100);
+    
+    const handleInsert = () => {
+        const url = urlInput.value.trim();
+        const text = textInput.value.trim() || url;
+        if (url) {
+            editor.insertContent(`<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>`);
+        }
+        document.body.removeChild(linkModal);
+    };
+    
+    const handleCancel = () => {
+        document.body.removeChild(linkModal);
+    };
+    
+    insertBtn.addEventListener('click', handleInsert);
+    cancelBtn.addEventListener('click', handleCancel);
+    
+    urlInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleInsert();
+    });
+    
+    linkModal.addEventListener('click', (e) => {
+        if (e.target === linkModal) handleCancel();
+    });
+}
+
+function showCustomTableDialog(editor) {
+    const tableModal = document.createElement('div');
+    tableModal.className = 'modal';
+    tableModal.id = 'customTableModal';
+    tableModal.innerHTML = `
+        <div class="modal-content-error">
+            <h3>${currentLang.startsWith("ru") ? "Вставка таблицы" : "Insert Table"}</h3>
+            <p>${currentLang.startsWith("ru") ? "Выберите размер таблицы:" : "Select table size:"}</p>
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin: 20px 0;">
+                ${Array.from({length: 25}, (_, i) => {
+                    const row = Math.floor(i / 5) + 1;
+                    const col = (i % 5) + 1;
+                    return `<div class="table-cell" data-rows="${row}" data-cols="${col}" style="width: 30px; height: 30px; border: 1px solid var(--border-color); cursor: pointer; background: var(--input-bg);"></div>`;
+                }).join('')}
+            </div>
+            <div class="modal-buttons-container">
+                <button id="tableInsertBtn" class="btn"><i class="fas fa-check"></i> ${currentLang.startsWith("ru") ? "Вставить" : "Insert"}</button>
+                <button id="tableCancelBtn" class="btn cancel"><i class="fas fa-times"></i> ${currentLang.startsWith("ru") ? "Отмена" : "Cancel"}</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(tableModal);
+    tableModal.style.display = "block";
+    
+    let selectedRows = 3, selectedCols = 3;
+    const cells = tableModal.querySelectorAll('.table-cell');
+    const insertBtn = document.getElementById('tableInsertBtn');
+    const cancelBtn = document.getElementById('tableCancelBtn');
+    
+    // Обновляем выделение
+    const updateSelection = () => {
+        cells.forEach(cell => {
+            const cellRow = parseInt(cell.dataset.rows);
+            const cellCol = parseInt(cell.dataset.cols);
+            if (cellRow <= selectedRows && cellCol <= selectedCols) {
+                cell.style.background = 'var(--primary-color)';
+            } else {
+                cell.style.background = 'var(--input-bg)';
+            }
+        });
+    };
+    
+    cells.forEach(cell => {
+        cell.addEventListener('click', () => {
+            selectedRows = parseInt(cell.dataset.rows);
+            selectedCols = parseInt(cell.dataset.cols);
+            updateSelection();
+        });
+        
+        cell.addEventListener('mouseenter', () => {
+            const hoverRows = parseInt(cell.dataset.rows);
+            const hoverCols = parseInt(cell.dataset.cols);
+            cells.forEach(c => {
+                const cRow = parseInt(c.dataset.rows);
+                const cCol = parseInt(c.dataset.cols);
+                if (cRow <= hoverRows && cCol <= hoverCols) {
+                    c.style.background = 'var(--button-hover)';
+                } else {
+                    c.style.background = 'var(--input-bg)';
+                }
+            });
+        });
+        
+        cell.addEventListener('mouseleave', updateSelection);
+    });
+    
+    updateSelection();
+    
+    const handleInsert = () => {
+        let tableHtml = '<table style="border-collapse: collapse; width: 100%; border: 1px solid var(--border-color);">';
+        for (let i = 0; i < selectedRows; i++) {
+            tableHtml += '<tr>';
+            for (let j = 0; j < selectedCols; j++) {
+                tableHtml += '<td style="border: 1px solid var(--border-color); padding: 8px;">&nbsp;</td>';
+            }
+            tableHtml += '</tr>';
+        }
+        tableHtml += '</table>';
+        editor.insertContent(tableHtml);
+        document.body.removeChild(tableModal);
+    };
+    
+    const handleCancel = () => {
+        document.body.removeChild(tableModal);
+    };
+    
+    insertBtn.addEventListener('click', handleInsert);
+    cancelBtn.addEventListener('click', handleCancel);
+    
+    tableModal.addEventListener('click', (e) => {
+        if (e.target === tableModal) handleCancel();
     });
 }
 

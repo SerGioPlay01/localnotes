@@ -1406,7 +1406,8 @@ const tinymceTranslations = {
 
 // Функция для получения перевода TinyMCE
 function getTinyMCETranslation(key) {
-    const currentLang = window.currentLang || navigator.language || 'en';
+    const lang = window.currentLang || navigator.language || 'en';
+    const currentLang = lang.split('-')[0];
     const langTranslations = tinymceTranslations[currentLang] || tinymceTranslations.en;
     return langTranslations[key] || key;
 }

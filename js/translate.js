@@ -1,7 +1,26 @@
+// Функция для инициализации языка при загрузке страницы
+function initializeLanguage() {
+    // Если язык уже установлен (например, на языковых страницах)
+    if (window.currentLang) {
+        console.log('Initializing language:', window.currentLang);
+        changeLanguage(window.currentLang);
+    }
+}
+
 // Функция для загрузки текста из lang.json и обновления интерфейса
 function changeLanguage(language) {
-    fetch('/json/lang.json')  // Убедитесь, что путь к файлу lang.json правильный
-        .then(response => response.json())
+    // Определяем правильный путь к lang.json в зависимости от текущего URL
+    const isLanguagePage = window.location.pathname.match(/^\/([a-z]{2})\//);
+    const langJsonPath = isLanguagePage ? '../json/lang.json' : '/json/lang.json';
+    
+    
+    fetch(langJsonPath)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             const langData = data[language];
             
@@ -21,11 +40,20 @@ function changeLanguage(language) {
             
             updateInterface(langData, language);
         })
-        .catch(err => console.error("Error loading language file:", err));
+        .catch(err => {
+            console.error("Error loading language file:", err);
+            console.error("Attempted to load from:", langJsonPath);
+        });
 }
 
 // Функция для обновления интерфейса
 function updateInterface(langData, language) {
+    // Сохраняем данные языка в глобальной переменной
+    window.langData = window.langData || {};
+    window.langData[language] = langData;
+    window.currentLang = language;
+    
+    
     // Обновление заголовка страницы (title)
     document.title = langData.pageTitle;
 
@@ -134,6 +162,22 @@ function updateInterface(langData, language) {
 
     // Обновляем текст кнопок с иконками
     updateButtonTexts();
+    
+    // Обновляем отображение дат при смене языка
+    if (typeof refreshAllDates === 'function') {
+        // Добавляем задержку, чтобы убедиться, что все скрипты загружены и langData обновлен
+        setTimeout(() => {
+            // Проверяем, что langData обновлен для текущего языка
+            if (window.langData && window.langData[language]) {
+                refreshAllDates();
+            } else {
+                // Если langData еще не готов, ждем еще немного
+                setTimeout(() => {
+                    refreshAllDates();
+                }, 200);
+            }
+        }, 150);
+    }
 }
 
 // Функция для обновления текста кнопок с иконками
@@ -243,6 +287,9 @@ function setPageLanguage(lang) {
     document.documentElement.setAttribute('lang', lang);
 }
 
+// Экспортируем функцию changeLanguage в глобальную область
+window.changeLanguage = changeLanguage;
+
 // Запуск проверки языка при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     // Добавляем небольшую задержку для полной загрузки DOM
@@ -255,10 +302,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isLanguagePage) {
                 // Если мы на языковой странице, устанавливаем язык из URL
                 const langFromPath = isLanguagePage[1];
-                window.currentLang = langFromPath;
-                setPageLanguage(langFromPath);
+                
+                // Проверяем, не установлен ли уже язык в HTML
+                if (!window.currentLang) {
+                    window.currentLang = langFromPath;
+                }
+                
+                setPageLanguage(window.currentLang);
                 // Обновляем интерфейс для языковой версии
-                changeLanguage(langFromPath);
+                changeLanguage(window.currentLang);
             } else {
                 // Если мы на главной странице, используем стандартную логику
                 checkAndUpdateLanguage();

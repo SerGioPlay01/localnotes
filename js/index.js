@@ -346,7 +346,11 @@ async function clearAllNotes() {
 }
 
 // Получаем текущий язык системы (предполагаем, что это en или ru)
-const currentLang = window.currentLang || navigator.language || navigator.userLanguage || 'en';
+const getCurrentLang = () => {
+    const lang = window.currentLang || navigator.language || navigator.userLanguage || 'en';
+    return lang.split('-')[0]; // Извлекаем короткий код языка
+};
+const currentLang = getCurrentLang();
 
 // Определяем параметры локализации для форматирования даты и времени
 const options = {
@@ -362,7 +366,8 @@ const locale = currentLang.startsWith("ru") ? "ru-RU" : "en-US"; // Русски
 
 // Функции для TinyMCE (определяем в начале для избежания ошибок)
 function getTinyMCELanguage() {
-    const currentLang = window.currentLang || navigator.language || 'en';
+    const lang = window.currentLang || navigator.language || 'en';
+    const currentLang = lang.split('-')[0]; // Извлекаем короткий код языка
     const langMap = {
         'ru': 'ru',
         'ua': 'ua', 
@@ -419,8 +424,8 @@ async function loadTinyMCETranslations() {
 // Функция для настройки переводов выпадающих меню стилей
 function setupStyleMenuTranslations(editor) {
     // Получаем текущий язык
-    const currentLang = window.currentLang || navigator.language || 'en';
-    const langCode = currentLang.split('-')[0];
+    const lang = window.currentLang || navigator.language || 'en';
+    const langCode = lang.split('-')[0];
     
     // Словарь переводов для элементов стилей для всех языков
     const styleTranslations = {
@@ -916,7 +921,8 @@ function disableAllTooltips(editor) {
 }
 
 function getTinyMCETranslation(key) {
-    const currentLang = window.currentLang || navigator.language || 'en';
+    const lang = window.currentLang || navigator.language || 'en';
+    const currentLang = lang.split('-')[0];
     const translations = {
         'en': {
             'File': 'File',
@@ -2733,16 +2739,51 @@ async function loadNotes() {
             const footer = document.createElement("div");
             footer.classList.add("note-footer");
 
-            // Форматируем строки в зависимости от языка
-            const creationTime = new Date(note.creationTime).toLocaleString(locale, options);
-            const lastModified = new Date(note.lastModified).toLocaleString(locale, options);
-
-            // Формируем текст в зависимости от языка
-            if (currentLang.startsWith("ru")) {
-                footer.textContent = `Создано: ${creationTime} | Изменено: ${lastModified}`;
+            // Используем новую систему форматирования дат с fallback
+            let creationTime, lastModified;
+            
+            if (typeof formatDate === 'function') {
+                // Используем новую систему форматирования дат
+                // Получаем актуальный язык из getCurrentLanguage() вместо статической переменной
+                const actualLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : currentLang;
+                creationTime = formatDate(note.creationTime, 'medium', actualLang);
+                lastModified = formatDate(note.lastModified, 'medium', actualLang);
             } else {
-                footer.textContent = `Created: ${creationTime} | Changed: ${lastModified}`;
+                // Fallback на стандартное форматирование
+                // Получаем актуальный язык из getCurrentLanguage() вместо статической переменной
+                const actualLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : currentLang;
+                const locale = actualLang === 'ru' ? 'ru-RU' : 
+                              actualLang === 'ua' ? 'uk-UA' : 
+                              actualLang === 'pl' ? 'pl-PL' : 
+                              actualLang === 'cs' ? 'cs-CZ' : 
+                              actualLang === 'sk' ? 'sk-SK' : 
+                              actualLang === 'bg' ? 'bg-BG' : 
+                              actualLang === 'hr' ? 'hr-HR' : 
+                              actualLang === 'sr' ? 'sr-RS' : 
+                              actualLang === 'bs' ? 'bs-BA' : 
+                              actualLang === 'mk' ? 'mk-MK' : 
+                              actualLang === 'sl' ? 'sl-SI' : 'en-US';
+                
+                const options = {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                
+                creationTime = new Date(note.creationTime).toLocaleString(locale, options);
+                lastModified = new Date(note.lastModified).toLocaleString(locale, options);
             }
+
+            // Получаем переводы для "Создано" и "Изменено"
+            // Используем актуальный язык
+            const actualLang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : currentLang;
+            const createdText = window.langData?.[actualLang]?.created || 'Created';
+            const modifiedText = window.langData?.[actualLang]?.modified || 'Modified';
+
+            // Формируем текст с переводами
+            footer.textContent = `${createdText}: ${creationTime} | ${modifiedText}: ${lastModified}`;
             noteElement.appendChild(footer);
 
             // Создаем контент заметки

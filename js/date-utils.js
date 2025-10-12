@@ -91,7 +91,9 @@ const dateFormats = {
 
 // Функция для получения текущего языка
 function getCurrentLanguage() {
-    return window.currentLang || 'en';
+    const currentLang = window.currentLang || 'en';
+    // Извлекаем короткий код языка (например, 'ru' из 'ru-RU' или 'en-US')
+    return currentLang.split('-')[0];
 }
 
 // Функция для получения переводов дат
@@ -128,6 +130,7 @@ function formatDate(date, format = 'long', lang = null) {
     
     const translations = getDateTranslations(currentLang);
     const formatTemplate = dateFormats[currentLang]?.[format] || dateFormats['en'][format];
+    
     
     if (!formatTemplate) return dateObj.toLocaleString();
     
@@ -346,6 +349,65 @@ function parseDate(dateString) {
     return new Date(dateString);
 }
 
+// Функция для обновления отображения дат в интерфейсе
+function updateDateDisplay() {
+    const currentLang = getCurrentLanguage();
+    
+    // Обновляем все элементы с классом 'date-display'
+    document.querySelectorAll('.date-display').forEach(element => {
+        const dateString = element.getAttribute('data-date');
+        const format = element.getAttribute('data-format') || 'long';
+        
+        if (dateString) {
+            const formattedDate = formatDate(dateString, format, currentLang);
+            element.textContent = formattedDate;
+        }
+    });
+    
+    // Обновляем все элементы с классом 'relative-time'
+    document.querySelectorAll('.relative-time').forEach(element => {
+        const dateString = element.getAttribute('data-date');
+        
+        if (dateString) {
+            const relativeTime = formatRelativeTime(dateString, currentLang);
+            element.textContent = relativeTime;
+        }
+    });
+}
+
+// Функция для принудительного обновления всех дат в интерфейсе
+function refreshAllDates() {
+    // Обновляем отображение дат
+    updateDateDisplay();
+    
+    // Перезагружаем заметки для обновления дат в футерах заметок
+    if (typeof loadNotes === 'function') {
+        loadNotes();
+    }
+}
+
+// Функция для тестирования форматирования дат
+function testDateFormatting() {
+    console.log('=== Testing Date Formatting ===');
+    
+    const testDate = new Date();
+    const languages = ['en', 'ru', 'ua', 'pl', 'cs', 'sk', 'bg', 'hr', 'sr', 'bs', 'mk', 'sl'];
+    
+    languages.forEach(lang => {
+        console.log(`\n--- Testing ${lang} ---`);
+        console.log('Current langData:', window.langData ? Object.keys(window.langData) : 'No langData');
+        console.log('Lang data for', lang, ':', window.langData && window.langData[lang] ? 'exists' : 'missing');
+        
+        if (window.langData && window.langData[lang]) {
+            console.log('Months:', window.langData[lang].months ? 'exists' : 'missing');
+            console.log('MonthsShort:', window.langData[lang].monthsShort ? 'exists' : 'missing');
+        }
+        
+        const formatted = formatDate(testDate, 'medium', lang);
+        console.log('Formatted date:', formatted);
+    });
+}
+
 // Экспортируем функции в глобальную область
 window.formatDate = formatDate;
 window.formatFullDate = formatFullDate;
@@ -353,3 +415,6 @@ window.formatRelativeTime = formatRelativeTime;
 window.parseDate = parseDate;
 window.getDateTranslations = getDateTranslations;
 window.dateFormats = dateFormats;
+window.updateDateDisplay = updateDateDisplay;
+window.refreshAllDates = refreshAllDates;
+window.testDateFormatting = testDateFormatting;

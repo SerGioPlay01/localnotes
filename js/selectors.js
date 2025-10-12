@@ -81,7 +81,19 @@ class FooterSelectors {
         const languageSelect = document.getElementById('languageSelect');
         if (languageSelect) {
             languageSelect.addEventListener('change', (e) => {
-                this.changeLanguage(e.target.value);
+                const selectedLang = e.target.value;
+                
+                // Если мы на главной странице и есть функция changeLanguage, обновляем интерфейс
+                if (!window.location.pathname.match(/^\/([a-z]{2})\//) && typeof window.changeLanguage === 'function') {
+                    // Сохраняем выбранный язык
+                    localStorage.setItem('preferredLanguage', selectedLang);
+                    
+                    // Обновляем интерфейс
+                    window.changeLanguage(selectedLang);
+                } else {
+                    // Иначе используем стандартную логику перенаправления
+                    this.changeLanguage(selectedLang);
+                }
             });
         }
         
@@ -108,10 +120,43 @@ class FooterSelectors {
     
     // Смена языка
     changeLanguage(langCode) {
-        if (langCode === 'en') {
-            window.location.href = '/';
+        // Проверяем, находимся ли мы на языковой странице
+        const isLanguagePage = window.location.pathname.match(/^\/([a-z]{2})\//);
+        
+        if (isLanguagePage) {
+            // Если мы на языковой странице, можем попробовать обновить интерфейс без перезагрузки
+            if (typeof window.changeLanguage === 'function') {
+                // Сохраняем выбранный язык
+                localStorage.setItem('preferredLanguage', langCode);
+                
+                // Обновляем интерфейс
+                window.changeLanguage(langCode);
+                
+                // Если это смена на другую языковую страницу, перенаправляем
+                if (langCode !== window.currentLang) {
+                    setTimeout(() => {
+                        if (langCode === 'en') {
+                            window.location.href = '/';
+                        } else {
+                            window.location.href = `/${langCode}/`;
+                        }
+                    }, 100);
+                }
+            } else {
+                // Fallback на перезагрузку страницы
+                if (langCode === 'en') {
+                    window.location.href = '/';
+                } else {
+                    window.location.href = `/${langCode}/`;
+                }
+            }
         } else {
-            window.location.href = `/${langCode}/`;
+            // Если мы на главной странице, просто перенаправляем
+            if (langCode === 'en') {
+                window.location.href = '/';
+            } else {
+                window.location.href = `/${langCode}/`;
+            }
         }
     }
     

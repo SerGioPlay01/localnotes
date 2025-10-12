@@ -5,11 +5,9 @@ class ModernPreloader {
         console.log('Preloader: Constructor called');
         this.preloader = null;
         this.particles = [];
-        // Задержка для инициализации, чтобы система переводов успела загрузиться
-        setTimeout(() => {
-            console.log('Preloader: Starting initialization');
-            this.init();
-        }, 100);
+        // Инициализируем сразу без задержки
+        console.log('Preloader: Starting initialization');
+        this.init();
     }
 
     init() {
@@ -40,6 +38,12 @@ class ModernPreloader {
         this.preloader = document.getElementById('modernPreloader');
         
         console.log('Preloader: HTML created, preloader element:', this.preloader);
+        
+        // Показываем прелойдер сразу
+        if (this.preloader) {
+            this.preloader.style.display = 'flex';
+            this.preloader.style.opacity = '1';
+        }
         
         // Загружаем Lottie анимацию
         this.loadLottieAnimation();
@@ -250,10 +254,10 @@ class ModernPreloader {
 
 
     startLoading() {
-        // Симуляция загрузки с фиксированным временем
+        // Увеличенное время показа анимации
         let progress = 0;
-        const totalDuration = 3000; // 3 секунды
-        const updateInterval = 50; // обновляем каждые 50мс
+        const totalDuration = 4000; // 4 секунды
+        const updateInterval = 16; // обновляем каждые 16мс (60fps)
         const progressStep = (100 / totalDuration) * updateInterval;
         
         const loadingInterval = setInterval(() => {
@@ -262,10 +266,8 @@ class ModernPreloader {
             if (progress >= 100) {
                 progress = 100;
                 clearInterval(loadingInterval);
-                // Небольшая задержка перед скрытием прелойдера
-                setTimeout(() => {
-                    this.hidePreloader();
-                }, 500);
+                // Скрываем прелойдер сразу без задержки
+                this.hidePreloader();
             }
             
             this.updateProgress(progress);
@@ -297,10 +299,11 @@ class ModernPreloader {
         const loadingText = document.querySelector('.loading-text');
         if (loadingText) {
             loadingText.style.opacity = '0';
+            // Убираем задержку, обновляем сразу
             setTimeout(() => {
                 loadingText.innerHTML = `${text}<span class="loading-dots">...</span>`;
                 loadingText.style.opacity = '1';
-            }, 200);
+            }, 50);
         }
     }
 
@@ -314,10 +317,11 @@ class ModernPreloader {
             
             this.preloader.classList.add('fade-out');
             
+            // Убираем задержку, скрываем сразу
             setTimeout(() => {
                 this.preloader.remove();
                 this.onComplete();
-            }, 500);
+            }, 200);
         }
     }
 

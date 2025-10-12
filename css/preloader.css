@@ -13,6 +13,8 @@
     align-items: center;
     z-index: 9999;
     overflow: hidden;
+    opacity: 1;
+    animation: preloaderFadeIn 0.1s ease-in-out;
 }
 
 /* Убираем анимированный фон */
@@ -117,9 +119,19 @@
     }
 }
 
+/* Анимация появления */
+@keyframes preloaderFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 /* Анимация исчезновения */
 .preloader.fade-out {
-    animation: preloaderFadeOut 0.5s ease-in-out forwards;
+    animation: preloaderFadeOut 0.2s ease-in-out forwards;
 }
 
 @keyframes preloaderFadeOut {

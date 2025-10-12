@@ -1961,7 +1961,7 @@ async function initTinyMCE() {
             'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough superscript subscript | ' +
             'alignleft aligncenter alignright alignjustify | outdent indent | ' +
             'numlist bullist | forecolor backcolor removeformat | ' +
-            'link image media | table | charmap emoticons | ' +
+            'link image media iframe | table | charmap emoticons | ' +
             'code | preview | insertfile anchor codesample | ' +
             'ltr rtl | pagebreak | visualblocks visualchars | searchreplace | wordcount | help'
         ],

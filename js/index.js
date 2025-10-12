@@ -418,17 +418,184 @@ async function loadTinyMCETranslations() {
 
 // Функция для настройки переводов выпадающих меню стилей
 function setupStyleMenuTranslations(editor) {
-    // Словарь переводов для элементов стилей
+    // Получаем текущий язык
+    const currentLang = window.currentLang || navigator.language || 'en';
+    const langCode = currentLang.split('-')[0];
+    
+    // Словарь переводов для элементов стилей для всех языков
     const styleTranslations = {
-        'Paragraph': 'Абзац',
-        'Heading 1': 'Заголовок 1',
-        'Heading 2': 'Заголовок 2', 
-        'Heading 3': 'Заголовок 3',
-        'Heading 4': 'Заголовок 4',
-        'Heading 5': 'Заголовок 5',
-        'Heading 6': 'Заголовок 6',
-        'Preformatted': 'Предварительно отформатированный'
+        'en': {
+            'Paragraph': 'Paragraph',
+            'Heading 1': 'Heading 1',
+            'Heading 2': 'Heading 2', 
+            'Heading 3': 'Heading 3',
+            'Heading 4': 'Heading 4',
+            'Heading 5': 'Heading 5',
+            'Heading 6': 'Heading 6',
+            'Preformatted': 'Preformatted',
+            'Blockquote': 'Blockquote',
+            'Address': 'Address',
+            'Code': 'Code',
+            'Div': 'Div'
+        },
+        'ru': {
+            'Paragraph': 'Абзац',
+            'Heading 1': 'Заголовок 1',
+            'Heading 2': 'Заголовок 2', 
+            'Heading 3': 'Заголовок 3',
+            'Heading 4': 'Заголовок 4',
+            'Heading 5': 'Заголовок 5',
+            'Heading 6': 'Заголовок 6',
+            'Preformatted': 'Предварительно отформатированный',
+            'Blockquote': 'Блок цитирования',
+            'Address': 'Адрес',
+            'Code': 'Код',
+            'Div': 'Div'
+        },
+        'ua': {
+            'Paragraph': 'Параграф',
+            'Heading 1': 'Заголовок 1',
+            'Heading 2': 'Заголовок 2', 
+            'Heading 3': 'Заголовок 3',
+            'Heading 4': 'Заголовок 4',
+            'Heading 5': 'Заголовок 5',
+            'Heading 6': 'Заголовок 6',
+            'Preformatted': 'Попередньо відформатований',
+            'Blockquote': 'Блок цитування',
+            'Address': 'Адреса',
+            'Code': 'Код',
+            'Div': 'Div'
+        },
+        'pl': {
+            'Paragraph': 'Akapit',
+            'Heading 1': 'Nagłówek 1',
+            'Heading 2': 'Nagłówek 2', 
+            'Heading 3': 'Nagłówek 3',
+            'Heading 4': 'Nagłówek 4',
+            'Heading 5': 'Nagłówek 5',
+            'Heading 6': 'Nagłówek 6',
+            'Preformatted': 'Wstępnie sformatowany',
+            'Blockquote': 'Cytat blokowy',
+            'Address': 'Adres',
+            'Code': 'Kod',
+            'Div': 'Div'
+        },
+        'cs': {
+            'Paragraph': 'Odstavec',
+            'Heading 1': 'Nadpis 1',
+            'Heading 2': 'Nadpis 2', 
+            'Heading 3': 'Nadpis 3',
+            'Heading 4': 'Nadpis 4',
+            'Heading 5': 'Nadpis 5',
+            'Heading 6': 'Nadpis 6',
+            'Preformatted': 'Předformátovaný',
+            'Blockquote': 'Bloková citace',
+            'Address': 'Adresa',
+            'Code': 'Kód',
+            'Div': 'Div'
+        },
+        'bg': {
+            'Paragraph': 'Параграф',
+            'Heading 1': 'Заглавие 1',
+            'Heading 2': 'Заглавие 2', 
+            'Heading 3': 'Заглавие 3',
+            'Heading 4': 'Заглавие 4',
+            'Heading 5': 'Заглавие 5',
+            'Heading 6': 'Заглавие 6',
+            'Preformatted': 'Предварително форматиран',
+            'Blockquote': 'Блок цитат',
+            'Address': 'Адрес',
+            'Code': 'Код',
+            'Div': 'Div'
+        },
+        'hr': {
+            'Paragraph': 'Paragraf',
+            'Heading 1': 'Naslov 1',
+            'Heading 2': 'Naslov 2', 
+            'Heading 3': 'Naslov 3',
+            'Heading 4': 'Naslov 4',
+            'Heading 5': 'Naslov 5',
+            'Heading 6': 'Naslov 6',
+            'Preformatted': 'Unaprijed formatiran',
+            'Blockquote': 'Blok citat',
+            'Address': 'Adresa',
+            'Code': 'Kod',
+            'Div': 'Div'
+        },
+        'sr': {
+            'Paragraph': 'Параграф',
+            'Heading 1': 'Наслов 1',
+            'Heading 2': 'Наслов 2', 
+            'Heading 3': 'Наслов 3',
+            'Heading 4': 'Наслов 4',
+            'Heading 5': 'Наслов 5',
+            'Heading 6': 'Наслов 6',
+            'Preformatted': 'Унапред форматиран',
+            'Blockquote': 'Блок цитат',
+            'Address': 'Адреса',
+            'Code': 'Код',
+            'Div': 'Div'
+        },
+        'bs': {
+            'Paragraph': 'Paragraf',
+            'Heading 1': 'Naslov 1',
+            'Heading 2': 'Naslov 2', 
+            'Heading 3': 'Naslov 3',
+            'Heading 4': 'Naslov 4',
+            'Heading 5': 'Naslov 5',
+            'Heading 6': 'Naslov 6',
+            'Preformatted': 'Unaprijed formatiran',
+            'Blockquote': 'Blok citat',
+            'Address': 'Adresa',
+            'Code': 'Kod',
+            'Div': 'Div'
+        },
+        'mk': {
+            'Paragraph': 'Параграф',
+            'Heading 1': 'Наслов 1',
+            'Heading 2': 'Наслов 2', 
+            'Heading 3': 'Наслов 3',
+            'Heading 4': 'Наслов 4',
+            'Heading 5': 'Наслов 5',
+            'Heading 6': 'Наслов 6',
+            'Preformatted': 'Претходно форматиран',
+            'Blockquote': 'Блок цитат',
+            'Address': 'Адреса',
+            'Code': 'Код',
+            'Div': 'Div'
+        },
+        'sl': {
+            'Paragraph': 'Odstavek',
+            'Heading 1': 'Naslov 1',
+            'Heading 2': 'Naslov 2', 
+            'Heading 3': 'Naslov 3',
+            'Heading 4': 'Naslov 4',
+            'Heading 5': 'Naslov 5',
+            'Heading 6': 'Naslov 6',
+            'Preformatted': 'Vnaprej oblikovan',
+            'Blockquote': 'Blok citat',
+            'Address': 'Naslov',
+            'Code': 'Koda',
+            'Div': 'Div'
+        },
+        'sk': {
+            'Paragraph': 'Odstavec',
+            'Heading 1': 'Nadpis 1',
+            'Heading 2': 'Nadpis 2', 
+            'Heading 3': 'Nadpis 3',
+            'Heading 4': 'Nadpis 4',
+            'Heading 5': 'Nadpis 5',
+            'Heading 6': 'Nadpis 6',
+            'Preformatted': 'Predformátovaný',
+            'Blockquote': 'Bloková citácia',
+            'Address': 'Adresa',
+            'Code': 'Kód',
+            'Div': 'Div'
+        }
     };
+    
+    // Получаем переводы для текущего языка
+    const currentTranslations = styleTranslations[langCode] || styleTranslations['en'];
     
     // Функция для перевода элементов в выпадающих меню
     function translateStyleMenuItems() {
@@ -437,12 +604,12 @@ function setupStyleMenuTranslations(editor) {
         
         styleMenus.forEach(menu => {
             // Ищем элементы с текстом стилей
-            const items = menu.querySelectorAll('.tox-collection__item-label p, .tox-collection__item-label h1, .tox-collection__item-label h2, .tox-collection__item-label h3, .tox-collection__item-label h4, .tox-collection__item-label h5, .tox-collection__item-label h6, .tox-collection__item-label pre');
+            const items = menu.querySelectorAll('.tox-collection__item-label p, .tox-collection__item-label h1, .tox-collection__item-label h2, .tox-collection__item-label h3, .tox-collection__item-label h4, .tox-collection__item-label h5, .tox-collection__item-label h6, .tox-collection__item-label pre, .tox-collection__item-label blockquote, .tox-collection__item-label address, .tox-collection__item-label code, .tox-collection__item-label div');
             
             items.forEach(item => {
                 const text = item.textContent.trim();
-                if (styleTranslations[text]) {
-                    item.textContent = styleTranslations[text];
+                if (currentTranslations[text]) {
+                    item.textContent = currentTranslations[text];
                 }
             });
         });
@@ -1148,10 +1315,86 @@ function adjustEditorHeight() {
         // Принудительно обновляем размеры
         setTimeout(() => {
             if (window.tinymce && window.tinymce.activeEditor) {
-                window.tinymce.activeEditor.getBody().style.minHeight = '300px';
+                const body = window.tinymce.activeEditor.getBody();
+                // Убираем все inline стили, которые мешают
+                body.style.minHeight = '';
+                body.style.color = '';
+                body.style.background = '';
+                body.style.fontFamily = '';
+                body.style.fontSize = '';
+                body.style.lineHeight = '';
+                body.style.margin = '';
+                body.style.padding = '';
             }
         }, 200);
     }
+}
+
+// Функция для периодической очистки inline стилей TinyMCE
+function startInlineStyleCleanup() {
+    // Очищаем inline стили каждые 100ms для более агрессивной очистки
+    setInterval(() => {
+        if (window.tinymce && window.tinymce.activeEditor) {
+            const body = window.tinymce.activeEditor.getBody();
+            if (body) {
+                // Убираем все inline стили из body
+                body.style.minHeight = '';
+                body.style.color = '';
+                body.style.backgroundColor = '';
+                body.style.background = '';
+                body.style.fontFamily = '';
+                body.style.fontSize = '';
+                body.style.lineHeight = '';
+                body.style.margin = '';
+                body.style.padding = '';
+                body.style.overflowWrap = '';
+                body.style.wordWrap = '';
+                
+                // Убираем inline стили из всех элементов внутри body
+                const allElements = body.querySelectorAll('*');
+                allElements.forEach(element => {
+                    element.style.color = '';
+                    element.style.backgroundColor = '';
+                    element.style.background = '';
+                    element.style.fontFamily = '';
+                    element.style.fontSize = '';
+                    element.style.lineHeight = '';
+                    element.style.margin = '';
+                    element.style.padding = '';
+                    element.style.overflowWrap = '';
+                    element.style.wordWrap = '';
+                });
+                
+                // Дополнительно принудительно устанавливаем правильные стили
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    body.style.color = '#ffffff';
+                    body.style.backgroundColor = 'transparent';
+                    allElements.forEach(element => {
+                        if (element.tagName === 'H1' || element.tagName === 'H2') {
+                            element.style.color = '#aefc6e';
+                        } else if (element.tagName === 'A') {
+                            element.style.color = '#aefc6e';
+                        } else {
+                            element.style.color = '#ffffff';
+                        }
+                    });
+                } else {
+                    body.style.color = '#212529';
+                    body.style.backgroundColor = 'transparent';
+                    allElements.forEach(element => {
+                        if (element.tagName === 'H1' || element.tagName === 'H2') {
+                            element.style.color = '#28a745';
+                        } else if (element.tagName === 'A') {
+                            element.style.color = '#28a745';
+                        } else {
+                            element.style.color = '#212529';
+                        }
+                    });
+                }
+            }
+        }
+    }, 100);
 }
 
 // Функция для принудительного применения стилей темы к TinyMCE
@@ -1188,6 +1431,66 @@ function applyThemeToTinyMCE() {
         }
     });
     
+    // Очищаем inline стили из содержимого TinyMCE
+    setTimeout(() => {
+        if (window.tinymce && window.tinymce.activeEditor) {
+            const body = window.tinymce.activeEditor.getBody();
+            if (body) {
+                // Убираем все inline стили из body
+                body.style.minHeight = '';
+                body.style.color = '';
+                body.style.background = '';
+                body.style.fontFamily = '';
+                body.style.fontSize = '';
+                body.style.lineHeight = '';
+                body.style.margin = '';
+                body.style.padding = '';
+                
+                // Убираем inline стили из всех элементов внутри body
+                const allElements = body.querySelectorAll('*');
+                allElements.forEach(element => {
+                    element.style.color = '';
+                    element.style.backgroundColor = '';
+                    element.style.background = '';
+                    element.style.fontFamily = '';
+                    element.style.fontSize = '';
+                    element.style.lineHeight = '';
+                    element.style.margin = '';
+                    element.style.padding = '';
+                    element.style.overflowWrap = '';
+                    element.style.wordWrap = '';
+                });
+                
+                // Принудительно устанавливаем правильные стили
+                if (currentTheme === 'dark') {
+                    body.style.color = '#ffffff';
+                    body.style.backgroundColor = 'transparent';
+                    allElements.forEach(element => {
+                        if (element.tagName === 'H1' || element.tagName === 'H2') {
+                            element.style.color = '#aefc6e';
+                        } else if (element.tagName === 'A') {
+                            element.style.color = '#aefc6e';
+                        } else {
+                            element.style.color = '#ffffff';
+                        }
+                    });
+                } else {
+                    body.style.color = '#212529';
+                    body.style.backgroundColor = 'transparent';
+                    allElements.forEach(element => {
+                        if (element.tagName === 'H1' || element.tagName === 'H2') {
+                            element.style.color = '#28a745';
+                        } else if (element.tagName === 'A') {
+                            element.style.color = '#28a745';
+                        } else {
+                            element.style.color = '#212529';
+                        }
+                    });
+                }
+            }
+        }
+    }, 100);
+
     // Дополнительная обработка для кнопок
     const buttons = document.querySelectorAll('.tox .tox-tbtn');
     buttons.forEach(button => {
@@ -1828,107 +2131,146 @@ async function initTinyMCE() {
             content_style: `
                 body {
                     background: transparent !important;
-                    color: #212529 !important;
-                    font-family: inherit !important;
-                    font-size: 14px !important;
+                    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+                    font-size: 16px !important;
                     line-height: 1.6 !important;
                     margin: 0 !important;
                     padding: 16px !important;
+                    min-height: 300px !important;
                 }
                 
-                p {
+                /* Темная тема */
+                [data-theme="dark"] body {
+                    color: #ffffff !important;
+                }
+                
+                [data-theme="dark"] body * {
+                    color: #ffffff !important;
+                }
+                
+                /* Светлая тема */
+                [data-theme="light"] body {
+                    color: #212529 !important;
+                }
+                
+                [data-theme="light"] body * {
+                    color: #212529 !important;
+                }
+                
+                /* Заголовки в темной теме */
+                [data-theme="dark"] body h1,
+                [data-theme="dark"] body h2 {
+                    color: #aefc6e !important;
+                }
+                
+                [data-theme="dark"] body h3,
+                [data-theme="dark"] body h4,
+                [data-theme="dark"] body h5,
+                [data-theme="dark"] body h6 {
+                    color: #ffffff !important;
+                }
+                
+                /* Заголовки в светлой теме */
+                [data-theme="light"] body h1,
+                [data-theme="light"] body h2 {
+                    color: #28a745 !important;
+                }
+                
+                [data-theme="light"] body h3,
+                [data-theme="light"] body h4,
+                [data-theme="light"] body h5,
+                [data-theme="light"] body h6 {
+                    color: #212529 !important;
+                }
+                
+                /* Ссылки */
+                [data-theme="dark"] body a {
+                    color: #aefc6e !important;
+                }
+                
+                [data-theme="light"] body a {
+                    color: #28a745 !important;
+                }
+                
+                /* Параграфы */
+                body p {
                     margin: 0 0 12px 0 !important;
-                    color: #212529 !important;
                 }
                 
-                h1, h2, h3, h4, h5, h6 {
-                    color: #212529 !important;
+                /* Заголовки */
+                body h1, body h2, body h3, body h4, body h5, body h6 {
                     margin: 16px 0 8px 0 !important;
                 }
                 
-                a {
-                    color: #28a745 !important;
-                    text-decoration: none !important;
+                /* Списки */
+                body ul, body ol {
+                    margin: 12px 0 !important;
+                    padding-left: 24px !important;
                 }
                 
-                a:hover {
-                    text-decoration: underline !important;
+                body li {
+                    margin: 4px 0 !important;
                 }
                 
-                blockquote {
-                    border-left: 4px solid #28a745 !important;
+                /* Таблицы */
+                body table {
+                    border-collapse: collapse !important;
+                    width: 100% !important;
                     margin: 16px 0 !important;
-                    padding: 8px 16px !important;
-                    background: transparent !important;
+                }
+                
+                body table td, body table th {
+                    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+                    padding: 8px 12px !important;
+                }
+                
+                [data-theme="dark"] body table td,
+                [data-theme="dark"] body table th {
+                    border-color: rgba(255, 255, 255, 0.2) !important;
+                    color: #ffffff !important;
+                }
+                
+                [data-theme="light"] body table td,
+                [data-theme="light"] body table th {
+                    border-color: rgba(0, 0, 0, 0.2) !important;
                     color: #212529 !important;
                 }
                 
-                code {
+                /* Код */
+                body code {
                     background: rgba(0, 0, 0, 0.1) !important;
-                    color: #212529 !important;
                     padding: 2px 4px !important;
                     border-radius: 3px !important;
                     font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
                 }
                 
-                pre {
+                [data-theme="dark"] body code {
+                    background: rgba(255, 255, 255, 0.1) !important;
+                    color: #ffffff !important;
+                }
+                
+                [data-theme="light"] body code {
                     background: rgba(0, 0, 0, 0.1) !important;
                     color: #212529 !important;
+                }
+                
+                /* Блоки кода */
+                body pre {
+                    background: rgba(0, 0, 0, 0.1) !important;
                     padding: 12px !important;
                     border-radius: 4px !important;
                     overflow-x: auto !important;
                     font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
                 }
                 
-                table {
-                    border-collapse: collapse !important;
-                    width: 100% !important;
-                    margin: 16px 0 !important;
+                [data-theme="dark"] body pre {
+                    background: rgba(255, 255, 255, 0.1) !important;
+                    color: #ffffff !important;
                 }
                 
-                table td, table th {
-                    border: 1px solid rgba(0, 0, 0, 0.2) !important;
-                    padding: 8px 12px !important;
-                    color: #212529 !important;
-                }
-                
-                table th {
+                [data-theme="light"] body pre {
                     background: rgba(0, 0, 0, 0.1) !important;
-                    font-weight: bold !important;
-                }
-                
-                ul, ol {
-                    margin: 12px 0 !important;
-                    padding-left: 24px !important;
                     color: #212529 !important;
-                }
-                
-                li {
-                    margin: 4px 0 !important;
-                    color: #212529 !important;
-                }
-                
-                img {
-                    max-width: 100% !important;
-                    height: auto !important;
-                    border-radius: 4px !important;
-                }
-                
-                hr {
-                    border: none !important;
-                    border-top: 1px solid rgba(0, 0, 0, 0.2) !important;
-                    margin: 16px 0 !important;
-                }
-                
-                input, textarea {
-                    background: transparent !important;
-                    color: #212529 !important;
-                    border: 1px solid rgba(0, 0, 0, 0.2) !important;
-                }
-                
-                input:focus, textarea:focus {
-                    border-color: #28a745 !important;
-                    outline: none !important;
                 }
             `,
             
@@ -1942,6 +2284,9 @@ async function initTinyMCE() {
                 setTimeout(() => {
                     applyThemeToTinyMCE();
                     adjustEditorHeight();
+                    
+                    // Запускаем периодическую очистку inline стилей
+                    startInlineStyleCleanup();
                     
                     // Скрываем оригинальный textarea
                     const originalTextarea = document.getElementById('editorContainer');
@@ -1975,6 +2320,61 @@ async function initTinyMCE() {
                         const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
                         updateColorPickerStyles(currentTheme);
                     }, 50);
+                });
+                
+                // Добавляем обработчики для принудительной очистки inline стилей
+                editor.on('input', function(e) {
+                    // Очищаем стили при вводе текста
+                    setTimeout(() => {
+                        const body = editor.getBody();
+                        if (body) {
+                            const currentTheme = document.documentElement.getAttribute('data-theme');
+                            if (currentTheme === 'dark') {
+                                body.style.color = '#ffffff';
+                                body.style.backgroundColor = 'transparent';
+                                const allElements = body.querySelectorAll('*');
+                                allElements.forEach(element => {
+                                    if (element.tagName === 'H1' || element.tagName === 'H2') {
+                                        element.style.color = '#aefc6e';
+                                    } else if (element.tagName === 'A') {
+                                        element.style.color = '#aefc6e';
+                                    } else {
+                                        element.style.color = '#ffffff';
+                                    }
+                                });
+                            } else {
+                                body.style.color = '#212529';
+                                body.style.backgroundColor = 'transparent';
+                                const allElements = body.querySelectorAll('*');
+                                allElements.forEach(element => {
+                                    if (element.tagName === 'H1' || element.tagName === 'H2') {
+                                        element.style.color = '#28a745';
+                                    } else if (element.tagName === 'A') {
+                                        element.style.color = '#28a745';
+                                    } else {
+                                        element.style.color = '#212529';
+                                    }
+                                });
+                            }
+                        }
+                    }, 10);
+                });
+                
+                editor.on('keyup', function(e) {
+                    // Очищаем стили при нажатии клавиш
+                    setTimeout(() => {
+                        const body = editor.getBody();
+                        if (body) {
+                            const currentTheme = document.documentElement.getAttribute('data-theme');
+                            if (currentTheme === 'dark') {
+                                body.style.color = '#ffffff';
+                                body.style.backgroundColor = 'transparent';
+                            } else {
+                                body.style.color = '#212529';
+                                body.style.backgroundColor = 'transparent';
+                            }
+                        }
+                    }, 10);
                 });
                 
                 // Добавляем обработчик для конвертации blob URL при изменении контента

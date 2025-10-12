@@ -3903,3 +3903,194 @@ input {
     content: "--- Page Break ---";
 }
 
+/* ===== КРИТИЧЕСКИ ВАЖНЫЕ СТИЛИ ДЛЯ TINYMCE BODY ===== */
+
+/* Максимально специфичные стили для body с ID tinymce */
+[data-theme="dark"] body#tinymce,
+[data-theme="dark"] body#tinymce *,
+[data-theme="dark"] body#tinymce p,
+[data-theme="dark"] body#tinymce div,
+[data-theme="dark"] body#tinymce span {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce,
+[data-theme="light"] body#tinymce *,
+[data-theme="light"] body#tinymce p,
+[data-theme="light"] body#tinymce div,
+[data-theme="light"] body#tinymce span {
+    color: #212529 !important;
+}
+
+/* Стили для body с классом mce-content-body и ID tinymce */
+[data-theme="dark"] body#tinymce.mce-content-body,
+[data-theme="dark"] body#tinymce.mce-content-body *,
+[data-theme="dark"] body#tinymce.mce-content-body p,
+[data-theme="dark"] body#tinymce.mce-content-body div,
+[data-theme="dark"] body#tinymce.mce-content-body span {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce.mce-content-body,
+[data-theme="light"] body#tinymce.mce-content-body *,
+[data-theme="light"] body#tinymce.mce-content-body p,
+[data-theme="light"] body#tinymce.mce-content-body div,
+[data-theme="light"] body#tinymce.mce-content-body span {
+    color: #212529 !important;
+}
+
+/* Максимально агрессивные стили для переопределения любых возможных стилей */
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"],
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"] *,
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"] p,
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"] div,
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"] span {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"],
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"] *,
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"] p,
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"] div,
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"] span {
+    color: #212529 !important;
+}
+
+/* ===== ОТКЛЮЧЕНИЕ ВСЕХ INLINE СТИЛЕЙ ЦВЕТА ===== */
+
+/* Отключаем все inline стили цвета в TinyMCE */
+[data-theme="dark"] body#tinymce *[style*="color"],
+[data-theme="dark"] body#tinymce.mce-content-body *[style*="color"],
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"] *[style*="color"] {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce *[style*="color"],
+[data-theme="light"] body#tinymce.mce-content-body *[style*="color"],
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"] *[style*="color"] {
+    color: #212529 !important;
+}
+
+/* Отключаем все возможные inline стили цвета */
+[data-theme="dark"] body#tinymce *[style*="color: rgb("],
+[data-theme="dark"] body#tinymce *[style*="color: #"],
+[data-theme="dark"] body#tinymce *[style*="color: black"],
+[data-theme="dark"] body#tinymce *[style*="color: white"],
+[data-theme="dark"] body#tinymce *[style*="color: inherit"] {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce *[style*="color: rgb("],
+[data-theme="light"] body#tinymce *[style*="color: #"],
+[data-theme="light"] body#tinymce *[style*="color: black"],
+[data-theme="light"] body#tinymce *[style*="color: white"],
+[data-theme="light"] body#tinymce *[style*="color: inherit"] {
+    color: #212529 !important;
+}
+
+/* Принудительное отключение всех inline стилей цвета */
+[data-theme="dark"] body#tinymce * {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce * {
+    color: #212529 !important;
+}
+
+/* ===== МАКСИМАЛЬНАЯ БЛОКИРОВКА ВСЕХ INLINE СТИЛЕЙ TINYMCE ===== */
+
+/* Блокируем все inline стили для body с ID tinymce */
+[data-theme="dark"] body#tinymce[style*="min-height"],
+[data-theme="dark"] body#tinymce[style*="background"],
+[data-theme="dark"] body#tinymce[style*="color"],
+[data-theme="dark"] body#tinymce[style*="font-family"],
+[data-theme="dark"] body#tinymce[style*="font-size"],
+[data-theme="dark"] body#tinymce[style*="line-height"],
+[data-theme="dark"] body#tinymce[style*="margin"],
+[data-theme="dark"] body#tinymce[style*="padding"] {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+}
+
+[data-theme="light"] body#tinymce[style*="min-height"],
+[data-theme="light"] body#tinymce[style*="background"],
+[data-theme="light"] body#tinymce[style*="color"],
+[data-theme="light"] body#tinymce[style*="font-family"],
+[data-theme="light"] body#tinymce[style*="font-size"],
+[data-theme="light"] body#tinymce[style*="line-height"],
+[data-theme="light"] body#tinymce[style*="margin"],
+[data-theme="light"] body#tinymce[style*="padding"] {
+    background: transparent !important;
+    color: #212529 !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+}
+
+/* Блокируем стили для .mce-content-body */
+[data-theme="dark"] body#tinymce.mce-content-body[style*="overflow-wrap"],
+[data-theme="dark"] body#tinymce.mce-content-body[style*="word-wrap"] {
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+}
+
+[data-theme="light"] body#tinymce.mce-content-body[style*="overflow-wrap"],
+[data-theme="light"] body#tinymce.mce-content-body[style*="word-wrap"] {
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
+    background: transparent !important;
+    color: #212529 !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+}
+
+/* Максимально агрессивная блокировка всех возможных inline стилей */
+[data-theme="dark"] body#tinymce[style],
+[data-theme="dark"] body#tinymce.mce-content-body[style] {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
+}
+
+[data-theme="light"] body#tinymce[style],
+[data-theme="light"] body#tinymce.mce-content-body[style] {
+    background: transparent !important;
+    color: #212529 !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
+}
+

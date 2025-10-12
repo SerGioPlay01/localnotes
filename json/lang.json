@@ -35,7 +35,13 @@
     "clearAllWarning1": "All your notes will be permanently deleted",
     "clearAllWarning2": "Data recovery will be impossible",
     "clearAllWarning3": "It is recommended to create a backup before deletion",
-    "invalidPassword": "Invalid password. Please try again."
+    "invalidPassword": "Invalid password. Please try again.",
+    "created": "Created",
+    "modified": "Modified",
+    "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "monthsShort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "weekdays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "weekdaysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
   },
   "ru": {
     "pageTitle": "Локальные заметки (Local Notes)",
@@ -73,7 +79,13 @@
     "clearAllWarning1": "Все ваши заметки будут безвозвратно удалены",
     "clearAllWarning2": "Восстановление данных будет невозможно",
     "clearAllWarning3": "Рекомендуется создать резервную копию перед удалением",
-    "invalidPassword": "Неверный пароль. Попробуйте еще раз."
+    "invalidPassword": "Неверный пароль. Попробуйте еще раз.",
+    "created": "Создано",
+    "modified": "Изменено",
+    "months": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+    "monthsShort": ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+    "weekdays": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
+    "weekdaysShort": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
   },
   "ua": {
     "pageTitle": "Локальні нотатки (Local Notes)",
@@ -111,7 +123,13 @@
     "clearAllWarning1": "Всі ваші нотатки будуть безповоротно видалені",
     "clearAllWarning2": "Відновлення даних буде неможливим",
     "clearAllWarning3": "Рекомендується створити резервну копію перед видаленням",
-    "invalidPassword": "Невірний пароль. Спробуйте ще раз."
+    "invalidPassword": "Невірний пароль. Спробуйте ще раз.",
+    "created": "Створено",
+    "modified": "Змінено",
+    "months": ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
+    "monthsShort": ["Січ", "Лют", "Бер", "Кві", "Тра", "Чер", "Лип", "Сер", "Вер", "Жов", "Лис", "Гру"],
+    "weekdays": ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"],
+    "weekdaysShort": ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
   },
   "pl": {
     "pageTitle": "Lokalne Notatki (Local Notes)",
@@ -149,7 +167,13 @@
     "clearAllWarning1": "Wszystkie notatki zostaną trwale usunięte",
     "clearAllWarning2": "Odzyskanie danych będzie niemożliwe",
     "clearAllWarning3": "Zaleca się utworzenie kopii zapasowej przed usunięciem",
-    "invalidPassword": "Nieprawidłowe hasło. Spróbuj ponownie."
+    "invalidPassword": "Nieprawidłowe hasło. Spróbuj ponownie.",
+    "created": "Utworzono",
+    "modified": "Zmodyfikowano",
+    "months": ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
+    "monthsShort": ["Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"],
+    "weekdays": ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"],
+    "weekdaysShort": ["Nd", "Pn", "Wt", "Śr", "Cz", "Pt", "Sb"]
   },
   "cs": {
     "pageTitle": "Lokální poznámky (Local Notes)",
@@ -187,7 +211,13 @@
     "clearAllWarning1": "Všechny poznámky budou trvale smazány",
     "clearAllWarning2": "Obnovení dat bude nemožné",
     "clearAllWarning3": "Doporučuje se vytvořit zálohu před smazáním",
-    "invalidPassword": "Neplatné heslo. Zkuste to znovu."
+    "invalidPassword": "Neplatné heslo. Zkuste to znovu.",
+    "created": "Vytvořeno",
+    "modified": "Upraveno",
+    "months": ["Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"],
+    "monthsShort": ["Led", "Úno", "Bře", "Dub", "Kvě", "Čer", "Čvc", "Srp", "Zář", "Říj", "Lis", "Pro"],
+    "weekdays": ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"],
+    "weekdaysShort": ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"]
   },
   "sk": {
     "pageTitle": "Lokálne poznámky (Local Notes)",
@@ -225,7 +255,13 @@
     "clearAllWarning1": "Všetky poznámky budú trvalo zmazané",
     "clearAllWarning2": "Obnovenie dát bude nemožné",
     "clearAllWarning3": "Odporúča sa vytvoriť zálohu pred zmazaním",
-    "invalidPassword": "Neplatné heslo. Skúste to znovu."
+    "invalidPassword": "Neplatné heslo. Skúste to znovu.",
+    "created": "Vytvorené",
+    "modified": "Upravené",
+    "months": ["Január", "Február", "Marec", "Apríl", "Máj", "Jún", "Júl", "August", "September", "Október", "November", "December"],
+    "monthsShort": ["Jan", "Feb", "Mar", "Apr", "Máj", "Jún", "Júl", "Aug", "Sep", "Okt", "Nov", "Dec"],
+    "weekdays": ["Nedeľa", "Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota"],
+    "weekdaysShort": ["Ne", "Po", "Ut", "St", "Št", "Pi", "So"]
   },
   "bg": {
     "pageTitle": "Локални бележки (Local Notes)",
@@ -263,7 +299,13 @@
     "clearAllWarning1": "Всички ваши бележки ще бъдат безвъзвратно изтрити",
     "clearAllWarning2": "Възстановяването на данните ще бъде невъзможно",
     "clearAllWarning3": "Препоръчва се да създадете резервно копие преди изтриване",
-    "invalidPassword": "Невалидна парола. Опитайте отново."
+    "invalidPassword": "Невалидна парола. Опитайте отново.",
+    "created": "Създадено",
+    "modified": "Променено",
+    "months": ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"],
+    "monthsShort": ["Яну", "Фев", "Мар", "Апр", "Май", "Юни", "Юли", "Авг", "Сеп", "Окт", "Ное", "Дек"],
+    "weekdays": ["Неделя", "Понеделник", "Вторник", "Сряда", "Четвъртък", "Петък", "Събота"],
+    "weekdaysShort": ["Нед", "Пон", "Вто", "Сря", "Чет", "Пет", "Съб"]
   },
   "hr": {
     "pageTitle": "Lokalne bilješke (Local Notes)",
@@ -296,7 +338,13 @@
     "cookie": "Ova stranica koristi kolačiće za poboljšanje vašeg iskustva. Nastavljajući korištenje stranice, slažete se s našom politikom kolačića.",
     "confirmDeleteAllTitle": "Obriši sve bilješke",
     "confirmDeleteAllPlaceholder": "Unesite 'DELETE ALL' za potvrdu",
-    "invalidPassword": "Neispravna lozinka. Pokušajte ponovo."
+    "invalidPassword": "Neispravna lozinka. Pokušajte ponovo.",
+    "created": "Stvoreno",
+    "modified": "Promijenjeno",
+    "months": ["Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"],
+    "monthsShort": ["Sij", "Velj", "Ožu", "Tra", "Svi", "Lip", "Srp", "Kol", "Ruj", "Lis", "Stu", "Pro"],
+    "weekdays": ["Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota"],
+    "weekdaysShort": ["Ned", "Pon", "Uto", "Sri", "Čet", "Pet", "Sub"]
   },
   "sr": {
     "pageTitle": "Локалне белешке (Local Notes)",
@@ -329,7 +377,18 @@
     "cookie": "Ова страница користи колачиће за побољшање вашег искуства. Настављајући коришћење странице, слажете се са нашом политиком колачића.",
     "confirmDeleteAllTitle": "Обриши све белешке",
     "confirmDeleteAllPlaceholder": "Унесите 'DELETE ALL' за потврду",
-    "invalidPassword": "Нетачна лозинка. Покушајте поново."
+    "deleteAll": "Обриши све",
+    "clearAllWarning": "Ова акција је неповратна!",
+    "clearAllWarning1": "Све ваше белешке ће бити трајно обрисане",
+    "clearAllWarning2": "Опоравак података ће бити немогућ",
+    "clearAllWarning3": "Препоручује се стварање резервне копије пре брисања",
+    "invalidPassword": "Нетачна лозинка. Покушајте поново.",
+    "created": "Створено",
+    "modified": "Промењено",
+    "months": ["Јануар", "Фебруар", "Март", "Април", "Мај", "Јун", "Јул", "Август", "Септембар", "Октобар", "Новембар", "Децембар"],
+    "monthsShort": ["Јан", "Феб", "Мар", "Апр", "Мај", "Јун", "Јул", "Авг", "Сеп", "Окт", "Нов", "Дец"],
+    "weekdays": ["Недеља", "Понедељак", "Уторак", "Среда", "Четвртак", "Петак", "Субота"],
+    "weekdaysShort": ["Нед", "Пон", "Уто", "Сре", "Чет", "Пет", "Суб"]
   },
   "bs": {
     "pageTitle": "Lokalne bilješke (Local Notes)",
@@ -362,7 +421,13 @@
     "cookie": "Ova stranica koristi kolačiće za poboljšanje vašeg iskustva. Nastavljajući korištenje stranice, slažete se s našom politikom kolačića.",
     "confirmDeleteAllTitle": "Obriši sve bilješke",
     "confirmDeleteAllPlaceholder": "Unesite 'DELETE ALL' za potvrdu",
-    "invalidPassword": "Neispravna lozinka. Pokušajte ponovo."
+    "invalidPassword": "Neispravna lozinka. Pokušajte ponovo.",
+    "created": "Kreirano",
+    "modified": "Promijenjeno",
+    "months": ["Januar", "Februar", "Mart", "April", "Maj", "Juni", "Juli", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"],
+    "monthsShort": ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "Dec"],
+    "weekdays": ["Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota"],
+    "weekdaysShort": ["Ned", "Pon", "Uto", "Sri", "Čet", "Pet", "Sub"]
   },
   "mk": {
     "pageTitle": "Локални белешки (Local Notes)",
@@ -395,7 +460,18 @@
     "cookie": "Оваа страница користи колачиња за подобрување на вашето искуство. Продолжувајќи да ја користите страницата, се согласувате со нашата политика за колачиња.",
     "confirmDeleteAllTitle": "Избриши сите белешки",
     "confirmDeleteAllPlaceholder": "Внесете 'DELETE ALL' за потврда",
-    "invalidPassword": "Неточна лозинка. Обидете се повторно."
+    "deleteAll": "Избриши сè",
+    "clearAllWarning": "Оваа акција е неповратна!",
+    "clearAllWarning1": "Сите ваши белешки ќе бидат трајно избришани",
+    "clearAllWarning2": "Восстановувањето на податоците ќе биде невозможно",
+    "clearAllWarning3": "Се препорачува да се создаде резервна копија пред бришење",
+    "invalidPassword": "Неточна лозинка. Обидете се повторно.",
+    "created": "Создадено",
+    "modified": "Променето",
+    "months": ["Јануари", "Февруари", "Март", "Април", "Мај", "Јуни", "Јули", "Август", "Септември", "Октомври", "Ноември", "Декември"],
+    "monthsShort": ["Јан", "Фев", "Мар", "Апр", "Мај", "Јун", "Јул", "Авг", "Сеп", "Окт", "Ное", "Дек"],
+    "weekdays": ["Недела", "Понеделник", "Вторник", "Среда", "Четврток", "Петок", "Сабота"],
+    "weekdaysShort": ["Нед", "Пон", "Вто", "Сре", "Чет", "Пет", "Саб"]
   },
   "sl": {
     "pageTitle": "Lokalne opombe (Local Notes)",
@@ -428,6 +504,17 @@
     "cookie": "Ta stran uporablja piškotke za izboljšanje vaše izkušnje. Z nadaljevanjem uporabe strani se strinjate z našim pravilnikom o piškotkih.",
     "confirmDeleteAllTitle": "Izbriši vse opombe",
     "confirmDeleteAllPlaceholder": "Vnesite 'DELETE ALL' za potrditev",
-    "invalidPassword": "Napačno geslo. Poskusite znova."
+    "deleteAll": "Izbriši vse",
+    "clearAllWarning": "To dejanje je nepovratno!",
+    "clearAllWarning1": "Vse vaše opombe bodo trajno izbrisane",
+    "clearAllWarning2": "Obnovitev podatkov bo nemogoča",
+    "clearAllWarning3": "Priporočamo ustvarjanje varnostne kopije pred brisanjem",
+    "invalidPassword": "Napačno geslo. Poskusite znova.",
+    "created": "Ustvarjeno",
+    "modified": "Spremenjeno",
+    "months": ["Januar", "Februar", "Marec", "April", "Maj", "Junij", "Julij", "Avgust", "September", "Oktober", "November", "December"],
+    "monthsShort": ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "Dec"],
+    "weekdays": ["Nedelja", "Ponedeljek", "Torek", "Sreda", "Četrtek", "Petek", "Sobota"],
+    "weekdaysShort": ["Ned", "Pon", "Tor", "Sre", "Čet", "Pet", "Sob"]
   }
 }

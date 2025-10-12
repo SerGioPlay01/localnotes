@@ -485,7 +485,28 @@
     transition: opacity 0.2s ease, visibility 0.2s ease !important;
 }
 
-/* Восстановлено отображение всплывающих панелей */
+/* Скрываем всплывающие панели инструментов при открытии редактора */
+.tox .tox-pop {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.tox .tox-pop__dialog {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Скрываем быстрые панели инструментов */
+.tox .tox-pop[data-alloy-placement] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
 
 /* Стили для всплывающих подсказок */
 .tox .tox-tooltip {
@@ -1089,18 +1110,1182 @@
     background: transparent !important;
 }
 
-/* Принудительные стили для содержимого в темной теме */
+/* ===== УЛУЧШЕННАЯ АДАПТИВНОСТЬ ТЕКСТА В РЕДАКТОРЕ ===== */
+
+/* Базовые стили для содержимого редактора */
+.tox-edit-area iframe body {
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    line-height: 1.6 !important;
+    font-size: 16px !important;
+    transition: all 0.3s ease !important;
+}
+
+/* ===== ТЕМНАЯ ТЕМА ===== */
 [data-theme="dark"] .tox-edit-area iframe body {
     background: transparent !important;
     color: #ffffff !important;
+    font-weight: 400 !important;
 }
 
 [data-theme="dark"] .tox-edit-area iframe body * {
     color: #ffffff !important;
 }
 
+/* Заголовки в темной теме */
+[data-theme="dark"] .tox-edit-area iframe body h1,
+[data-theme="dark"] .tox-edit-area iframe body h2,
+[data-theme="dark"] .tox-edit-area iframe body h3,
+[data-theme="dark"] .tox-edit-area iframe body h4,
+[data-theme="dark"] .tox-edit-area iframe body h5,
+[data-theme="dark"] .tox-edit-area iframe body h6 {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body h1 {
+    color: #aefc6e !important;
+    font-size: 2.2em !important;
+    border-bottom: 2px solid #aefc6e !important;
+    padding-bottom: 8px !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body h2 {
+    color: #aefc6e !important;
+    font-size: 1.7em !important;
+    border-bottom: 1px solid #aefc6e !important;
+    padding-bottom: 6px !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body h3 {
+    color: #ffffff !important;
+    font-size: 1.4em !important;
+}
+
+/* Параграфы и текст в темной теме */
+[data-theme="dark"] .tox-edit-area iframe body p,
+[data-theme="dark"] .tox-edit-area iframe body div,
+[data-theme="dark"] .tox-edit-area iframe body span {
+    color: #ffffff !important;
+    line-height: 1.7 !important;
+}
+
+/* Ссылки в темной теме */
 [data-theme="dark"] .tox-edit-area iframe body a {
+    color: #aefc6e !important;
+    text-decoration: underline !important;
+    font-weight: 500 !important;
+    transition: color 0.2s ease !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body a:hover {
+    color: #8dd85a !important;
+}
+
+/* Списки в темной теме */
+[data-theme="dark"] .tox-edit-area iframe body li {
+    color: #ffffff !important;
+    line-height: 1.6 !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body ul {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body ol {
+    color: #ffffff !important;
+}
+
+/* Таблицы в темной теме */
+[data-theme="dark"] .tox-edit-area iframe body table {
+    border-collapse: collapse !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body td,
+[data-theme="dark"] .tox-edit-area iframe body th {
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding: 12px 16px !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body th {
+    background: #aefc6e !important;
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+/* Код в темной теме */
+[data-theme="dark"] .tox-edit-area iframe body code {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body pre {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    padding: 16px !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    overflow-x: auto !important;
+}
+
+/* Цитаты в темной теме */
+[data-theme="dark"] .tox-edit-area iframe body blockquote {
+    border-left: 4px solid #aefc6e !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    padding: 16px 20px !important;
+    margin: 16px 0 !important;
+    border-radius: 0 6px 6px 0 !important;
+    font-style: italic !important;
+    color: #ffffff !important;
+}
+
+/* Выделение текста в темной теме */
+[data-theme="dark"] .tox-edit-area iframe body ::selection {
+    background: #aefc6e !important;
+    color: #000000 !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body ::-moz-selection {
+    background: #aefc6e !important;
+    color: #000000 !important;
+}
+
+/* Placeholder в темной теме */
+[data-theme="dark"] .tox-edit-area iframe body::before {
+    color: #888888 !important;
+}
+
+/* ===== СВЕТЛАЯ ТЕМА ===== */
+[data-theme="light"] .tox-edit-area iframe body {
+    background: transparent !important;
+    color: #212529 !important;
+    font-weight: 400 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body * {
+    color: #212529 !important;
+}
+
+/* Заголовки в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body h1,
+[data-theme="light"] .tox-edit-area iframe body h2,
+[data-theme="light"] .tox-edit-area iframe body h3,
+[data-theme="light"] .tox-edit-area iframe body h4,
+[data-theme="light"] .tox-edit-area iframe body h5,
+[data-theme="light"] .tox-edit-area iframe body h6 {
+    color: #212529 !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body h1 {
     color: #28a745 !important;
+    font-size: 2.2em !important;
+    border-bottom: 2px solid #28a745 !important;
+    padding-bottom: 8px !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body h2 {
+    color: #28a745 !important;
+    font-size: 1.7em !important;
+    border-bottom: 1px solid #28a745 !important;
+    padding-bottom: 6px !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body h3 {
+    color: #212529 !important;
+    font-size: 1.4em !important;
+}
+
+/* Параграфы и текст в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body p,
+[data-theme="light"] .tox-edit-area iframe body div,
+[data-theme="light"] .tox-edit-area iframe body span {
+    color: #212529 !important;
+    line-height: 1.7 !important;
+}
+
+/* Ссылки в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body a {
+    color: #28a745 !important;
+    text-decoration: underline !important;
+    font-weight: 500 !important;
+    transition: color 0.2s ease !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body a:hover {
+    color: #218838 !important;
+}
+
+/* Списки в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body li {
+    color: #212529 !important;
+    line-height: 1.6 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body ul {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body ol {
+    color: #212529 !important;
+}
+
+/* Таблицы в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body table {
+    border-collapse: collapse !important;
+    background: #f8f9fa !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body td,
+[data-theme="light"] .tox-edit-area iframe body th {
+    color: #212529 !important;
+    border: 1px solid #dee2e6 !important;
+    padding: 12px 16px !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body th {
+    background: #28a745 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Код в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body code {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #212529 !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    border: 1px solid #dee2e6 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body pre {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #212529 !important;
+    padding: 16px !important;
+    border-radius: 6px !important;
+    border: 1px solid #dee2e6 !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    overflow-x: auto !important;
+}
+
+/* Цитаты в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body blockquote {
+    border-left: 4px solid #28a745 !important;
+    background: #f8f9fa !important;
+    padding: 16px 20px !important;
+    margin: 16px 0 !important;
+    border-radius: 0 6px 6px 0 !important;
+    font-style: italic !important;
+    color: #212529 !important;
+}
+
+/* Выделение текста в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body ::selection {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body ::-moz-selection {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+/* Placeholder в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body::before {
+    color: #6c757d !important;
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ УЛУЧШЕНИЯ АДАПТИВНОСТИ ===== */
+
+/* Стили для форматированного текста */
+[data-theme="dark"] .tox-edit-area iframe body strong,
+[data-theme="dark"] .tox-edit-area iframe body b {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body strong,
+[data-theme="light"] .tox-edit-area iframe body b {
+    color: #212529 !important;
+    font-weight: 600 !important;
+}
+
+/* Стили для курсива */
+[data-theme="dark"] .tox-edit-area iframe body em,
+[data-theme="dark"] .tox-edit-area iframe body i {
+    color: #ffffff !important;
+    font-style: italic !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body em,
+[data-theme="light"] .tox-edit-area iframe body i {
+    color: #212529 !important;
+    font-style: italic !important;
+}
+
+/* Стили для подчеркнутого текста */
+[data-theme="dark"] .tox-edit-area iframe body u {
+    color: #aefc6e !important;
+    text-decoration: underline !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body u {
+    color: #28a745 !important;
+    text-decoration: underline !important;
+}
+
+/* Стили для зачеркнутого текста */
+[data-theme="dark"] .tox-edit-area iframe body s,
+[data-theme="dark"] .tox-edit-area iframe body strike {
+    color: #888888 !important;
+    text-decoration: line-through !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body s,
+[data-theme="light"] .tox-edit-area iframe body strike {
+    color: #6c757d !important;
+    text-decoration: line-through !important;
+}
+
+/* Стили для выделенного текста (mark) */
+[data-theme="dark"] .tox-edit-area iframe body mark {
+    background: #aefc6e !important;
+    color: #000000 !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body mark {
+    background: #ffdd44 !important;
+    color: #333333 !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+}
+
+/* Стили для верхнего и нижнего индекса */
+[data-theme="dark"] .tox-edit-area iframe body sup {
+    color: #ffffff !important;
+    font-size: 0.75em !important;
+    vertical-align: super !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body sub {
+    color: #ffffff !important;
+    font-size: 0.75em !important;
+    vertical-align: sub !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body sup {
+    color: #212529 !important;
+    font-size: 0.75em !important;
+    vertical-align: super !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body sub {
+    color: #212529 !important;
+    font-size: 0.75em !important;
+    vertical-align: sub !important;
+}
+
+/* Стили для горизонтальных линий */
+[data-theme="dark"] .tox-edit-area iframe body hr {
+    border: none !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent, #aefc6e, transparent) !important;
+    margin: 24px 0 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body hr {
+    border: none !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent, #28a745, transparent) !important;
+    margin: 24px 0 !important;
+}
+
+/* Стили для изображений */
+[data-theme="dark"] .tox-edit-area iframe body img {
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body img {
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #dee2e6 !important;
+}
+
+/* Стили для видео */
+[data-theme="dark"] .tox-edit-area iframe body video {
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body video {
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #dee2e6 !important;
+}
+
+/* Стили для iframe */
+[data-theme="dark"] .tox-edit-area iframe body iframe {
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body iframe {
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #dee2e6 !important;
+}
+
+/* Стили для деталей (details/summary) */
+[data-theme="dark"] .tox-edit-area iframe body details {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 8px !important;
+    margin: 16px 0 !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body summary {
+    background: #aefc6e !important;
+    color: #000000 !important;
+    padding: 12px 16px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body details {
+    background: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 8px !important;
+    margin: 16px 0 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body summary {
+    background: #28a745 !important;
+    color: #ffffff !important;
+    padding: 12px 16px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+/* Стили для адресов */
+[data-theme="dark"] .tox-edit-area iframe body address {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-left: 4px solid #aefc6e !important;
+    padding: 12px 16px !important;
+    margin: 16px 0 !important;
+    font-style: italic !important;
+    color: #ffffff !important;
+    border-radius: 0 4px 4px 0 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body address {
+    background: #f8f9fa !important;
+    border-left: 4px solid #28a745 !important;
+    padding: 12px 16px !important;
+    margin: 16px 0 !important;
+    font-style: italic !important;
+    color: #212529 !important;
+    border-radius: 0 4px 4px 0 !important;
+}
+
+/* Стили для времени */
+[data-theme="dark"] .tox-edit-area iframe body time {
+    color: #aefc6e !important;
+    font-weight: 500 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body time {
+    color: #28a745 !important;
+    font-weight: 500 !important;
+}
+
+/* Стили для данных */
+[data-theme="dark"] .tox-edit-area iframe body data {
+    color: #aefc6e !important;
+    font-weight: 500 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body data {
+    color: #28a745 !important;
+    font-weight: 500 !important;
+}
+
+/* Стили для аббревиатур */
+[data-theme="dark"] .tox-edit-area iframe body abbr {
+    border-bottom: 1px dotted #aefc6e !important;
+    cursor: help !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body abbr {
+    border-bottom: 1px dotted #28a745 !important;
+    cursor: help !important;
+    color: #212529 !important;
+}
+
+/* Стили для определений */
+[data-theme="dark"] .tox-edit-area iframe body dfn {
+    color: #aefc6e !important;
+    font-style: italic !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body dfn {
+    color: #28a745 !important;
+    font-style: italic !important;
+}
+
+/* Стили для переменных */
+[data-theme="dark"] .tox-edit-area iframe body var {
+    color: #aefc6e !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    font-style: italic !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body var {
+    color: #28a745 !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    font-style: italic !important;
+}
+
+/* Стили для образца вывода */
+[data-theme="dark"] .tox-edit-area iframe body samp {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body samp {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #212529 !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+}
+
+/* Стили для клавиатурных сокращений */
+[data-theme="dark"] .tox-edit-area iframe body kbd {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 3px !important;
+    color: #ffffff !important;
+    padding: 2px 4px !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    font-size: 0.9em !important;
+    font-weight: 600 !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body kbd {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 3px !important;
+    color: #212529 !important;
+    padding: 2px 4px !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    font-size: 0.9em !important;
+    font-weight: 600 !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Стили для цитат */
+[data-theme="dark"] .tox-edit-area iframe body q {
+    color: #aefc6e !important;
+    font-style: italic !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body q::before {
+    content: '"' !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body q::after {
+    content: '"' !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body q {
+    color: #28a745 !important;
+    font-style: italic !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body q::before {
+    content: '"' !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body q::after {
+    content: '"' !important;
+}
+
+/* ===== АДАПТИВНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ===== */
+@media (max-width: 768px) {
+    .tox-edit-area iframe body {
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+        padding: 10px !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body h1 {
+        font-size: 1.8em !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body h2 {
+        font-size: 1.5em !important;
+    }
+    
+    [data-theme="light"] .tox-edit-area iframe body h1 {
+        font-size: 1.8em !important;
+    }
+    
+    [data-theme="light"] .tox-edit-area iframe body h2 {
+        font-size: 1.5em !important;
+    }
+    
+    .tox-edit-area iframe body table {
+        font-size: 12px !important;
+    }
+    
+    .tox-edit-area iframe body td,
+    .tox-edit-area iframe body th {
+        padding: 8px 12px !important;
+    }
+}
+
+/* ===== АДАПТИВНЫЕ СТИЛИ ДЛЯ ПЛАНШЕТОВ ===== */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .tox-edit-area iframe body {
+        font-size: 15px !important;
+        line-height: 1.6 !important;
+        padding: 15px !important;
+    }
+}
+
+/* ===== КРИТИЧЕСКИ ВАЖНЫЕ СТИЛИ ДЛЯ ПЕРЕОПРЕДЕЛЕНИЯ ===== */
+
+/* Максимально агрессивные стили для темной темы */
+[data-theme="dark"] .tox-edit-area iframe body p,
+[data-theme="dark"] .tox-edit-area iframe body div,
+[data-theme="dark"] .tox-edit-area iframe body span,
+[data-theme="dark"] .tox-edit-area iframe body h1,
+[data-theme="dark"] .tox-edit-area iframe body h2,
+[data-theme="dark"] .tox-edit-area iframe body h3,
+[data-theme="dark"] .tox-edit-area iframe body h4,
+[data-theme="dark"] .tox-edit-area iframe body h5,
+[data-theme="dark"] .tox-edit-area iframe body h6,
+[data-theme="dark"] .tox-edit-area iframe body li,
+[data-theme="dark"] .tox-edit-area iframe body td,
+[data-theme="dark"] .tox-edit-area iframe body th,
+[data-theme="dark"] .tox-edit-area iframe body strong,
+[data-theme="dark"] .tox-edit-area iframe body b,
+[data-theme="dark"] .tox-edit-area iframe body em,
+[data-theme="dark"] .tox-edit-area iframe body i,
+[data-theme="dark"] .tox-edit-area iframe body u,
+[data-theme="dark"] .tox-edit-area iframe body s,
+[data-theme="dark"] .tox-edit-area iframe body mark,
+[data-theme="dark"] .tox-edit-area iframe body sup,
+[data-theme="dark"] .tox-edit-area iframe body sub,
+[data-theme="dark"] .tox-edit-area iframe body time,
+[data-theme="dark"] .tox-edit-area iframe body data,
+[data-theme="dark"] .tox-edit-area iframe body abbr,
+[data-theme="dark"] .tox-edit-area iframe body dfn,
+[data-theme="dark"] .tox-edit-area iframe body var,
+[data-theme="dark"] .tox-edit-area iframe body samp,
+[data-theme="dark"] .tox-edit-area iframe body kbd,
+[data-theme="dark"] .tox-edit-area iframe body q {
+    color: #ffffff !important;
+}
+
+/* Максимально агрессивные стили для светлой темы */
+[data-theme="light"] .tox-edit-area iframe body p,
+[data-theme="light"] .tox-edit-area iframe body div,
+[data-theme="light"] .tox-edit-area iframe body span,
+[data-theme="light"] .tox-edit-area iframe body h1,
+[data-theme="light"] .tox-edit-area iframe body h2,
+[data-theme="light"] .tox-edit-area iframe body h3,
+[data-theme="light"] .tox-edit-area iframe body h4,
+[data-theme="light"] .tox-edit-area iframe body h5,
+[data-theme="light"] .tox-edit-area iframe body h6,
+[data-theme="light"] .tox-edit-area iframe body li,
+[data-theme="light"] .tox-edit-area iframe body td,
+[data-theme="light"] .tox-edit-area iframe body th,
+[data-theme="light"] .tox-edit-area iframe body strong,
+[data-theme="light"] .tox-edit-area iframe body b,
+[data-theme="light"] .tox-edit-area iframe body em,
+[data-theme="light"] .tox-edit-area iframe body i,
+[data-theme="light"] .tox-edit-area iframe body u,
+[data-theme="light"] .tox-edit-area iframe body s,
+[data-theme="light"] .tox-edit-area iframe body mark,
+[data-theme="light"] .tox-edit-area iframe body sup,
+[data-theme="light"] .tox-edit-area iframe body sub,
+[data-theme="light"] .tox-edit-area iframe body time,
+[data-theme="light"] .tox-edit-area iframe body data,
+[data-theme="light"] .tox-edit-area iframe body abbr,
+[data-theme="light"] .tox-edit-area iframe body dfn,
+[data-theme="light"] .tox-edit-area iframe body var,
+[data-theme="light"] .tox-edit-area iframe body samp,
+[data-theme="light"] .tox-edit-area iframe body kbd,
+[data-theme="light"] .tox-edit-area iframe body q {
+    color: #212529 !important;
+}
+
+/* Дополнительные стили для переопределения любых inline стилей */
+[data-theme="dark"] .tox-edit-area iframe body *[style*="color: rgb(33, 37, 41)"],
+[data-theme="dark"] .tox-edit-area iframe body *[style*="color: #212529"],
+[data-theme="dark"] .tox-edit-area iframe body *[style*="color: rgb(33, 37, 41)"] {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body *[style*="color: rgb(255, 255, 255)"],
+[data-theme="light"] .tox-edit-area iframe body *[style*="color: #ffffff"],
+[data-theme="light"] .tox-edit-area iframe body *[style*="color: rgb(255, 255, 255)"] {
+    color: #212529 !important;
+}
+
+/* Стили для переопределения любых margin стилей */
+[data-theme="dark"] .tox-edit-area iframe body p[style*="margin"],
+[data-theme="dark"] .tox-edit-area iframe body div[style*="margin"],
+[data-theme="dark"] .tox-edit-area iframe body span[style*="margin"] {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body p[style*="margin"],
+[data-theme="light"] .tox-edit-area iframe body div[style*="margin"],
+[data-theme="light"] .tox-edit-area iframe body span[style*="margin"] {
+    color: #212529 !important;
+}
+
+/* ===== МАКСИМАЛЬНО АГРЕССИВНЫЕ СТИЛИ ДЛЯ ПЕРЕОПРЕДЕЛЕНИЯ ===== */
+
+/* Переопределяем любые возможные стили для темной темы */
+[data-theme="dark"] .tox-edit-area iframe body * {
+    color: #ffffff !important;
+}
+
+/* Переопределяем любые возможные стили для светлой темы */
+[data-theme="light"] .tox-edit-area iframe body * {
+    color: #212529 !important;
+}
+
+/* Специальные исключения для акцентных элементов в темной теме */
+[data-theme="dark"] .tox-edit-area iframe body h1,
+[data-theme="dark"] .tox-edit-area iframe body h2,
+[data-theme="dark"] .tox-edit-area iframe body a,
+[data-theme="dark"] .tox-edit-area iframe body u,
+[data-theme="dark"] .tox-edit-area iframe body time,
+[data-theme="dark"] .tox-edit-area iframe body data,
+[data-theme="dark"] .tox-edit-area iframe body abbr,
+[data-theme="dark"] .tox-edit-area iframe body dfn,
+[data-theme="dark"] .tox-edit-area iframe body var,
+[data-theme="dark"] .tox-edit-area iframe body q {
+    color: #aefc6e !important;
+}
+
+/* Специальные исключения для акцентных элементов в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body h1,
+[data-theme="light"] .tox-edit-area iframe body h2,
+[data-theme="light"] .tox-edit-area iframe body a,
+[data-theme="light"] .tox-edit-area iframe body u,
+[data-theme="light"] .tox-edit-area iframe body time,
+[data-theme="light"] .tox-edit-area iframe body data,
+[data-theme="light"] .tox-edit-area iframe body abbr,
+[data-theme="light"] .tox-edit-area iframe body dfn,
+[data-theme="light"] .tox-edit-area iframe body var,
+[data-theme="light"] .tox-edit-area iframe body q {
+    color: #28a745 !important;
+}
+
+/* Специальные исключения для зачеркнутого текста */
+[data-theme="dark"] .tox-edit-area iframe body s,
+[data-theme="dark"] .tox-edit-area iframe body strike {
+    color: #888888 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body s,
+[data-theme="light"] .tox-edit-area iframe body strike {
+    color: #6c757d !important;
+}
+
+/* Специальные исключения для выделенного текста */
+[data-theme="dark"] .tox-edit-area iframe body mark {
+    background: #aefc6e !important;
+    color: #000000 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body mark {
+    background: #ffdd44 !important;
+    color: #333333 !important;
+}
+
+/* ===== КРИТИЧЕСКИ ВАЖНЫЕ СТИЛИ ДЛЯ IFRAME С ID ===== */
+
+/* Стили для конкретного iframe TinyMCE */
+#editorContainer_ifr {
+    background: transparent !important;
+}
+
+/* Стили для содержимого iframe с ID */
+#editorContainer_ifr body {
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    line-height: 1.6 !important;
+    font-size: 16px !important;
+    transition: all 0.3s ease !important;
+}
+
+/* ===== ТЕМНАЯ ТЕМА ДЛЯ IFRAME С ID ===== */
+[data-theme="dark"] #editorContainer_ifr body {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-weight: 400 !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body * {
+    color: #ffffff !important;
+}
+
+/* Заголовки в темной теме для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body h1,
+[data-theme="dark"] #editorContainer_ifr body h2,
+[data-theme="dark"] #editorContainer_ifr body h3,
+[data-theme="dark"] #editorContainer_ifr body h4,
+[data-theme="dark"] #editorContainer_ifr body h5,
+[data-theme="dark"] #editorContainer_ifr body h6 {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body h1 {
+    color: #aefc6e !important;
+    font-size: 2.2em !important;
+    border-bottom: 2px solid #aefc6e !important;
+    padding-bottom: 8px !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body h2 {
+    color: #aefc6e !important;
+    font-size: 1.7em !important;
+    border-bottom: 1px solid #aefc6e !important;
+    padding-bottom: 6px !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body h3 {
+    color: #ffffff !important;
+    font-size: 1.4em !important;
+}
+
+/* Параграфы и текст в темной теме для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body p,
+[data-theme="dark"] #editorContainer_ifr body div,
+[data-theme="dark"] #editorContainer_ifr body span {
+    color: #ffffff !important;
+    line-height: 1.7 !important;
+}
+
+/* Ссылки в темной теме для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body a {
+    color: #aefc6e !important;
+    text-decoration: underline !important;
+    font-weight: 500 !important;
+    transition: color 0.2s ease !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body a:hover {
+    color: #8dd85a !important;
+}
+
+/* Списки в темной теме для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body li {
+    color: #ffffff !important;
+    line-height: 1.6 !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body ul {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body ol {
+    color: #ffffff !important;
+}
+
+/* Таблицы в темной теме для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body table {
+    border-collapse: collapse !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body td,
+[data-theme="dark"] #editorContainer_ifr body th {
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding: 12px 16px !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body th {
+    background: #aefc6e !important;
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+/* Код в темной теме для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body code {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body pre {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    padding: 16px !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    overflow-x: auto !important;
+}
+
+/* Цитаты в темной теме для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body blockquote {
+    border-left: 4px solid #aefc6e !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    padding: 16px 20px !important;
+    margin: 16px 0 !important;
+    border-radius: 0 6px 6px 0 !important;
+    font-style: italic !important;
+    color: #ffffff !important;
+}
+
+/* Выделение текста в темной теме для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body ::selection {
+    background: #aefc6e !important;
+    color: #000000 !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body ::-moz-selection {
+    background: #aefc6e !important;
+    color: #000000 !important;
+}
+
+/* ===== СВЕТЛАЯ ТЕМА ДЛЯ IFRAME С ID ===== */
+[data-theme="light"] #editorContainer_ifr body {
+    background: transparent !important;
+    color: #212529 !important;
+    font-weight: 400 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body * {
+    color: #212529 !important;
+}
+
+/* Заголовки в светлой теме для iframe с ID */
+[data-theme="light"] #editorContainer_ifr body h1,
+[data-theme="light"] #editorContainer_ifr body h2,
+[data-theme="light"] #editorContainer_ifr body h3,
+[data-theme="light"] #editorContainer_ifr body h4,
+[data-theme="light"] #editorContainer_ifr body h5,
+[data-theme="light"] #editorContainer_ifr body h6 {
+    color: #212529 !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body h1 {
+    color: #28a745 !important;
+    font-size: 2.2em !important;
+    border-bottom: 2px solid #28a745 !important;
+    padding-bottom: 8px !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body h2 {
+    color: #28a745 !important;
+    font-size: 1.7em !important;
+    border-bottom: 1px solid #28a745 !important;
+    padding-bottom: 6px !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body h3 {
+    color: #212529 !important;
+    font-size: 1.4em !important;
+}
+
+/* Параграфы и текст в светлой теме для iframe с ID */
+[data-theme="light"] #editorContainer_ifr body p,
+[data-theme="light"] #editorContainer_ifr body div,
+[data-theme="light"] #editorContainer_ifr body span {
+    color: #212529 !important;
+    line-height: 1.7 !important;
+}
+
+/* Ссылки в светлой теме для iframe с ID */
+[data-theme="light"] #editorContainer_ifr body a {
+    color: #28a745 !important;
+    text-decoration: underline !important;
+    font-weight: 500 !important;
+    transition: color 0.2s ease !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body a:hover {
+    color: #218838 !important;
+}
+
+/* Списки в светлой теме для iframe с ID */
+[data-theme="light"] #editorContainer_ifr body li {
+    color: #212529 !important;
+    line-height: 1.6 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body ul {
+    color: #212529 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body ol {
+    color: #212529 !important;
+}
+
+/* Таблицы в светлой теме для iframe с ID */
+[data-theme="light"] #editorContainer_ifr body table {
+    border-collapse: collapse !important;
+    background: #f8f9fa !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body td,
+[data-theme="light"] #editorContainer_ifr body th {
+    color: #212529 !important;
+    border: 1px solid #dee2e6 !important;
+    padding: 12px 16px !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body th {
+    background: #28a745 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Код в светлой теме для iframe с ID */
+[data-theme="light"] #editorContainer_ifr body code {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #212529 !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    border: 1px solid #dee2e6 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body pre {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #212529 !important;
+    padding: 16px !important;
+    border-radius: 6px !important;
+    border: 1px solid #dee2e6 !important;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+    overflow-x: auto !important;
+}
+
+/* Цитаты в светлой теме для iframe с ID */
+[data-theme="light"] #editorContainer_ifr body blockquote {
+    border-left: 4px solid #28a745 !important;
+    background: #f8f9fa !important;
+    padding: 16px 20px !important;
+    margin: 16px 0 !important;
+    border-radius: 0 6px 6px 0 !important;
+    font-style: italic !important;
+    color: #212529 !important;
+}
+
+/* Выделение текста в светлой теме для iframe с ID */
+[data-theme="light"] #editorContainer_ifr body ::selection {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body ::-moz-selection {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+/* ===== МАКСИМАЛЬНО АГРЕССИВНЫЕ СТИЛИ ДЛЯ IFRAME С ID ===== */
+
+/* Переопределяем любые возможные стили для темной темы в iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body * {
+    color: #ffffff !important;
+}
+
+/* Переопределяем любые возможные стили для светлой темы в iframe с ID */
+[data-theme="light"] #editorContainer_ifr body * {
+    color: #212529 !important;
+}
+
+/* Специальные исключения для акцентных элементов в темной теме для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body h1,
+[data-theme="dark"] #editorContainer_ifr body h2,
+[data-theme="dark"] #editorContainer_ifr body a,
+[data-theme="dark"] #editorContainer_ifr body u,
+[data-theme="dark"] #editorContainer_ifr body time,
+[data-theme="dark"] #editorContainer_ifr body data,
+[data-theme="dark"] #editorContainer_ifr body abbr,
+[data-theme="dark"] #editorContainer_ifr body dfn,
+[data-theme="dark"] #editorContainer_ifr body var,
+[data-theme="dark"] #editorContainer_ifr body q {
+    color: #aefc6e !important;
+}
+
+/* Специальные исключения для акцентных элементов в светлой теме для iframe с ID */
+[data-theme="light"] #editorContainer_ifr body h1,
+[data-theme="light"] #editorContainer_ifr body h2,
+[data-theme="light"] #editorContainer_ifr body a,
+[data-theme="light"] #editorContainer_ifr body u,
+[data-theme="light"] #editorContainer_ifr body time,
+[data-theme="light"] #editorContainer_ifr body data,
+[data-theme="light"] #editorContainer_ifr body abbr,
+[data-theme="light"] #editorContainer_ifr body dfn,
+[data-theme="light"] #editorContainer_ifr body var,
+[data-theme="light"] #editorContainer_ifr body q {
+    color: #28a745 !important;
+}
+
+/* Специальные исключения для зачеркнутого текста в iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body s,
+[data-theme="dark"] #editorContainer_ifr body strike {
+    color: #888888 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body s,
+[data-theme="light"] #editorContainer_ifr body strike {
+    color: #6c757d !important;
+}
+
+/* Специальные исключения для выделенного текста в iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body mark {
+    background: #aefc6e !important;
+    color: #000000 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body mark {
+    background: #ffdd44 !important;
+    color: #333333 !important;
 }
 
 [data-theme="dark"] .tox-edit-area iframe body code,
@@ -1429,4 +2614,432 @@
 
 [data-theme="light"] .tox .tox-dialog__footer {
     border-top-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ===== КРИТИЧЕСКИ ВАЖНЫЕ СТИЛИ ДЛЯ ИСПРАВЛЕНИЯ ТЕМНОГО ТЕКСТА ===== */
+
+/* Максимально агрессивные стили для переопределения любых inline стилей в темной теме */
+[data-theme="dark"] .tox-edit-area iframe body *[style*="color: rgb(33, 37, 41)"],
+[data-theme="dark"] .tox-edit-area iframe body *[style*="color: #212529"],
+[data-theme="dark"] .tox-edit-area iframe body *[style*="color: rgb(33, 37, 41)"],
+[data-theme="dark"] .tox-edit-area iframe body *[style*="color: black"],
+[data-theme="dark"] .tox-edit-area iframe body *[style*="color: #000"],
+[data-theme="dark"] .tox-edit-area iframe body *[style*="color: #000000"] {
+    color: #ffffff !important;
+}
+
+/* Максимально агрессивные стили для переопределения любых inline стилей в светлой теме */
+[data-theme="light"] .tox-edit-area iframe body *[style*="color: rgb(255, 255, 255)"],
+[data-theme="light"] .tox-edit-area iframe body *[style*="color: #ffffff"],
+[data-theme="light"] .tox-edit-area iframe body *[style*="color: white"],
+[data-theme="light"] .tox-edit-area iframe body *[style*="color: #fff"] {
+    color: #212529 !important;
+}
+
+/* Дополнительные стили для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body *[style*="color: rgb(33, 37, 41)"],
+[data-theme="dark"] #editorContainer_ifr body *[style*="color: #212529"],
+[data-theme="dark"] #editorContainer_ifr body *[style*="color: black"],
+[data-theme="dark"] #editorContainer_ifr body *[style*="color: #000"],
+[data-theme="dark"] #editorContainer_ifr body *[style*="color: #000000"] {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body *[style*="color: rgb(255, 255, 255)"],
+[data-theme="light"] #editorContainer_ifr body *[style*="color: #ffffff"],
+[data-theme="light"] #editorContainer_ifr body *[style*="color: white"],
+[data-theme="light"] #editorContainer_ifr body *[style*="color: #fff"] {
+    color: #212529 !important;
+}
+
+/* Стили для переопределения любых возможных стилей TinyMCE */
+[data-theme="dark"] .tox-edit-area iframe body,
+[data-theme="dark"] .tox-edit-area iframe body *,
+[data-theme="dark"] .tox-edit-area iframe body p,
+[data-theme="dark"] .tox-edit-area iframe body div,
+[data-theme="dark"] .tox-edit-area iframe body span,
+[data-theme="dark"] .tox-edit-area iframe body input,
+[data-theme="dark"] .tox-edit-area iframe body textarea {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body,
+[data-theme="light"] .tox-edit-area iframe body *,
+[data-theme="light"] .tox-edit-area iframe body p,
+[data-theme="light"] .tox-edit-area iframe body div,
+[data-theme="light"] .tox-edit-area iframe body span,
+[data-theme="light"] .tox-edit-area iframe body input,
+[data-theme="light"] .tox-edit-area iframe body textarea {
+    color: #212529 !important;
+}
+
+/* Дополнительные стили для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body,
+[data-theme="dark"] #editorContainer_ifr body *,
+[data-theme="dark"] #editorContainer_ifr body p,
+[data-theme="dark"] #editorContainer_ifr body div,
+[data-theme="dark"] #editorContainer_ifr body span,
+[data-theme="dark"] #editorContainer_ifr body input,
+[data-theme="dark"] #editorContainer_ifr body textarea {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body,
+[data-theme="light"] #editorContainer_ifr body *,
+[data-theme="light"] #editorContainer_ifr body p,
+[data-theme="light"] #editorContainer_ifr body div,
+[data-theme="light"] #editorContainer_ifr body span,
+[data-theme="light"] #editorContainer_ifr body input,
+[data-theme="light"] #editorContainer_ifr body textarea {
+    color: #212529 !important;
+}
+
+/* Специальные стили для переопределения стилей TinyMCE по умолчанию */
+[data-theme="dark"] .tox-edit-area iframe body.mce-content-body,
+[data-theme="dark"] .tox-edit-area iframe body.mce-content-body * {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body.mce-content-body,
+[data-theme="light"] .tox-edit-area iframe body.mce-content-body * {
+    color: #212529 !important;
+}
+
+/* Дополнительные стили для iframe с ID */
+[data-theme="dark"] #editorContainer_ifr body.mce-content-body,
+[data-theme="dark"] #editorContainer_ifr body.mce-content-body * {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body.mce-content-body,
+[data-theme="light"] #editorContainer_ifr body.mce-content-body * {
+    color: #212529 !important;
+}
+
+/* ===== КРИТИЧЕСКИ ВАЖНЫЕ СТИЛИ ДЛЯ BODY С ID TINYMCE ===== */
+
+/* Максимально специфичные стили для body с ID tinymce */
+[data-theme="dark"] body#tinymce,
+[data-theme="dark"] body#tinymce *,
+[data-theme="dark"] body#tinymce p,
+[data-theme="dark"] body#tinymce div,
+[data-theme="dark"] body#tinymce span,
+[data-theme="dark"] body#tinymce input,
+[data-theme="dark"] body#tinymce textarea {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce,
+[data-theme="light"] body#tinymce *,
+[data-theme="light"] body#tinymce p,
+[data-theme="light"] body#tinymce div,
+[data-theme="light"] body#tinymce span,
+[data-theme="light"] body#tinymce input,
+[data-theme="light"] body#tinymce textarea {
+    color: #212529 !important;
+}
+
+/* Стили для body с классом mce-content-body и ID tinymce */
+[data-theme="dark"] body#tinymce.mce-content-body,
+[data-theme="dark"] body#tinymce.mce-content-body *,
+[data-theme="dark"] body#tinymce.mce-content-body p,
+[data-theme="dark"] body#tinymce.mce-content-body div,
+[data-theme="dark"] body#tinymce.mce-content-body span {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce.mce-content-body,
+[data-theme="light"] body#tinymce.mce-content-body *,
+[data-theme="light"] body#tinymce.mce-content-body p,
+[data-theme="light"] body#tinymce.mce-content-body div,
+[data-theme="light"] body#tinymce.mce-content-body span {
+    color: #212529 !important;
+}
+
+/* Переопределение inline стилей для body с ID tinymce */
+[data-theme="dark"] body#tinymce[style*="color"],
+[data-theme="dark"] body#tinymce *[style*="color"] {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce[style*="color"],
+[data-theme="light"] body#tinymce *[style*="color"] {
+    color: #212529 !important;
+}
+
+/* Дополнительные стили для iframe с body#tinymce */
+[data-theme="dark"] iframe body#tinymce,
+[data-theme="dark"] iframe body#tinymce *,
+[data-theme="dark"] iframe body#tinymce p,
+[data-theme="dark"] iframe body#tinymce div,
+[data-theme="dark"] iframe body#tinymce span {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] iframe body#tinymce,
+[data-theme="light"] iframe body#tinymce *,
+[data-theme="light"] iframe body#tinymce p,
+[data-theme="light"] iframe body#tinymce div,
+[data-theme="light"] iframe body#tinymce span {
+    color: #212529 !important;
+}
+
+/* Стили для iframe с ID editorContainer_ifr и body#tinymce */
+[data-theme="dark"] #editorContainer_ifr body#tinymce,
+[data-theme="dark"] #editorContainer_ifr body#tinymce *,
+[data-theme="dark"] #editorContainer_ifr body#tinymce p,
+[data-theme="dark"] #editorContainer_ifr body#tinymce div,
+[data-theme="dark"] #editorContainer_ifr body#tinymce span {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body#tinymce,
+[data-theme="light"] #editorContainer_ifr body#tinymce *,
+[data-theme="light"] #editorContainer_ifr body#tinymce p,
+[data-theme="light"] #editorContainer_ifr body#tinymce div,
+[data-theme="light"] #editorContainer_ifr body#tinymce span {
+    color: #212529 !important;
+}
+
+/* Максимально агрессивные стили для переопределения любых возможных стилей */
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"],
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"] *,
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"] p,
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"] div,
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"] span {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"],
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"] *,
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"] p,
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"] div,
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"] span {
+    color: #212529 !important;
+}
+
+/* ===== ОТКЛЮЧЕНИЕ ВСЕХ INLINE СТИЛЕЙ ЦВЕТА ===== */
+
+/* Отключаем все inline стили цвета в TinyMCE */
+[data-theme="dark"] body#tinymce *[style*="color"],
+[data-theme="dark"] body#tinymce.mce-content-body *[style*="color"],
+[data-theme="dark"] body#tinymce.mce-content-body[data-id="editorContainer"] *[style*="color"] {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce *[style*="color"],
+[data-theme="light"] body#tinymce.mce-content-body *[style*="color"],
+[data-theme="light"] body#tinymce.mce-content-body[data-id="editorContainer"] *[style*="color"] {
+    color: #212529 !important;
+}
+
+/* Отключаем inline стили для всех элементов iframe */
+[data-theme="dark"] iframe body#tinymce *[style*="color"],
+[data-theme="dark"] #editorContainer_ifr body#tinymce *[style*="color"] {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] iframe body#tinymce *[style*="color"],
+[data-theme="light"] #editorContainer_ifr body#tinymce *[style*="color"] {
+    color: #212529 !important;
+}
+
+/* Отключаем все возможные inline стили цвета */
+[data-theme="dark"] body#tinymce *[style*="color: rgb("],
+[data-theme="dark"] body#tinymce *[style*="color: #"],
+[data-theme="dark"] body#tinymce *[style*="color: black"],
+[data-theme="dark"] body#tinymce *[style*="color: white"],
+[data-theme="dark"] body#tinymce *[style*="color: inherit"] {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce *[style*="color: rgb("],
+[data-theme="light"] body#tinymce *[style*="color: #"],
+[data-theme="light"] body#tinymce *[style*="color: black"],
+[data-theme="light"] body#tinymce *[style*="color: white"],
+[data-theme="light"] body#tinymce *[style*="color: inherit"] {
+    color: #212529 !important;
+}
+
+/* Принудительное отключение всех inline стилей цвета */
+[data-theme="dark"] body#tinymce * {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] body#tinymce * {
+    color: #212529 !important;
+}
+
+/* Дополнительные стили для отключения inline стилей в iframe */
+[data-theme="dark"] iframe body#tinymce *,
+[data-theme="dark"] #editorContainer_ifr body#tinymce * {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] iframe body#tinymce *,
+[data-theme="light"] #editorContainer_ifr body#tinymce * {
+    color: #212529 !important;
+}
+
+/* ===== МАКСИМАЛЬНАЯ БЛОКИРОВКА ВСЕХ INLINE СТИЛЕЙ TINYMCE ===== */
+
+/* Блокируем все inline стили для body с ID tinymce */
+[data-theme="dark"] body#tinymce[style*="min-height"],
+[data-theme="dark"] body#tinymce[style*="background"],
+[data-theme="dark"] body#tinymce[style*="color"],
+[data-theme="dark"] body#tinymce[style*="font-family"],
+[data-theme="dark"] body#tinymce[style*="font-size"],
+[data-theme="dark"] body#tinymce[style*="line-height"],
+[data-theme="dark"] body#tinymce[style*="margin"],
+[data-theme="dark"] body#tinymce[style*="padding"] {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+}
+
+[data-theme="light"] body#tinymce[style*="min-height"],
+[data-theme="light"] body#tinymce[style*="background"],
+[data-theme="light"] body#tinymce[style*="color"],
+[data-theme="light"] body#tinymce[style*="font-family"],
+[data-theme="light"] body#tinymce[style*="font-size"],
+[data-theme="light"] body#tinymce[style*="line-height"],
+[data-theme="light"] body#tinymce[style*="margin"],
+[data-theme="light"] body#tinymce[style*="padding"] {
+    background: transparent !important;
+    color: #212529 !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+}
+
+/* Блокируем стили для .mce-content-body */
+[data-theme="dark"] body#tinymce.mce-content-body[style*="overflow-wrap"],
+[data-theme="dark"] body#tinymce.mce-content-body[style*="word-wrap"] {
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+}
+
+[data-theme="light"] body#tinymce.mce-content-body[style*="overflow-wrap"],
+[data-theme="light"] body#tinymce.mce-content-body[style*="word-wrap"] {
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
+    background: transparent !important;
+    color: #212529 !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+}
+
+/* Максимально агрессивная блокировка всех возможных inline стилей */
+[data-theme="dark"] body#tinymce[style],
+[data-theme="dark"] body#tinymce.mce-content-body[style] {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
+}
+
+[data-theme="light"] body#tinymce[style],
+[data-theme="light"] body#tinymce.mce-content-body[style] {
+    background: transparent !important;
+    color: #212529 !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
+}
+
+/* Блокируем inline стили для всех элементов внутри body#tinymce */
+[data-theme="dark"] body#tinymce *[style*="color"],
+[data-theme="dark"] body#tinymce *[style*="background"],
+[data-theme="dark"] body#tinymce *[style*="font-family"],
+[data-theme="dark"] body#tinymce *[style*="font-size"],
+[data-theme="dark"] body#tinymce *[style*="line-height"],
+[data-theme="dark"] body#tinymce *[style*="margin"],
+[data-theme="dark"] body#tinymce *[style*="padding"] {
+    color: #ffffff !important;
+    background: transparent !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin: inherit !important;
+    padding: inherit !important;
+}
+
+[data-theme="light"] body#tinymce *[style*="color"],
+[data-theme="light"] body#tinymce *[style*="background"],
+[data-theme="light"] body#tinymce *[style*="font-family"],
+[data-theme="light"] body#tinymce *[style*="font-size"],
+[data-theme="light"] body#tinymce *[style*="line-height"],
+[data-theme="light"] body#tinymce *[style*="margin"],
+[data-theme="light"] body#tinymce *[style*="padding"] {
+    color: #212529 !important;
+    background: transparent !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin: inherit !important;
+    padding: inherit !important;
+}
+
+/* Дополнительная блокировка для iframe */
+[data-theme="dark"] iframe body#tinymce[style],
+[data-theme="dark"] iframe body#tinymce.mce-content-body[style],
+[data-theme="dark"] #editorContainer_ifr body#tinymce[style],
+[data-theme="dark"] #editorContainer_ifr body#tinymce.mce-content-body[style] {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
+}
+
+[data-theme="light"] iframe body#tinymce[style],
+[data-theme="light"] iframe body#tinymce.mce-content-body[style],
+[data-theme="light"] #editorContainer_ifr body#tinymce[style],
+[data-theme="light"] #editorContainer_ifr body#tinymce.mce-content-body[style] {
+    background: transparent !important;
+    color: #212529 !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    min-height: 300px !important;
+    overflow-wrap: normal !important;
+    word-wrap: normal !important;
 }

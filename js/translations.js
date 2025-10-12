@@ -102,7 +102,15 @@ const translations = {
         preloaderModules: "Loading modules...",
         preloaderSecurity: "Security check...",
         preloaderInterface: "Preparing interface...",
-        preloaderComplete: "Loading complete..."
+        preloaderComplete: "Loading complete...",
+        
+        // Временные метки
+        created: "Created",
+        modified: "Modified",
+        months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        weekdaysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     },
     
     ru: {
@@ -215,6 +223,14 @@ const translations = {
         preloaderSecurity: "Проверка безопасности...",
         preloaderInterface: "Подготовка интерфейса...",
         preloaderComplete: "Завершение загрузки...",
+        
+        // Временные метки
+        created: "Создано",
+        modified: "Изменено",
+        months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+        monthsShort: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+        weekdays: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
+        weekdaysShort: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
     },
     
     ua: {
@@ -318,7 +334,15 @@ const translations = {
         preloaderModules: "Завантаження модулів...",
         preloaderSecurity: "Перевірка безпеки...",
         preloaderInterface: "Підготовка інтерфейсу...",
-        preloaderComplete: "Завершення завантаження..."
+        preloaderComplete: "Завершення завантаження...",
+        
+        // Временные метки
+        created: "Створено",
+        modified: "Змінено",
+        months: ["Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень", "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"],
+        monthsShort: ["Січ", "Лют", "Бер", "Кві", "Тра", "Чер", "Лип", "Сер", "Вер", "Жов", "Лис", "Гру"],
+        weekdays: ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"],
+        weekdaysShort: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
     },
     
     pl: {
@@ -422,7 +446,15 @@ const translations = {
         preloaderModules: "Ładowanie modułów...",
         preloaderSecurity: "Sprawdzanie bezpieczeństwa...",
         preloaderInterface: "Przygotowywanie interfejsu...",
-        preloaderComplete: "Kończenie ładowania..."
+        preloaderComplete: "Kończenie ładowania...",
+        
+        // Временные метки
+        created: "Utworzono",
+        modified: "Zmodyfikowano",
+        months: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
+        monthsShort: ["Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"],
+        weekdays: ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"],
+        weekdaysShort: ["Nd", "Pn", "Wt", "Śr", "Cz", "Pt", "Sb"],
     },
     
     cs: {
@@ -526,7 +558,15 @@ const translations = {
         preloaderModules: "Načítání modulů...",
         preloaderSecurity: "Kontrola bezpečnosti...",
         preloaderInterface: "Příprava rozhraní...",
-        preloaderComplete: "Dokončování načítání..."
+        preloaderComplete: "Dokončování načítání...",
+        
+        // Временные метки
+        created: "Vytvořeno",
+        modified: "Upraveno",
+        months: ["Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"],
+        monthsShort: ["Led", "Úno", "Bře", "Dub", "Kvě", "Čer", "Čvc", "Srp", "Zář", "Říj", "Lis", "Pro"],
+        weekdays: ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"],
+        weekdaysShort: ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"],
     },
     
     sk: {
@@ -628,7 +668,15 @@ const translations = {
         preloaderModules: "Načítavanie modulov...",
         preloaderSecurity: "Kontrola bezpečnosti...",
         preloaderInterface: "Príprava rozhrania...",
-        preloaderComplete: "Dokončovanie načítavania..."
+        preloaderComplete: "Dokončovanie načítavania...",
+        
+        // Временные метки
+        created: "Vytvorené",
+        modified: "Upravené",
+        months: ["Január", "Február", "Marec", "Apríl", "Máj", "Jún", "Júl", "August", "September", "Október", "November", "December"],
+        monthsShort: ["Jan", "Feb", "Mar", "Apr", "Máj", "Jún", "Júl", "Aug", "Sep", "Okt", "Nov", "Dec"],
+        weekdays: ["Nedeľa", "Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota"],
+        weekdaysShort: ["Ne", "Po", "Ut", "St", "Št", "Pi", "So"],
     },
     
     bg: {
@@ -730,7 +778,15 @@ const translations = {
         preloaderModules: "Зареждане на модули...",
         preloaderSecurity: "Проверка на сигурността...",
         preloaderInterface: "Подготовка на интерфейса...",
-        preloaderComplete: "Завършване на зареждането..."
+        preloaderComplete: "Завършване на зареждането...",
+        
+        // Временные метки
+        created: "Създадено",
+        modified: "Променено",
+        months: ["Януари", "Февруари", "Март", "Април", "Май", "Юни", "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"],
+        monthsShort: ["Яну", "Фев", "Мар", "Апр", "Май", "Юни", "Юли", "Авг", "Сеп", "Окт", "Ное", "Дек"],
+        weekdays: ["Неделя", "Понеделник", "Вторник", "Сряда", "Четвъртък", "Петък", "Събота"],
+        weekdaysShort: ["Нед", "Пон", "Вто", "Сря", "Чет", "Пет", "Съб"],
     },
     
     hr: {
@@ -824,7 +880,15 @@ const translations = {
         preloaderModules: "Učitavanje modula...",
         preloaderSecurity: "Provjera sigurnosti...",
         preloaderInterface: "Priprema sučelja...",
-        preloaderComplete: "Završavanje učitavanja..."
+        preloaderComplete: "Završavanje učitavanja...",
+        
+        // Временные метки
+        created: "Stvoreno",
+        modified: "Promijenjeno",
+        months: ["Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"],
+        monthsShort: ["Sij", "Velj", "Ožu", "Tra", "Svi", "Lip", "Srp", "Kol", "Ruj", "Lis", "Stu", "Pro"],
+        weekdays: ["Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota"],
+        weekdaysShort: ["Ned", "Pon", "Uto", "Sri", "Čet", "Pet", "Sub"],
     },
     
     sr: {
@@ -918,7 +982,15 @@ const translations = {
         preloaderModules: "Учитавање модула...",
         preloaderSecurity: "Провера безбедности...",
         preloaderInterface: "Припрема интерфејса...",
-        preloaderComplete: "Завршавање учитавања..."
+        preloaderComplete: "Завршавање учитавања...",
+        
+        // Временные метки
+        created: "Створено",
+        modified: "Промењено",
+        months: ["Јануар", "Фебруар", "Март", "Април", "Мај", "Јун", "Јул", "Август", "Септембар", "Октобар", "Новембар", "Децембар"],
+        monthsShort: ["Јан", "Феб", "Мар", "Апр", "Мај", "Јун", "Јул", "Авг", "Сеп", "Окт", "Нов", "Дец"],
+        weekdays: ["Недеља", "Понедељак", "Уторак", "Среда", "Четвртак", "Петак", "Субота"],
+        weekdaysShort: ["Нед", "Пон", "Уто", "Сре", "Чет", "Пет", "Суб"],
     },
     
     bs: {
@@ -1012,7 +1084,15 @@ const translations = {
         preloaderModules: "Učitavanje modula...",
         preloaderSecurity: "Provjera sigurnosti...",
         preloaderInterface: "Priprema sučelja...",
-        preloaderComplete: "Završavanje učitavanja..."
+        preloaderComplete: "Završavanje učitavanja...",
+        
+        // Временные метки
+        created: "Kreirano",
+        modified: "Promijenjeno",
+        months: ["Januar", "Februar", "Mart", "April", "Maj", "Juni", "Juli", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"],
+        monthsShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "Dec"],
+        weekdays: ["Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota"],
+        weekdaysShort: ["Ned", "Pon", "Uto", "Sri", "Čet", "Pet", "Sub"],
     },
     
     mk: {
@@ -1116,7 +1196,15 @@ const translations = {
         preloaderModules: "Вчитување модули...",
         preloaderSecurity: "Проверка на безбедност...",
         preloaderInterface: "Подготовка на интерфејс...",
-        preloaderComplete: "Завршување на вчитување..."
+        preloaderComplete: "Завршување на вчитување...",
+        
+        // Временные метки
+        created: "Создадено",
+        modified: "Променето",
+        months: ["Јануари", "Февруари", "Март", "Април", "Мај", "Јуни", "Јули", "Август", "Септември", "Октомври", "Ноември", "Декември"],
+        monthsShort: ["Јан", "Фев", "Мар", "Апр", "Мај", "Јун", "Јул", "Авг", "Сеп", "Окт", "Ное", "Дек"],
+        weekdays: ["Недела", "Понеделник", "Вторник", "Среда", "Четврток", "Петок", "Сабота"],
+        weekdaysShort: ["Нед", "Пон", "Вто", "Сре", "Чет", "Пет", "Саб"],
     },
     
     sl: {
@@ -1210,7 +1298,15 @@ const translations = {
         preloaderModules: "Nalaganje modulov...",
         preloaderSecurity: "Preverjanje varnosti...",
         preloaderInterface: "Priprava vmesnika...",
-        preloaderComplete: "Zaključevanje nalaganja..."
+        preloaderComplete: "Zaključevanje nalaganja...",
+        
+        // Временные метки
+        created: "Ustvarjeno",
+        modified: "Spremenjeno",
+        months: ["Januar", "Februar", "Marec", "April", "Maj", "Junij", "Julij", "Avgust", "September", "Oktober", "November", "December"],
+        monthsShort: ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "Dec"],
+        weekdays: ["Nedelja", "Ponedeljek", "Torek", "Sreda", "Četrtek", "Petek", "Sobota"],
+        weekdaysShort: ["Ned", "Pon", "Tor", "Sre", "Čet", "Pet", "Sob"],
     }
 };
 

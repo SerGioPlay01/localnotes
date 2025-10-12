@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HR9HLBQFCR"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-HR9HLBQFCR');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="Permissions-Policy" content="browsing-topics=(), run-ad-auction=()">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content="Lokálne poznámky - Uložte dôležité poznámky priamo vo vašom prehliadači">
+    <meta property="og:site_name" content="Lokálne poznámky">
+    <meta property="og:url" content="https://localnotes-web.netlify.app/sk/">
+    <meta property="og:description" content="Lokálne poznámky je aplikácia na vytváranie a ukladanie poznámok v prehliadači.">
+    <meta property="og:image" content="/resources/obl_web.jpg">
+    <meta property="og:image:width" content="968">
+    <meta property="og:image:height" content="504">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="sk_SK">
+
+    <meta name="description" content="Lokálne poznámky je aplikácia na vytváranie a ukladanie poznámok v prehliadači.">
+    <meta name="keywords" content="lokálne poznámky, poznámky, poznámky v prehliadači, aplikácia na poznámky, poznámky online, Local Notes">
+    <meta name="author" content="SerGio Play">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+
+    <link href="/css/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/img.css">
+    <link rel="stylesheet" href="/css/preloader.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Hreflang tags for SEO -->
+    <link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/">
+    <link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/">
+    <link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/uk/">
+    <link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/">
+    <link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/">
+    <link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/">
+    <link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/">
+    <link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/">
+    <link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/">
+    <link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/">
+    <link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/">
+    <link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/">
+    <link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/">
+
+    <title>Lokálne poznámky</title>
+</head>
+
+<body>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MVKPW88F" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Header section - full width -->
+    <div class="info-app">
+        <span class="logo"></span>
+        <h1 class="name-app">Lokálne poznámky</h1>
+    </div>
+
+    <!-- Navigation section - full width -->
+    <div class="center_nav">
+        <section class="sticky">
+            <div class="block_btn">
+                <button id="addNoteButton"><i class="fas fa-plus"></i> Pridať poznámku</button>
+                <button id="importButton"><i class="fas fa-upload"></i> Importovať poznámky</button>
+                <button id="clearAllButton"><i class="fas fa-trash-alt"></i> Vymazať všetky poznámky</button>
+                <input multiple type="file" id="importInput" accept=".note">
+            </div>
+            <input type="text" id="searchInput" placeholder="Hľadať poznámky...">
+        </section>
+    </div>
+
+    <!-- Main content section -->
+    <section class="app-notes-center">
+        <section class="app-notes">
+            <div class="btn_view_div">
+                <button id="toggleViewButton"><i class="fas fa-th"></i> Prepnúť zobrazenie</button>
+            </div>
+
+            <div class="notes_center">
+                <div id="notesContainer" class="default-view"></div>
+            </div>
+
+            <!-- Modálne okno pre úpravu poznámok -->
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <h2 class="modal_h2">Editor</h2>
+                    <div id="editorContainer" class="quillEditor"></div>
+                    <div class="modal-buttons-container">
+                        <button id="saveNoteButton"><i class="fas fa-save"></i> Uložiť poznámku</button>
+                        <button id="cancelNoteButton" class="btn cancel"><i class="fas fa-times"></i> Zrušiť</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modálne okno pre potvrdenie -->
+            <div id="confirmModal" class="modal">
+                <div class="modal-content-error">
+                    <p id="confirmMessage"></p>
+                    <button id="confirmYes" class="btn"><i class="fas fa-check"></i> OK</button>
+                    <button id="confirmNo" class="btn cancel"><i class="fas fa-times"></i> Zrušiť</button>
+                </div>
+            </div>
+
+            <div id="error" class="modal">
+                <div class="modal-content-error">
+                    <button id="ok" class="btn cancel"><i class="fas fa-check"></i> OK</button>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="info-about-project">
+                <p>
+                    Lokálne poznámky je jednoduchý a pohodlný nástroj na vytváranie poznámok priamo v prehliadači. Všetky poznámky sú uložené vo vašom prehliadači. Uložte svoje myšlienky, nápady a príbehy, štruktúrované pomocou nadpisov, formátovania textu, zoznamov a ďalších prvkov. Exportujte poznámky do súboru a zdieľajte ich s priateľmi anonymne — jednoducho pošlite súbor a oni ho budú môcť otvoriť importom do webovej aplikácie. S Lokálnymi poznámkami sú vaše záznamy vždy po ruke, organizované a bezpečné.
+                </p>
+            </div>
+            <div class="footer-content">
+                <p id="cookie"></p>
+                <br><br>
+                <a href="/sk/cookie_policy.html" target="_blank" class="Cookie_Policy">Zásady používania cookies</a>
+                <br> <br>
+                <a href="/sk/usage_policy.html" target="_blank" class="Usage_Policy">Podmienky používania</a>
+                <br> <br>
+                <a href="/sk/privacy_policy.html" target="_blank" class="Privacy_Policy">Zásady ochrany osobných údajov</a>
+                <br><br>
+                <a class="author" href="https://sergioplay-dev.netlify.app/" target="_blank">Web vytvorený SerGio Play</a></p>
+                <br><br>
+                <p>&copy; <span id="currentYear"></span><span class="footerCopyRight">Všetky práva vyhradené. Local Notes</span></p>
+            </div>
+        </footer>
+    </section>
+
+    <div class="preloader">
+        <div class="preloader__sheet"></div>
+        <span id="preloaderText">Počkajte! <br> Pripravujeme sa na vaše poznámky.</span>
+    </div>
+
+    <script>
+        // Set language for this page
+        window.currentLang = 'sk';
+    </script>
+    <script src="/js/translations.js"></script>
+    <script src="/js/themes.js"></script>
+    <script src="/js/translate.js"></script>
+    <script src="/js/quill.min.js"></script>
+    <script src="/js/magicurl.js"></script>
+    <script src="/js/highlight.min.js"></script>
+    <script src="/js/index.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/img.js"></script>
+    <script src="/js/preloader.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                        
+                        // Проверка обновлений
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // Новый Service Worker доступен
+                                    if (confirm('Dostupná aktualizácia aplikácie. Obnoviť stránku?')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+
+</body>
+
+</html>

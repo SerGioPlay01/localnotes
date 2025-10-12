@@ -1,0 +1,262 @@
+// Service Worker для Local Notes
+const CACHE_NAME = 'local-notes-v1.0.0';
+const STATIC_CACHE = 'static-v1.0.0';
+const DYNAMIC_CACHE = 'dynamic-v1.0.0';
+
+// Файлы для кэширования
+const STATIC_FILES = [
+    '/',
+    '/index.html',
+    '/css/index.css',
+    '/css/quill.snow.css',
+    '/css/img.css',
+    '/css/preloader.css',
+    '/css/highlight.css',
+    '/js/index.js',
+    '/js/quill.min.js',
+    '/js/magicurl.js',
+    '/js/highlight.min.js',
+    '/js/script.js',
+    '/js/img.js',
+    '/js/preloader.js',
+    '/js/translations.js',
+    '/js/translate.js',
+    '/favicon/favicon-16x16.png',
+    '/favicon/favicon-32x32.png',
+    '/favicon/android-chrome-192x192.png',
+    '/favicon/android-chrome-512x512.png',
+    '/favicon/apple-touch-icon.png',
+    '/manifest.json'
+];
+
+// Языковые версии для кэширования
+const LANGUAGE_VERSIONS = [
+    '/ru/',
+    '/ua/',
+    '/pl/',
+    '/cs/',
+    '/sk/',
+    '/bg/',
+    '/hr/',
+    '/sr/',
+    '/bs/',
+    '/mk/',
+    '/sl/'
+];
+
+// Установка Service Worker
+self.addEventListener('install', event => {
+    console.log('Service Worker: Installing...');
+    
+    event.waitUntil(
+        caches.open(STATIC_CACHE)
+            .then(cache => {
+                console.log('Service Worker: Caching static files');
+                return cache.addAll(STATIC_FILES);
+            })
+            .then(() => {
+                console.log('Service Worker: Static files cached');
+                return self.skipWaiting();
+            })
+            .catch(error => {
+                console.error('Service Worker: Error caching static files', error);
+            })
+    );
+});
+
+// Активация Service Worker
+self.addEventListener('activate', event => {
+    console.log('Service Worker: Activating...');
+    
+    event.waitUntil(
+        caches.keys()
+            .then(cacheNames => {
+                return Promise.all(
+                    cacheNames.map(cacheName => {
+                        if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
+                            console.log('Service Worker: Deleting old cache', cacheName);
+                            return caches.delete(cacheName);
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                console.log('Service Worker: Activated');
+                return self.clients.claim();
+            })
+    );
+});
+
+// Перехват запросов
+self.addEventListener('fetch', event => {
+    const { request } = event;
+    const url = new URL(request.url);
+    
+    // Пропускаем запросы к внешним ресурсам
+    if (url.origin !== location.origin) {
+        return;
+    }
+    
+    // Стратегия кэширования для разных типов ресурсов
+    if (request.method === 'GET') {
+        // Статические ресурсы - Cache First
+        if (STATIC_FILES.includes(url.pathname) || 
+            url.pathname.endsWith('.css') || 
+            url.pathname.endsWith('.js') || 
+            url.pathname.endsWith('.png') || 
+            url.pathname.endsWith('.jpg') || 
+            url.pathname.endsWith('.ico') ||
+            url.pathname.endsWith('.json')) {
+            
+            event.respondWith(cacheFirst(request));
+        }
+        // HTML страницы - Network First
+        else if (url.pathname.endsWith('.html') || 
+                 url.pathname === '/' || 
+                 LANGUAGE_VERSIONS.some(lang => url.pathname.startsWith(lang))) {
+            
+            event.respondWith(networkFirst(request));
+        }
+        // Остальные запросы - Network First
+        else {
+            event.respondWith(networkFirst(request));
+        }
+    }
+});
+
+// Стратегия Cache First
+async function cacheFirst(request) {
+    try {
+        const cachedResponse = await caches.match(request);
+        if (cachedResponse) {
+            return cachedResponse;
+        }
+        
+        const networkResponse = await fetch(request);
+        if (networkResponse.ok) {
+            const cache = await caches.open(STATIC_CACHE);
+            cache.put(request, networkResponse.clone());
+        }
+        return networkResponse;
+    } catch (error) {
+        console.error('Cache First strategy failed:', error);
+        return new Response('Offline content not available', {
+            status: 503,
+            statusText: 'Service Unavailable'
+        });
+    }
+}
+
+// Стратегия Network First
+async function networkFirst(request) {
+    try {
+        const networkResponse = await fetch(request);
+        if (networkResponse.ok) {
+            const cache = await caches.open(DYNAMIC_CACHE);
+            cache.put(request, networkResponse.clone());
+        }
+        return networkResponse;
+    } catch (error) {
+        console.log('Network failed, trying cache:', error);
+        const cachedResponse = await caches.match(request);
+        if (cachedResponse) {
+            return cachedResponse;
+        }
+        
+        // Fallback для HTML страниц
+        if (request.headers.get('accept').includes('text/html')) {
+            return caches.match('/index.html');
+        }
+        
+        return new Response('Offline content not available', {
+            status: 503,
+            statusText: 'Service Unavailable'
+        });
+    }
+}
+
+// Обработка сообщений от основного потока
+self.addEventListener('message', event => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
+    
+    if (event.data && event.data.type === 'GET_VERSION') {
+        event.ports[0].postMessage({ version: CACHE_NAME });
+    }
+});
+
+// Периодическая очистка кэша
+self.addEventListener('periodicsync', event => {
+    if (event.tag === 'cache-cleanup') {
+        event.waitUntil(cleanupCache());
+    }
+});
+
+// Функция очистки кэша
+async function cleanupCache() {
+    try {
+        const cache = await caches.open(DYNAMIC_CACHE);
+        const requests = await cache.keys();
+        const now = Date.now();
+        const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 дней
+        
+        for (const request of requests) {
+            const response = await cache.match(request);
+            const dateHeader = response.headers.get('date');
+            
+            if (dateHeader) {
+                const responseDate = new Date(dateHeader).getTime();
+                if (now - responseDate > maxAge) {
+                    await cache.delete(request);
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Cache cleanup failed:', error);
+    }
+}
+
+// Обработка push уведомлений (для будущего использования)
+self.addEventListener('push', event => {
+    if (event.data) {
+        const data = event.data.json();
+        const options = {
+            body: data.body,
+            icon: '/favicon/android-chrome-192x192.png',
+            badge: '/favicon/favicon-32x32.png',
+            vibrate: [100, 50, 100],
+            data: {
+                dateOfArrival: Date.now(),
+                primaryKey: data.primaryKey
+            },
+            actions: [
+                {
+                    action: 'explore',
+                    title: 'Open App',
+                    icon: '/favicon/favicon-32x32.png'
+                },
+                {
+                    action: 'close',
+                    title: 'Close',
+                    icon: '/favicon/favicon-32x32.png'
+                }
+            ]
+        };
+        
+        event.waitUntil(
+            self.registration.showNotification(data.title, options)
+        );
+    }
+});
+
+// Обработка кликов по уведомлениям
+self.addEventListener('notificationclick', event => {
+    event.notification.close();
+    
+    if (event.action === 'explore') {
+        event.waitUntil(
+            clients.openWindow('/')
+        );
+    }
+});

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HR9HLBQFCR"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-HR9HLBQFCR');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="Permissions-Policy" content="browsing-topics=(), run-ad-auction=()">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content="Lokalne bilješke - Spremite važne bilješke izravno u vašem pregledniku">
+    <meta property="og:site_name" content="Lokalne bilješke">
+    <meta property="og:url" content="https://localnotes-web.netlify.app/hr/">
+    <meta property="og:description" content="Lokalne bilješke je aplikacija za stvaranje i pohranjivanje bilješki u pregledniku.">
+    <meta property="og:image" content="/resources/obl_web.jpg">
+    <meta property="og:image:width" content="968">
+    <meta property="og:image:height" content="504">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="hr_HR">
+
+    <meta name="description" content="Lokalne bilješke je aplikacija za stvaranje i pohranjivanje bilješki u pregledniku.">
+    <meta name="keywords" content="lokalne bilješke, bilješke, bilješke u pregledniku, aplikacija za bilješke, bilješke online, Local Notes">
+    <meta name="author" content="SerGio Play">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+
+    <link href="/css/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/img.css">
+    <link rel="stylesheet" href="/css/preloader.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Hreflang tags for SEO -->
+    <link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/">
+    <link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/">
+    <link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/uk/">
+    <link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/">
+    <link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/">
+    <link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/">
+    <link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/">
+    <link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/">
+    <link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/">
+    <link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/">
+    <link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/">
+    <link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/">
+    <link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/">
+
+    <title>Lokalne bilješke</title>
+</head>
+
+<body>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MVKPW88F" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Header section - full width -->
+    <div class="info-app">
+        <span class="logo"></span>
+        <h1 class="name-app">Lokalne bilješke</h1>
+    </div>
+
+    <!-- Navigation section - full width -->
+    <div class="center_nav">
+        <section class="sticky">
+            <div class="block_btn">
+                <button id="addNoteButton"><i class="fas fa-plus"></i> Dodaj bilješku</button>
+                <button id="importButton"><i class="fas fa-upload"></i> Uvezi bilješke</button>
+                <button id="clearAllButton"><i class="fas fa-trash-alt"></i> Obriši sve bilješke</button>
+                <input multiple type="file" id="importInput" accept=".note">
+            </div>
+            <input type="text" id="searchInput" placeholder="Pretraži bilješke...">
+        </section>
+    </div>
+
+    <!-- Main content section -->
+    <section class="app-notes-center">
+        <section class="app-notes">
+            <div class="btn_view_div">
+                <button id="toggleViewButton"><i class="fas fa-th"></i> Prebaci prikaz</button>
+            </div>
+
+            <div class="notes_center">
+                <div id="notesContainer" class="default-view"></div>
+            </div>
+
+            <!-- Modalni prozor za uređivanje bilješki -->
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <h2 class="modal_h2">Uređivač</h2>
+                    <div id="editorContainer" class="quillEditor"></div>
+                    <div class="modal-buttons-container">
+                        <button id="saveNoteButton"><i class="fas fa-save"></i> Spremi bilješku</button>
+                        <button id="cancelNoteButton" class="btn cancel"><i class="fas fa-times"></i> Odustani</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modalni prozor za potvrdu -->
+            <div id="confirmModal" class="modal">
+                <div class="modal-content-error">
+                    <p id="confirmMessage"></p>
+                    <button id="confirmYes" class="btn"><i class="fas fa-check"></i> OK</button>
+                    <button id="confirmNo" class="btn cancel"><i class="fas fa-times"></i> Odustani</button>
+                </div>
+            </div>
+
+            <div id="error" class="modal">
+                <div class="modal-content-error">
+                    <button id="ok" class="btn cancel"><i class="fas fa-check"></i> OK</button>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="info-about-project">
+                <p>
+                    Lokalne bilješke je jednostavan i prikladan alat za stvaranje bilješki izravno u pregledniku. Sve bilješke se spremaju u vašem pregledniku. Spremite svoje misli, ideje i priče, strukturirajući ih pomoću naslova, formatiranja teksta, popisa i drugih elemenata. Izvezite bilješke u datoteku i podijelite ih s prijateljima anonimno — jednostavno pošaljite datoteku i oni će je moći otvoriti uvozom u web aplikaciju. S Lokalnim bilješkama vaši zapisi su uvijek pri ruci, organizirani i sigurni.
+                </p>
+            </div>
+            <div class="footer-content">
+                <p id="cookie"></p>
+                <br><br>
+                <a href="/hr/cookie_policy.html" target="_blank" class="Cookie_Policy">Pravila kolačića</a>
+                <br> <br>
+                <a href="/hr/usage_policy.html" target="_blank" class="Usage_Policy">Uvjeti korištenja</a>
+                <br> <br>
+                <a href="/hr/privacy_policy.html" target="_blank" class="Privacy_Policy">Pravila privatnosti</a>
+                <br><br>
+                <a class="author" href="https://sergioplay-dev.netlify.app/" target="_blank">Web stranica razvijena od strane SerGio Play</a></p>
+                <br><br>
+                <p>&copy; <span id="currentYear"></span><span class="footerCopyRight">Sva prava pridržana. Local Notes</span></p>
+            </div>
+        </footer>
+    </section>
+
+    <div class="preloader">
+        <div class="preloader__sheet"></div>
+        <span id="preloaderText">Pričekajte! <br> Pripremamo se za vaše bilješke.</span>
+    </div>
+
+    <script>
+        // Set language for this page
+        window.currentLang = 'hr';
+    </script>
+    <script src="/js/translations.js"></script>
+    <script src="/js/themes.js"></script>
+    <script src="/js/translate.js"></script>
+    <script src="/js/quill.min.js"></script>
+    <script src="/js/magicurl.js"></script>
+    <script src="/js/highlight.min.js"></script>
+    <script src="/js/index.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/img.js"></script>
+    <script src="/js/preloader.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                        
+                        // Проверка обновлений
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // Новый Service Worker доступен
+                                    if (confirm('Dostupna je ažuriranje aplikacije. Osvježiti stranicu?')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+
+</body>
+
+</html>

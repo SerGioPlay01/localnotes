@@ -1,11 +1,12 @@
 User-agent: *
-Disallow: /css
-Disallow: /fonts
-Disallow: /js/*
-Disallow: /resources
+Disallow: /css/
+Disallow: /fonts/
+Disallow: /js/
+Disallow: /resources/
+Disallow: /favicon/
 Disallow: /yandex_0c0ab9bc96dcb723.html
 Disallow: /manifest.json
 Allow: /
 
-Host: https://silly-figolla-097c1f.netlify.app/
-Sitemap: https://silly-figolla-097c1f.netlify.app/sitemap_index.xml
+Host: https://localnotes-web.netlify.app/
+Sitemap: https://localnotes-web.netlify.app/sitemap.xml

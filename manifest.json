@@ -1,16 +1,79 @@
 {
-    "name": "Локальные заметки",
-    "short_name": "Локальные заметки",
-    "theme_color": "#2196f3",
-    "background_color": "#2196f3",
-    "display": "fullscreen",
-    "orientation": "portrait",
+    "name": "Local Notes - Secure Note Taking App",
+    "short_name": "Local Notes",
+    "description": "Secure local note-taking application with encryption and multi-language support",
+    "theme_color": "#060116",
+    "background_color": "#060116",
+    "display": "standalone",
+    "orientation": "portrait-primary",
     "scope": "/",
     "start_url": "/",
+    "lang": "en",
+    "dir": "ltr",
+    "categories": ["productivity", "utilities", "business"],
+    "screenshots": [
+        {
+            "src": "/resources/screenshot-desktop.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "/resources/screenshot-mobile.png",
+            "sizes": "390x844",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ],
     "icons": [
-    {
-      "src": "/resources/icon.jpg",
-      "sizes": "512x512"
+        {
+            "src": "/favicon/favicon-16x16.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/favicon/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/favicon/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Add New Note",
+            "short_name": "New Note",
+            "description": "Create a new note quickly",
+            "url": "/?action=new",
+            "icons": [
+                {
+                    "src": "/favicon/android-chrome-192x192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false,
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    "launch_handler": {
+        "client_mode": "navigate-existing"
     }
-  ]
-  }
+}

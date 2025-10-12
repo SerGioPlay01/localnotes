@@ -1,0 +1,2541 @@
+@import url(/fonts/golos_web/golostext.css);
+@import url(/fonts//intro/intro.css);
+@import url(/fonts/lekton-nerd-font-mono/lekton-nerd-font-mono.css);
+
+/* CSS переменные для темной темы (по умолчанию) */
+:root {
+    --primary-color: #aefc6e;
+    --secondary-color: #f9f8fd;
+    --accent-color: #007bff;
+    --text-color: #ffffff;
+    --bg-color: #0a0a0a;
+    --dark-bg: #0a0a0a;
+    --card-bg: #0f0f0f;
+    --border-color: #272727;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --note-bg: #0f0f0f;
+    --note-text: #ffffff;
+    --note-border: #272727;
+    --input-bg: #1a1a1a;
+    --input-text: #ffffff;
+    --button-bg: #0f0f0f;
+    --button-text: #ffffff;
+    --button-hover: #272727;
+    --modal-bg: #1a1a1a;
+    --modal-text: #ffffff;
+    --modal-border: #272727;
+    --header-bg: #080808;
+    --footer-bg: #0f0f0f;
+    --footer-text: #ffffff;
+    --button-border: #272727;
+    --scrollbar-track: #1a1a1a;
+    --scrollbar-thumb: #272727;
+}
+
+/* Темная тема (явная) */
+[data-theme="dark"] {
+    --primary-color: #aefc6e;
+    --secondary-color: #f9f8fd;
+    --accent-color: #007bff;
+    --text-color: #ffffff;
+    --bg-color: #0a0a0a;
+    --dark-bg: #0a0a0a;
+    --card-bg: #0f0f0f;
+    --border-color: #272727;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --note-bg: #0f0f0f;
+    --note-text: #ffffff;
+    --note-border: #272727;
+    --input-bg: #1a1a1a;
+    --input-text: #ffffff;
+    --button-bg: #0f0f0f;
+    --button-text: #ffffff;
+    --button-hover: #272727;
+    --modal-bg: #1a1a1a;
+    --modal-text: #ffffff;
+    --modal-border: #272727;
+    --header-bg: #080808;
+    --footer-bg: #0f0f0f;
+    --footer-text: #ffffff;
+    --button-border: #272727;
+    --scrollbar-track: #1a1a1a;
+    --scrollbar-thumb: #272727;
+}
+
+/* Светлая тема */
+[data-theme="light"] {
+    --primary-color: #28a745;
+    --secondary-color: #6c757d;
+    --accent-color: #007bff;
+    --text-color: #212529;
+    --bg-color: #ffffff;
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --note-bg: #ffffff;
+    --note-text: #212529;
+    --note-border: #dee2e6;
+    --input-bg: #ffffff;
+    --input-text: #212529;
+    --button-bg: #f8f9fa;
+    --button-text: #212529;
+    --button-hover: #e9ecef;
+    --modal-bg: #ffffff;
+    --modal-text: #212529;
+    --modal-border: #dee2e6;
+    --header-bg: #f8f9fa;
+    --footer-bg: #f8f9fa;
+    --footer-text: #6c757d;
+    --button-border: #dee2e6;
+    --scrollbar-track: #f1f3f4;
+    --scrollbar-thumb: #c1c1c1;
+    --editor-bg: #ffffff;
+    --editor-toolbar-bg: #f8f9fa;
+    --editor-toolbar-border: #dee2e6;
+    --editor-text: #212529;
+    --editor-placeholder: #6c757d;
+    --editor-table-bg: #f8f9fa;
+    --editor-table-border: #dee2e6;
+    --editor-table-header: #e9ecef;
+    --note-footer-bg: #f8f9fa;
+}
+
+/* Стили для логотипа в светлой теме */
+[data-theme="light"] .logo {
+    filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+
+/* Специальные стили TinyMCE для светлой темы */
+[data-theme="light"] .tox .tox-editor-header {
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #dee2e6 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .tox .tox-toolbar {
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #dee2e6 !important;
+    overflow: visible !important;
+    flex-wrap: wrap !important;
+    min-height: auto !important;
+}
+
+[data-theme="light"] .tox .tox-toolbar__group {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+}
+
+[data-theme="light"] .tox .tox-toolbar__group:not(:last-child) {
+    margin-right: 8px !important;
+}
+
+[data-theme="light"] .tox .tox-toolbar__group:not(:first-child) {
+    border-left: 1px solid #dee2e6 !important;
+    padding-left: 8px !important;
+}
+
+[data-theme="light"] .tox .tox-toolbar__overflow {
+    display: none !important;
+}
+
+[data-theme="light"] .tox .tox-toolbar__overflow--open {
+    display: none !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+[data-theme="light"] .tox .tox-tbtn--disabled {
+    opacity: 0.5 !important;
+}
+
+[data-theme="light"] .tox .tox-menubar {
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #dee2e6 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-menubar .tox-mbtn {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-menubar .tox-mbtn:hover {
+    background: #e9ecef !important;
+}
+
+[data-theme="light"] .tox .tox-statusbar {
+    background: #f8f9fa !important;
+    border-top: 1px solid #dee2e6 !important;
+    color: #6c757d !important;
+}
+
+[data-theme="light"] .tox .tox-button {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-button:hover {
+    background: #e9ecef !important;
+    border-color: #28a745 !important;
+}
+
+[data-theme="light"] .tox .tox-button:focus {
+    background: #e9ecef !important;
+    border-color: #28a745 !important;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2) !important;
+}
+
+[data-theme="light"] .tox .tox-button--enabled {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-collection {
+    background: #ffffff !important;
+    border: 1px solid #dee2e6 !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .tox .tox-collection__item {
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-collection__item:hover {
+    background: #e9ecef !important;
+}
+
+[data-theme="light"] .tox .tox-collection__item--active {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-dialog {
+    background: #ffffff !important;
+    border: 1px solid #dee2e6 !important;
+    box-shadow: 0 16px 64px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .tox .tox-dialog__header {
+    background: #ffffff !important;
+    border-bottom: 1px solid #dee2e6 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-dialog__body {
+    background: #ffffff !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-dialog__footer {
+    background: #ffffff !important;
+    border-top: 1px solid #dee2e6 !important;
+}
+
+[data-theme="light"] .tox .tox-textfield {
+    background: #ffffff !important;
+    border: 1px solid #dee2e6 !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-textfield:focus {
+    border-color: #28a745 !important;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2) !important;
+}
+
+/* Темная тема (по умолчанию) */
+[data-theme="dark"] {
+    --primary-color: #aefc6e;
+    --secondary-color: #f9f8fd;
+    --accent-color: #007bff;
+    --text-color: #ffffff;
+    --bg-color: #0a0a0a;
+    --card-bg: #0f0f0f;
+    --border-color: #272727;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --note-bg: #0f0f0f;
+    --note-text: #ffffff;
+    --note-border: #272727;
+    --input-bg: #1a1a1a;
+    --input-text: #ffffff;
+    --button-bg: #0f0f0f;
+    --button-text: #ffffff;
+    --button-hover: #272727;
+    --modal-bg: #1a1a1a;
+    --modal-text: #ffffff;
+    --modal-border: #272727;
+    --header-bg: #131313;
+    --footer-bg: #0f0f0f;
+    --footer-text: rgba(255, 255, 255, 0.486);
+    --button-border: #272727;
+    --scrollbar-track: #181818;
+    --scrollbar-thumb: #cfcfcf;
+    --editor-bg: #1e1e1e;
+    --editor-toolbar-bg: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+    --editor-toolbar-border: #404040;
+    --editor-text: #ffffff;
+    --editor-placeholder: #888888;
+    --editor-table-bg: #2a2a2a;
+    --editor-table-border: #404040;
+    --editor-table-header: #333333;
+    --note-footer-bg: #1a1a1a;
+}
+
+/* Для всех браузеров с поддержкой ::-webkit-scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
+    /* Ширина скроллбара */
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    /* Цвет фона */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    /* Цвет полосы */
+    border-radius: 10px;
+    /* Закругленные края */
+    border: 2px solid #252525;
+    /* Обводка для отступов */
+}
+
+/* Для Firefox */
+* {
+    scrollbar-width: thin;
+    /* Узкий скроллбар */
+    scrollbar-color: #cfcfcf #252525;
+    /* Цвет полосы и фона */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: #0000;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Golos Text', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.info-app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    gap: 40px;
+    width: 100%;
+    background-color: var(--header-bg);
+}
+
+.app-notes-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+}
+.app-notes {
+    width: 95%;
+}
+.logo {
+    content: url(/resources/logo.png);
+    width: 50px;
+    height: 50px;
+}
+
+.name-app {
+    color: var(--text-color);
+    text-align: center;
+    font-size: 2.0em;
+    font-family: 'Intro', sans-serif;
+}
+
+.modal_h2 {
+    text-align: left;
+    margin: 0;
+    padding: 15px 25px;
+    font-size: 1.5em;
+    font-family: 'Intro', sans-serif;
+    color: var(--modal-text);
+    background: var(--modal-bg);
+    border-bottom: 1px solid var(--modal-border);
+    border-radius: 0;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.center_nav {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0px;
+    width: 100%;
+    height: max-content;
+    background-color: var(--header-bg);
+    padding: 0;
+    z-index: 99;
+}
+
+.notes_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.noNotes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.sticky {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    max-width: none;
+}
+
+#searchInput {
+    flex: 1;
+    height: 48px;
+    border: 1px solid #27272762;
+    background-color: var(--input-bg);
+    backdrop-filter: blur(40px);
+    border-radius: 5px;
+    color: var(--input-text);
+    text-indent: 20px;
+    outline: none;
+    min-width: 0;
+}
+
+#searchInput::placeholder {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+#searchInput:focus::placeholder {
+    color: transparent;
+}
+
+#notesContainer.default-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    /* Автоматическая подстройка колонок */
+    gap: 20px 20px;
+    /* Вертикальный отступ: 20px, горизонтальный: 15px */
+    height: 100%;
+    min-height: 450px;
+    width: 100%;
+    z-index: 10;
+    margin-top: 20px;
+    margin-bottom: 5%;
+    /* Отступы внутри контейнера */
+    transition: all 0.4s ease-in-out;
+}
+
+/* Полноширинный вид */
+#notesContainer.full-width-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100%, 0fr));
+    /* Автоматическая подстройка колонок */
+    gap: 20px 0px;
+    /* Вертикальный отступ: 20px, горизонтальный: 15px */
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    margin-top: 20px;
+    margin-bottom: 5%;
+    /* Отступы внутри контейнера */
+    transition: all 0.4s ease-in-out;
+}
+#notesContainer.full-width-view .note {
+    height: min-content;
+}
+#notesContainer.full-width-view .noteContent {
+    margin-top: 0%;
+}
+
+.note {
+    color: var(--note-text);
+    font-size: 1em;
+    line-height: 1.5;
+    border: 1px solid var(--note-border);
+    background-color: var(--note-bg);
+    border-radius: 8px;
+    overflow-y: auto;
+    padding: 4%;
+    height: 400px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    animation: fadeInUp 0.5s ease-in-out;
+    overflow-x: hidden;
+}
+
+.noteContent {
+    margin-top: 5%;
+}
+
+.editBtn,
+.deleteBtn,
+.exportBtn {
+    border: 1px solid var(--border-color);
+    background-color: var(--button-bg);
+    width: 100%;
+    height: 50px;
+    color: var(--button-text);
+    font-size: 1em;
+    font-weight: 700;
+    margin-right: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.editBtn i,
+.deleteBtn i,
+.exportBtn i {
+    font-size: 14px;
+}
+
+
+.note.hidden {
+    display: none;
+}
+
+.note.removing {
+    animation: fadeOutDown 0.5s ease-in-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+.block_btn {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+}
+
+.btn_view_div {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    background-color: var(--footer-bg);
+    bottom: 0px;
+    left: 0px;
+    padding: 20px 0;
+    z-index: 99;
+}
+#toggleViewButton {
+    width: 400px;
+    height: 50px;
+    border: 1px solid #27272762;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+#toggleViewButton i {
+    font-size: 14px;
+}
+#addNoteButton,
+#importButton,
+#clearAllButton {
+    flex: 1;
+    height: 50px;
+    border: 1px solid #27272762;
+    background-color: var(--button-bg);
+    backdrop-filter: blur(40px);
+    color: var(--button-text);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+#addNoteButton i,
+#importButton i,
+#clearAllButton i {
+    font-size: 14px;
+}
+
+#cookie {
+    width: 90%;
+}
+
+footer {
+    background-color: var(--footer-bg);
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 4%;
+    padding-bottom: 10%;
+    transition: background-color 0.3s ease;
+    color: var(--footer-text);
+}
+
+footer a {
+    text-decoration: none;
+    color: var(--footer-text);
+    font-weight: 700;
+}
+
+.info-about-project,
+.footer-content {
+    width: 90%;
+}
+
+#importInput {
+    display: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(20, 20, 20, 0.8) 100%);
+    backdrop-filter: blur(10px);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+/* Отключаем прокрутку страницы когда модальное окно открыто */
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(10px);
+    }
+}
+
+.modal-content {
+    background: var(--modal-bg);
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    box-shadow: none;
+    backdrop-filter: none;
+    animation: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes modalContentSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-content-error {
+    background-color: var(--modal-bg);
+    margin: 20% auto;
+    padding: 25px;
+    border: 1px solid var(--modal-border);
+    border-radius: 5px;
+    width: 80%;
+    height: auto;
+    overflow-y: auto;
+}
+
+/* Общие стили для всех модальных окон */
+.modal-content-error h3 {
+    margin-top: 0;
+    color: var(--modal-text);
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.modal-content-error p {
+    margin: 15px 0;
+    line-height: 1.5;
+    color: var(--modal-text);
+}
+
+.modal-content-error input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    color: var(--input-text);
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.modal-content-error input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.modal-content-error input::placeholder {
+    color: var(--secondary-color);
+}
+
+.modal-content-error button {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 5px;
+    transition: background-color 0.3s;
+}
+
+.modal-content-error button:hover {
+    background: var(--button-hover);
+    opacity: 0.8;
+}
+
+.modal-content-error button.cancel {
+    background: var(--secondary-color);
+}
+
+.modal-content-error button.cancel:hover {
+    background: var(--button-hover);
+    opacity: 0.8;
+}
+
+
+.modal .tinymce {
+    flex: 1;
+    overflow: visible;
+    position: relative;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Стили для TinyMCE */
+.tox-tinymce {
+    border: none !important;
+    border-radius: 0 !important;
+    margin-top: 60px !important;
+    margin-bottom: 80px !important;
+    z-index: 100 !important;
+}
+
+/* Исправляем позиционирование плавающих панелей TinyMCE */
+.tox-pop {
+    z-index: 10000 !important;
+}
+
+.tox-collection {
+    z-index: 10000 !important;
+}
+
+.tox-dialog {
+    z-index: 10000 !important;
+}
+
+/* Скрываем плавающие панели по умолчанию */
+.tox-pop.tox-pop--hidden {
+    display: none !important;
+}
+
+/* Исправляем перекрытие с поисковой строкой */
+.tox-tinymce .tox-toolbar {
+    position: relative !important;
+    z-index: 100 !important;
+}
+
+/* Исправляем позиционирование плавающих панелей относительно поисковой строки */
+.tox-pop[data-alloy-tabstop="true"] {
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+}
+
+/* Специальные стили для панелей выбора цвета */
+.tox-swatches {
+    z-index: 10000 !important;
+}
+
+.tox-swatch {
+    z-index: 10000 !important;
+}
+
+/* Исправляем позиционирование панелей выбора шрифта */
+.tox-collection--list {
+    z-index: 10000 !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+}
+
+/* Стили для панелей вставки */
+.tox-collection--grid {
+    z-index: 10000 !important;
+}
+
+/* Исправляем перекрытие с основным интерфейсом */
+.tox-pop.tox-pop--bottom {
+    margin-top: 5px !important;
+}
+
+.tox-pop.tox-pop--top {
+    margin-bottom: 5px !important;
+}
+
+/* Исправляем перекрытие с поисковой строкой */
+.tox-pop {
+    max-width: 90vw !important;
+    max-height: 80vh !important;
+    overflow: auto !important;
+}
+
+/* Специальные стили для панелей выбора цвета */
+.tox-swatches .tox-swatch {
+    margin: 2px !important;
+}
+
+/* Исправляем позиционирование панелей относительно кнопок */
+.tox-toolbar .tox-pop {
+    position: absolute !important;
+    z-index: 10000 !important;
+}
+
+/* Стили для панелей выбора шрифта и размера */
+.tox-collection--list .tox-collection__item {
+    padding: 8px 12px !important;
+    white-space: nowrap !important;
+}
+
+/* Исправляем отображение панелей вставки */
+.tox-collection--grid .tox-collection__item {
+    padding: 8px !important;
+    text-align: center !important;
+}
+
+/* Стили для кнопки закрытия плавающих панелей */
+.tox-pop .tox-button[aria-label*="close"],
+.tox-pop .tox-button[aria-label*="Close"],
+.tox-pop .tox-button[title*="close"],
+.tox-pop .tox-button[title*="Close"] {
+    position: absolute !important;
+    top: 5px !important;
+    right: 5px !important;
+    z-index: 10001 !important;
+}
+
+/* Улучшенные стили TinyMCE для адаптации под темы */
+.tox .tox-editor-header {
+    background: var(--editor-toolbar-bg) !important;
+    border-bottom: 1px solid var(--editor-toolbar-border) !important;
+    box-shadow: 0 2px 4px var(--shadow-color) !important;
+}
+
+.tox .tox-toolbar {
+    background: var(--editor-toolbar-bg) !important;
+    border-bottom: 1px solid var(--editor-toolbar-border) !important;
+    overflow: visible !important;
+    flex-wrap: wrap !important;
+    min-height: auto !important;
+    max-height: none !important;
+    height: auto !important;
+    padding: 8px !important;
+}
+
+/* Обеспечиваем отображение всех элементов toolbar */
+.tox .tox-toolbar__group {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow: visible !important;
+}
+
+.tox .tox-toolbar__group:not(:last-child) {
+    margin-right: 8px !important;
+}
+
+.tox .tox-toolbar__group:not(:first-child) {
+    border-left: 1px solid var(--editor-toolbar-border) !important;
+    padding-left: 8px !important;
+}
+
+/* Убираем скрытие элементов при переполнении */
+.tox .tox-toolbar__overflow {
+    display: none !important;
+}
+
+.tox .tox-toolbar__overflow--open {
+    display: none !important;
+}
+
+/* Обеспечиваем видимость всех кнопок */
+.tox .tox-tbtn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.tox .tox-tbtn--disabled {
+    opacity: 0.5 !important;
+}
+
+/* Стили для групп кнопок */
+.tox .tox-tbtn--select {
+    min-width: auto !important;
+}
+
+.tox .tox-tbtn--bespoke {
+    min-width: auto !important;
+}
+
+.tox .tox-edit-area__iframe {
+    background: var(--editor-bg) !important;
+}
+
+.tox .tox-menubar {
+    background: var(--editor-toolbar-bg) !important;
+    border-bottom: 1px solid var(--editor-toolbar-border) !important;
+    color: var(--editor-text) !important;
+}
+
+.tox .tox-menubar .tox-mbtn {
+    color: var(--editor-text) !important;
+}
+
+.tox .tox-menubar .tox-mbtn:hover {
+    background: var(--button-hover) !important;
+}
+
+.tox .tox-statusbar {
+    background: var(--editor-toolbar-bg) !important;
+    border-top: 1px solid var(--editor-toolbar-border) !important;
+    color: var(--editor-text) !important;
+}
+
+.tox .tox-button {
+    color: var(--editor-text) !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+}
+
+.tox .tox-button:hover {
+    background: var(--button-hover) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.tox .tox-button:focus {
+    background: var(--button-hover) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px rgba(174, 252, 110, 0.2) !important;
+}
+
+.tox .tox-button--enabled {
+    background: var(--primary-color) !important;
+    color: var(--bg-color) !important;
+}
+
+.tox .tox-collection {
+    background: var(--modal-bg) !important;
+    border: 1px solid var(--modal-border) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 32px var(--shadow-color) !important;
+}
+
+.tox .tox-collection__item {
+    color: var(--modal-text) !important;
+    border-radius: 4px !important;
+    margin: 2px !important;
+    transition: all 0.2s ease !important;
+}
+
+.tox .tox-collection__item:hover {
+    background: var(--button-hover) !important;
+}
+
+.tox .tox-collection__item--active {
+    background: var(--primary-color) !important;
+    color: var(--bg-color) !important;
+}
+
+/* Стили для выпадающих списков */
+.tox .tox-listboxfield .tox-listbox--select {
+    background: var(--modal-bg) !important;
+    border: 1px solid var(--modal-border) !important;
+    color: var(--modal-text) !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select:hover {
+    border-color: var(--primary-color) !important;
+}
+
+/* Стили для полей ввода */
+.tox .tox-textfield {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--modal-border) !important;
+    color: var(--input-text) !important;
+}
+
+.tox .tox-textfield:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px rgba(174, 252, 110, 0.2) !important;
+}
+
+/* Стили для диалогов */
+.tox .tox-dialog {
+    background: var(--modal-bg) !important;
+    border: 1px solid var(--modal-border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 16px 64px var(--shadow-color) !important;
+}
+
+.tox .tox-dialog__header {
+    background: var(--modal-bg) !important;
+    border-bottom: 1px solid var(--modal-border) !important;
+    color: var(--modal-text) !important;
+}
+
+.tox .tox-dialog__body {
+    background: var(--modal-bg) !important;
+    color: var(--modal-text) !important;
+}
+
+.tox .tox-dialog__footer {
+    background: var(--modal-bg) !important;
+    border-top: 1px solid var(--modal-border) !important;
+}
+
+/* Контейнер для кнопок */
+.modal-buttons-container {
+    padding: 15px 30px !important;
+    border-top: 1px solid var(--modal-border) !important;
+    background: var(--modal-bg) !important;
+    border-radius: 0 !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 30px !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1) !important;
+    margin-top: auto !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+}
+
+input {
+    outline: none;
+}
+
+
+#saveNoteButton,
+#cancelNoteButton {
+    margin: 0 !important;
+    width: 300px !important;
+    height: 50px !important;
+    border: 1px solid var(--modal-border) !important;
+    background: var(--button-bg) !important;
+    color: var(--editor-text) !important;
+    border-radius: 12px !important;
+    cursor: pointer !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 12px var(--shadow-color), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+    backdrop-filter: blur(5px) !important;
+    flex-shrink: 0 !important;
+    letter-spacing: 0.5px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+}
+
+#saveNoteButton i,
+#cancelNoteButton i {
+    font-size: 14px !important;
+}
+
+#ok,
+#confirmYes,
+#confirmNo {
+    margin-top: 20px;
+    width: 300px;
+    height: 50px;
+    border: 1px solid #05050550;
+    background-color: #ffffff;
+    color: rgb(14, 14, 14);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+#ok i,
+#confirmYes i,
+#confirmNo i {
+    font-size: 14px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.note pre {
+    background-color: var(--input-bg);
+    color: var(--note-text);
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: inset 0 1px 3px var(--shadow-color);
+    margin: 12px 0;
+}
+
+.note iframe {
+    width: 100%;
+    height: 300px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    overflow: hidden;
+    margin: 12px 0;
+}
+
+.note video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 12px auto;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--input-bg);
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.note img {
+    margin: 12px 0;
+    cursor: pointer;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+}
+
+.note img:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.note blockquote {
+    border-left: 4px solid var(--primary-color);
+    background-color: var(--input-bg);
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 6px 6px 0;
+    font-style: italic;
+    color: var(--note-text);
+    box-shadow: inset 0 1px 3px var(--shadow-color);
+}
+
+/* Нумерованные списки в заметках */
+.note ol {
+    list-style-type: decimal;
+    padding-left: 24px;
+    margin: 12px 0;
+}
+
+.note ol li {
+    margin: 8px 0;
+    color: var(--note-text);
+    font-size: 1.05em;
+    line-height: 1.7;
+}
+
+/* Ненумерованные списки в заметках */
+.note ul {
+    list-style-type: disc;
+    padding-left: 24px;
+    margin: 12px 0;
+}
+
+.note ul li {
+    margin: 8px 0;
+    color: var(--note-text);
+    font-size: 1.05em;
+    line-height: 1.7;
+}
+
+/* Заголовки в заметках */
+.note h1, .note h2, .note h3, .note h4, .note h5, .note h6 {
+    color: var(--note-text);
+    margin: 20px 0 12px 0;
+    font-weight: 600;
+    line-height: 1.3;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.note h1 {
+    font-size: 2.2em;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 8px;
+    color: var(--note-text);
+}
+
+.note h2 {
+    font-size: 1.7em;
+    border-bottom: 1px solid var(--primary-color);
+    padding-bottom: 6px;
+    color: var(--note-text);
+}
+
+.note h3 {
+    font-size: 1.4em;
+    color: var(--note-text);
+}
+
+.note h4 {
+    font-size: 1.2em;
+    color: var(--note-text);
+}
+
+.note-footer {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    padding-left: 15px;
+    height: 30px;
+    left: 0px;
+    top: 0px;
+    color: var(--note-text);
+    opacity: 0.7;
+    font-weight: 700;
+    font-size: 0.7em;
+    background-color: var(--note-footer-bg);
+    width: 100%;
+}
+
+.note a {
+    color: var(--primary-color);
+    text-decoration: wavy;
+    font-weight: 700;
+    border-bottom: 1px solid var(--primary-color);
+}
+
+/* Дополнительные стили для контента заметок */
+.note p {
+    margin-bottom: 12px;
+    line-height: 1.7;
+    color: var(--note-text);
+    font-size: 1.05em;
+}
+
+.note strong,
+.note b {
+    font-weight: 600;
+    color: var(--note-text);
+}
+
+.note em,
+.note i {
+    font-style: italic;
+    color: var(--note-text);
+}
+
+.note u {
+    text-decoration: underline;
+    color: var(--primary-color);
+}
+
+.note s {
+    text-decoration: line-through;
+    color: var(--note-text);
+    opacity: 0.7;
+}
+
+.note code {
+    background: var(--input-bg);
+    color: var(--note-text);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+}
+
+.note hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #272727, transparent);
+    margin: 24px 0;
+}
+
+
+@media (hover:hover) {
+
+    #addNoteButton:hover,
+    #importButton:hover,
+    #clearAllButton:hover,
+    #toggleViewButton:hover {
+        background-color: #202020;
+        color: #f0f0f0;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .editBtn:hover,
+    .exportBtn:hover,
+    .deleteBtn:hover {
+        background-color: var(--button-hover);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .note a:hover {
+        color: #f9f8fd;
+        border-bottom: 1px solid #f9f8fd;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    footer a:hover {
+        color: #f9f8fd;
+        border-bottom: 1px solid #f9f8fd;
+        transition: all 0.3s ease-in-out;
+    }
+
+    #saveNoteButton:hover,
+    #cancelNoteButton:hover {
+        background: linear-gradient(135deg, #404040 0%, #2d2d2d 100%);
+        border-color: #666666;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+        transform: translateY(-2px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #ok:hover,
+    #confirmYes:hover,
+    #confirmNo:hover {
+        background-color: #202020;
+        color: #f3f3f3;
+        transition: all 0.3s ease-in-out;
+    }
+
+}
+
+@media (max-width: 1350px) {
+    .noNotes {
+        width: 100%;
+    }
+    .app-notes-center {
+        width: 95%;
+    }
+    .app-notes {
+        width: 90%;
+    }
+    .info-app {
+        gap: 10px;
+        width: 100%;
+        height: 100px;
+        padding-top: 20px;
+        flex-direction: column;
+        background-color: var(--header-bg);
+    }
+
+    .logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .name-app {
+        font-size: 1.2em;
+    }
+
+    .modal-content {
+        margin: 8% auto;
+        height: 80%;
+        width: 95%;
+    }
+
+    .modal-content-error {
+        margin: 80% auto;
+    }
+
+    #saveNoteButton,
+    #cancelNoteButton {
+        width: 100%;
+    }
+
+    .center_nav {
+        padding-bottom: 5px;
+        padding-top: 5px;
+        width: 100%;
+    }
+
+    .notes_center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 0%;
+    }
+
+    .sticky {
+        width:100%;
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px 20px;
+        max-width: none;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    #searchInput {
+        flex: 1;
+        border-radius: 0%;
+        min-width: 0;
+    }
+
+    .block_btn {
+        overflow-x: auto;
+        gap: 10px;
+    }
+
+    #addNoteButton,
+    #importButton,
+    #clearAllButton {
+        font-size: 0.9em;
+        flex: 1;
+        border-radius: 0%;
+        min-width: 0;
+    }
+
+    #notesContainer.default-view {
+        grid-template-columns: repeat(auto-fit, minmax(98%, 0fr));
+        margin-bottom: 15%;
+        gap: 20px 0px;
+        min-height: 400px;
+    }
+    .btn_view_div {
+        display: none;
+    }
+    
+    .block_btn {
+        gap: 10px;
+    }
+    .note {
+        width: 100%;
+        height: min-content;
+        border-radius: 0%;
+        box-shadow: none;
+    }
+
+    .noteContent {
+        padding: 1%;
+    }
+
+    .note-footer {
+        font-size: 0.5em;
+    }
+
+    footer {
+        width: 90%;
+    }
+    .modal-content {
+        width: 85%;
+        height: 80%;
+        margin: 10% auto;
+    }
+    
+    .modal-buttons-container {
+        padding: 20px 15px;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    #saveNoteButton,
+    #cancelNoteButton {
+        width: 100%;
+        height: 50px;
+        margin: 0;
+    }
+    
+    /* Мобильные стили для панели инструментов */
+    .ql-toolbar {
+        padding: 10px 12px !important;
+        min-height: 50px !important;
+        flex-wrap: wrap !important;
+        gap: 3px !important;
+        overflow: visible !important;
+    }
+    
+    .ql-toolbar button {
+        width: 36px !important;
+        height: 36px !important;
+        padding: 8px !important;
+        margin: 2px !important;
+        flex-shrink: 0 !important;
+    }
+    
+    .ql-toolbar button svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+    
+    .ql-toolbar .ql-picker {
+        min-width: 36px !important;
+        height: 36px !important;
+        padding: 8px !important;
+        flex-shrink: 0 !important;
+    }
+    
+    .ql-toolbar .ql-picker svg {
+        width: 22px !important;
+        height: 22px !important;
+    }
+}
+
+@media (400px < width < 420px) {
+    #notesContainer {
+        width: 90%;
+        grid-template-columns: repeat(auto-fit, minmax(391px, 1fr));
+        margin-bottom: 15%;
+        gap: 80px 0px;
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 390px) {
+    #notesContainer {
+        width: 90%;
+        grid-template-columns: repeat(auto-fit, minmax(355px, 1fr));
+        margin-bottom: 15%;
+        gap: 60px 0px;
+        min-height: 190px;
+    }
+
+    .note-footer {
+        font-size: 0.5em;
+    }
+}
+
+/* Стили для переключателя тем */
+.theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.theme-toggle:hover {
+    background-color: var(--button-hover);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px var(--shadow-color);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Анимация для иконки */
+.theme-toggle .theme-icon {
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover .theme-icon {
+    transform: rotate(180deg);
+}
+
+/* Стили для модального окна выбора темы */
+.theme-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.theme-modal-content {
+    background-color: var(--modal-bg);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid var(--modal-border);
+    border-radius: 12px;
+    width: 300px;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 32px var(--shadow-color);
+    transition: all 0.3s ease;
+    color: var(--text-color);
+}
+
+.theme-modal-content h3 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.theme-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    margin: 10px 0;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: var(--button-bg);
+    color: var(--text-color);
+}
+
+.theme-option:hover {
+    border-color: var(--primary-color);
+    background-color: var(--button-hover);
+    color: var(--text-color);
+}
+
+.theme-option.active {
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+}
+
+.theme-option.active .theme-name,
+.theme-option.active .theme-description {
+    color: var(--bg-color);
+}
+
+.theme-option .theme-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.theme-option .theme-name {
+    font-weight: 600;
+    flex: 1;
+    text-align: left;
+    color: var(--text-color);
+}
+
+.theme-option .theme-description {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 2px;
+    color: var(--text-color);
+}
+
+/* Адаптивность для переключателя тем */
+@media (max-width: 768px) {
+    .theme-toggle {
+        bottom: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+    
+    .theme-modal-content {
+        margin: 20% auto;
+        width: 280px;
+    }
+}
+
+
+/* Стили для новых функций редактора */
+
+/* Эмодзи пикер */
+.emoji-picker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emoji-picker-content {
+    background: var(--modal-bg);
+    border: 1px solid var(--modal-border);
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 500px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.emoji-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.emoji-item:hover {
+    background-color: var(--button-hover);
+}
+
+.emoji-close {
+    width: 100%;
+    padding: 10px;
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.emoji-close:hover {
+    background: var(--button-hover);
+}
+
+/* Специальные символы пикер */
+.special-chars-picker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.special-chars-picker-content {
+    background: var(--modal-bg);
+    border: 1px solid var(--modal-border);
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 600px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.special-chars-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 6px;
+    margin-bottom: 15px;
+}
+
+.char-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    color: var(--button-text);
+}
+
+.char-item:hover {
+    background-color: var(--button-hover);
+}
+
+.chars-close {
+    width: 100%;
+    padding: 10px;
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.chars-close:hover {
+    background: var(--button-hover);
+}
+
+/* Полноэкранный режим */
+.modal-content.fullscreen {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+}
+
+
+
+/* Иконки для кнопок выбора цвета через :before */
+.ql-toolbar button[data-value="color"]:before,
+.ql-toolbar .ql-color:before {
+    content: "A" !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    color: #ff0000 !important;
+    text-shadow: 1px 1px 0 #000 !important;
+}
+
+.ql-toolbar button[data-value="background"]:before,
+.ql-toolbar .ql-background:before {
+    content: "■" !important;
+    font-size: 12px !important;
+    color: #ffff00 !important;
+    text-shadow: 1px 1px 0 #000 !important;
+}
+
+
+
+
+/* Показываем оригинальные SVG иконки Quill */
+.ql-toolbar button svg {
+    display: inline-block !important;
+}
+
+.ql-toolbar .ql-picker svg {
+    display: none !important;
+}
+
+/* Добавляем текстовые названия для кнопок без иконок */
+.ql-toolbar .ql-emoji:after {
+    content: "😀" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar .ql-special-chars:after {
+    content: "Ω" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar .ql-word-count:after {
+    content: "123" !important;
+    font-size: 10px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar .ql-fullscreen:after {
+    content: "⛶" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar .ql-formula:after {
+    content: "∑" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar .ql-script[data-value="sub"]:after {
+    content: "x₂" !important;
+    font-size: 10px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar .ql-script[data-value="super"]:after {
+    content: "x²" !important;
+    font-size: 10px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar .ql-clean:after {
+    content: "×" !important;
+    font-size: 14px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar .ql-direction[data-value="rtl"]:after {
+    content: "⇄" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+/* Добавляем текст для кнопок без SVG иконок */
+.ql-toolbar button:not(:has(svg)):after {
+    content: "?" !important;
+    font-size: 10px !important;
+    margin-left: 4px !important;
+    color: var(--editor-text) !important;
+}
+
+/* Специальные случаи для кнопок без иконок */
+.ql-toolbar button[title*="emoji"]:after,
+.ql-toolbar button[title*="Emoji"]:after {
+    content: "😀" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar button[title*="special"]:after,
+.ql-toolbar button[title*="Special"]:after {
+    content: "Ω" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar button[title*="word"]:after,
+.ql-toolbar button[title*="Word"]:after {
+    content: "123" !important;
+    font-size: 10px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar button[title*="fullscreen"]:after,
+.ql-toolbar button[title*="Fullscreen"]:after {
+    content: "⛶" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+/* Иконки для кнопок выбора цвета */
+.ql-toolbar button[title*="color"]:after,
+.ql-toolbar button[title*="Color"]:after,
+.ql-toolbar .ql-color:after,
+.ql-toolbar button[data-value="color"]:after {
+    content: "A" !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    margin-left: 4px !important;
+    color: #ff0000 !important;
+    text-shadow: 1px 1px 0 #000 !important;
+}
+
+.ql-toolbar button[title*="background"]:after,
+.ql-toolbar button[title*="Background"]:after,
+.ql-toolbar .ql-background:after,
+.ql-toolbar button[data-value="background"]:after {
+    content: "■" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+    color: #ffff00 !important;
+    text-shadow: 1px 1px 0 #000 !important;
+}
+
+/* Дополнительные иконки для других кнопок без иконок */
+.ql-toolbar button[title*="align"]:after,
+.ql-toolbar button[title*="Align"]:after {
+    content: "≡" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar button[title*="list"]:after,
+.ql-toolbar button[title*="List"]:after {
+    content: "•" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+.ql-toolbar button[title*="indent"]:after,
+.ql-toolbar button[title*="Indent"]:after {
+    content: "→" !important;
+    font-size: 12px !important;
+    margin-left: 4px !important;
+}
+
+
+
+
+.ql-toolbar button:hover {
+    background: var(--button-hover) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px var(--shadow-color), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    transform: translateY(-1px) !important;
+}
+
+.ql-toolbar button.ql-active {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+    color: var(--editor-text) !important;
+    border-color: #007bff !important;
+    box-shadow: 0 4px 12px var(--primary-color), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    transform: translateY(-1px) !important;
+}
+
+.ql-toolbar button.ql-active .ql-stroke {
+    stroke: #ffffff !important;
+}
+
+.ql-toolbar button.ql-active .ql-fill {
+    fill: #ffffff !important;
+}
+
+/* Современные стили для выпадающих меню */
+.ql-toolbar .ql-picker {
+    color: var(--editor-text) !important;
+    border-radius: 8px !important;
+    margin: 3px !important;
+    padding: 12px !important;
+    border: 1px solid transparent !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    min-width: 48px !important;
+    height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(5px) !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.ql-toolbar .ql-picker svg {
+    width: 24px !important;
+    height: 24px !important;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)) !important;
+}
+
+/* Стили для разделителей в панели инструментов */
+.ql-toolbar .ql-formats {
+    display: flex !important;
+    align-items: center !important;
+    margin-right: 0 !important;
+    flex-shrink: 0 !important;
+    gap: 2px !important;
+}
+
+.ql-toolbar .ql-formats:not(:last-child)::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 24px;
+    background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+    margin: 0 4px;
+    vertical-align: middle;
+    border-radius: 1px;
+    flex-shrink: 0;
+}
+
+.ql-toolbar .ql-picker:hover {
+    background: var(--button-hover) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 4px 12px var(--shadow-color), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+    transform: translateY(-1px) !important;
+}
+
+.ql-toolbar .ql-picker-options {
+    background: var(--modal-bg) !important;
+    border: 1px solid var(--modal-border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 12px 32px var(--shadow-color), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+    padding: 12px !important;
+    backdrop-filter: blur(20px) !important;
+    z-index: 99999 !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    min-width: 140px !important;
+    max-width: 320px !important;
+    max-height: 240px !important;
+    overflow-y: auto !important;
+    margin-top: 8px !important;
+    animation: dropdownSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Стили для скроллбаров в заметках */
+.note::-webkit-scrollbar {
+    width: 8px;
+}
+
+.note::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 4px;
+}
+
+.note::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.note::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-color);
+}
+
+/* Стили для скроллбара выпадающих списков */
+.ql-toolbar .ql-picker-options::-webkit-scrollbar {
+    width: 8px !important;
+}
+
+.ql-toolbar .ql-picker-options::-webkit-scrollbar-track {
+    background: var(--scrollbar-track) !important;
+    border-radius: 4px !important;
+    margin: 4px 0 !important;
+}
+
+.ql-toolbar .ql-picker-options::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb) !important;
+    border-radius: 4px !important;
+    border: 1px solid var(--modal-border) !important;
+}
+
+.ql-toolbar .ql-picker-options::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.ql-toolbar .ql-picker-item {
+    color: var(--editor-text) !important;
+    padding: 14px 18px !important;
+    border-radius: 8px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    margin: 3px 0 !important;
+    font-weight: 500 !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.ql-toolbar .ql-picker-item:hover {
+    background: var(--button-hover) !important;
+    color: var(--editor-text) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px var(--shadow-color) !important;
+}
+
+/* Стили для активных элементов выпадающих списков */
+.ql-toolbar .ql-picker-item.ql-selected {
+    background: var(--primary-color) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px var(--primary-color) !important;
+}
+
+/* Стили для элементов выравнивания текста - убираем дубли */
+.ql-toolbar .ql-picker-item[data-value="left"]:before {
+    content: "⬅" !important;
+    margin-right: 8px !important;
+    font-size: 14px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="center"]:before {
+    content: "⬆" !important;
+    margin-right: 8px !important;
+    font-size: 14px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="right"]:before {
+    content: "➡" !important;
+    margin-right: 8px !important;
+    font-size: 14px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="justify"]:before {
+    content: "⬌" !important;
+    margin-right: 8px !important;
+    font-size: 14px !important;
+}
+
+/* Стили для элементов размера шрифта - универсальные иконки */
+.ql-toolbar .ql-picker-item[data-value="small"]:before {
+    content: "A" !important;
+    font-size: 10px !important;
+    margin-right: 8px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="normal"]:before {
+    content: "A" !important;
+    font-size: 14px !important;
+    margin-right: 8px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="large"]:before {
+    content: "A" !important;
+    font-size: 18px !important;
+    margin-right: 8px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="huge"]:before {
+    content: "A" !important;
+    font-size: 22px !important;
+    margin-right: 8px !important;
+}
+
+/* Стили для элементов шрифта - универсальные иконки */
+.ql-toolbar .ql-picker-item[data-value="serif"]:before {
+    content: "T" !important;
+    font-family: serif !important;
+    font-size: 14px !important;
+    margin-right: 8px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="monospace"]:before {
+    content: "T" !important;
+    font-family: monospace !important;
+    font-size: 14px !important;
+    margin-right: 8px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="sans-serif"]:before {
+    content: "T" !important;
+    font-family: sans-serif !important;
+    font-size: 14px !important;
+    margin-right: 8px !important;
+}
+
+/* Стили для элементов списков - универсальные иконки */
+.ql-toolbar .ql-picker-item[data-value="ordered"]:before {
+    content: "1." !important;
+    font-size: 14px !important;
+    margin-right: 8px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="bullet"]:before {
+    content: "•" !important;
+    font-size: 14px !important;
+    margin-right: 8px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="check"]:before {
+    content: "☐" !important;
+    font-size: 14px !important;
+    margin-right: 8px !important;
+}
+
+/* Стили для элементов заголовков - универсальные иконки */
+.ql-toolbar .ql-picker-item[data-value="1"]:before {
+    content: "H1" !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    margin-right: 8px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="2"]:before {
+    content: "H2" !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    margin-right: 8px !important;
+}
+
+.ql-toolbar .ql-picker-item[data-value="3"]:before {
+    content: "H3" !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    margin-right: 8px !important;
+}
+
+/* Дополнительные стили для выпадающих списков */
+.ql-toolbar .ql-picker.ql-expanded .ql-picker-options {
+    display: block !important;
+}
+
+/* Стили прелоадера для светлой темы */
+[data-theme="light"] .preloader {
+    background-color: #f8f9fa !important;
+}
+
+[data-theme="light"] .preloader span {
+    color: #333333 !important;
+}
+
+[data-theme="light"] .preloader__sheet {
+    border-color: #333333 !important;
+    border-top-color: transparent !important;
+}
+
+@keyframes preloader-light {
+    0% {
+        background-color: #f8f9fa !important;
+    }
+    100% {
+        background-color: #f8f9fa !important;
+    }
+}
+
+[data-theme="light"] .preloader {
+    animation: preloader-light 15s linear forwards;
+}
+
+.ql-toolbar .ql-picker-label {
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.ql-toolbar .ql-picker-label::after {
+    content: "▼" !important;
+    font-size: 12px !important;
+    margin-left: 6px !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    opacity: 0.7 !important;
+}
+
+.ql-toolbar .ql-picker.ql-expanded .ql-picker-label::after {
+    transform: rotate(180deg) !important;
+    opacity: 1 !important;
+}
+
+/* Анимация для выпадающих списков */
+@keyframes dropdownSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+}
+
+
+
+/* Анимации для модальных окон */
+.emoji-picker,
+.special-chars-picker {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Стили для модального окна экспорта */
+.export-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.export-modal-content {
+    background: var(--modal-bg);
+    border: 1px solid var(--modal-border);
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+.export-modal-content h3 {
+    color: var(--button-text);
+    margin-bottom: 25px;
+    font-size: 1.5em;
+    font-family: 'Intro', sans-serif;
+}
+
+.export-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.export-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    background: var(--button-bg);
+    border: 1px solid var(--modal-border);
+    border-radius: 8px;
+    color: var(--button-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.export-option:hover {
+    background: var(--button-hover);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.export-icon {
+    font-size: 24px;
+    width: 30px;
+    text-align: center;
+}
+
+.export-text {
+    font-weight: 600;
+    font-size: 16px;
+    flex: 1;
+}
+
+.export-desc {
+    font-size: 14px;
+    color: #888;
+    font-style: italic;
+}
+
+.export-close {
+    width: 100%;
+    padding: 12px;
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+}
+
+.export-close:hover {
+    background: #444;
+}

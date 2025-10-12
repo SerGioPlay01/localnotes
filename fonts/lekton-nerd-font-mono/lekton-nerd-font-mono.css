@@ -1,0 +1,9 @@
+/* lekton-nerd-font-mono */
+@font-face {
+	font-family: Lekton Nerd Font Mono;
+	font-style: normal;
+	font-weight: 400;
+	font-stretch: 100%;
+	src: local("Lekton Nerd Font Mono"), local("LektonNFM"), url(lekton-nerd-font-mono.woff2) format("woff2");
+}
+

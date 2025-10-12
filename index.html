@@ -1,139 +1,304 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
+
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HR9HLBQFCR" onerror="console.log('Google Analytics failed to load')"></script>
+    <script>
+        try {
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-HR9HLBQFCR');
+        } catch (error) {
+            console.log('Google Analytics initialization failed:', error);
+        }
+    </script>
+
     <meta charset="UTF-8">
-    <meta http-equiv="Permissions-Policy" content="browsing-topics=(), run-ad-auction=()">
+    <meta http-equiv="Permissions-Policy" content="browsing-topics=(), run-ad-auction=(), camera=(), microphone=(), geolocation=()">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://www.google-analytics.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/manifest.json">
-    <meta property="og:title" content="Локальные заметки - сохраняйте важные заметки прямо в вашем браузере">
-    <meta property="og:site_name" content="silly-figolla-097c1f.netlify.app">
-    <meta property="og:url" content="https://silly-figolla-097c1f.netlify.app/">
-    <meta property="og:description" content="Локальные заметки - это приложение для создания и хранения заметок в браузере.">
-    <meta property="og:image" content="https://silly-figolla-097c1f.netlify.app/resources/obl_web.jpg">
+
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content="Local Notes - Save important notes right in your browser">
+    <meta property="og:site_name" content="Local Notes">
+    <meta property="og:url" content="https://localnotes-web.netlify.app/">
+    <meta property="og:description" content="Local Notes is an application for creating and storing notes in your browser.">
+    <meta property="og:image" content="/resources/obl_web.jpg">
     <meta property="og:image:width" content="968">
     <meta property="og:image:height" content="504">
-    <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
-    <meta name="description" content="Локальные заметки - это приложение для создания и хранения заметок в браузере.">
-    <meta name="keywords" content="локальные заметки, заметки, заметки в браузере, приложение для заметок, заметки online">
-    <link rel="stylesheet" href="/css/preloader.css">
-    <link rel="stylesheet" href="/css/easymde.min.css" />
-    <link rel="stylesheet" href="/css/style.css">
-    <!-- Yandex.Metrika counter -->
-    <script type="text/javascript">
-        (function (m, e, t, r, i, k, a) {
-            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
-            m[i].l = 1 * new Date();
-            for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
-            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
-        })
-            (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
 
-        ym(98759607, "init", {
-            clickmap: true,
-            trackLinks: true,
-            accurateTrackBounce: true
+    <meta name="description" content="Local Notes is an application for creating and storing notes in your browser.">
+    <meta name="keywords" content="local notes, notes, browser notes, note-taking app, online notes, Local Notes">
+    <meta name="author" content="SerGio Play">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+
+    <!-- Language Detection and Redirect -->
+    <script>
+        // Language mapping for automatic redirection
+        const languageMap = {
+            'ru': '/ru/',
+            'ua': '/ua/',
+            'pl': '/pl/',
+            'cs': '/cs/',
+            'sk': '/sk/',
+            'bg': '/bg/',
+            'hr': '/hr/',
+            'sr': '/sr/',
+            'bs': '/bs/',
+            'mk': '/mk/',
+            'sl': '/sl/'
+        };
+
+        // Get user's preferred language
+        function getUserLanguage() {
+            // Check URL parameter first
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            if (langParam && languageMap[langParam]) {
+                return langParam;
+            }
+
+            // Check localStorage
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && languageMap[savedLang]) {
+                return savedLang;
+            }
+
+            // Check browser language
+            const browserLang = navigator.language || navigator.userLanguage;
+            const langCode = browserLang.split('-')[0].toLowerCase();
+            
+            if (languageMap[langCode]) {
+                return langCode;
+            }
+
+            // Check for specific country codes
+            const countryCode = browserLang.split('-')[1]?.toLowerCase();
+            if (countryCode) {
+                // Special cases for countries
+                if (countryCode === 'ua') return 'ua'; // Ukraine -> Ukrainian
+                if (countryCode === 'by') return 'ru'; // Belarus -> Russian
+                if (countryCode === 'kz') return 'ru'; // Kazakhstan -> Russian
+                if (countryCode === 'md') return 'ru'; // Moldova -> Russian
+            }
+
+            // Default to English
+            return 'en';
+        }
+
+        // Redirect to appropriate language version
+        function redirectToLanguage() {
+            const userLang = getUserLanguage();
+            
+            if (userLang !== 'en' && languageMap[userLang]) {
+                // Save language preference
+                localStorage.setItem('preferredLanguage', userLang);
+                
+                // Redirect to language-specific version
+                window.location.replace(languageMap[userLang]);
+                return;
+            }
+            
+            // If English or no specific language, show the main page
+            showMainPage();
+        }
+
+        // Show main page content
+        function showMainPage() {
+            // Set English as default language
+            window.currentLang = 'en';
+            document.body.style.display = 'block';
+            // Обновляем текст кнопок после загрузки страницы
+            if (typeof updateButtonTexts === 'function') {
+                setTimeout(updateButtonTexts, 100);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            redirectToLanguage();
         });
+
+        // Fallback: show page after 1 second if no redirect happened
+        setTimeout(function() {
+            if (document.body.style.display === 'none') {
+                showMainPage();
+            }
+        }, 1000);
     </script>
-    <noscript>
-        <div><img src="https://mc.yandex.ru/watch/98759607" style="position:absolute; left:-9999px;" alt="" /></div>
-    </noscript>
-    <!-- /Yandex.Metrika counter -->
-    <title>Локальные заметки</title>
+
+    <!-- TinyMCE CSS will be loaded automatically -->
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/img.css">
+    <link rel="stylesheet" href="/css/preloader.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Hreflang tags for SEO -->
+    <link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/">
+    <link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/">
+    <link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/">
+    <link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/">
+    <link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/">
+    <link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/">
+    <link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/">
+    <link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/">
+    <link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/">
+    <link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/">
+    <link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/">
+    <link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/">
+    <link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/">
+
+    <title>Local Notes</title>
 </head>
-<body>
+
+<body style="display: none;">
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MVKPW88F" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Header section - full width -->
     <div class="info-app">
         <span class="logo"></span>
-        <h1 class="title-app">Локальные заметки</h1>
+        <h1 class="name-app">Local Notes</h1>
     </div>
-    <div class="container">
-    
-        <div class="toolbar">
-            <div>
-                <div class="controlbtn">
-                    <button class="export" onclick="exportData()">Экспорт</button>
-                    <input  type="file" id="fileInput" accept=".notes" onchange="importData()" style="display: none;">
-                    <button class="import" onclick="document.getElementById('fileInput').click()">Импорт</button>
-                    <input type="text" id="searchInput" placeholder="Поиск заметок">
-                </div>
-                <textarea id="EditBlock"></textarea>
-                <div class="button-container">
-                    <button class="add-block" onclick="addBlock()">Добавить заметку</button>
-                    <button class="delete-all-notes" onclick="deletenotesall()">Удалить все заметки</button>
-                </div>
-                <div class="draw">
-                    <button class="draw-notes" onclick="DrawNote()">Нарисовать заметку</button>
+
+    <!-- Navigation section - full width -->
+    <div class="center_nav">
+        <section class="sticky">
+            <div class="block_btn">
+                <button id="addNoteButton"><i class="fas fa-plus"></i> Add a note</button>
+                <button id="importButton"><i class="fas fa-upload"></i> Import notes</button>
+                <button id="clearAllButton"><i class="fas fa-trash-alt"></i> Clear all notes</button>
+                <input multiple type="file" id="importInput" accept=".note">
+            </div>
+            <input type="text" id="searchInput" placeholder="Search notes...">
+        </section>
+    </div>
+
+    <!-- Main content section -->
+    <section class="app-notes-center">
+        <section class="app-notes">
+            <div class="btn_view_div">
+                <button id="toggleViewButton"><i class="fas fa-th"></i> Toggle View</button>
+            </div>
+
+            <div class="notes_center">
+                <div id="notesContainer" class="default-view"></div>
+            </div>
+
+            <!-- Modal for editing notes -->
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <h2 class="modal_h2">Editor</h2>
+                    <textarea id="editorContainer" class="tinymce"></textarea>
+                    <div class="modal-buttons-container">
+                        <button id="saveNoteButton"><i class="fas fa-save"></i> Save note</button>
+                        <button id="cancelNoteButton" class="btn cancel"><i class="fas fa-times"></i> Cancel</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div id="content"></div>
-    </div>
 
-    <div class="info-about-project">
-        <p>
-            <strong>Обновление 1.6:</strong>
-            <br><br>
-            <strong>Добавлено</strong>: предпросмотр заметки, создание таблицы в заметке, новый шрифт для фрагментов кода.
-            <br>
-            <strong>Функция для разработчиков</strong>: предпросмотр markdown в редакторе.
-            <br><br>
-            <strong>Обновление 1.5:</strong>
-            <br><br>
-            Для разработчиков: добавлена поддержка языка гипертекстовой разметки в редакторе текста.
-            <blockquote>
-                <strong>HyperText Markup Language</strong> — «язык гипертекстовой разметки» — стандартизированный язык гипертекстовой разметки документов для просмотра веб-страниц в браузере.
-            </blockquote>
-            <br><br>
-            <strong>Обновление 1.4:</strong>
-            <br><br>
-            Добавлено: выбор заметок при экспорте.
-            <br><br>
-            <strong>Обновление 1.3:</strong>
-            <br><br>
-            Исправлено: поведение редактора при внесении текста, оптимизирован интерфейс.
-            <br><br>
-            <strong>Обновление 1.2:</strong>
-            <br><br>
-            Исправлено: сохранение заметок при импорте.
-            <br><br>
-            <strong>Обновление 1.1:</strong>
-            <br><br>
-            Добавлено: экспорт и импорт заметок.
-        </p>
-</div>
+            <!-- Confirmation modal -->
+            <div id="confirmModal" class="modal">
+                <div class="modal-content-error">
+                    <p id="confirmMessage"></p>
+                    <button id="confirmYes" class="btn"><i class="fas fa-check"></i> OK</button>
+                    <button id="confirmNo" class="btn cancel"><i class="fas fa-times"></i> Cancel</button>
+                </div>
+            </div>
 
-    <div class="info-about-project">
-            <p>
-                <strong>Локальные заметки</strong> — это простой и удобный инструмент для создания заметок прямо в браузере. Все заметки
-                сохраняются в вашем браузере.
-                <br><br>
-                Сохраняйте свои мысли, идеи и истории, структурируя их с помощью заголовков, форматирования текста, списков и других
-                элементов.
-                <br><br>
-                Экспортируйте заметки в файл .notes и делитесь ими с друзьями анонимно — просто отправьте файл, и они смогут открыть
-                его импортировав его в веб-приложение.
-                <br><br>
-                С «Локальными заметками» ваши записи всегда под рукой, организованные и безопасные.
-            </p>
-    </div>
+            <div id="error" class="modal">
+                <div class="modal-content-error">
+                    <button id="ok" class="btn cancel"><i class="fas fa-check"></i> OK</button>
+                </div>
+            </div>
+        </section>
 
-    <div class="info-about-project">
-        <p>
-            <p>
-                Разработчик: <a target="_blank" href="https://github.com/SerGioPlay01/My-Bio">SerGio Play</a>
-            </p>
-        </p>
-    </div>
+        <footer>
+            <div class="info-about-project">
+                <p>
+                    Local Notes is a simple and convenient tool for creating notes right in your browser. All notes are saved in your browser. Save your thoughts, ideas, and stories, structuring them with headings, text formatting, lists, and more. Export notes to an file and share them with friends anonymously - just send the file, and they can open it by importing it into the web application. With Local Notes, your notes are always at hand, organized, and secure.
+                </p>
+            </div>
+            <div class="footer-content">
+                <p id="cookie"></p>
+                <br><br>
+                <a href="/cookie.html" target="_blank" class="Cookie_Policy">Cookie Policy</a>
+                <br> <br>
+                <a href="/usage_policy.html" target="_blank" class="Usage_Policy">Terms of Use</a>
+                <br> <br>
+                <a href="/privacy_policy.html" target="_blank" class="Privacy_Policy">Privacy Policy</a>
+                <br><br>
+                <a class="author" href="https://sergioplay-dev.netlify.app/" target="_blank">By SerGio Play</a></p>
+                <br><br>
+                <p>&copy; <span id="currentYear"></span><span class="footerCopyRight">All rights reserved. Local Notes</span></p>
+            </div>
+        </footer>
+    </section>
 
     <div class="preloader">
         <div class="preloader__sheet"></div>
-        <span>Подождите! <br> Подготавливаемся к вашим заметкам.</span>
+        <span id="preloaderText">Wait! <br> Getting ready to record.</span>
     </div>
-    
-    <script src="/js/jquery-3.7.1.min.js"></script>
-    <script src="/js/preloader.js"></script>
-    <script src="/js/easymde.min.js"></script>
+
+    <script src="/js/translate.js"></script>
+    <script src="/js/themes.js"></script>
+    <!-- TinyMCE -->
+    <script src="/editor_news/tinymce.min.js"></script>
+    <script src="/js/magicurl.js"></script>
+    <script src="/js/highlight.min.js"></script>
+    <script src="/js/translations.js"></script>
+    <script src="/js/tinymce-translations.js"></script>
+    <script src="/js/index.js"></script>
     <script src="/js/script.js"></script>
-    <script src="/js/marked.min.js"></script>
-    <script src="/js/search.js"></script>
+    <script src="/js/img.js"></script>
+    <script src="/js/preloader.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                        
+                        // Проверка обновлений
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // Новый Service Worker доступен
+                                    if (confirm('Доступно обновление приложения. Перезагрузить страницу?')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+
 </body>
+
 </html>

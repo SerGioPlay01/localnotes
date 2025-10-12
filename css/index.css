@@ -932,6 +932,45 @@ footer a {
     font-weight: 700;
 }
 
+/* Стили для селекторов в футере */
+.footer-selector {
+    margin: 10px 0;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.footer-selector:hover {
+    opacity: 0.8;
+}
+
+.footer-selector select {
+    background: var(--footer-bg);
+    color: var(--footer-text);
+    border: 1px solid var(--footer-text);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.footer-selector select:hover {
+    opacity: 1;
+}
+
+.footer-selector select:focus {
+    outline: none;
+    opacity: 1;
+    border-color: var(--primary-color);
+}
+
+.footer-selector option {
+    background: var(--modal-bg);
+    color: var(--modal-text);
+    padding: 4px;
+}
+
 .info-about-project,
 .footer-content {
     width: 90%;
@@ -1219,6 +1258,47 @@ body.modal-open {
 }
 
 .modal-content-error input::placeholder {
+    color: var(--secondary-color);
+}
+
+.modal-content-error select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    color: var(--input-text);
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.modal-content-error select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.modal-content-error textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    color: var(--input-text);
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 100px;
+    font-family: monospace;
+}
+
+.modal-content-error textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.modal-content-error textarea::placeholder {
     color: var(--secondary-color);
 }
 

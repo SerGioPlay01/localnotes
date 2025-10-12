@@ -1280,6 +1280,12 @@ function initTinyMCE() {
                         showCustomLinkDialog(editor);
                     } else if (e.dialogName === 'table') {
                         showCustomTableDialog(editor);
+                    } else if (e.dialogName === 'media') {
+                        showCustomMediaDialog(editor);
+                    } else if (e.dialogName === 'anchor') {
+                        showCustomAnchorDialog(editor);
+                    } else if (e.dialogName === 'codesample') {
+                        showCustomCodeDialog(editor);
                     }
                 });
                 
@@ -2096,6 +2102,176 @@ function showCustomTableDialog(editor) {
     });
 }
 
+// Дополнительные кастомные диалоги
+function showCustomMediaDialog(editor) {
+    const mediaModal = document.createElement('div');
+    mediaModal.className = 'modal';
+    mediaModal.id = 'customMediaModal';
+    mediaModal.innerHTML = `
+        <div class="modal-content-error">
+            <h3>${currentLang.startsWith("ru") ? "Вставка медиа" : "Insert Media"}</h3>
+            <p>${currentLang.startsWith("ru") ? "Введите URL медиа файла:" : "Enter media file URL:"}</p>
+            <input type="url" id="mediaUrlInput" placeholder="https://example.com/video.mp4">
+            <p>${currentLang.startsWith("ru") ? "Тип медиа:" : "Media type:"}</p>
+            <select id="mediaTypeSelect">
+                <option value="video">${currentLang.startsWith("ru") ? "Видео" : "Video"}</option>
+                <option value="audio">${currentLang.startsWith("ru") ? "Аудио" : "Audio"}</option>
+            </select>
+            <div class="modal-buttons-container">
+                <button id="mediaInsertBtn" class="btn"><i class="fas fa-check"></i> ${currentLang.startsWith("ru") ? "Вставить" : "Insert"}</button>
+                <button id="mediaCancelBtn" class="btn cancel"><i class="fas fa-times"></i> ${currentLang.startsWith("ru") ? "Отмена" : "Cancel"}</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(mediaModal);
+    mediaModal.style.display = "block";
+    
+    const urlInput = document.getElementById('mediaUrlInput');
+    const typeSelect = document.getElementById('mediaTypeSelect');
+    const insertBtn = document.getElementById('mediaInsertBtn');
+    const cancelBtn = document.getElementById('mediaCancelBtn');
+    
+    setTimeout(() => urlInput.focus(), 100);
+    
+    const handleInsert = () => {
+        const url = urlInput.value.trim();
+        const type = typeSelect.value;
+        if (url) {
+            if (type === 'video') {
+                editor.insertContent(`<video controls style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);"><source src="${url}" type="video/mp4">${currentLang.startsWith("ru") ? "Ваш браузер не поддерживает видео тег." : "Your browser does not support the video tag."}</video>`);
+            } else if (type === 'audio') {
+                editor.insertContent(`<audio controls style="width: 100%; border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);"><source src="${url}" type="audio/mpeg">${currentLang.startsWith("ru") ? "Ваш браузер не поддерживает аудио тег." : "Your browser does not support the audio tag."}</audio>`);
+            }
+        }
+        document.body.removeChild(mediaModal);
+    };
+    
+    const handleCancel = () => {
+        document.body.removeChild(mediaModal);
+    };
+    
+    insertBtn.addEventListener('click', handleInsert);
+    cancelBtn.addEventListener('click', handleCancel);
+    
+    urlInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleInsert();
+    });
+    
+    mediaModal.addEventListener('click', (e) => {
+        if (e.target === mediaModal) handleCancel();
+    });
+}
+
+function showCustomAnchorDialog(editor) {
+    const anchorModal = document.createElement('div');
+    anchorModal.className = 'modal';
+    anchorModal.id = 'customAnchorModal';
+    anchorModal.innerHTML = `
+        <div class="modal-content-error">
+            <h3>${currentLang.startsWith("ru") ? "Вставка якоря" : "Insert Anchor"}</h3>
+            <p>${currentLang.startsWith("ru") ? "Введите имя якоря:" : "Enter anchor name:"}</p>
+            <input type="text" id="anchorNameInput" placeholder="anchor-name">
+            <div class="modal-buttons-container">
+                <button id="anchorInsertBtn" class="btn"><i class="fas fa-check"></i> ${currentLang.startsWith("ru") ? "Вставить" : "Insert"}</button>
+                <button id="anchorCancelBtn" class="btn cancel"><i class="fas fa-times"></i> ${currentLang.startsWith("ru") ? "Отмена" : "Cancel"}</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(anchorModal);
+    anchorModal.style.display = "block";
+    
+    const nameInput = document.getElementById('anchorNameInput');
+    const insertBtn = document.getElementById('anchorInsertBtn');
+    const cancelBtn = document.getElementById('anchorCancelBtn');
+    
+    setTimeout(() => nameInput.focus(), 100);
+    
+    const handleInsert = () => {
+        const name = nameInput.value.trim();
+        if (name) {
+            editor.insertContent(`<a id="${name}" style="display: block; height: 0; visibility: hidden;"></a>`);
+        }
+        document.body.removeChild(anchorModal);
+    };
+    
+    const handleCancel = () => {
+        document.body.removeChild(anchorModal);
+    };
+    
+    insertBtn.addEventListener('click', handleInsert);
+    cancelBtn.addEventListener('click', handleCancel);
+    
+    nameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleInsert();
+    });
+    
+    anchorModal.addEventListener('click', (e) => {
+        if (e.target === anchorModal) handleCancel();
+    });
+}
+
+function showCustomCodeDialog(editor) {
+    const codeModal = document.createElement('div');
+    codeModal.className = 'modal';
+    codeModal.id = 'customCodeModal';
+    codeModal.innerHTML = `
+        <div class="modal-content-error">
+            <h3>${currentLang.startsWith("ru") ? "Вставка кода" : "Insert Code"}</h3>
+            <p>${currentLang.startsWith("ru") ? "Выберите тип кода:" : "Select code type:"}</p>
+            <select id="codeTypeSelect">
+                <option value="inline">${currentLang.startsWith("ru") ? "Встроенный код" : "Inline code"}</option>
+                <option value="block">${currentLang.startsWith("ru") ? "Блок кода" : "Code block"}</option>
+            </select>
+            <p>${currentLang.startsWith("ru") ? "Введите код:" : "Enter code:"}</p>
+            <textarea id="codeInput" placeholder="${currentLang.startsWith("ru") ? "Введите ваш код здесь..." : "Enter your code here..."}" rows="6"></textarea>
+            <div class="modal-buttons-container">
+                <button id="codeInsertBtn" class="btn"><i class="fas fa-check"></i> ${currentLang.startsWith("ru") ? "Вставить" : "Insert"}</button>
+                <button id="codeCancelBtn" class="btn cancel"><i class="fas fa-times"></i> ${currentLang.startsWith("ru") ? "Отмена" : "Cancel"}</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(codeModal);
+    codeModal.style.display = "block";
+    
+    const typeSelect = document.getElementById('codeTypeSelect');
+    const codeInput = document.getElementById('codeInput');
+    const insertBtn = document.getElementById('codeInsertBtn');
+    const cancelBtn = document.getElementById('codeCancelBtn');
+    
+    setTimeout(() => codeInput.focus(), 100);
+    
+    const handleInsert = () => {
+        const code = codeInput.value.trim();
+        const type = typeSelect.value;
+        if (code) {
+            if (type === 'inline') {
+                editor.insertContent(`<code style="background: var(--input-bg); padding: 2px 6px; border-radius: 3px; font-family: monospace; border: 1px solid var(--border-color);">${code}</code>`);
+            } else {
+                editor.insertContent(`<pre style="background: var(--input-bg); padding: 15px; border-radius: 6px; border: 1px solid var(--border-color); overflow-x: auto; font-family: monospace; white-space: pre-wrap;"><code>${code}</code></pre>`);
+            }
+        }
+        document.body.removeChild(codeModal);
+    };
+    
+    const handleCancel = () => {
+        document.body.removeChild(codeModal);
+    };
+    
+    insertBtn.addEventListener('click', handleInsert);
+    cancelBtn.addEventListener('click', handleCancel);
+    
+    codeInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && e.ctrlKey) handleInsert();
+    });
+    
+    codeModal.addEventListener('click', (e) => {
+        if (e.target === codeModal) handleCancel();
+    });
+}
+
 // Собственная система уведомлений
 function showCustomAlert(title, message, type = 'info') {
     const alertModal = document.createElement('div');
@@ -2576,334 +2752,56 @@ function insertPageBreak() {
 // Функция для вставки изображения
 function insertImage() {
     if (tinymceEditor) {
-        try {
-            tinymceEditor.execCommand('mceImage');
-        } catch (error) {
-            console.error('Error opening image dialog:', error);
-            // Fallback: открываем диалог вставки изображения
-            tinymceEditor.windowManager.open({
-                title: 'Insert Image',
-                body: {
-                    type: 'panel',
-                    items: [
-                        {
-                            type: 'input',
-                            name: 'src',
-                            label: 'Image URL'
-                        }
-                    ]
-                },
-                buttons: [
-                    {
-                        type: 'cancel',
-                        text: 'Cancel'
-                    },
-                    {
-                        type: 'submit',
-                        text: 'Insert',
-                        primary: true
-                    }
-                ],
-                onSubmit: function(api) {
-                    const data = api.getData();
-                    if (data.src) {
-                        tinymceEditor.insertContent(`<img src="${data.src}" alt="Image" style="max-width: 100%; height: auto;">`);
-                        api.close();
-                    }
-                }
-            });
-        }
+        showCustomImageDialog(tinymceEditor);
     }
 }
 
 // Функция для вставки ссылки
 function insertLink() {
     if (tinymceEditor) {
-        try {
-            tinymceEditor.execCommand('mceLink');
-        } catch (error) {
-            console.error('Error opening link dialog:', error);
-            // Fallback: открываем диалог вставки ссылки
-            tinymceEditor.windowManager.open({
-                title: 'Insert Link',
-                body: {
-                    type: 'panel',
-                    items: [
-                        {
-                            type: 'input',
-                            name: 'url',
-                            label: 'URL'
-                        },
-                        {
-                            type: 'input',
-                            name: 'text',
-                            label: 'Link Text'
-                        }
-                    ]
-                },
-                buttons: [
-                    {
-                        type: 'cancel',
-                        text: 'Cancel'
-                    },
-                    {
-                        type: 'submit',
-                        text: 'Insert',
-                        primary: true
-                    }
-                ],
-                onSubmit: function(api) {
-                    const data = api.getData();
-                    if (data.url) {
-                        const linkText = data.text || data.url;
-                        tinymceEditor.insertContent(`<a href="${data.url}" target="_blank" rel="noopener">${linkText}</a>`);
-                        api.close();
-                    }
-                }
-            });
-        }
+        showCustomLinkDialog(tinymceEditor);
     }
 }
 
 // Функция для вставки медиа
 function insertMedia() {
     if (tinymceEditor) {
-        try {
-            tinymceEditor.execCommand('mceMedia');
-        } catch (error) {
-            console.error('Error opening media dialog:', error);
-            // Fallback: открываем диалог вставки медиа
-            tinymceEditor.windowManager.open({
-                title: 'Insert Media',
-                body: {
-                    type: 'panel',
-                    items: [
-                        {
-                            type: 'input',
-                            name: 'src',
-                            label: 'Media URL'
-                        },
-                        {
-                            type: 'selectbox',
-                            name: 'type',
-                            label: 'Media Type',
-                            items: [
-                                { text: 'Video', value: 'video' },
-                                { text: 'Audio', value: 'audio' }
-                            ]
-                        }
-                    ]
-                },
-                buttons: [
-                    {
-                        type: 'cancel',
-                        text: 'Cancel'
-                    },
-                    {
-                        type: 'submit',
-                        text: 'Insert',
-                        primary: true
-                    }
-                ],
-                onSubmit: function(api) {
-                    const data = api.getData();
-                    if (data.src && data.type) {
-                        if (data.type === 'video') {
-                            tinymceEditor.insertContent(`<video controls style="max-width: 100%; height: auto;"><source src="${data.src}" type="video/mp4">Your browser does not support the video tag.</video>`);
-                        } else if (data.type === 'audio') {
-                            tinymceEditor.insertContent(`<audio controls><source src="${data.src}" type="audio/mpeg">Your browser does not support the audio tag.</audio>`);
-                        }
-                        api.close();
-                    }
-                }
-            });
-        }
+        showCustomMediaDialog(tinymceEditor);
     }
 }
 
 // Функция для вставки якоря
 function insertAnchor() {
     if (tinymceEditor) {
-        try {
-            tinymceEditor.execCommand('mceAnchor');
-        } catch (error) {
-            console.error('Error opening anchor dialog:', error);
-            // Fallback: открываем диалог вставки якоря
-            tinymceEditor.windowManager.open({
-                title: 'Insert Anchor',
-                body: {
-                    type: 'panel',
-                    items: [
-                        {
-                            type: 'input',
-                            name: 'name',
-                            label: 'Anchor Name'
-                        }
-                    ]
-                },
-                buttons: [
-                    {
-                        type: 'cancel',
-                        text: 'Cancel'
-                    },
-                    {
-                        type: 'submit',
-                        text: 'Insert',
-                        primary: true
-                    }
-                ],
-                onSubmit: function(api) {
-                    const data = api.getData();
-                    if (data.name) {
-                        tinymceEditor.insertContent(`<a id="${data.name}"></a>`);
-                        api.close();
-                    }
-                }
-            });
-        }
+        showCustomAnchorDialog(tinymceEditor);
     }
 }
 
 // Функция для вставки кода
 function insertCode() {
     if (tinymceEditor) {
-        try {
-            tinymceEditor.execCommand('mceCodeSample');
-        } catch (error) {
-            console.error('Error opening code dialog:', error);
-            // Fallback: открываем диалог вставки кода
-            tinymceEditor.windowManager.open({
-                title: 'Insert Code',
-                body: {
-                    type: 'panel',
-                    items: [
-                        {
-                            type: 'textarea',
-                            name: 'code',
-                            label: 'Code'
-                        },
-                        {
-                            type: 'selectbox',
-                            name: 'language',
-                            label: 'Language',
-                            items: [
-                                { text: 'HTML', value: 'html' },
-                                { text: 'CSS', value: 'css' },
-                                { text: 'JavaScript', value: 'javascript' },
-                                { text: 'Python', value: 'python' },
-                                { text: 'Java', value: 'java' },
-                                { text: 'C++', value: 'cpp' },
-                                { text: 'PHP', value: 'php' },
-                                { text: 'SQL', value: 'sql' },
-                                { text: 'Plain Text', value: 'text' }
-                            ]
-                        }
-                    ]
-                },
-                buttons: [
-                    {
-                        type: 'cancel',
-                        text: 'Cancel'
-                    },
-                    {
-                        type: 'submit',
-                        text: 'Insert',
-                        primary: true
-                    }
-                ],
-                onSubmit: function(api) {
-                    const data = api.getData();
-                    if (data.code) {
-                        const language = data.language || 'text';
-                        tinymceEditor.insertContent(`<pre><code class="language-${language}">${data.code}</code></pre>`);
-                        api.close();
-                    }
-                }
-            });
-        }
+        showCustomCodeDialog(tinymceEditor);
     }
 }
 
 // Функция для вставки таблицы
 function insertTable() {
     if (tinymceEditor) {
-        // Способ 1: Стандартная команда TinyMCE для создания таблицы
-        try {
-            tinymceEditor.execCommand('mceInsertTable');
-        } catch (error) {
-            console.log('Standard table command failed, trying alternative method:', error);
-            // Способ 2: Альтернативный способ через меню
-            insertTableAlternative();
-        }
+        showCustomTableDialog(tinymceEditor);
     }
 }
 
 // Альтернативный способ вставки таблицы
 function insertTableAlternative() {
     if (tinymceEditor) {
-        // Способ 2: Создаем простую таблицу 3x3
-        const tableHtml = `
-            <table style="border-collapse: collapse; width: 100%;">
-                <tbody>
-                    <tr>
-                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
-                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
-                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
-                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
-                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
-                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
-                        <td style="border: 1px solid #ccc; padding: 8px;">&nbsp;</td>
-                    </tr>
-                </tbody>
-            </table>
-        `;
-        
-        tinymceEditor.insertContent(tableHtml);
+        showCustomTableDialog(tinymceEditor);
     }
 }
 
 // Способ 3: Создание таблицы с выбором размера
 function insertTableWithSize() {
     if (tinymceEditor) {
-    showCustomPrompt(
-        t("createTable"),
-        t("enterRows"),
-        t("numberOfRows"),
-        "3",
-        (rows) => {
-            if (rows && !isNaN(rows) && parseInt(rows) > 0) {
-                showCustomPrompt(
-                    t("createTable"),
-                    t("enterColumns"),
-                    t("numberOfColumns"),
-                    "3",
-                    (cols) => {
-                        if (cols && !isNaN(cols) && parseInt(cols) > 0) {
-                                createTable(parseInt(rows), parseInt(cols));
-                        } else if (cols !== null) {
-                            showCustomAlert(
-                                t("error"),
-                                currentLang.startsWith("ru") ? "Пожалуйста, введите корректное количество столбцов!" : "Please enter a valid number of columns!",
-                                "error"
-                            );
-                        }
-                    }
-                );
-            } else if (rows !== null) {
-                showCustomAlert(
-                    t("error"),
-                    currentLang.startsWith("ru") ? "Пожалуйста, введите корректное количество строк!" : "Please enter a valid number of rows!",
-                    "error"
-                );
-            }
-        }
-    );
+        showCustomTableDialog(tinymceEditor);
     }
 }
 

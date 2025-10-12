@@ -18,6 +18,14 @@ body {
     padding: 0;
 }
 
+/* Предотвращение прокрутки при открытом модальном окне */
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
 /* Основные контейнеры */
 .app-notes-center {
     width: 100%;
@@ -67,40 +75,63 @@ body {
     
     /* Улучшаем заметки */
     .note {
-        background: var(--note-bg);
-        border: 1px solid var(--note-border);
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 16px;
-        box-shadow: 0 2px 8px var(--shadow-color);
-        transition: all 0.3s ease;
+        background: var(--gradient-card);
+        border: 2px solid var(--note-border);
+        border-radius: var(--border-radius-medium);
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow-medium);
+        transition: var(--transition-medium);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .note::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--gradient-primary);
+        transition: var(--transition-medium);
     }
     
     .note:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 16px var(--shadow-color);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-strong);
+        border-color: var(--primary-color);
+    }
+    
+    .note:hover::before {
+        width: 6px;
     }
     
     .note h3 {
         color: var(--primary-color);
-        font-weight: 600;
-        margin-bottom: 12px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+        line-height: 1.3;
     }
     
     .note .note-content {
         color: var(--note-text);
-        line-height: 1.6;
+        line-height: 1.7;
+        font-size: 15px;
+        margin-bottom: 15px;
     }
     
     .note .note-meta {
-        background: var(--card-bg);
+        background: var(--input-bg);
         border: 1px solid var(--border-color);
-        border-radius: 6px;
-        padding: 8px 12px;
-        margin-top: 12px;
-        font-size: 12px;
+        border-radius: var(--border-radius-small);
+        padding: 10px 15px;
+        margin-top: 15px;
+        font-size: 13px;
         color: var(--text-color);
         opacity: 0.8;
+        font-weight: 500;
     }
 }
 
@@ -132,6 +163,23 @@ body {
     --button-border: #272727;
     --scrollbar-track: #1a1a1a;
     --scrollbar-thumb: #272727;
+}
+
+/* Дополнительные CSS переменные для улучшенной эстетики */
+:root {
+    --gradient-primary: linear-gradient(135deg, #aefc6e 0%, #9ee85d 100%);
+    --gradient-bg: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    --gradient-card: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    --primary-hover: #9ee85d;
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.15);
+    --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.25);
+    --shadow-strong: 0 16px 64px rgba(0, 0, 0, 0.35);
+    --border-radius-small: 6px;
+    --border-radius-medium: 12px;
+    --border-radius-large: 20px;
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
 }
 
 /* Темная тема (явная) */
@@ -1978,93 +2026,170 @@ input {
     
     /* Заголовок */
     .app-notes-header {
-        padding: 15px 0;
-        margin-bottom: 20px;
+        padding: 20px 0;
+        margin-bottom: 25px;
         text-align: center;
-        background: var(--header-bg);
-        border-radius: 8px;
-        box-shadow: 0 2px 8px var(--shadow-color);
+        background: var(--gradient-card);
+        border-radius: var(--border-radius-medium);
+        box-shadow: var(--shadow-medium);
+        border: 1px solid var(--border-color);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .app-notes-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-primary);
     }
     
     .app-notes-header h1 {
-        font-size: 1.8rem;
-        margin-bottom: 10px;
+        font-size: 2rem;
+        margin-bottom: 12px;
         line-height: 1.2;
-        color: var(--primary-color);
-        font-weight: 600;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
     
     .app-notes-header p {
-        font-size: 14px;
-        line-height: 1.4;
+        font-size: 15px;
+        line-height: 1.5;
         color: var(--text-color);
-        opacity: 0.8;
+        opacity: 0.9;
+        font-weight: 400;
     }
     
     /* Поиск и кнопки */
     .search-container {
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        margin-bottom: 20px;
+        gap: 15px;
+        margin-bottom: 25px;
         width: 100%;
-        background: var(--card-bg);
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px var(--shadow-color);
+        background: var(--gradient-card);
+        padding: 20px;
+        border-radius: var(--border-radius-medium);
+        box-shadow: var(--shadow-medium);
+        border: 1px solid var(--border-color);
+        position: relative;
     }
     
     .search-input {
         width: 100%;
         max-width: 100%;
         font-size: 16px;
-        padding: 14px 16px;
-        border-radius: 8px;
+        padding: 18px 20px;
+        border-radius: var(--border-radius-medium);
         box-sizing: border-box;
         margin: 0;
         background: var(--input-bg);
         color: var(--input-text);
-        border: 1px solid var(--border-color);
-        transition: all 0.3s ease;
+        border: 2px solid var(--border-color);
+        transition: var(--transition-medium);
+        font-weight: 500;
+        box-shadow: var(--shadow-soft);
     }
     
     .search-input:focus {
         outline: none;
         border-color: var(--primary-color);
-        box-shadow: 0 0 0 2px rgba(174, 252, 110, 0.2);
+        box-shadow: 0 0 0 3px rgba(174, 252, 110, 0.2), var(--shadow-medium);
+        transform: translateY(-1px);
+    }
+    
+    .search-input::placeholder {
+        color: var(--text-color);
+        opacity: 0.6;
+        font-weight: 400;
     }
     
     .button-group {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px;
+        flex-wrap: nowrap;
+        gap: 12px;
         width: 100%;
-        justify-content: center;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 5px 0;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+    
+    .button-group::-webkit-scrollbar {
+        height: 4px;
+    }
+    
+    .button-group::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+        border-radius: 2px;
+    }
+    
+    .button-group::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        border-radius: 2px;
+    }
+    
+    .button-group::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-color);
     }
     
     .button-group button {
-        flex: 1;
-        min-width: 120px;
-        max-width: 150px;
-        font-size: 13px;
-        padding: 12px 10px;
-        border-radius: 8px;
+        flex: 0 0 auto;
+        min-width: 140px;
+        max-width: 160px;
+        font-size: 14px;
+        padding: 14px 16px;
+        border-radius: var(--border-radius-medium);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         box-sizing: border-box;
-        background: var(--button-bg);
+        background: var(--gradient-card);
         color: var(--button-text);
-        border: 1px solid var(--button-border);
-        transition: all 0.3s ease;
-        font-weight: 500;
+        border: 2px solid var(--button-border);
+        transition: var(--transition-medium);
+        font-weight: 600;
+        box-shadow: var(--shadow-soft);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .button-group button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--gradient-primary);
+        transition: var(--transition-medium);
+        z-index: -1;
     }
     
     .button-group button:hover {
-        background: var(--button-hover);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px var(--shadow-color);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+        border-color: var(--primary-color);
+        color: var(--bg-color);
+    }
+    
+    .button-group button:hover::before {
+        left: 0;
+    }
+    
+    .button-group button:active {
+        transform: translateY(0);
+        box-shadow: var(--shadow-soft);
     }
     
     /* Контейнер заметок */
@@ -2112,22 +2237,23 @@ input {
     
     /* Модальные окна */
     .modal {
-        width: 98%;
+        width: 100%;
         max-width: 100%;
-        margin: 1% auto;
+        margin: 0;
         padding: 20px;
-        max-height: 98vh;
+        max-height: 100vh;
         overflow-y: auto;
         box-sizing: border-box;
         position: fixed;
-        top: 1%;
-        left: 1%;
-        right: 1%;
-        bottom: 1%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
         background: var(--modal-bg);
-        border: 1px solid var(--modal-border);
-        border-radius: 12px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        z-index: 1000;
     }
     
     .modal h2 {
@@ -2162,10 +2288,28 @@ input {
     
     /* TinyMCE редактор для мобильных */
     .tox-tinymce {
-        border-radius: 6px;
-        height: 350px !important;
+        border-radius: 8px;
+        height: calc(100vh - 200px) !important;
         width: 100% !important;
         box-sizing: border-box;
+        border: 1px solid var(--border-color);
+    }
+    
+    /* Скрываем лишние элементы TinyMCE */
+    .tox .tox-statusbar {
+        display: none !important;
+    }
+    
+    .tox .tox-statusbar__text-container {
+        display: none !important;
+    }
+    
+    .tox .tox-statusbar__path {
+        display: none !important;
+    }
+    
+    .tox .tox-statusbar__wordcount {
+        display: none !important;
     }
     
     /* Горизонтальная прокрутка тулбара в один ряд */
@@ -2328,12 +2472,17 @@ input {
     /* Модальные окна */
     .modal {
         width: 100%;
-        padding: 10px;
+        padding: 15px;
         margin: 0;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
+        background: var(--modal-bg);
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        z-index: 1000;
     }
     
     .modal h2 {
@@ -2342,7 +2491,26 @@ input {
     
     /* TinyMCE редактор */
     .tox-tinymce {
-        height: 300px !important;
+        height: calc(100vh - 120px) !important;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+    }
+    
+    /* Скрываем лишние элементы TinyMCE */
+    .tox .tox-statusbar {
+        display: none !important;
+    }
+    
+    .tox .tox-statusbar__text-container {
+        display: none !important;
+    }
+    
+    .tox .tox-statusbar__path {
+        display: none !important;
+    }
+    
+    .tox .tox-statusbar__wordcount {
+        display: none !important;
     }
     
     .tox .tox-toolbar {
@@ -2425,9 +2593,19 @@ input {
     
     /* Модальные окна */
     .modal {
-        margin: 1% auto;
+        margin: 0;
         padding: 15px;
-        max-height: 98vh;
+        max-height: 100vh;
+        width: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--modal-bg);
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        z-index: 1000;
     }
     
     .modal h2 {
@@ -2437,7 +2615,26 @@ input {
     
     /* TinyMCE редактор */
     .tox-tinymce {
-        height: 300px !important;
+        height: calc(100vh - 100px) !important;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+    }
+    
+    /* Скрываем лишние элементы TinyMCE */
+    .tox .tox-statusbar {
+        display: none !important;
+    }
+    
+    .tox .tox-statusbar__text-container {
+        display: none !important;
+    }
+    
+    .tox .tox-statusbar__path {
+        display: none !important;
+    }
+    
+    .tox .tox-statusbar__wordcount {
+        display: none !important;
     }
     
     .tox .tox-toolbar {

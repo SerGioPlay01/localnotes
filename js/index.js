@@ -471,7 +471,7 @@ function initTinyMCE() {
         promotion: false,
         resize: !isMobile,
         elementpath: !isMobile,
-        statusbar: !isMobile,
+        statusbar: false,
         quickbars_selection_toolbar: isTouch ? 'bold italic | quicklink h2 h3 blockquote quickimage quicktable' : false,
         quickbars_insert_toolbar: isTouch ? 'quickimage quicktable' : false,
         contextmenu: isTouch ? 'link image imagetools table' : 'link image imagetools table',

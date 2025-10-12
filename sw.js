@@ -1,19 +1,17 @@
 // Service Worker для Local Notes
-const CACHE_NAME = 'local-notes-v1.0.0';
-const STATIC_CACHE = 'static-v1.0.0';
-const DYNAMIC_CACHE = 'dynamic-v1.0.0';
+const CACHE_NAME = 'local-notes-v1.0.1';
+const STATIC_CACHE = 'static-v1.0.1';
+const DYNAMIC_CACHE = 'dynamic-v1.0.1';
 
 // Файлы для кэширования
 const STATIC_FILES = [
     '/',
     '/index.html',
     '/css/index.css',
-    '/css/quill.snow.css',
     '/css/img.css',
     '/css/preloader.css',
     '/css/highlight.css',
     '/js/index.js',
-    '/js/quill.min.js',
     '/js/magicurl.js',
     '/js/highlight.min.js',
     '/js/script.js',
@@ -21,12 +19,16 @@ const STATIC_FILES = [
     '/js/preloader.js',
     '/js/translations.js',
     '/js/translate.js',
+    '/js/themes.js',
+    '/js/tinymce-translations.js',
     '/favicon/favicon-16x16.png',
     '/favicon/favicon-32x32.png',
     '/favicon/android-chrome-192x192.png',
     '/favicon/android-chrome-512x512.png',
     '/favicon/apple-touch-icon.png',
-    '/manifest.json'
+    '/favicon/favicon.ico',
+    '/manifest.json',
+    '/robots.txt'
 ];
 
 // Языковые версии для кэширования
@@ -52,7 +54,22 @@ self.addEventListener('install', event => {
         caches.open(STATIC_CACHE)
             .then(cache => {
                 console.log('Service Worker: Caching static files');
-                return cache.addAll(STATIC_FILES);
+                // Кэшируем файлы по одному, чтобы не падать при отсутствии одного файла
+                return Promise.allSettled(
+                    STATIC_FILES.map(url => 
+                        fetch(url)
+                            .then(response => {
+                                if (response.ok) {
+                                    return cache.put(url, response);
+                                } else {
+                                    console.warn(`Service Worker: Failed to cache ${url} - ${response.status}`);
+                                }
+                            })
+                            .catch(error => {
+                                console.warn(`Service Worker: Failed to fetch ${url}:`, error);
+                            })
+                    )
+                );
             })
             .then(() => {
                 console.log('Service Worker: Static files cached');
@@ -60,6 +77,8 @@ self.addEventListener('install', event => {
             })
             .catch(error => {
                 console.error('Service Worker: Error caching static files', error);
+                // Продолжаем работу даже при ошибках кэширования
+                return self.skipWaiting();
             })
     );
 });
@@ -106,7 +125,8 @@ self.addEventListener('fetch', event => {
             url.pathname.endsWith('.png') || 
             url.pathname.endsWith('.jpg') || 
             url.pathname.endsWith('.ico') ||
-            url.pathname.endsWith('.json')) {
+            url.pathname.endsWith('.json') ||
+            url.pathname.startsWith('/editor_news/')) {
             
             event.respondWith(cacheFirst(request));
         }
@@ -139,7 +159,11 @@ async function cacheFirst(request) {
         }
         return networkResponse;
     } catch (error) {
-        console.error('Cache First strategy failed:', error);
+        console.warn('Cache First strategy failed for:', request.url, error);
+        // Возвращаем fallback вместо ошибки
+        if (request.headers.get('accept').includes('text/html')) {
+            return caches.match('/index.html');
+        }
         return new Response('Offline content not available', {
             status: 503,
             statusText: 'Service Unavailable'

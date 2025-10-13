@@ -2457,6 +2457,10 @@ async function initTinyMCE() {
             image_description: true,
             image_title: true,
             image_uploadtab: true,
+            image_upload_handler: false, // Отключаем стандартный обработчик загрузки
+            image_prepend_url: '', // Убираем префикс URL
+            image_list: false, // Отключаем список изображений
+            image_class_list: false, // Отключаем список классов
             
             // Настройки для ссылок
             link_assume_external_targets: true,
@@ -2489,6 +2493,18 @@ async function initTinyMCE() {
             // Настройки для пасты (базовые)
             paste_data_images: true,
             paste_as_text: false,
+            
+            // Настройки для вставки контента
+            paste_auto_cleanup_on_paste: true,
+            paste_remove_styles_if_webkit: false,
+            paste_merge_formats: true,
+            paste_convert_word_fake_lists: true,
+            paste_webkit_styles: "all",
+            paste_retain_style_properties: "color font-size font-family background-color text-align",
+            
+            // Настройки для курсора и выделения
+            selection_toolbar: true,
+            selection_on_focus: true,
             
             // Настройки для автосохранения
             autosave_ask_before_unload: true,
@@ -4155,14 +4171,26 @@ function showCustomImageDialog(editor) {
             const url = urlInput.value.trim();
             if (url) {
                 const imageId = `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-                editor.insertContent(`<img id="${imageId}" src="${url}" alt="Image" style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);">`);
+                const imageHtml = `<img id="${imageId}" src="${url}" alt="Image" style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);">`;
+                
+                // Вставляем изображение в текущую позицию курсора
+                editor.insertContent(imageHtml);
+                
+                // Устанавливаем курсор после изображения
+                editor.selection.setCursorLocation();
             }
         } else if (currentMode === 'file' && selectedFile) {
             try {
                 // Конвертируем файл в base64
                 const base64 = await fileToBase64(selectedFile);
                 const imageId = `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-                editor.insertContent(`<img id="${imageId}" src="${base64}" alt="${selectedFile.name}" style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);">`);
+                const imageHtml = `<img id="${imageId}" src="${base64}" alt="${selectedFile.name}" style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);">`;
+                
+                // Вставляем изображение в текущую позицию курсора
+                editor.insertContent(imageHtml);
+                
+                // Устанавливаем курсор после изображения
+                editor.selection.setCursorLocation();
             } catch (error) {
                 showCustomAlert(
                     currentLang.startsWith("ru") ? "Ошибка" : "Error",

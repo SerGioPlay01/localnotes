@@ -5,6 +5,315 @@
     display: none !important;
 }
 
+/* Стили для предпросмотра форматирования в редакторе */
+.mce-content-body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+    line-height: 1.6 !important;
+    color: #333 !important;
+    background-color: #fff !important;
+    padding: 20px !important;
+    margin: 0 !important;
+    font-size: 16px !important;
+}
+
+/* Стили для шрифтов в редакторе */
+.mce-content-body * {
+    font-family: inherit !important;
+}
+
+/* Специальные стили для разных шрифтов */
+.mce-content-body [style*="font-family: Arial"],
+.mce-content-body [style*="font-family: arial"] {
+    font-family: Arial, sans-serif !important;
+}
+
+.mce-content-body [style*="font-family: Times New Roman"],
+.mce-content-body [style*="font-family: times new roman"] {
+    font-family: "Times New Roman", serif !important;
+}
+
+.mce-content-body [style*="font-family: Georgia"],
+.mce-content-body [style*="font-family: georgia"] {
+    font-family: Georgia, serif !important;
+}
+
+.mce-content-body [style*="font-family: Verdana"],
+.mce-content-body [style*="font-family: verdana"] {
+    font-family: Verdana, sans-serif !important;
+}
+
+.mce-content-body [style*="font-family: Helvetica"],
+.mce-content-body [style*="font-family: helvetica"] {
+    font-family: Helvetica, sans-serif !important;
+}
+
+.mce-content-body [style*="font-family: Courier New"],
+.mce-content-body [style*="font-family: courier new"] {
+    font-family: "Courier New", monospace !important;
+}
+
+.mce-content-body [style*="font-family: Roboto"],
+.mce-content-body [style*="font-family: roboto"] {
+    font-family: "Roboto", sans-serif !important;
+}
+
+.mce-content-body [style*="font-family: Open Sans"],
+.mce-content-body [style*="font-family: open sans"] {
+    font-family: "Open Sans", sans-serif !important;
+}
+
+.mce-content-body [style*="font-family: Lato"],
+.mce-content-body [style*="font-family: lato"] {
+    font-family: "Lato", sans-serif !important;
+}
+
+.mce-content-body [style*="font-family: Montserrat"],
+.mce-content-body [style*="font-family: montserrat"] {
+    font-family: "Montserrat", sans-serif !important;
+}
+
+.mce-content-body [style*="font-family: Golos Text"],
+.mce-content-body [style*="font-family: golos text"] {
+    font-family: "Golos Text", sans-serif !important;
+}
+
+/* Заголовки */
+.mce-content-body h1,
+.mce-content-body h2,
+.mce-content-body h3,
+.mce-content-body h4,
+.mce-content-body h5,
+.mce-content-body h6 {
+    font-weight: bold !important;
+    margin: 20px 0 15px 0 !important;
+    line-height: 1.3 !important;
+    color: #2c3e50 !important;
+}
+
+.mce-content-body h1 { font-size: 2.5em !important; }
+.mce-content-body h2 { font-size: 2em !important; }
+.mce-content-body h3 { font-size: 1.75em !important; }
+.mce-content-body h4 { font-size: 1.5em !important; }
+.mce-content-body h5 { font-size: 1.25em !important; }
+.mce-content-body h6 { font-size: 1.1em !important; }
+
+/* Параграфы */
+.mce-content-body p {
+    margin: 0 0 16px 0 !important;
+    line-height: 1.6 !important;
+}
+
+/* Списки */
+.mce-content-body ul,
+.mce-content-body ol {
+    margin: 16px 0 !important;
+    padding-left: 30px !important;
+}
+
+.mce-content-body li {
+    margin: 8px 0 !important;
+    line-height: 1.6 !important;
+}
+
+/* Ссылки */
+.mce-content-body a {
+    color: #3498db !important;
+    text-decoration: underline !important;
+}
+
+.mce-content-body a:hover {
+    color: #2980b9 !important;
+}
+
+/* Выделение текста */
+.mce-content-body strong,
+.mce-content-body b {
+    font-weight: bold !important;
+}
+
+.mce-content-body em,
+.mce-content-body i {
+    font-style: italic !important;
+}
+
+.mce-content-body u {
+    text-decoration: underline !important;
+}
+
+.mce-content-body s,
+.mce-content-body strike {
+    text-decoration: line-through !important;
+}
+
+/* Цвета текста и фона - разрешаем отображение */
+/* Убираем правила, которые блокировали отображение цветов */
+
+/* Таблицы */
+.mce-content-body table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    margin: 20px 0 !important;
+    border: 1px solid #ddd !important;
+}
+
+.mce-content-body th,
+.mce-content-body td {
+    padding: 12px 16px !important;
+    border: 1px solid #ddd !important;
+    text-align: left !important;
+}
+
+.mce-content-body th {
+    background-color: #f8f9fa !important;
+    font-weight: bold !important;
+}
+
+/* Цитаты */
+.mce-content-body blockquote {
+    margin: 20px 0 !important;
+    padding: 20px 24px !important;
+    border-left: 4px solid #3498db !important;
+    background-color: #f8f9fa !important;
+    font-style: italic !important;
+}
+
+/* Код */
+.mce-content-body code {
+    background-color: #f1f3f4 !important;
+    border-radius: 4px !important;
+    padding: 2px 6px !important;
+    font-family: 'Courier New', monospace !important;
+    font-size: 0.9em !important;
+    color: #e74c3c !important;
+}
+
+.mce-content-body pre {
+    background-color: #f8f9fa !important;
+    border: 1px solid #e9ecef !important;
+    border-radius: 6px !important;
+    padding: 20px !important;
+    margin: 20px 0 !important;
+    overflow-x: auto !important;
+    font-family: 'Courier New', monospace !important;
+    line-height: 1.4 !important;
+}
+
+.mce-content-body pre code {
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    color: inherit !important;
+}
+
+/* Изображения */
+.mce-content-body img {
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 20px 0 !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+/* Горизонтальная линия */
+.mce-content-body hr {
+    border: none !important;
+    border-top: 2px solid #e9ecef !important;
+    margin: 30px 0 !important;
+}
+
+/* Выравнивание */
+.mce-content-body .mce-text-center {
+    text-align: center !important;
+}
+
+.mce-content-body .mce-text-right {
+    text-align: right !important;
+}
+
+.mce-content-body .mce-text-left {
+    text-align: left !important;
+}
+
+.mce-content-body .mce-text-justify {
+    text-align: justify !important;
+}
+
+/* Стили для размеров шрифтов */
+.mce-content-body [style*="font-size: 8pt"],
+.mce-content-body [style*="font-size: 8pt"] {
+    font-size: 8pt !important;
+}
+
+.mce-content-body [style*="font-size: 9pt"],
+.mce-content-body [style*="font-size: 9pt"] {
+    font-size: 9pt !important;
+}
+
+.mce-content-body [style*="font-size: 10pt"],
+.mce-content-body [style*="font-size: 10pt"] {
+    font-size: 10pt !important;
+}
+
+.mce-content-body [style*="font-size: 11pt"],
+.mce-content-body [style*="font-size: 11pt"] {
+    font-size: 11pt !important;
+}
+
+.mce-content-body [style*="font-size: 12pt"],
+.mce-content-body [style*="font-size: 12pt"] {
+    font-size: 12pt !important;
+}
+
+.mce-content-body [style*="font-size: 14pt"],
+.mce-content-body [style*="font-size: 14pt"] {
+    font-size: 14pt !important;
+}
+
+.mce-content-body [style*="font-size: 16pt"],
+.mce-content-body [style*="font-size: 16pt"] {
+    font-size: 16pt !important;
+}
+
+.mce-content-body [style*="font-size: 18pt"],
+.mce-content-body [style*="font-size: 18pt"] {
+    font-size: 18pt !important;
+}
+
+.mce-content-body [style*="font-size: 20pt"],
+.mce-content-body [style*="font-size: 20pt"] {
+    font-size: 20pt !important;
+}
+
+.mce-content-body [style*="font-size: 24pt"],
+.mce-content-body [style*="font-size: 24pt"] {
+    font-size: 24pt !important;
+}
+
+.mce-content-body [style*="font-size: 28pt"],
+.mce-content-body [style*="font-size: 28pt"] {
+    font-size: 28pt !important;
+}
+
+.mce-content-body [style*="font-size: 32pt"],
+.mce-content-body [style*="font-size: 32pt"] {
+    font-size: 32pt !important;
+}
+
+.mce-content-body [style*="font-size: 36pt"],
+.mce-content-body [style*="font-size: 36pt"] {
+    font-size: 36pt !important;
+}
+
+.mce-content-body [style*="font-size: 48pt"],
+.mce-content-body [style*="font-size: 48pt"] {
+    font-size: 48pt !important;
+}
+
+.mce-content-body [style*="font-size: 72pt"],
+.mce-content-body [style*="font-size: 72pt"] {
+    font-size: 72pt !important;
+}
+
 /* Основной контейнер редактора */
 .tox-tinymce,
 .tox-tinymce-aux {

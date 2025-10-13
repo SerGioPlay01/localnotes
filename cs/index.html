@@ -55,8 +55,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- Enhanced SEO Meta Tags -->
-    <title>📝 Lokální poznámky - Bezpečná aplikace pro poznámky | Šifrování AES-256 & 12 jazyků</title>
-    <meta name="description" content="🔒 Bezpečná aplikace pro poznámky se šifrováním AES-256, podporou 12 jazyků, offline funkcionalitou. Vytvářejte, ukládejte a exportujte poznámky přímo v prohlížeči. Zdarma, soukromé a rychlé. Registrace není nutná!">
+    <title>Lokální poznámky - Bezpečná aplikace pro poznámky | Šifrování AES-256 & 12 jazyků</title>
+    <meta name="description" content="Bezpečná aplikace pro poznámky se šifrováním AES-256, podporou 12 jazyků, offline funkcionalitou. Vytvářejte, ukládejte a exportujte poznámky přímo v prohlížeči. Zdarma, soukromě a rychle. Registrace není nutná!">
     <meta name="keywords" content="lokální poznámky, bezpečné poznámky, poznámky v prohlížeči, aplikace pro poznámky, šifrované poznámky, offline poznámky, AES-256, soukromí, produktivita, aplikace poznámky, web poznámky, lokální úložiště, export poznámek, import poznámek, vícejazyčnost, PWA, progresivní webová aplikace">
     <meta name="author" content="SerGio Play">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -69,10 +69,10 @@
     <link rel="canonical" href="https://localnotes-web.netlify.app/cs/">
     
     <!-- Enhanced Open Graph Meta Tags -->
-    <meta property="og:title" content="📝 Lokální poznámky - Bezpečná aplikace pro poznámky | Šifrování AES-256 & 12 jazyků">
+    <meta property="og:title" content="Lokální poznámky - Bezpečná aplikace pro poznámky | Šifrování AES-256 & 12 jazyků">
     <meta property="og:site_name" content="Lokální poznámky">
     <meta property="og:url" content="https://localnotes-web.netlify.app/cs/">
-    <meta property="og:description" content="🔒 Bezpečná aplikace pro poznámky se šifrováním AES-256, podporou 12 jazyků, offline funkcionalitou. Vytvářejte, ukládejte a exportujte poznámky přímo v prohlížeči. Zdarma, soukromé a rychlé. Registrace není nutná!">
+    <meta property="og:description" content="Bezpečná aplikace pro poznámky se šifrováním AES-256, podporou 12 jazyků, offline funkcionalitou. Vytvářejte, ukládejte a exportujte poznámky přímo v prohlížeči. Zdarma, soukromě a rychle. Registrace není nutná!">
     <meta property="og:image" content="https://localnotes-web.netlify.app/resources/obl_web_cs.jpg">
     <meta property="og:image:secure_url" content="https://localnotes-web.netlify.app/resources/obl_web_cs.jpg">
     <meta property="og:image:width" content="1200">
@@ -99,7 +99,7 @@
     <meta property="og:see_also" content="https://localnotes-web.netlify.app/ru/">
     <meta property="og:see_also" content="https://localnotes-web.netlify.app/pl/">
     <meta property="article:author" content="SerGio Play">
-    <meta property="article:publisher" content="https://sergioplay-dev.netlify.app/">
+    <meta property="article:publisher" content="https://sergioplay-dev.vercel.app/">
     <meta property="article:section" content="Produktivita">
     <meta property="article:tag" content="poznámky">
     <meta property="article:tag" content="šifrování">
@@ -119,8 +119,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@LocalNotesApp">
     <meta name="twitter:creator" content="@SerGioPlay">
-    <meta name="twitter:title" content="📝 Lokální poznámky - Bezpečná aplikace pro poznámky | Šifrování AES-256 & 12 jazyků">
-    <meta name="twitter:description" content="🔒 Bezpečná aplikace pro poznámky se šifrováním AES-256, podporou 12 jazyků, offline funkcionalitou. Vytvářejte, ukládejte a exportujte poznámky přímo v prohlížeči. Zdarma, soukromé a rychlé. Registrace není nutná!">
+    <meta name="twitter:title" content="Lokální poznámky - Bezpečná aplikace pro poznámky | Šifrování AES-256 & 12 jazyků">
+    <meta name="twitter:description" content="Bezpečná aplikace pro poznámky se šifrováním AES-256, podporou 12 jazyků, offline funkcionalitou. Vytvářejte, ukládejte a exportujte poznámky přímo v prohlížeči. Zdarma, soukromě a rychle. Registrace není nutná!">
     <meta name="twitter:image" content="https://localnotes-web.netlify.app/resources/obl_web_cs.jpg">
     <meta name="twitter:image:alt" content="Lokální poznámky - Bezpečná aplikace pro poznámky se šifrováním AES-256">
     <meta name="twitter:domain" content="localnotes-web.netlify.app">
@@ -161,21 +161,97 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Lokální poznámky">
-
-    <!-- Critical CSS loaded first -->
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../css/preloader.css">
     
-    <!-- Non-critical CSS loaded asynchronously -->
-    <link rel="preload" href="../css/img.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="../css/highlight.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="../css/tinymce-custom.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Lokální poznámky",
+        "alternateName": "Local Notes",
+        "description": "Bezpečná aplikace pro poznámky se šifrováním AES-256, podporou vícejazyčnosti a offline funkcionalitou",
+        "url": "https://localnotes-web.netlify.app/cs/",
+        "applicationCategory": "ProductivityApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "CZK"
+        },
+        "author": {
+            "@type": "Person",
+            "name": "SerGio Play",
+            "url": "https://sergioplay-dev.vercel.app/"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "SerGio Play",
+            "url": "https://sergioplay-dev.vercel.app/"
+        },
+        "datePublished": "2024-01-01",
+        "dateModified": "2025-01-12",
+        "version": "1.0.3",
+        "softwareVersion": "1.0.3",
+        "browserRequirements": "Vyžaduje JavaScript. Vyžaduje HTML5.",
+        "memoryRequirements": "Minimální",
+        "storageRequirements": "Lokální úložiště prohlížeče",
+        "permissions": "Přístup k lokálnímu úložišti",
+        "featureList": [
+            "Šifrování AES-256",
+            "Podpora vícejazyčnosti (12 jazyků)",
+            "Offline funkcionalita",
+            "Export/Import poznámek",
+            "Bohatý textový editor",
+            "Funkce vyhledávání",
+            "Podpora PWA",
+            "Meziplatformní kompatibilita"
+        ],
+        "screenshot": "https://localnotes-web.netlify.app/resources/obl_web_cs.jpg",
+        "softwareHelp": "https://localnotes-web.netlify.app/cs/usage_policy.html",
+        "license": "https://localnotes-web.netlify.app/LICENSE",
+        "privacyPolicy": "https://localnotes-web.netlify.app/cs/privacy_policy.html",
+        "termsOfService": "https://localnotes-web.netlify.app/cs/usage_policy.html",
+        "inLanguage": ["cs", "en", "ru", "uk", "pl", "sk", "bg", "hr", "sr", "bs", "mk", "sl"],
+        "isAccessibleForFree": true,
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "150",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "review": [
+            {
+                "@type": "Review",
+                "author": {
+                    "@type": "Person",
+                    "name": "User Review"
+                },
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": "5",
+                    "bestRating": "5"
+                },
+                "reviewBody": "Vynikající bezpečná aplikace pro poznámky s vynikajícím šifrováním a podporou vícejazyčnosti."
+            }
+        ]
+    }
+    </script>
+
+    <!-- Critical CSS loaded first with cache busting -->
+    <link rel="stylesheet" href="../css/index.css?v=1.0.3">
+    <link rel="stylesheet" href="../css/preloader.css?v=1.0.3">
+    
+    <!-- Non-critical CSS loaded synchronously to prevent FOUC -->
+    <link rel="preload" href="../css/img.css?v=1.0.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="../css/highlight.css?v=1.0.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="../css/tinymce-custom.css?v=1.0.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
     
     <!-- Fallback for browsers that don't support preload -->
     <noscript>
-        <link rel="stylesheet" href="../css/img.css">
-        <link rel="stylesheet" href="../css/highlight.css">
-        <link rel="stylesheet" href="../css/tinymce-custom.css">
+        <link rel="stylesheet" href="../css/img.css?v=1.0.3">
+        <link rel="stylesheet" href="../css/highlight.css?v=1.0.3">
+        <link rel="stylesheet" href="../css/tinymce-custom.css?v=1.0.3">
     </noscript>
     
     <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
@@ -219,9 +295,9 @@
     <div class="center_nav">
         <section class="sticky">
             <div class="block_btn">
-                <button id="addNoteButton"><i class="fas fa-plus"></i> Přidat poznámku</button>
-                <button id="importButton"><i class="fas fa-upload"></i> Importovat poznámky</button>
-                <button id="clearAllButton"><i class="fas fa-trash-alt"></i> Vymazat všechny poznámky</button>
+                <button id="addNoteButton">Přidat poznámku</button>
+                <button id="importButton">Importovat poznámky</button>
+                <button id="clearAllButton">Vymazat všechny poznámky</button>
                 <input multiple type="file" id="importInput" accept=".note,.html,.md">
             </div>
             <input type="text" id="searchInput" placeholder="Hledat poznámky...">
@@ -232,7 +308,7 @@
     <section class="app-notes-center">
         <section class="app-notes">
             <div class="btn_view_div">
-                <button id="toggleViewButton"><i class="fas fa-th"></i> Přepnout zobrazení</button>
+                <button id="toggleViewButton">Přepnout zobrazení</button>
             </div>
 
             <div class="notes_center">
@@ -245,8 +321,8 @@
                     <h2 class="modal_h2">Editor</h2>
                     <textarea id="editorContainer" class="tinymce"></textarea>
                     <div class="modal-buttons-container">
-                        <button id="saveNoteButton"><i class="fas fa-save"></i> Uložit poznámku</button>
-                        <button id="cancelNoteButton" class="btn cancel"><i class="fas fa-times"></i> Zrušit</button>
+                        <button id="saveNoteButton">Uložit poznámku</button>
+                        <button id="cancelNoteButton" class="btn cancel">Zrušit</button>
                     </div>
                 </div>
             </div>
@@ -255,14 +331,14 @@
             <div id="confirmModal" class="modal">
                 <div class="modal-content-error">
                     <p id="confirmMessage"></p>
-                    <button id="confirmYes" class="btn"><i class="fas fa-check"></i> OK</button>
-                    <button id="confirmNo" class="btn cancel"><i class="fas fa-times"></i> Zrušit</button>
+                    <button id="confirmYes" class="btn">OK</button>
+                    <button id="confirmNo" class="btn cancel">Zrušit</button>
                 </div>
             </div>
 
             <div id="error" class="modal">
                 <div class="modal-content-error">
-                    <button id="ok" class="btn cancel"><i class="fas fa-check"></i> OK</button>
+                    <button id="ok" class="btn cancel">OK</button>
                 </div>
             </div>
         </section>
@@ -270,7 +346,7 @@
         <footer>
             <div class="info-about-project">
                 <p>
-                    Lokální poznámky je jednoduchý a pohodlný nástroj pro vytváření poznámek přímo v prohlížeči. Všechny poznámky jsou uloženy ve vašem prohlížeči. Uložte své myšlenky, nápady a příběhy, strukturované pomocí nadpisů, formátování textu, seznamů a dalších prvků. Exportujte poznámky do souboru a sdílejte je s přáteli anonymně — jednoduše pošlete soubor a oni jej budou moci otevřít importem do webové aplikace. S Lokálními poznámkami jsou vaše záznamy vždy po ruce, organizované a bezpečné.
+                    Lokální poznámky je jednoduchý a pohodlný nástroj pro vytváření poznámek přímo v prohlížeči. Všechny poznámky jsou uloženy ve vašem prohlížeči. Uložte své myšlenky, nápady a příběhy, strukturované pomocí nadpisů, formátování textu, seznamů a dalších prvků. Exportujte poznámky do souboru a sdílejte je s přáteli anonymně – jednoduše pošlete soubor a oni jej budou moci otevřít importem do webové aplikace. S Lokálními poznámkami jsou vaše záznamy vždy po ruce, organizované a bezpečné.
                 </p>
             </div>
             <div class="footer-content">
@@ -282,7 +358,7 @@
                 <br> <br>
                 <a href="/cs/privacy_policy.html" target="_blank" class="Privacy_Policy">Zásady ochrany osobních údajů</a>
                 <br><br>
-                <a class="author" href="https://sergioplay-dev.netlify.app/" target="_blank">Web vytvořen SerGio Play</a></p>
+                <a class="author" href="https://sergioplay-dev.vercel.app/" target="_blank">Web vytvořen SerGio Play</a></p>
                 <br><br>
                 <p>&copy; <span id="currentYear"></span><span class="footerCopyRight">Všechna práva vyhrazena. Lokální poznámky</span></p>
             </div>
@@ -403,13 +479,13 @@
 
                 // Check if user agent contains Cyrillic or Russian-specific strings
                 if (userAgent.includes('ru-RU') || userAgent.includes('ru_ru') || 
-                    userAgent.includes('Russian') || userAgent.includes('Р СѓСЃСЃРєРёР№')) {
+                    userAgent.includes('Russian') || userAgent.includes('Русский')) {
                     
                     return 'ru';
                 }
                 
                 if (userAgent.includes('uk-UA') || userAgent.includes('uk_ua') || 
-                    userAgent.includes('Ukrainian') || userAgent.includes('РЈРєСЂР°С—РЅСЃСЊРєР°')) {
+                    userAgent.includes('Ukrainian') || userAgent.includes('Українська')) {
                     
                     return 'ua';
                 }
@@ -448,13 +524,13 @@
             window.currentLang = 'cs';
 
             // Show project information in console
-            console.log('%c📝 Local Notes - Lokální poznámky', 'color: #4CAF50; font-size: 20px; font-weight: bold;');
-            console.log('%c🔒 Bezpečně • 🌍 Vícejazyčně • 📱 PWA • ⚡ Rychle', 'color: #2196F3; font-size: 14px;');
+            console.log('%cLokální poznámky - Bezpečné poznámky', 'color: #4CAF50; font-size: 20px; font-weight: bold;');
+            console.log('%cBezpečné • Vícejazyčné • PWA • Rychlé', 'color: #2196F3; font-size: 14px;');
             console.log('%cVerze: 1.0.2 | Autor: SerGio Play', 'color: #FF9800; font-size: 12px;');
-            console.log('%c🌐 Web: https://localnotes-web.netlify.app/', 'color: #9C27B0; font-size: 12px;');
-            console.log('%c📚 GitHub: https://github.com/SerGioPlay01/localnotes', 'color: #607D8B; font-size: 12px;');
-            console.log('%c🎯 Funkce: AES-256 Šifrování • 12 Jazyků • Offline • TinyMCE', 'color: #795548; font-size: 11px;');
-            console.log('%c💡 Tip: Použijte vyhledávání s transliterací (Cyrilice ↔ Latinka)', 'color: #E91E63; font-size: 11px;');
+            console.log('%cWeb: https://localnotes-web.netlify.app/', 'color: #9C27B0; font-size: 12px;');
+            console.log('%cGitHub: https://github.com/SerGioPlay01/localnotes', 'color: #607D8B; font-size: 12px;');
+            console.log('%cFunkce: AES-256 Šifrování • 12 Jazyků • Offline • TinyMCE', 'color: #795548; font-size: 11px;');
+            console.log('%cTip: Použijte vyhledávání s transliterací (Cyrilice - Latinka)', 'color: #E91E63; font-size: 11px;');
 
             document.body.style.display = 'block';
             // Update button texts after page load
@@ -477,17 +553,17 @@
     </script>
     
     <!-- Critical JavaScript loaded first -->
-    <script src="../js/utils.js"></script>
-    <script src="../js/selectors.js"></script>
-    <script src="../js/translate.js"></script>
-    <script src="../js/themes.js"></script>
-    <script src="../js/performance.js"></script>
-    <script src="../js/security.js"></script>
-    <script src="../lottiesnimstion/lottie.min.js"></script>
-    <script src="../js/preloader.js"></script>
+    <script src="../js/utils.js?v=1.0.3"></script>
+    <script src="../js/selectors.js?v=1.0.3"></script>
+    <script src="../js/translate.js?v=1.0.3"></script>
+    <script src="../js/themes.js?v=1.0.3"></script>
+    <script src="../js/performance.js?v=1.0.3"></script>
+    <script src="../js/security.js?v=1.0.3"></script>
+    <script src="../lottiesnimstion/lottie.min.js?v=1.0.3"></script>
+    <script src="../js/preloader.js?v=1.0.3"></script>
     
     <!-- TinyMCE loaded with defer for better performance -->
-    <script src="../editor_news/tinymce.min.js" defer></script>
+    <script src="../editor_news/tinymce.min.js?v=1.0.3" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
     <script>
@@ -521,12 +597,12 @@
                 navigator.serviceWorker.register('/sw.js')
                     .then(function(registration) {
 
-                        // Проверка обновлений
+                        // Kontrola aktualizací
                         registration.addEventListener('updatefound', function() {
                             const newWorker = registration.installing;
                             newWorker.addEventListener('statechange', function() {
                                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    // Новый Service Worker доступен
+                                    // Nový Service Worker je připraven
                                     if (confirm('Dostupná aktualizace aplikace. Obnovit stránku?')) {
                                         window.location.reload();
                                     }
@@ -541,8 +617,9 @@
         }
     </script>
 
+    <!-- Universal Cookies Banner -->
+    <script src="../cookies_banner_universal/cookies-banner.js"></script>
+
 </body>
 
 </html>
-
-

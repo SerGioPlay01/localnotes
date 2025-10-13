@@ -98,7 +98,7 @@
     <meta property="og:see_also" content="https://localnotes-web.netlify.app/ua/">
     <meta property="og:see_also" content="https://localnotes-web.netlify.app/pl/">
     <meta property="article:author" content="SerGio Play">
-    <meta property="article:publisher" content="https://sergioplay-dev.netlify.app/">
+    <meta property="article:publisher" content="https://sergioplay-dev.vercel.app/">
     <meta property="article:section" content="Productivity">
     <meta property="article:tag" content="notes">
     <meta property="article:tag" content="encryption">
@@ -180,12 +180,12 @@
         "author": {
             "@type": "Person",
             "name": "SerGio Play",
-            "url": "https://sergioplay-dev.netlify.app/"
+            "url": "https://sergioplay-dev.vercel.app/"
         },
         "publisher": {
             "@type": "Person",
             "name": "SerGio Play",
-            "url": "https://sergioplay-dev.netlify.app/"
+            "url": "https://sergioplay-dev.vercel.app/"
         },
         "datePublished": "2024-01-01",
         "dateModified": "2025-01-12",
@@ -376,12 +376,11 @@
         function showMainPage() {
             // Set English as default language
             window.currentLang = 'en';
-            document.body.style.display = 'block';
             
             // Show project information in console
             console.log('%c📝 Local Notes - Локальные Заметки', 'color: #4CAF50; font-size: 20px; font-weight: bold;');
             console.log('%c🔒 Secure • 🌍 Multi-language • 📱 PWA • ⚡ Fast', 'color: #2196F3; font-size: 14px;');
-            console.log('%cVersion: 1.0.2 | Author: SerGio Play', 'color: #FF9800; font-size: 12px;');
+            console.log('%cVersion: 1.0.3 | Author: SerGio Play', 'color: #FF9800; font-size: 12px;');
             console.log('%c🌐 Website: https://localnotes-web.netlify.app/', 'color: #9C27B0; font-size: 12px;');
             console.log('%c📚 GitHub: https://github.com/SerGioPlay01/localnotes', 'color: #607D8B; font-size: 12px;');
             console.log('%c🎯 Features: AES-256 Encryption • 12 Languages • Offline Support • TinyMCE Editor', 'color: #795548; font-size: 11px;');
@@ -400,28 +399,46 @@
 
         // Fallback: show page after 1 second if no redirect happened
         setTimeout(function() {
-            if (document.body.style.display === 'none') {
+            if (!document.body.classList.contains('styles-loaded')) {
                 showMainPage();
             }
         }, 1000);
 
     </script>
 
-    <!-- Critical CSS loaded first -->
-    <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="/css/preloader.css">
+    <!-- Critical CSS loaded first with cache busting -->
+    <link rel="stylesheet" href="/css/index.css?v=1.0.3">
+    <link rel="stylesheet" href="/css/preloader.css?v=1.0.3">
+    <link rel="stylesheet" href="/css/img.css?v=1.0.3">
+    <link rel="stylesheet" href="/css/highlight.css?v=1.0.3">
+    <link rel="stylesheet" href="/css/tinymce-custom.css?v=1.0.3">
     
-    <!-- Non-critical CSS loaded asynchronously -->
-    <link rel="preload" href="/css/img.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="/css/highlight.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="/css/tinymce-custom.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    
-    <!-- Fallback for browsers that don't support preload -->
-    <noscript>
-        <link rel="stylesheet" href="/css/img.css">
-        <link rel="stylesheet" href="/css/highlight.css">
-        <link rel="stylesheet" href="/css/tinymce-custom.css">
-    </noscript>
+    <!-- Prevent FOUC by hiding content until styles are loaded -->
+    <style>
+        body { visibility: hidden; }
+        body.styles-loaded { visibility: visible; }
+    </style>
+    <script>
+        // Show content after critical styles are loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Small delay to ensure styles are applied
+            setTimeout(function() {
+                document.body.classList.add('styles-loaded');
+            }, 50);
+        });
+        
+        // Force cache refresh for critical resources
+        if ('caches' in window) {
+            caches.keys().then(function(cacheNames) {
+                cacheNames.forEach(function(cacheName) {
+                    if (cacheName.includes('v1.0.2') || cacheName.includes('static-v1.0.2') || cacheName.includes('dynamic-v1.0.2')) {
+                        caches.delete(cacheName);
+                        console.log('Deleted old cache:', cacheName);
+                    }
+                });
+            });
+        }
+    </script>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
@@ -447,7 +464,7 @@
     <title>Local Notes</title>
 </head>
 
-<body style="display: none;">
+<body>
 
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MVKPW88F" height="0" width="0"
@@ -527,7 +544,7 @@
                 <br> <br>
                 <a href="/privacy_policy.html" target="_blank" class="Privacy_Policy" id="privacyPolicyLink">Privacy Policy</a>
                 <br><br>
-                <a class="author" href="https://sergioplay-dev.netlify.app/" target="_blank" id="byAuthorLink">By SerGio Play</a></p>
+                <a class="author" href="https://sergioplay-dev.vercel.app/" target="_blank" id="byAuthorLink">By SerGio Play</a></p>
                 <br><br>
                 <p>&copy; <span id="currentYear"></span><span class="footerCopyRight" id="allRightsReserved">All rights reserved. Local Notes</span></p>
             </div>
@@ -535,18 +552,18 @@
     </section>
 
 
-    <!-- Critical JavaScript loaded first -->
-    <script src="/js/utils.js"></script>
-    <script src="/js/selectors.js"></script>
-    <script src="/js/translate.js"></script>
-    <script src="/js/themes.js"></script>
-    <script src="/js/performance.js"></script>
-    <script src="/js/security.js"></script>
-    <script src="/lottiesnimstion/lottie.min.js"></script>
-    <script src="/js/preloader.js"></script>
+    <!-- Critical JavaScript loaded first with cache busting -->
+    <script src="/js/utils.js?v=1.0.3"></script>
+    <script src="/js/selectors.js?v=1.0.3"></script>
+    <script src="/js/translate.js?v=1.0.3"></script>
+    <script src="/js/themes.js?v=1.0.3"></script>
+    <script src="/js/performance.js?v=1.0.3"></script>
+    <script src="/js/security.js?v=1.0.3"></script>
+    <script src="/lottiesnimstion/lottie.min.js?v=1.0.3"></script>
+    <script src="/js/preloader.js?v=1.0.3"></script>
     
     <!-- TinyMCE loaded with defer for better performance -->
-    <script src="/editor_news/tinymce.min.js" defer></script>
+    <script src="/editor_news/tinymce.min.js?v=1.0.3" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
     <script>
@@ -561,15 +578,15 @@
         
         // Load scripts after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            loadScript('/js/magicurl.js');
-            loadScript('/js/highlight.min.js');
-            loadScript('/js/translations.js');
-            loadScript('/js/tinymce-translations.js');
-            loadScript('/js/img.js');
-            loadScript('/js/date-utils.js');
+            loadScript('/js/magicurl.js?v=1.0.3');
+            loadScript('/js/highlight.min.js?v=1.0.3');
+            loadScript('/js/translations.js?v=1.0.3');
+            loadScript('/js/tinymce-translations.js?v=1.0.3');
+            loadScript('/js/img.js?v=1.0.3');
+            loadScript('/js/date-utils.js?v=1.0.3');
             
             // Load main script last
-            loadScript('/js/index.js');
+            loadScript('/js/index.js?v=1.0.3');
         });
     </script>
     
@@ -577,8 +594,10 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('/sw.js?v=1.0.3')
                     .then(function(registration) {
+                        // Принудительно обновляем Service Worker при загрузке
+                        registration.update();
                         
                         // Проверка обновлений
                         registration.addEventListener('updatefound', function() {
@@ -594,10 +613,14 @@
                         });
                     })
                     .catch(function(error) {
+                        console.warn('Service Worker registration failed:', error);
                     });
             });
         }
     </script>
+
+    <!-- Universal Cookies Banner -->
+    <script src="cookies_banner_universal/cookies-banner.js"></script>
 
 </body>
 

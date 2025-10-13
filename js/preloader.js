@@ -389,19 +389,27 @@ class ModernPreloader {
 document.addEventListener('DOMContentLoaded', () => {
     
     // Проверяем, нужно ли показывать прелоадер
-    const shouldShowPreloader = !sessionStorage.getItem('preloaderShown');
+    // Показываем прелоадер если:
+    // 1. Это первая загрузка в сессии ИЛИ
+    // 2. Прошло больше 5 минут с последнего показа ИЛИ
+    // 3. Это обновление страницы (Ctrl+F5 или hard refresh)
+    const lastShown = sessionStorage.getItem('preloaderLastShown');
+    const now = Date.now();
+    const fiveMinutes = 5 * 60 * 1000;
     
+    const shouldShowPreloader = !lastShown || 
+                               (now - parseInt(lastShown)) > fiveMinutes ||
+                               performance.navigation.type === 1; // TYPE_RELOAD
     
     if (shouldShowPreloader) {
         new ModernPreloader();
-        sessionStorage.setItem('preloaderShown', 'true');
-    } else {
+        sessionStorage.setItem('preloaderLastShown', now.toString());
     }
 });
 
 // Функция для принудительного сброса прелойдера (для тестирования)
 window.resetPreloader = function() {
-    sessionStorage.removeItem('preloaderShown');
+    sessionStorage.removeItem('preloaderLastShown');
 };
 
 // Функция для принудительного показа прелойдера

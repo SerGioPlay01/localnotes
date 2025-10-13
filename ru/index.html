@@ -99,7 +99,7 @@
     <meta property="og:see_also" content="https://localnotes-web.netlify.app/ua/">
     <meta property="og:see_also" content="https://localnotes-web.netlify.app/pl/">
     <meta property="article:author" content="SerGio Play">
-    <meta property="article:publisher" content="https://sergioplay-dev.netlify.app/">
+    <meta property="article:publisher" content="https://sergioplay-dev.vercel.app/">
     <meta property="article:section" content="Продуктивность">
     <meta property="article:tag" content="заметки">
     <meta property="article:tag" content="шифрование">
@@ -181,12 +181,12 @@
         "author": {
             "@type": "Person",
             "name": "SerGio Play",
-            "url": "https://sergioplay-dev.netlify.app/"
+            "url": "https://sergioplay-dev.vercel.app/"
         },
         "publisher": {
             "@type": "Person",
             "name": "SerGio Play",
-            "url": "https://sergioplay-dev.netlify.app/"
+            "url": "https://sergioplay-dev.vercel.app/"
         },
         "datePublished": "2024-01-01",
         "dateModified": "2025-01-12",
@@ -238,12 +238,39 @@
     }
     </script>
 
-    <!-- TinyMCE CSS will be loaded automatically -->
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../css/img.css">
-    <link rel="stylesheet" href="../css/preloader.css">
-    <link rel="stylesheet" href="../css/highlight.css">
-    <link rel="stylesheet" href="../css/tinymce-custom.css">
+    <!-- Critical CSS loaded first with cache busting -->
+    <link rel="stylesheet" href="../css/index.css?v=1.0.3">
+    <link rel="stylesheet" href="../css/preloader.css?v=1.0.3">
+    <link rel="stylesheet" href="../css/img.css?v=1.0.3">
+    <link rel="stylesheet" href="../css/highlight.css?v=1.0.3">
+    <link rel="stylesheet" href="../css/tinymce-custom.css?v=1.0.3">
+    
+    <!-- Prevent FOUC by hiding content until styles are loaded -->
+    <style>
+        body { visibility: hidden; }
+        body.styles-loaded { visibility: visible; }
+    </style>
+    <script>
+        // Show content after critical styles are loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Small delay to ensure styles are applied
+            setTimeout(function() {
+                document.body.classList.add('styles-loaded');
+            }, 50);
+        });
+        
+        // Force cache refresh for critical resources
+        if ('caches' in window) {
+            caches.keys().then(function(cacheNames) {
+                cacheNames.forEach(function(cacheName) {
+                    if (cacheName.includes('v1.0.2') || cacheName.includes('static-v1.0.2') || cacheName.includes('dynamic-v1.0.2')) {
+                        caches.delete(cacheName);
+                        console.log('Deleted old cache:', cacheName);
+                    }
+                });
+            });
+        }
+    </script>
     
     <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
@@ -269,7 +296,7 @@
     <title>Локальные заметки</title>
 </head>
 
-<body style="display: none;">
+<body>
 
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MVKPW88F" height="0" width="0"
@@ -286,9 +313,9 @@
     <div class="center_nav">
         <section class="sticky">
             <div class="block_btn">
-                <button id="addNoteButton"><i class="fas fa-plus"></i> Добавить заметку</button>
-                <button id="importButton"><i class="fas fa-upload"></i> Импортировать заметки</button>
-                <button id="clearAllButton"><i class="fas fa-trash-alt"></i> Очистить все заметки</button>
+                <button id="addNoteButton">Добавить заметку</button>
+                <button id="importButton">Импортировать заметки</button>
+                <button id="clearAllButton">Очистить все заметки</button>
                 <input multiple type="file" id="importInput" accept=".note,.html,.md">
             </div>
             <input type="text" id="searchInput" placeholder="Поиск по заметкам...">
@@ -299,7 +326,7 @@
     <section class="app-notes-center">
         <section class="app-notes">
             <div class="btn_view_div">
-                <button id="toggleViewButton"><i class="fas fa-th"></i> Переключить вид</button>
+                <button id="toggleViewButton">Переключить вид</button>
             </div>
 
             <div class="notes_center">
@@ -312,8 +339,8 @@
                     <h2 class="modal_h2">Редактор</h2>
                     <textarea id="editorContainer" class="tinymce"></textarea>
                     <div class="modal-buttons-container">
-                        <button id="saveNoteButton"><i class="fas fa-save"></i> Сохранить заметку</button>
-                        <button id="cancelNoteButton" class="btn cancel"><i class="fas fa-times"></i> Отмена</button>
+                        <button id="saveNoteButton">Сохранить заметку</button>
+                        <button id="cancelNoteButton" class="btn cancel">Отмена</button>
                     </div>
                 </div>
             </div>
@@ -322,14 +349,14 @@
             <div id="confirmModal" class="modal">
                 <div class="modal-content-error">
                     <p id="confirmMessage"></p>
-                    <button id="confirmYes" class="btn"><i class="fas fa-check"></i> ОК</button>
-                    <button id="confirmNo" class="btn cancel"><i class="fas fa-times"></i> Отмена</button>
+                    <button id="confirmYes" class="btn">ОК</button>
+                    <button id="confirmNo" class="btn cancel">Отмена</button>
                 </div>
             </div>
 
             <div id="error" class="modal">
                 <div class="modal-content-error">
-                    <button id="ok" class="btn cancel"><i class="fas fa-check"></i> ОК</button>
+                    <button id="ok" class="btn cancel">ОК</button>
                 </div>
             </div>
         </section>
@@ -349,7 +376,7 @@
                 <br> <br>
                 <a href="/ru/privacy_policy.html" target="_blank" class="Privacy_Policy">Политика конфиденциальности</a>
                 <br><br>
-                <a class="author" href="https://sergioplay-dev.netlify.app/" target="_blank">Сайт разработан SerGio Play</a></p>
+                <a class="author" href="https://sergioplay-dev.vercel.app/" target="_blank">Сайт разработан SerGio Play</a></p>
                 <br><br>
                 <p>&copy; <span id="currentYear"></span><span class="footerCopyRight">Все права защищены. Local Notes</span></p>
             </div>
@@ -470,13 +497,13 @@
 
                 // Check if user agent contains Cyrillic or Russian-specific strings
                 if (userAgent.includes('ru-RU') || userAgent.includes('ru_ru') || 
-                    userAgent.includes('Russian') || userAgent.includes('Р СѓСЃСЃРєРёР№')) {
+                    userAgent.includes('Russian') || userAgent.includes('Русский')) {
                     
                     return 'ru';
                 }
                 
                 if (userAgent.includes('uk-UA') || userAgent.includes('uk_ua') || 
-                    userAgent.includes('Ukrainian') || userAgent.includes('РЈРєСЂР°С—РЅСЃСЊРєР°')) {
+                    userAgent.includes('Ukrainian') || userAgent.includes('Українська')) {
                     
                     return 'ua';
                 }
@@ -536,25 +563,25 @@
 
         // Fallback: show page after 1 second if no redirect happened
         setTimeout(function() {
-            if (document.body.style.display === 'none') {
+            if (!document.body.classList.contains('styles-loaded')) {
                 showMainPage();
             }
         }, 1000);
 
     </script>
     
-    <!-- Critical JavaScript loaded first -->
-    <script src="../js/utils.js"></script>
-    <script src="../js/selectors.js"></script>
-    <script src="../js/translate.js"></script>
-    <script src="../js/themes.js"></script>
-    <script src="../js/performance.js"></script>
-    <script src="../js/security.js"></script>
-    <script src="../lottiesnimstion/lottie.min.js"></script>
-    <script src="../js/preloader.js"></script>
+    <!-- Critical JavaScript loaded first with cache busting -->
+    <script src="../js/utils.js?v=1.0.3"></script>
+    <script src="../js/selectors.js?v=1.0.3"></script>
+    <script src="../js/translate.js?v=1.0.3"></script>
+    <script src="../js/themes.js?v=1.0.3"></script>
+    <script src="../js/performance.js?v=1.0.3"></script>
+    <script src="../js/security.js?v=1.0.3"></script>
+    <script src="../lottiesnimstion/lottie.min.js?v=1.0.3"></script>
+    <script src="../js/preloader.js?v=1.0.3"></script>
     
     <!-- TinyMCE loaded with defer for better performance -->
-    <script src="../editor_news/tinymce.min.js" defer></script>
+    <script src="../editor_news/tinymce.min.js?v=1.0.3" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
     <script>
@@ -569,15 +596,15 @@
         
         // Load scripts after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            loadScript('../js/magicurl.js');
-            loadScript('../js/highlight.min.js');
-            loadScript('../js/translations.js');
-            loadScript('../js/tinymce-translations.js');
-            loadScript('../js/img.js');
-            loadScript('../js/date-utils.js');
+            loadScript('../js/magicurl.js?v=1.0.3');
+            loadScript('../js/highlight.min.js?v=1.0.3');
+            loadScript('../js/translations.js?v=1.0.3');
+            loadScript('../js/tinymce-translations.js?v=1.0.3');
+            loadScript('../js/img.js?v=1.0.3');
+            loadScript('../js/date-utils.js?v=1.0.3');
             
             // Load main script last
-            loadScript('../js/index.js');
+            loadScript('../js/index.js?v=1.0.3');
         });
     </script>
     
@@ -585,9 +612,11 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('../sw.js')
+                navigator.serviceWorker.register('../sw.js?v=1.0.3')
                     .then(function(registration) {
-
+                        // Принудительно обновляем Service Worker при загрузке
+                        registration.update();
+                        
                         // Проверка обновлений
                         registration.addEventListener('updatefound', function() {
                             const newWorker = registration.installing;
@@ -602,14 +631,15 @@
                         });
                     })
                     .catch(function(error) {
-                        
+                        console.warn('Service Worker registration failed:', error);
                     });
             });
         }
     </script>
 
+    <!-- Universal Cookies Banner -->
+    <script src="../cookies_banner_universal/cookies-banner.js"></script>
+
 </body>
 
 </html>
-
-

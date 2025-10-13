@@ -512,7 +512,7 @@ This project is distributed under the **MIT** license. Details in [LICENSE](LICE
 
 ## 👨‍💻 Author
 
-**SerGio Play** - [GitHub](https://github.com/SerGioPlay01) | [Website](https://sergioplay-dev.netlify.app/)
+**SerGio Play** - [GitHub](https://github.com/SerGioPlay01) | [Website](https://sergioplay-dev.vercel.app/)
 
 ---
 

@@ -1,7 +1,7 @@
 // Service Worker для Local Notes
-const CACHE_NAME = 'local-notes-v1.0.2';
-const STATIC_CACHE = 'static-v1.0.2';
-const DYNAMIC_CACHE = 'dynamic-v1.0.2';
+const CACHE_NAME = 'local-notes-v1.0.3';
+const STATIC_CACHE = 'static-v1.0.3';
+const DYNAMIC_CACHE = 'dynamic-v1.0.3';
 const CACHE_LIMIT = 50; // Максимальное количество файлов в динамическом кэше
 
 // Файлы для кэширования
@@ -129,10 +129,11 @@ self.addEventListener('fetch', event => {
     
     // Стратегия кэширования для разных типов ресурсов
     if (request.method === 'GET') {
-        // Статические ресурсы - Cache First
-        if (STATIC_FILES.includes(url.pathname) || 
-            url.pathname.endsWith('.css') || 
-            url.pathname.endsWith('.js') || 
+        // Статические ресурсы - Network First для CSS/JS, Cache First для остального
+        if (url.pathname.endsWith('.css') || url.pathname.endsWith('.js')) {
+            // Для CSS и JS используем Network First чтобы всегда получать свежие версии
+            event.respondWith(networkFirst(request));
+        } else if (STATIC_FILES.includes(url.pathname) || 
             url.pathname.endsWith('.png') || 
             url.pathname.endsWith('.jpg') || 
             url.pathname.endsWith('.ico') ||
@@ -185,9 +186,25 @@ async function cacheFirst(request) {
 // Стратегия Network First
 async function networkFirst(request) {
     try {
-        const networkResponse = await fetch(request);
+        // Добавляем cache-busting параметр для CSS и JS файлов
+        let fetchRequest = request;
+        if (request.url.includes('.css') || request.url.includes('.js')) {
+            const url = new URL(request.url);
+            url.searchParams.set('v', Date.now().toString());
+            fetchRequest = new Request(url.toString(), {
+                method: request.method,
+                headers: request.headers,
+                body: request.body,
+                mode: request.mode,
+                credentials: request.credentials,
+                cache: 'no-cache'
+            });
+        }
+        
+        const networkResponse = await fetch(fetchRequest);
         if (networkResponse.ok) {
             const cache = await caches.open(DYNAMIC_CACHE);
+            // Кешируем оригинальный запрос, а не с cache-busting параметрами
             cache.put(request, networkResponse.clone());
             // Ограничиваем размер кэша
             await limitCacheSize(DYNAMIC_CACHE, CACHE_LIMIT);

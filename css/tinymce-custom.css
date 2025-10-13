@@ -689,18 +689,97 @@
 
 /* Адаптивные стили */
 @media (max-width: 768px) {
+    /* Тулбар в одну строку с горизонтальной прокруткой */
     .tox .tox-toolbar {
         padding: 4px 0 !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        white-space: nowrap !important;
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: thin !important;
     }
     
+    .tox .tox-toolbar::-webkit-scrollbar {
+        height: 4px !important;
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar-track {
+        background: transparent !important;
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar-thumb {
+        background: var(--border-color) !important;
+        border-radius: 2px !important;
+    }
+    
+    .tox .tox-toolbar::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-color) !important;
+    }
+    
+    /* Группы кнопок в одну строку */
+    .tox .tox-toolbar__group {
+        margin: 0 2px !important;
+        display: inline-flex !important;
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+    }
+    
+    /* Кнопки тулбара */
     .tox .tox-tbtn {
         padding: 4px 6px !important;
         margin: 0 1px !important;
         font-size: 12px !important;
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
     }
     
-    .tox .tox-toolbar__group {
-        margin: 0 2px !important;
+    /* Убираем перенос строк в тулбаре */
+    .tox .tox-toolbar__primary {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        white-space: nowrap !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    /* Скрываем разделители между группами на мобильных */
+    .tox .tox-toolbar__group::after {
+        display: none !important;
+    }
+    
+    /* Дополнительные оптимизации для мобильных */
+    .tox .tox-tinymce {
+        /* Улучшаем производительность */
+        will-change: transform;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+    
+    /* Оптимизируем скролл в редакторе */
+    .tox .tox-edit-area iframe {
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior: contain !important;
+    }
+    
+    /* Улучшаем touch для кнопок */
+    .tox .tox-tbtn {
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent !important;
+        min-height: 36px !important;
+        min-width: 36px !important;
+    }
+    
+    /* Убираем hover эффекты на touch устройствах */
+    .tox .tox-tbtn:hover {
+        background: transparent !important;
+    }
+    
+    .tox .tox-tbtn:active {
+        background: var(--button-hover) !important;
+        transform: scale(0.95) !important;
     }
 }
 

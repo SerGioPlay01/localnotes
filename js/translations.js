@@ -36,6 +36,7 @@ const translations = {
         // Успешные операции
         noteExported: "Note successfully encrypted and exported!",
         importCompleted: "The import has been successfully completed. Number of notes added: {count}",
+        allNotesDeleted: "All notes have been successfully deleted!",
         
         // Подтверждения
         confirmDeleteAll: "Do you really want to delete ALL notes?",
@@ -191,6 +192,7 @@ const translations = {
         // Успешные операции
         noteExported: "Заметка успешно зашифрована и экспортирована!",
         importCompleted: "Импорт успешно завершен. Количество добавленных заметок: {count}",
+        allNotesDeleted: "Все заметки успешно удалены!",
         
         // Подтверждения
         confirmDeleteAll: "Вы действительно хотите удалить ВСЕ заметки?",
@@ -354,6 +356,7 @@ const translations = {
         // Успешные операции
         noteExported: "Нотатку успішно зашифровано та експортовано!",
         importCompleted: "Імпорт успішно завершено. Кількість доданих нотаток: {count}",
+        allNotesDeleted: "Всі нотатки успішно видалені!",
         
         // Подтверждения
         confirmDeleteAll: "Ви впевнені, що хочете видалити всі нотатки?",
@@ -509,6 +512,7 @@ const translations = {
         // Успешные операции
         noteExported: "Notatka została pomyślnie zaszyfrowana i wyeksportowana!",
         importCompleted: "Import został pomyślnie zakończony. Liczba dodanych notatek: {count}",
+        allNotesDeleted: "Wszystkie notatki zostały pomyślnie usunięte!",
         
         // Подтверждения
         confirmDeleteAll: "Czy na pewno chcesz usunąć wszystkie notatki?",
@@ -664,6 +668,7 @@ const translations = {
         // Успешные операции
         noteExported: "Poznámka byla úspěšně zašifrována a exportována!",
         importCompleted: "Import byl úspěšně dokončen. Počet přidaných poznámek: {count}",
+        allNotesDeleted: "Všechny poznámky byly úspěšně smazány!",
         
         // Подтверждения
         confirmDeleteAll: "Jste si jisti, že chcete smazat všechny poznámky?",
@@ -819,6 +824,7 @@ const translations = {
         // Успешные операции
         noteExported: "Poznámka bola úspešne zašifrovaná a exportovaná!",
         importCompleted: "Import bol úspešne dokončený. Počet pridaných poznámok: {count}",
+        allNotesDeleted: "Všetky poznámky boli úspešne zmazané!",
         
         // Подтверждения
         confirmDeleteAll: "Ste si istí, že chcete zmazať všetky poznámky?",
@@ -972,6 +978,7 @@ const translations = {
         // Успешные операции
         noteExported: "Бележката е успешно криптирана и експортирана!",
         importCompleted: "Импортът е успешно завършен. Брой добавени бележки: {count}",
+        allNotesDeleted: "Всички бележки са успешно изтрити!",
         
         // Подтверждения
         confirmDeleteAll: "Сигурни ли сте, че искате да изтриете всички бележки?",
@@ -1125,6 +1132,7 @@ const translations = {
         // Успешные операции
         noteExported: "Bilješka je uspješno šifrirana i izvezena!",
         importCompleted: "Uvoz je uspješno završen. Broj dodanih bilješki: {count}",
+        allNotesDeleted: "Sve bilješke su uspješno obrisane!",
         
         // Подтверждения
         confirmDeleteAll: "Jeste li sigurni da želite obrisati sve bilješke?",
@@ -1270,6 +1278,7 @@ const translations = {
         // Успешные операции
         noteExported: "Белешка је успешно шифрована и извезена!",
         importCompleted: "Увоз је успешно завршен. Број додатих белешки: {count}",
+        allNotesDeleted: "Све белешке су успешно обрисане!",
         
         // Подтверждения
         confirmDeleteAll: "Да ли сте сигурни да желите обрисати све белешке?",
@@ -1415,6 +1424,7 @@ const translations = {
         // Успешные операции
         noteExported: "Bilješka je uspješno šifrirana i izvezena!",
         importCompleted: "Uvoz je uspješno završen. Broj dodanih bilješki: {count}",
+        allNotesDeleted: "Sve bilješke su uspješno obrisane!",
         
         // Подтверждения
         confirmDeleteAll: "Jeste li sigurni da želite obrisati sve bilješke?",
@@ -1560,6 +1570,7 @@ const translations = {
         // Успешные операции
         noteExported: "Белешката е успешно шифрирана и извезена!",
         importCompleted: "Увозот е успешно завршен. Број на додадени белешки: {count}",
+        allNotesDeleted: "Сите белешки се успешно избришани!",
         
         // Подтверждения
         confirmDeleteAll: "Дали сте сигурни дека сакате да ги избришете сите белешки?",
@@ -1715,6 +1726,7 @@ const translations = {
         // Успешные операции
         noteExported: "Opomba je bila uspešno šifrirana in izvožena!",
         importCompleted: "Uvoz je bil uspešno dokončan. Število dodanih opomb: {count}",
+        allNotesDeleted: "Vse opombe so bile uspešno izbrisane!",
         
         // Подтверждения
         confirmDeleteAll: "Ali ste prepričani, da želite izbrisati vse opombe?",

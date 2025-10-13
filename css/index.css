@@ -2085,6 +2085,36 @@ input {
         margin: 8% auto;
         height: 80%;
         width: 95%;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    /* Увеличиваем высоту редактора до кнопок */
+    .tinymce {
+        flex: 1 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .tox-tinymce {
+        flex: 1 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .tox .tox-edit-area {
+        flex: 1 !important;
+        min-height: 0 !important;
+        height: auto !important;
+    }
+    
+    .tox .tox-edit-area iframe {
+        height: 100% !important;
+        min-height: 200px !important;
     }
 
     .modal-content-error,
@@ -2184,6 +2214,36 @@ input {
         width: 85%;
         height: 80%;
         margin: 10% auto;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    /* Увеличиваем высоту редактора до кнопок для планшетов */
+    .tinymce {
+        flex: 1 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .tox-tinymce {
+        flex: 1 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .tox .tox-edit-area {
+        flex: 1 !important;
+        min-height: 0 !important;
+        height: auto !important;
+    }
+    
+    .tox .tox-edit-area iframe {
+        height: 100% !important;
+        min-height: 250px !important;
     }
     
     .modal-buttons-container {
@@ -2994,6 +3054,33 @@ input {
     
     .modal-content {
         touch-action: pan-y;
+        /* Дополнительные оптимизации для мобильных */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        /* Улучшаем производительность */
+        will-change: transform;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+    
+    /* Оптимизация для мобильных устройств */
+    .modal {
+        /* Предотвращаем скролл фона */
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Улучшаем кнопки для touch */
+    .modal-buttons-container button {
+        min-height: 48px !important;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Оптимизируем скролл в редакторе */
+    .tox .tox-edit-area iframe {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
     }
 }
 

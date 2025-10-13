@@ -137,17 +137,17 @@ body.modal-open {
     /* Модальное окно редактора на полный экран для мобильных устройств */
     .modal-content {
         margin: 0 !important;
-        height: 100vh !important;
+        height: 90vh !important;
         width: 100vw !important;
-        top: 0 !important;
+        top: 5vh !important;
         left: 0 !important;
         right: 0 !important;
-        bottom: 0 !important;
+        bottom: 5vh !important;
         border-radius: 0 !important;
         position: fixed !important;
         display: flex !important;
         flex-direction: column !important;
-        max-height: 100vh !important;
+        max-height: 90vh !important;
         max-width: 100vw !important;
         overflow: hidden !important;
     }
@@ -3205,6 +3205,14 @@ input {
         font-size: 1.2rem;
     }
     
+    /* Дополнительное уменьшение высоты модального окна для очень маленьких экранов */
+    .modal-content {
+        height: 85vh !important;
+        top: 7.5vh !important;
+        bottom: 7.5vh !important;
+        max-height: 85vh !important;
+    }
+    
 }
 
 /* ===== АДАПТИВНОСТЬ ДЛЯ LANDSCAPE ОРИЕНТАЦИИ ===== */
@@ -3281,6 +3289,13 @@ input {
         margin-bottom: 10px;
     }
     
+    /* Модальное окно редактора для landscape ориентации */
+    .modal-content {
+        height: 80vh !important;
+        top: 10vh !important;
+        bottom: 10vh !important;
+        max-height: 80vh !important;
+    }
     
     /* Футер */
     .app-notes-footer {

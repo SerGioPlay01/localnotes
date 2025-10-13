@@ -1,10 +1,5 @@
 {
   "en": {
-    "pageTitle": "Local Notes",
-    "metaDescription": "Local Notes is an application for creating and storing notes in your browser.",
-    "metaKeywords": "Local Notes, notes, notes, notes in browser, notes app, notes online, Local Notes",
-    "metaOgtitle": "Local Notes - save important notes right in your browser",
-    "metaOgDescript": "Local Notes is an application for creating and storing notes in your browser.",
     "appName": "Local Notes",
     "addNoteButton": "Add a note",
     "importButton": "Import notes",
@@ -83,11 +78,6 @@
     "validationError": "Validation error"
   },
   "ru": {
-    "pageTitle": "Локальные заметки (Local Notes)",
-    "metaDescription": "Локальные заметки (Local Notes) - это приложение для создания и хранения заметок в браузере.",
-    "metaKeywords": "локальные заметки, заметки, заметки в браузере, приложение для заметок, заметки онлайн, Local Notes",
-    "metaOgDescript": "Локальные заметки - это приложение для создания и хранения заметок в браузере.",
-    "metaOgtitle": "Локальные заметки - сохраняйте важные заметки прямо в вашем браузере",
     "appName": "Локальные заметки",
     "addNoteButton": "Добавить заметку",
     "importButton": "Импортировать заметки",
@@ -166,11 +156,6 @@
     "validationError": "Ошибка проверки"
   },
   "ua": {
-    "pageTitle": "Локальні нотатки (Local Notes)",
-    "metaDescription": "Локальні нотатки (Local Notes) - це додаток для створення та зберігання нотаток у браузері.",
-    "metaKeywords": "локальні нотатки, нотатки, нотатки в браузері, додаток для нотаток, нотатки онлайн, Local Notes",
-    "metaOgDescript": "Локальні нотатки - це додаток для створення та зберігання нотаток у браузері.",
-    "metaOgtitle": "Локальні нотатки - зберігайте важливі нотатки прямо у вашому браузері",
     "appName": "Локальні нотатки",
     "addNoteButton": "Додати нотатку",
     "importButton": "Імпортувати нотатки",
@@ -249,11 +234,6 @@
     "validationError": "Помилка перевірки"
   },
   "pl": {
-    "pageTitle": "Lokalne Notatki (Local Notes)",
-    "metaDescription": "Lokalne Notatki (Local Notes) to aplikacja do tworzenia i przechowywania notatek w przeglądarce.",
-    "metaKeywords": "lokalne notatki, notatki, notatki w przeglądarce, aplikacja do notatek, notatki online, Local Notes",
-    "metaOgDescript": "Lokalne Notatki to aplikacja do tworzenia i przechowywania notatek w przeglądarce.",
-    "metaOgtitle": "Lokalne Notatki - zapisuj ważne notatki bezpośrednio w przeglądarce",
     "appName": "Lokalne Notatki",
     "addNoteButton": "Dodaj notatkę",
     "importButton": "Importuj notatki",
@@ -332,11 +312,6 @@
     "validationError": "Błąd walidacji"
   },
   "cs": {
-    "pageTitle": "Lokální poznámky (Local Notes)",
-    "metaDescription": "Lokální poznámky (Local Notes) je aplikace pro vytváření a ukládání poznámek v prohlížeči.",
-    "metaKeywords": "lokální poznámky, poznámky, poznámky v prohlížeči, aplikace pro poznámky, poznámky online, Local Notes",
-    "metaOgDescript": "Lokální poznámky je aplikace pro vytváření a ukládání poznámek v prohlížeči.",
-    "metaOgtitle": "Lokální poznámky - ukládejte důležité poznámky přímo ve vašem prohlížeči",
     "appName": "Lokální poznámky",
     "addNoteButton": "Přidat poznámku",
     "importButton": "Importovat poznámky",
@@ -415,11 +390,6 @@
     "validationError": "Chyba ověření"
   },
   "sk": {
-    "pageTitle": "Lokálne poznámky (Local Notes)",
-    "metaDescription": "Lokálne poznámky (Local Notes) je aplikácia na vytváranie a ukladanie poznámok v prehliadači.",
-    "metaKeywords": "lokálne poznámky, poznámky, poznámky v prehliadači, aplikácia pre poznámky, poznámky online, Local Notes",
-    "metaOgDescript": "Lokálne poznámky je aplikácia na vytváranie a ukladanie poznámok v prehliadači.",
-    "metaOgtitle": "Lokálne poznámky - ukladajte dôležité poznámky priamo vo vašom prehliadači",
     "appName": "Lokálne poznámky",
     "addNoteButton": "Pridať poznámku",
     "importButton": "Importovať poznámky",
@@ -498,11 +468,6 @@
     "validationError": "Chyba overenia"
   },
   "bg": {
-    "pageTitle": "Локални бележки (Local Notes)",
-    "metaDescription": "Локални бележки (Local Notes) е приложение за създаване и съхраняване на бележки в браузъра.",
-    "metaKeywords": "локални бележки, бележки, бележки в браузъра, приложение за бележки, бележки онлайн, Local Notes",
-    "metaOgDescript": "Локални бележки е приложение за създаване и съхраняване на бележки в браузъра.",
-    "metaOgtitle": "Локални бележки - запазвайте важни бележки директно във вашия браузър",
     "appName": "Локални бележки",
     "addNoteButton": "Добави бележка",
     "importButton": "Импортирай бележки",
@@ -581,11 +546,6 @@
     "validationError": "Грешка при проверка"
   },
   "hr": {
-    "pageTitle": "Lokalne bilješke (Local Notes)",
-    "metaDescription": "Lokalne bilješke (Local Notes) je aplikacija za stvaranje i pohranjivanje bilješki u pregledniku.",
-    "metaKeywords": "lokalne bilješke, bilješke, bilješke u pregledniku, aplikacija za bilješke, bilješke online, Local Notes",
-    "metaOgDescript": "Lokalne bilješke je aplikacija za stvaranje i pohranjivanje bilješki u pregledniku.",
-    "metaOgtitle": "Lokalne bilješke - spremajte važne bilješke izravno u vašem pregledniku",
     "appName": "Lokalne bilješke",
     "addNoteButton": "Dodaj bilješku",
     "importButton": "Importiraj bilješke",
@@ -664,11 +624,6 @@
     "validationError": "Greška provjere"
   },
   "sr": {
-    "pageTitle": "Локалне белешке (Local Notes)",
-    "metaDescription": "Локалне белешке (Local Notes) је апликација за креирање и чување белешки у прегледачу.",
-    "metaKeywords": "локалне белешке, белешке, белешке у прегледачу, апликација за белешке, белешке онлајн, Local Notes",
-    "metaOgDescript": "Локалне белешке је апликација за креирање и чување белешки у прегледачу.",
-    "metaOgtitle": "Локалне белешке - чувајте важне белешке директно у вашем прегледачу",
     "appName": "Локалне белешке",
     "addNoteButton": "Додај белешку",
     "importButton": "Увези белешке",
@@ -747,11 +702,6 @@
     "validationError": "Грешка провере"
   },
   "bs": {
-    "pageTitle": "Lokalne bilješke (Local Notes)",
-    "metaDescription": "Lokalne bilješke (Local Notes) je aplikacija za kreiranje i čuvanje bilješki u pregledniku.",
-    "metaKeywords": "lokalne bilješke, bilješke, bilješke u pregledniku, aplikacija za bilješke, bilješke online, Local Notes",
-    "metaOgDescript": "Lokalne bilješke je aplikacija za kreiranje i čuvanje bilješki u pregledniku.",
-    "metaOgtitle": "Lokalne bilješke - čuvajte važne bilješke direktno u vašem pregledniku",
     "appName": "Lokalne bilješke",
     "addNoteButton": "Dodaj bilješku",
     "importButton": "Importiraj bilješke",
@@ -830,11 +780,6 @@
     "validationError": "Greška provjere"
   },
   "mk": {
-    "pageTitle": "Локални белешки (Local Notes)",
-    "metaDescription": "Локални белешки (Local Notes) е апликација за креирање и чување на белешки во прелистувачот.",
-    "metaKeywords": "локални белешки, белешки, белешки во прелистувачот, апликација за белешки, белешки онлајн, Local Notes",
-    "metaOgDescript": "Локални белешки е апликација за креирање и чување на белешки во прелистувачот.",
-    "metaOgtitle": "Локални белешки - зачувајте важни белешки директно во вашиот прелистувач",
     "appName": "Локални белешки",
     "addNoteButton": "Додај белешка",
     "importButton": "Импортирај белешки",
@@ -913,11 +858,6 @@
     "validationError": "Грешка при проверка"
   },
   "sl": {
-    "pageTitle": "Lokalne opombe (Local Notes)",
-    "metaDescription": "Lokalne opombe (Local Notes) je aplikacija za ustvarjanje in shranjevanje opomb v brskalniku.",
-    "metaKeywords": "lokalne opombe, opombe, opombe v brskalniku, aplikacija za opombe, opombe online, Local Notes",
-    "metaOgDescript": "Lokalne opombe je aplikacija za ustvarjanje in shranjevanje opomb v brskalniku.",
-    "metaOgtitle": "Lokalne opombe - shranjujte pomembne opombe neposredno v vašem brskalniku",
     "appName": "Lokalne opombe",
     "addNoteButton": "Dodaj opombo",
     "importButton": "Uvozi opombe",

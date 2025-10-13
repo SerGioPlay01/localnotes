@@ -54,29 +54,7 @@ function updateInterface(langData, language) {
     window.currentLang = language;
     
     
-    // Обновление заголовка страницы (title)
-    document.title = langData.pageTitle;
-
-    // Обновление метатегов
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-        metaDescription.setAttribute('content', langData.metaDescription);
-    }
-
-    const metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (metaKeywords) {
-        metaKeywords.setAttribute('content', langData.metaKeywords);
-    }
-
-    const metaOgDescription = document.querySelector('meta[property="og:description"]');
-    if (metaOgDescription) {
-        metaOgDescription.setAttribute('content', langData.metaOgDescript);
-    }
-
-    const metaOgTitle = document.querySelector('meta[property="og:title"]');
-    if (metaOgTitle) {
-        metaOgTitle.setAttribute('content', langData.metaOgtitle);
-    }
+    // Мета-теги теперь статические в HTML - не обновляем динамически
 
     // Обновление текста в preloader (если элемент существует)
     const preloaderText = document.getElementById('preloaderText');

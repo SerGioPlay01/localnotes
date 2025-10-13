@@ -2383,9 +2383,17 @@ async function initTinyMCE() {
                     text-align: left !important;
                 }
                 
-                /* Выравнивание по умолчанию для всех элементов */
-                p, div, span, h1, h2, h3, h4, h5, h6 {
-                    text-align: left !important;
+                /* Выравнивание по умолчанию для элементов без явного выравнивания */
+                p:not([style*="text-align"]), 
+                div:not([style*="text-align"]), 
+                span:not([style*="text-align"]), 
+                h1:not([style*="text-align"]), 
+                h2:not([style*="text-align"]), 
+                h3:not([style*="text-align"]), 
+                h4:not([style*="text-align"]), 
+                h5:not([style*="text-align"]), 
+                h6:not([style*="text-align"]) {
+                    text-align: left;
                 }
                 
                 /* Темная тема */

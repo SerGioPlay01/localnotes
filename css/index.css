@@ -864,7 +864,7 @@ body {
     font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     line-height: 1.6 !important;
     font-size: 16px !important;
-    text-align: left !important;
+    text-align: left;
 }
 
 /* Контейнер для кнопок заметки */
@@ -1863,7 +1863,12 @@ input {
 }
 
 /* Заголовки в заметках - соответствуют стилям редактора */
-.note h1, .note h2, .note h3, .note h4, .note h5, .note h6 {
+.note h1:not([style*="text-align"]), 
+.note h2:not([style*="text-align"]), 
+.note h3:not([style*="text-align"]), 
+.note h4:not([style*="text-align"]), 
+.note h5:not([style*="text-align"]), 
+.note h6:not([style*="text-align"]) {
     color: var(--note-text);
     margin: 24px 0 16px 0;
     font-weight: 600;
@@ -1871,7 +1876,7 @@ input {
     font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     letter-spacing: -0.02em;
-    text-align: left !important;
+    text-align: left;
 }
 
 /* Темная тема для заголовков */
@@ -1965,12 +1970,12 @@ input {
 }
 
 /* Дополнительные стили для контента заметок - соответствуют стилям редактора */
-.note p {
+.note p:not([style*="text-align"]) {
     margin-bottom: 16px;
     line-height: 1.7;
     color: var(--note-text);
     font-size: 16px;
-    text-align: left !important;
+    text-align: left;
     font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 

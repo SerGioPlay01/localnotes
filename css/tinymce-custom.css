@@ -1200,17 +1200,17 @@
     text-align: left !important;
 }
 
-/* Выравнивание по умолчанию для всех элементов в редакторе */
-.tox-edit-area iframe body p,
-.tox-edit-area iframe body div,
-.tox-edit-area iframe body span,
-.tox-edit-area iframe body h1,
-.tox-edit-area iframe body h2,
-.tox-edit-area iframe body h3,
-.tox-edit-area iframe body h4,
-.tox-edit-area iframe body h5,
-.tox-edit-area iframe body h6 {
-    text-align: left !important;
+/* Выравнивание по умолчанию для элементов без явного выравнивания в редакторе */
+.tox-edit-area iframe body p:not([style*="text-align"]),
+.tox-edit-area iframe body div:not([style*="text-align"]),
+.tox-edit-area iframe body span:not([style*="text-align"]),
+.tox-edit-area iframe body h1:not([style*="text-align"]),
+.tox-edit-area iframe body h2:not([style*="text-align"]),
+.tox-edit-area iframe body h3:not([style*="text-align"]),
+.tox-edit-area iframe body h4:not([style*="text-align"]),
+.tox-edit-area iframe body h5:not([style*="text-align"]),
+.tox-edit-area iframe body h6:not([style*="text-align"]) {
+    text-align: left;
 }
 
 /* ===== ТЕМНАЯ ТЕМА ===== */
@@ -2590,17 +2590,17 @@
     text-align: left !important;
 }
 
-/* Выравнивание по умолчанию для всех элементов в iframe с ID */
-#editorContainer_ifr body p,
-#editorContainer_ifr body div,
-#editorContainer_ifr body span,
-#editorContainer_ifr body h1,
-#editorContainer_ifr body h2,
-#editorContainer_ifr body h3,
-#editorContainer_ifr body h4,
-#editorContainer_ifr body h5,
-#editorContainer_ifr body h6 {
-    text-align: left !important;
+/* Выравнивание по умолчанию для элементов без явного выравнивания в iframe с ID */
+#editorContainer_ifr body p:not([style*="text-align"]),
+#editorContainer_ifr body div:not([style*="text-align"]),
+#editorContainer_ifr body span:not([style*="text-align"]),
+#editorContainer_ifr body h1:not([style*="text-align"]),
+#editorContainer_ifr body h2:not([style*="text-align"]),
+#editorContainer_ifr body h3:not([style*="text-align"]),
+#editorContainer_ifr body h4:not([style*="text-align"]),
+#editorContainer_ifr body h5:not([style*="text-align"]),
+#editorContainer_ifr body h6:not([style*="text-align"]) {
+    text-align: left;
 }
 
 /* ===== ТЕМНАЯ ТЕМА ДЛЯ IFRAME С ID ===== */

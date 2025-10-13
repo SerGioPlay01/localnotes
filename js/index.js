@@ -3736,7 +3736,7 @@ function generateIframeCode(url, platform) {
         }
         
         if (embedUrl) {
-            return `<iframe src="${embedUrl}" width="${width}" height="${height}" frameborder="0" allowfullscreen style="border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);"></iframe>`;
+            return `<iframe src="${embedUrl}" width="${width}" height="${height}" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" style="border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color); max-width: 100%;"></iframe>`;
         }
         
         return null;

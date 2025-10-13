@@ -5182,8 +5182,14 @@ async function importNotesMarkdown(files) {
                         return;
                     }
 
-                    // Простое преобразование Markdown в HTML
-                    const htmlContent = convertMarkdownToHTML(markdownContent);
+                    // Обрабатываем изображения в Markdown
+                    const processedMarkdown = await processMarkdownImages(markdownContent, file);
+                    
+                    // Преобразуем Markdown в HTML с полной поддержкой всех функций
+                    const htmlContent = convertMarkdownToHTML(processedMarkdown);
+                    
+                    // Извлекаем заголовок из Markdown
+                    const title = extractMarkdownTitle(markdownContent) || file.name.replace(/\.[^/.]+$/, "");
                     
                     const newId = 'note_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
                     const noteObj = {
@@ -5191,7 +5197,8 @@ async function importNotesMarkdown(files) {
                         content: htmlContent,
                         creationTime: Date.now(),
                         lastModified: Date.now(),
-                        title: notesDB.extractTitle(htmlContent)
+                        title: title,
+                        tags: ['imported', 'markdown']
                     };
                     await notesDB.saveNote(noteObj);
                     importedCount++;
@@ -5218,46 +5225,223 @@ async function importNotesMarkdown(files) {
 
 
 
-// Функция для преобразования Markdown в HTML
+// Улучшенная функция для преобразования Markdown в HTML с полной поддержкой всех функций
 function convertMarkdownToHTML(markdown) {
-    return markdown
-        // Заголовки
-        .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-        .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-        // Жирный текст
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/__(.*?)__/g, '<strong>$1</strong>')
-        // Курсив
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/_(.*?)_/g, '<em>$1</em>')
-        // Зачеркнутый текст
-        .replace(/~~(.*?)~~/g, '<s>$1</s>')
-        // Код
-        .replace(/`(.*?)`/g, '<code>$1</code>')
-        // Блоки кода
-        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-        // Ссылки
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        // Изображения
-        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">')
-        // Списки
-        .replace(/^\* (.*$)/gim, '<li>$1</li>')
-        .replace(/^- (.*$)/gim, '<li>$1</li>')
-        .replace(/^(\d+)\. (.*$)/gim, '<li>$2</li>')
-        // Цитаты
-        .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
-        // Горизонтальные линии
-        .replace(/^---$/gim, '<hr>')
-        .replace(/^\*\*\*$/gim, '<hr>')
-        // Переносы строк
-        .replace(/\n\n/g, '</p><p>')
-        .replace(/\n/g, '<br>')
-        // Оборачиваем в параграфы
-        .replace(/^(.*)$/gim, '<p>$1</p>')
-        // Очищаем пустые параграфы
-        .replace(/<p><\/p>/g, '')
-        .replace(/<p><br><\/p>/g, '');
+    let html = markdown;
+    
+    // Обрабатываем блоки кода с языком (должно быть первым)
+    html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+        const language = lang ? ` class="language-${lang}"` : '';
+        return `<pre><code${language}>${escapeHtml(code.trim())}</code></pre>`;
+    });
+    
+    // Обрабатываем инлайн код
+    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+    
+    // Обрабатываем заголовки (от H6 до H1)
+    html = html.replace(/^#{6}\s+(.*)$/gm, '<h6>$1</h6>');
+    html = html.replace(/^#{5}\s+(.*)$/gm, '<h5>$1</h5>');
+    html = html.replace(/^#{4}\s+(.*)$/gm, '<h4>$1</h4>');
+    html = html.replace(/^#{3}\s+(.*)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^#{2}\s+(.*)$/gm, '<h2>$1</h2>');
+    html = html.replace(/^#{1}\s+(.*)$/gm, '<h1>$1</h1>');
+    
+    // Обрабатываем горизонтальные линии
+    html = html.replace(/^[-*_]{3,}$/gm, '<hr>');
+    
+    // Обрабатываем цитаты
+    html = html.replace(/^>\s*(.*)$/gm, '<blockquote>$1</blockquote>');
+    
+    // Обрабатываем упорядоченные списки
+    html = html.replace(/^(\d+)\.\s+(.*)$/gm, '<li>$2</li>');
+    
+    // Обрабатываем неупорядоченные списки
+    html = html.replace(/^[-*+]\s+(.*)$/gm, '<li>$1</li>');
+    
+    // Оборачиваем последовательные <li> в <ol> или <ul>
+    html = html.replace(/(<li>.*<\/li>)/gs, (match) => {
+        const lines = match.split('\n');
+        let result = '';
+        let inList = false;
+        let listType = 'ul';
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            if (line.includes('<li>')) {
+                if (!inList) {
+                    // Определяем тип списка по первому элементу
+                    const prevLine = i > 0 ? lines[i-1] : '';
+                    if (prevLine.match(/^\d+\./)) {
+                        listType = 'ol';
+                    }
+                    result += `<${listType}>`;
+                    inList = true;
+                }
+                result += line + '\n';
+            } else {
+                if (inList) {
+                    result += `</${listType}>`;
+                    inList = false;
+                }
+                result += line + '\n';
+            }
+        }
+        
+        if (inList) {
+            result += `</${listType}>`;
+        }
+        
+        return result;
+    });
+    
+    // Обрабатываем изображения с поддержкой title
+    html = html.replace(/!\[([^\]]*)\]\(([^)]+)(?:\s+"([^"]*)")?\)/g, (match, alt, src, title) => {
+        const titleAttr = title ? ` title="${escapeHtml(title)}"` : '';
+        return `<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}"${titleAttr} style="max-width: 100%; height: auto;">`;
+    });
+    
+    // Обрабатываем ссылки с поддержкой title
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)(?:\s+"([^"]*)")?\)/g, (match, text, href, title) => {
+        const titleAttr = title ? ` title="${escapeHtml(title)}"` : '';
+        return `<a href="${escapeHtml(href)}"${titleAttr} target="_blank" rel="noopener noreferrer">${escapeHtml(text)}</a>`;
+    });
+    
+    // Обрабатываем автолинки
+    html = html.replace(/(https?:\/\/[^\s<>"{}|\\^`[\]]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+    
+    // Обрабатываем жирный текст
+    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+    
+    // Обрабатываем курсив
+    html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
+    
+    // Обрабатываем зачеркнутый текст
+    html = html.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+    
+    // Обрабатываем подчеркнутый текст
+    html = html.replace(/<u>([^<]+)<\/u>/g, '<u>$1</u>');
+    
+    // Обрабатываем таблицы
+    html = html.replace(/\|(.+)\|\n\|[-\s|]+\|\n((?:\|.+\|\n?)*)/g, (match, header, rows) => {
+        const headerCells = header.split('|').map(cell => `<th>${cell.trim()}</th>`).join('');
+        const tableRows = rows.split('\n').filter(row => row.trim()).map(row => {
+            const cells = row.split('|').map(cell => `<td>${cell.trim()}</td>`).join('');
+            return `<tr>${cells}</tr>`;
+        }).join('');
+        
+        return `<table><thead><tr>${headerCells}</tr></thead><tbody>${tableRows}</tbody></table>`;
+    });
+    
+    // Обрабатываем переносы строк
+    html = html.replace(/\n\n/g, '</p><p>');
+    html = html.replace(/\n/g, '<br>');
+    
+    // Оборачиваем в параграфы
+    html = '<p>' + html + '</p>';
+    
+    // Очищаем пустые параграфы и лишние теги
+    html = html.replace(/<p><\/p>/g, '');
+    html = html.replace(/<p><br><\/p>/g, '');
+    html = html.replace(/<p>\s*<\/p>/g, '');
+    
+    return html;
+}
+
+// Функция для экранирования HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Функция для обработки изображений в Markdown
+async function processMarkdownImages(markdownContent, file) {
+    // Находим все изображения в Markdown
+    const imageRegex = /!\[([^\]]*)\]\(([^)]+)\)/g;
+    let processedMarkdown = markdownContent;
+    let match;
+    
+    while ((match = imageRegex.exec(markdownContent)) !== null) {
+        const [fullMatch, alt, src] = match;
+        
+        // Если это относительный путь, пытаемся найти изображение рядом с файлом
+        if (!src.startsWith('http') && !src.startsWith('data:')) {
+            try {
+                // Создаем новый input для выбора изображения
+                const imageInput = document.createElement('input');
+                imageInput.type = 'file';
+                imageInput.accept = 'image/*';
+                imageInput.style.display = 'none';
+                
+                // Показываем диалог для выбора изображения
+                const imageDataUrl = await new Promise((resolve) => {
+                    imageInput.addEventListener('change', (e) => {
+                        const imageFile = e.target.files[0];
+                        if (imageFile) {
+                            const reader = new FileReader();
+                            reader.onload = (e) => resolve(e.target.result);
+                            reader.readAsDataURL(imageFile);
+                        } else {
+                            resolve(null);
+                        }
+                    });
+                    
+                    // Показываем диалог выбора изображения
+                    showCustomAlert(
+                        t("imageNotFound") || "Image not found", 
+                        (t("imageNotFoundMessage") || "Image not found: {src}").replace('{src}', src) + "<br><br>" + (t("selectImageFile") || "Please select the image file"),
+                        "info"
+                    );
+                    
+                    setTimeout(() => {
+                        imageInput.click();
+                    }, 1000);
+                });
+                
+                if (imageDataUrl) {
+                    // Заменяем путь на data URL
+                    processedMarkdown = processedMarkdown.replace(fullMatch, `![${alt}](${imageDataUrl})`);
+                }
+            } catch (error) {
+                console.warn('Could not process image:', src, error);
+            }
+        }
+    }
+    
+    return processedMarkdown;
+}
+
+// Функция для извлечения заголовка из Markdown
+function extractMarkdownTitle(markdownContent) {
+    const lines = markdownContent.split('\n');
+    
+    // Ищем первый заголовок H1
+    for (const line of lines) {
+        const h1Match = line.match(/^#\s+(.+)$/);
+        if (h1Match) {
+            return h1Match[1].trim();
+        }
+    }
+    
+    // Если H1 не найден, ищем H2
+    for (const line of lines) {
+        const h2Match = line.match(/^##\s+(.+)$/);
+        if (h2Match) {
+            return h2Match[1].trim();
+        }
+    }
+    
+    // Если заголовки не найдены, берем первую непустую строку
+    for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed && !trimmed.startsWith('#') && !trimmed.startsWith('>') && !trimmed.startsWith('-') && !trimmed.startsWith('*')) {
+            return trimmed.length > 50 ? trimmed.substring(0, 50) + '...' : trimmed;
+        }
+    }
+    
+    return null;
 }
 
 // Функция для показа результата импорта

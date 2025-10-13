@@ -197,6 +197,18 @@ class PointerEventManager {
     }
 }
 
+// Функция для проверки поддерживаемых расширений файлов
+function isSupportedFileExtension(filename) {
+    const supportedExtensions = [
+        '.note',  // зашифрованные заметки
+        '.html',  // HTML файлы
+        '.md'     // Markdown файлы
+    ];
+    
+    const fileExtension = '.' + filename.split('.').pop().toLowerCase();
+    return supportedExtensions.includes(fileExtension);
+}
+
 // Создаем экземпляр менеджера Pointer Events
 const pointerManager = new PointerEventManager();
 
@@ -4029,7 +4041,7 @@ async function importNotes(event, password) {
         const file = files[i];
         
         // Проверяем расширение файла
-        if (!file.name.endsWith('.note') && !file.name.endsWith('.json')) {
+        if (!isSupportedFileExtension(file.name)) {
             errorCount++;
             showCustomAlert(t("error"), t("errorInvalidFile", { filename: file.name }), "error");
             continue;
@@ -4156,7 +4168,7 @@ async function importNotesWithIndividualPasswords(files) {
     // Функция для обработки одного файла
     const processFile = (file) => {
         return new Promise((resolve) => {
-        if (!file.name.endsWith('.note')) {
+        if (!isSupportedFileExtension(file.name)) {
             errorCount++;
                 showCustomAlert(t("error"), t("errorInvalidFile", { filename: file.name }), "error");
                 resolve();
@@ -4306,7 +4318,7 @@ async function importNotesWithIndividualPasswords(files) {
         updateProgress();
         
         // Проверяем расширение файла
-        if (!file.name.endsWith('.note') && !file.name.endsWith('.json')) {
+        if (!isSupportedFileExtension(file.name)) {
             errorCount++;
             showCustomAlert(t("error"), t("errorInvalidFile", { filename: file.name }), "error");
             processedFiles++;
@@ -4635,7 +4647,7 @@ async function importNotesWithFiles(files) {
         const file = files[i];
         
         // Проверяем расширение файла
-        if (!file.name.endsWith('.note') && !file.name.endsWith('.json')) {
+        if (!isSupportedFileExtension(file.name)) {
             invalidFileCount++;
             continue;
         }
@@ -5204,36 +5216,7 @@ async function importNotesMarkdown(files) {
     await Promise.all(promises);
 }
 
-// Функция импорта PDF файлов
-async function importNotesPDF(files) {
-    if (!files || files.length === 0) return;
-    
-    let importedCount = 0;
-    let errorCount = 0;
-    let totalFiles = files.length;
-    let processedFiles = 0;
 
-    const processFile = (file) => {
-        return new Promise((resolve) => {
-            // Для PDF файлов показываем предупреждение
-            errorCount++;
-            showCustomAlert(
-                t("warning"), 
-                t("pdfImportNotSupported", { filename: file.name }) + "<br><br>" + t("pdfImportSuggestion"), 
-                "warning"
-            );
-            
-            processedFiles++;
-            if (processedFiles === totalFiles) {
-                showImportResult(importedCount, errorCount, totalFiles);
-            }
-            resolve();
-        });
-    };
-
-    const promises = Array.from(files).map(file => processFile(file));
-    await Promise.all(promises);
-}
 
 // Функция для преобразования Markdown в HTML
 function convertMarkdownToHTML(markdown) {
@@ -5376,11 +5359,6 @@ async function importNotesWithFormat(event) {
                     <span class="export-text">Markdown</span>
                     <span class="export-desc">${t("markdownFiles")}</span>
                 </button>
-                <button class="export-option" data-format="pdf">
-                    <span class="export-icon">📄</span>
-                    <span class="export-text">PDF</span>
-                    <span class="export-desc">${t("pdfFiles")}</span>
-                </button>
             </div>
             <button class="export-close">${t("cancel")}</button>
         </div>
@@ -5400,8 +5378,6 @@ async function importNotesWithFormat(event) {
                 importNotesHTML(filesArray);
             } else if (format === 'markdown') {
                 importNotesMarkdown(filesArray);
-            } else if (format === 'pdf') {
-                importNotesPDF(filesArray);
             }
         });
     });

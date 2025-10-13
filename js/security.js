@@ -114,15 +114,24 @@ class SecurityManager {
     // Validate file uploads
     validateFileUpload(file) {
         const allowedTypes = [
-            'text/plain',
-            'application/json',
-            'text/markdown'
+            'application/json',  // для .note файлов (зашифрованные заметки)
+            'text/html',         // для .html файлов
+            'text/markdown'      // для .md файлов
         ];
         
-        const maxSize = 10 * 1024 * 1024; // 10MB
+        const maxSize = 50 * 1024 * 1024; // 50MB (увеличено для поддержки большего количества типов файлов)
         
-        if (!allowedTypes.includes(file.type)) {
-            throw new Error('File type not allowed');
+        // Проверяем расширение файла как дополнительную меру безопасности
+        const allowedExtensions = [
+            '.note',  // зашифрованные заметки
+            '.html',  // HTML файлы
+            '.md'     // Markdown файлы
+        ];
+        
+        const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+        
+        if (!allowedExtensions.includes(fileExtension)) {
+            throw new Error('File extension not allowed');
         }
         
         if (file.size > maxSize) {

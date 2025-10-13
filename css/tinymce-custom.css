@@ -1864,10 +1864,557 @@
 
 /* ===== АДАПТИВНЫЕ СТИЛИ ДЛЯ ПЛАНШЕТОВ ===== */
 @media (min-width: 769px) and (max-width: 1024px) {
+    /* Основные стили редактора для планшетов */
     .tox-edit-area iframe body {
+        font-size: 16px !important;
+        line-height: 1.7 !important;
+        padding: 20px !important;
+    }
+    
+    /* Полноэкранный редактор для планшетов */
+    .tox-tinymce {
+        height: calc(100vh - 120px) !important;
+        border-radius: 0 !important;
+    }
+    
+    .tox-edit-area {
+        height: calc(100vh - 200px) !important;
+    }
+    
+    .tox-edit-area__iframe {
+        height: 100% !important;
+    }
+    
+    /* Улучшенный тулбар для планшетов */
+    .tox .tox-toolbar {
+        padding: 8px 12px !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+    
+    .tox .tox-toolbar__group {
+        margin: 4px 6px !important;
+    }
+    
+    .tox .tox-tbtn {
+        width: 40px !important;
+        height: 40px !important;
+        margin: 2px !important;
+    }
+    
+    .tox .tox-tbtn svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+    
+    /* Улучшенные кнопки для планшетов */
+    .tox .tox-tbtn--enabled {
+        background: rgba(174, 252, 110, 0.2) !important;
+        border: 1px solid rgba(174, 252, 110, 0.4) !important;
+    }
+    
+    .tox .tox-tbtn:hover {
+        background: rgba(174, 252, 110, 0.1) !important;
+        transform: scale(1.05) !important;
+    }
+    
+    /* Улучшенное меню для планшетов */
+    .tox .tox-menu {
+        min-width: 200px !important;
+        border-radius: 8px !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .tox .tox-collection__item {
+        padding: 12px 16px !important;
         font-size: 15px !important;
+        min-height: 44px !important;
+    }
+    
+    .tox .tox-collection__item:hover {
+        background: rgba(174, 252, 110, 0.1) !important;
+    }
+    
+    /* Улучшенные диалоги для планшетов */
+    .tox .tox-dialog {
+        width: 90% !important;
+        max-width: 600px !important;
+        border-radius: 12px !important;
+    }
+    
+    .tox .tox-dialog__header {
+        padding: 20px 24px 16px 24px !important;
+        border-radius: 12px 12px 0 0 !important;
+    }
+    
+    .tox .tox-dialog__body {
+        padding: 20px 24px !important;
+    }
+    
+    .tox .tox-dialog__footer {
+        padding: 16px 24px 20px 24px !important;
+        border-radius: 0 0 12px 12px !important;
+    }
+    
+    .tox .tox-button {
+        min-height: 44px !important;
+        padding: 10px 20px !important;
+        font-size: 15px !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Улучшенные поля ввода для планшетов */
+    .tox .tox-textfield,
+    .tox .tox-textarea {
+        min-height: 44px !important;
+        padding: 12px 16px !important;
+        font-size: 15px !important;
+        border-radius: 8px !important;
+    }
+    
+    .tox .tox-textarea {
+        min-height: 120px !important;
+    }
+    
+    /* Улучшенные селекты для планшетов */
+    .tox .tox-listboxfield .tox-listbox--select {
+        min-height: 44px !important;
+        padding: 10px 16px !important;
+        font-size: 15px !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Улучшенные чекбоксы и радиокнопки для планшетов */
+    .tox .tox-checkbox,
+    .tox .tox-radio {
+        width: 20px !important;
+        height: 20px !important;
+        margin: 2px 8px 2px 0 !important;
+    }
+    
+    /* Улучшенные лейблы для планшетов */
+    .tox .tox-label {
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+        margin-bottom: 8px !important;
+    }
+    
+    /* Улучшенные табы для планшетов */
+    .tox .tox-tab {
+        min-height: 44px !important;
+        padding: 10px 20px !important;
+        font-size: 15px !important;
+    }
+    
+    /* Улучшенные панели для планшетов */
+    .tox .tox-panel {
+        border-radius: 8px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    /* Улучшенные уведомления для планшетов */
+    .tox .tox-notification {
+        border-radius: 8px !important;
+        padding: 16px 20px !important;
+        font-size: 15px !important;
+    }
+    
+    /* Улучшенные подсказки для планшетов */
+    .tox .tox-tooltip {
+        font-size: 14px !important;
+        padding: 8px 12px !important;
+        border-radius: 6px !important;
+    }
+    
+    /* Улучшенные заголовки в редакторе для планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body h1 {
+        font-size: 2.2em !important;
+        margin: 24px 0 16px 0 !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body h2 {
+        font-size: 1.8em !important;
+        margin: 20px 0 14px 0 !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body h3 {
+        font-size: 1.5em !important;
+        margin: 18px 0 12px 0 !important;
+    }
+    
+    [data-theme="light"] .tox-edit-area iframe body h1 {
+        font-size: 2.2em !important;
+        margin: 24px 0 16px 0 !important;
+    }
+    
+    [data-theme="light"] .tox-edit-area iframe body h2 {
+        font-size: 1.8em !important;
+        margin: 20px 0 14px 0 !important;
+    }
+    
+    [data-theme="light"] .tox-edit-area iframe body h3 {
+        font-size: 1.5em !important;
+        margin: 18px 0 12px 0 !important;
+    }
+    
+    /* Улучшенные параграфы в редакторе для планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body p,
+    [data-theme="light"] .tox-edit-area iframe body p {
+        margin-bottom: 16px !important;
+        line-height: 1.7 !important;
+    }
+    
+    /* Улучшенные списки в редакторе для планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body ul,
+    [data-theme="dark"] .tox-edit-area iframe body ol,
+    [data-theme="light"] .tox-edit-area iframe body ul,
+    [data-theme="light"] .tox-edit-area iframe body ol {
+        padding-left: 24px !important;
+        margin: 16px 0 !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body li,
+    [data-theme="light"] .tox-edit-area iframe body li {
+        margin: 8px 0 !important;
         line-height: 1.6 !important;
-        padding: 15px !important;
+    }
+    
+    /* Улучшенные таблицы в редакторе для планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body table,
+    [data-theme="light"] .tox-edit-area iframe body table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        margin: 16px 0 !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body th,
+    [data-theme="dark"] .tox-edit-area iframe body td,
+    [data-theme="light"] .tox-edit-area iframe body th,
+    [data-theme="light"] .tox-edit-area iframe body td {
+        padding: 12px 16px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        font-size: 15px !important;
+    }
+    
+    /* Улучшенные цитаты в редакторе для планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body blockquote,
+    [data-theme="light"] .tox-edit-area iframe body blockquote {
+        padding: 20px 24px !important;
+        margin: 20px 0 !important;
+        border-radius: 0 8px 8px 0 !important;
+    }
+    
+    /* Улучшенный код в редакторе для планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body pre,
+    [data-theme="light"] .tox-edit-area iframe body pre {
+        padding: 20px !important;
+        margin: 16px 0 !important;
+        border-radius: 8px !important;
+        font-size: 14px !important;
+        line-height: 1.6 !important;
+    }
+    
+    /* Touch-friendly улучшения для планшетов */
+    .tox .tox-tbtn,
+    .tox .tox-button,
+    .tox .tox-collection__item {
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+    
+    /* Улучшенные скроллбары для планшетов */
+    .tox .tox-edit-area__iframe::-webkit-scrollbar {
+        width: 8px !important;
+    }
+    
+    .tox .tox-edit-area__iframe::-webkit-scrollbar-thumb {
+        background: rgba(174, 252, 110, 0.3) !important;
+        border-radius: 4px !important;
+    }
+    
+    .tox .tox-edit-area__iframe::-webkit-scrollbar-thumb:hover {
+        background: rgba(174, 252, 110, 0.5) !important;
+    }
+}
+
+/* ===== АДАПТИВНЫЕ СТИЛИ ДЛЯ БОЛЬШИХ ПЛАНШЕТОВ ===== */
+@media (min-width: 1025px) and (max-width: 1366px) {
+    /* Основные стили редактора для больших планшетов */
+    .tox-edit-area iframe body {
+        font-size: 17px !important;
+        line-height: 1.8 !important;
+        padding: 25px !important;
+    }
+    
+    /* Полноэкранный редактор для больших планшетов */
+    .tox-tinymce {
+        height: calc(100vh - 120px) !important;
+        border-radius: 0 !important;
+    }
+    
+    .tox-edit-area {
+        height: calc(100vh - 200px) !important;
+    }
+    
+    .tox-edit-area__iframe {
+        height: 100% !important;
+    }
+    
+    /* Улучшенный тулбар для больших планшетов */
+    .tox .tox-toolbar {
+        padding: 10px 15px !important;
+        gap: 10px !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+    
+    .tox .tox-toolbar__group {
+        margin: 5px 8px !important;
+    }
+    
+    .tox .tox-tbtn {
+        width: 45px !important;
+        height: 45px !important;
+        margin: 3px !important;
+    }
+    
+    .tox .tox-tbtn svg {
+        width: 20px !important;
+        height: 20px !important;
+    }
+    
+    /* Улучшенные кнопки для больших планшетов */
+    .tox .tox-tbtn--enabled {
+        background: rgba(174, 252, 110, 0.25) !important;
+        border: 1px solid rgba(174, 252, 110, 0.5) !important;
+    }
+    
+    .tox .tox-tbtn:hover {
+        background: rgba(174, 252, 110, 0.15) !important;
+        transform: scale(1.08) !important;
+    }
+    
+    /* Улучшенное меню для больших планшетов */
+    .tox .tox-menu {
+        min-width: 220px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+    }
+    
+    .tox .tox-collection__item {
+        padding: 14px 18px !important;
+        font-size: 16px !important;
+        min-height: 48px !important;
+    }
+    
+    .tox .tox-collection__item:hover {
+        background: rgba(174, 252, 110, 0.15) !important;
+    }
+    
+    /* Улучшенные диалоги для больших планшетов */
+    .tox .tox-dialog {
+        width: 85% !important;
+        max-width: 700px !important;
+        border-radius: 15px !important;
+    }
+    
+    .tox .tox-dialog__header {
+        padding: 25px 30px 20px 30px !important;
+        border-radius: 15px 15px 0 0 !important;
+    }
+    
+    .tox .tox-dialog__body {
+        padding: 25px 30px !important;
+    }
+    
+    .tox .tox-dialog__footer {
+        padding: 20px 30px 25px 30px !important;
+        border-radius: 0 0 15px 15px !important;
+    }
+    
+    .tox .tox-button {
+        min-height: 48px !important;
+        padding: 12px 24px !important;
+        font-size: 16px !important;
+        border-radius: 10px !important;
+    }
+    
+    /* Улучшенные поля ввода для больших планшетов */
+    .tox .tox-textfield,
+    .tox .tox-textarea {
+        min-height: 48px !important;
+        padding: 14px 18px !important;
+        font-size: 16px !important;
+        border-radius: 10px !important;
+    }
+    
+    .tox .tox-textarea {
+        min-height: 140px !important;
+    }
+    
+    /* Улучшенные селекты для больших планшетов */
+    .tox .tox-listboxfield .tox-listbox--select {
+        min-height: 48px !important;
+        padding: 12px 18px !important;
+        font-size: 16px !important;
+        border-radius: 10px !important;
+    }
+    
+    /* Улучшенные чекбоксы и радиокнопки для больших планшетов */
+    .tox .tox-checkbox,
+    .tox .tox-radio {
+        width: 22px !important;
+        height: 22px !important;
+        margin: 3px 10px 3px 0 !important;
+    }
+    
+    /* Улучшенные лейблы для больших планшетов */
+    .tox .tox-label {
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+        margin-bottom: 10px !important;
+    }
+    
+    /* Улучшенные табы для больших планшетов */
+    .tox .tox-tab {
+        min-height: 48px !important;
+        padding: 12px 24px !important;
+        font-size: 16px !important;
+    }
+    
+    /* Улучшенные панели для больших планшетов */
+    .tox .tox-panel {
+        border-radius: 10px !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+    }
+    
+    /* Улучшенные уведомления для больших планшетов */
+    .tox .tox-notification {
+        border-radius: 10px !important;
+        padding: 18px 24px !important;
+        font-size: 16px !important;
+    }
+    
+    /* Улучшенные подсказки для больших планшетов */
+    .tox .tox-tooltip {
+        font-size: 15px !important;
+        padding: 10px 14px !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Улучшенные заголовки в редакторе для больших планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body h1 {
+        font-size: 2.4em !important;
+        margin: 28px 0 20px 0 !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body h2 {
+        font-size: 1.9em !important;
+        margin: 24px 0 18px 0 !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body h3 {
+        font-size: 1.6em !important;
+        margin: 20px 0 14px 0 !important;
+    }
+    
+    [data-theme="light"] .tox-edit-area iframe body h1 {
+        font-size: 2.4em !important;
+        margin: 28px 0 20px 0 !important;
+    }
+    
+    [data-theme="light"] .tox-edit-area iframe body h2 {
+        font-size: 1.9em !important;
+        margin: 24px 0 18px 0 !important;
+    }
+    
+    [data-theme="light"] .tox-edit-area iframe body h3 {
+        font-size: 1.6em !important;
+        margin: 20px 0 14px 0 !important;
+    }
+    
+    /* Улучшенные параграфы в редакторе для больших планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body p,
+    [data-theme="light"] .tox-edit-area iframe body p {
+        margin-bottom: 18px !important;
+        line-height: 1.8 !important;
+    }
+    
+    /* Улучшенные списки в редакторе для больших планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body ul,
+    [data-theme="dark"] .tox-edit-area iframe body ol,
+    [data-theme="light"] .tox-edit-area iframe body ul,
+    [data-theme="light"] .tox-edit-area iframe body ol {
+        padding-left: 28px !important;
+        margin: 18px 0 !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body li,
+    [data-theme="light"] .tox-edit-area iframe body li {
+        margin: 10px 0 !important;
+        line-height: 1.7 !important;
+    }
+    
+    /* Улучшенные таблицы в редакторе для больших планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body table,
+    [data-theme="light"] .tox-edit-area iframe body table {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        margin: 18px 0 !important;
+        border-radius: 10px !important;
+        overflow: hidden !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body th,
+    [data-theme="dark"] .tox-edit-area iframe body td,
+    [data-theme="light"] .tox-edit-area iframe body th,
+    [data-theme="light"] .tox-edit-area iframe body td {
+        padding: 14px 18px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        font-size: 16px !important;
+    }
+    
+    /* Улучшенные цитаты в редакторе для больших планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body blockquote,
+    [data-theme="light"] .tox-edit-area iframe body blockquote {
+        padding: 25px 30px !important;
+        margin: 25px 0 !important;
+        border-radius: 0 10px 10px 0 !important;
+    }
+    
+    /* Улучшенный код в редакторе для больших планшетов */
+    [data-theme="dark"] .tox-edit-area iframe body pre,
+    [data-theme="light"] .tox-edit-area iframe body pre {
+        padding: 25px !important;
+        margin: 18px 0 !important;
+        border-radius: 10px !important;
+        font-size: 15px !important;
+        line-height: 1.7 !important;
+    }
+    
+    /* Touch-friendly улучшения для больших планшетов */
+    .tox .tox-tbtn,
+    .tox .tox-button,
+    .tox .tox-collection__item {
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+    
+    /* Улучшенные скроллбары для больших планшетов */
+    .tox .tox-edit-area__iframe::-webkit-scrollbar {
+        width: 10px !important;
+    }
+    
+    .tox .tox-edit-area__iframe::-webkit-scrollbar-thumb {
+        background: rgba(174, 252, 110, 0.4) !important;
+        border-radius: 5px !important;
+    }
+    
+    .tox .tox-edit-area__iframe::-webkit-scrollbar-thumb:hover {
+        background: rgba(174, 252, 110, 0.6) !important;
     }
 }
 

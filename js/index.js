@@ -4,13 +4,16 @@ class ResponsiveManager {
         this.breakpoints = {
             mobile: 768,
             tablet: 1024,
+            largeTablet: 1366,
             desktop: 1200
         };
         this.currentBreakpoint = this.getCurrentBreakpoint();
         this.isMobile = this.currentBreakpoint === 'mobile';
         this.isTablet = this.currentBreakpoint === 'tablet';
+        this.isLargeTablet = this.currentBreakpoint === 'largeTablet';
         this.isDesktop = this.currentBreakpoint === 'desktop';
         this.isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        this.isTabletDevice = this.isTablet || this.isLargeTablet;
         
         this.init();
     }
@@ -19,6 +22,7 @@ class ResponsiveManager {
         const width = window.innerWidth;
         if (width < this.breakpoints.mobile) return 'mobile';
         if (width < this.breakpoints.tablet) return 'tablet';
+        if (width < this.breakpoints.largeTablet) return 'largeTablet';
         return 'desktop';
     }
     
@@ -26,14 +30,22 @@ class ResponsiveManager {
         // Добавляем классы для устройств
         document.documentElement.classList.add(`${this.currentBreakpoint}-device`);
         if (this.isTouch) {
-    document.documentElement.classList.add('touch-device');
-}
+            document.documentElement.classList.add('touch-device');
+        }
+        if (this.isTabletDevice) {
+            document.documentElement.classList.add('tablet-device');
+        }
 
         // Слушаем изменения размера окна
         window.addEventListener('resize', this.handleResize.bind(this));
         
         // Слушаем изменения ориентации
         window.addEventListener('orientationchange', this.handleOrientationChange.bind(this));
+        
+        // Инициализируем touch-улучшения для планшетов
+        if (this.isTabletDevice) {
+            this.initTabletOptimizations();
+        }
     }
     
     handleResize() {
@@ -46,7 +58,9 @@ class ResponsiveManager {
             this.currentBreakpoint = newBreakpoint;
             this.isMobile = this.currentBreakpoint === 'mobile';
             this.isTablet = this.currentBreakpoint === 'tablet';
+            this.isLargeTablet = this.currentBreakpoint === 'largeTablet';
             this.isDesktop = this.currentBreakpoint === 'desktop';
+            this.isTabletDevice = this.isTablet || this.isLargeTablet;
             
             // Добавляем новый класс
             document.documentElement.classList.add(`${this.currentBreakpoint}-device`);
@@ -65,18 +79,175 @@ class ResponsiveManager {
     
     updateEditorLayout() {
         if (tinymceEditor && !tinymceEditor.destroyed) {
-            
-            
-            // Перезагружаем редактор с новыми настройками
-            const currentContent = tinymceEditor.getContent();
-            tinymceEditor.destroy();
-            
-            setTimeout(async () => {
-                await initTinyMCE();
-                if (tinymceEditor && currentContent) {
-                    tinymceEditor.setContent(currentContent);
+            try {
+                // Перезагружаем редактор с новыми настройками
+                const currentContent = tinymceEditor.getContent();
+                tinymceEditor.destroy();
+                
+                setTimeout(async () => {
+                    await initTinyMCE();
+                    if (tinymceEditor && currentContent) {
+                        tinymceEditor.setContent(currentContent);
+                    }
+                }, 100);
+            } catch (error) {
+                console.warn('Error updating editor layout:', error);
+                // Просто перезагружаем редактор без сохранения контента
+                setTimeout(async () => {
+                    await initTinyMCE();
+                }, 100);
+            }
+        }
+    }
+    
+    initTabletOptimizations() {
+        // Улучшения для планшетов
+        this.optimizeTouchTargets();
+        this.optimizeScrolling();
+        this.optimizeKeyboard();
+        this.optimizeGestures();
+    }
+    
+    optimizeTouchTargets() {
+        // Увеличиваем размеры touch-целей для планшетов
+        const touchTargets = document.querySelectorAll('button, input, select, textarea, .note, .modal-buttons-container button');
+        
+        touchTargets.forEach(target => {
+            if (this.isTabletDevice) {
+                target.style.minHeight = '44px';
+                target.style.touchAction = 'manipulation';
+                target.style.webkitTapHighlightColor = 'transparent';
+            }
+        });
+        
+        // Принудительно применяем полноэкранный режим для модальных окон на планшетах
+        if (this.isTabletDevice) {
+            this.forceFullscreenModal();
+        }
+    }
+    
+    forceFullscreenModal() {
+        // Наблюдаем за появлением модальных окон
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                    const modal = mutation.target;
+                    if (modal.classList.contains('modal') && modal.style.display === 'block') {
+                        this.applyFullscreenModal(modal);
+                    }
                 }
-            }, 100);
+            });
+        });
+        
+        // Наблюдаем за всеми модальными окнами
+        document.querySelectorAll('.modal').forEach(modal => {
+            observer.observe(modal, { attributes: true, attributeFilter: ['style'] });
+        });
+    }
+    
+    applyFullscreenModal(modal) {
+        if (!this.isTabletDevice) return;
+        
+        // Принудительно применяем полноэкранные стили
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.style.cssText = `
+                width: 100vw !important;
+                height: 100vh !important;
+                margin: 0 !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                border-radius: 0 !important;
+                position: fixed !important;
+                transform: none !important;
+                display: flex !important;
+                flex-direction: column !important;
+                background: var(--modal-bg) !important;
+                border: none !important;
+                box-shadow: none !important;
+                z-index: 10000 !important;
+            `;
+            
+            // Применяем стили к TinyMCE
+            const tinymceContainer = modalContent.querySelector('.tinymce');
+            if (tinymceContainer) {
+                tinymceContainer.style.cssText = `
+                    flex: 1 !important;
+                    height: calc(100vh - 120px) !important;
+                    min-height: calc(100vh - 120px) !important;
+                    width: 100% !important;
+                `;
+            }
+            
+            const toxTinymce = modalContent.querySelector('.tox-tinymce');
+            if (toxTinymce) {
+                toxTinymce.style.cssText = `
+                    height: calc(100vh - 120px) !important;
+                    width: 100% !important;
+                    border: none !important;
+                    border-radius: 0 !important;
+                `;
+            }
+        }
+    }
+    
+    optimizeScrolling() {
+        // Улучшаем скроллинг для планшетов
+        if (this.isTabletDevice) {
+            // Добавляем плавный скроллинг
+            document.documentElement.style.scrollBehavior = 'smooth';
+            
+            // Оптимизируем скроллинг для заметок
+            const notesContainer = document.getElementById('notesContainer');
+            if (notesContainer) {
+                notesContainer.style.webkitOverflowScrolling = 'touch';
+                notesContainer.style.overscrollBehavior = 'contain';
+            }
+        }
+    }
+    
+    optimizeKeyboard() {
+        // Улучшения для виртуальной клавиатуры на планшетах
+        if (this.isTabletDevice) {
+            // Предотвращаем зум при фокусе на input
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    if (this.isTabletDevice) {
+                        input.style.fontSize = '16px'; // Предотвращает зум на iOS
+                    }
+                });
+            });
+        }
+    }
+    
+    optimizeGestures() {
+        // Оптимизация жестов для планшетов
+        if (this.isTabletDevice) {
+            // Предотвращаем случайные жесты
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 1) {
+                    e.preventDefault(); // Предотвращаем зум
+                }
+            }, { passive: false });
+            
+            // Улучшаем обработку свайпов
+            let startY = 0;
+            document.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+            });
+            
+            document.addEventListener('touchmove', (e) => {
+                const currentY = e.touches[0].clientY;
+                const diffY = startY - currentY;
+                
+                // Предотвращаем pull-to-refresh на планшетах
+                if (diffY < 0 && window.scrollY === 0) {
+                    e.preventDefault();
+                }
+            }, { passive: false, cancelable: true });
         }
     }
     
@@ -2018,7 +2189,7 @@ async function initTinyMCE() {
         quickbars_image_toolbar: 'alignleft aligncenter alignright | imageoptions',
             resize: false,
             height: '100%',
-            min_height: 400,
+            min_height: responsiveManager.isTabletDevice ? 450 : 400,
             elementpath: responsiveManager.isDesktop,
         statusbar: false,
             quickbars_insert_toolbar: 'quickimage quicktable',
@@ -2026,6 +2197,56 @@ async function initTinyMCE() {
             mobile: responsiveManager.isMobile,
             touch: responsiveManager.isTouch || pointerManager.isTouch(),
         menubar: false,
+        
+        // Улучшения для планшетов
+        skin: responsiveManager.isTabletDevice ? 'oxide-dark' : 'oxide',
+        content_css: responsiveManager.isTabletDevice ? 'dark' : 'default',
+        
+        // Настройки для планшетов - убираем toolbar_groups для совместимости
+        
+        // Улучшенные настройки для touch-устройств
+        touch_ui: responsiveManager.isTabletDevice,
+        touch_ui_scale: responsiveManager.isTabletDevice ? 1.2 : 1,
+        
+        // Настройки для виртуальной клавиатуры
+        virtual_keyboard: responsiveManager.isTabletDevice,
+        
+        // Улучшенные настройки для планшетов
+        content_style: responsiveManager.isTabletDevice ? `
+            body { 
+                font-size: 16px !important; 
+                line-height: 1.7 !important; 
+                padding: 20px !important;
+                font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            }
+            h1, h2, h3, h4, h5, h6 { 
+                margin: 20px 0 15px 0 !important; 
+                line-height: 1.3 !important;
+            }
+            p { 
+                margin-bottom: 16px !important; 
+                line-height: 1.7 !important;
+            }
+            table { 
+                border-collapse: collapse !important; 
+                width: 100% !important; 
+                margin: 16px 0 !important;
+            }
+            th, td { 
+                padding: 12px 16px !important; 
+                border: 1px solid #ddd !important;
+            }
+            blockquote { 
+                padding: 20px 24px !important; 
+                margin: 20px 0 !important; 
+                border-left: 4px solid #aefc6e !important;
+            }
+            pre { 
+                padding: 20px !important; 
+                margin: 16px 0 !important; 
+                border-radius: 8px !important;
+            }
+        ` : undefined,
             // Настройки для таблиц
             table_default_attributes: {
                 border: '1'
@@ -2588,6 +2809,13 @@ function openModal(noteId, noteContent, noteCreationTime) {
     // Открываем модальное окно
     modal.style.display = "block";
     document.body.classList.add('modal-open');
+    
+    // Принудительно применяем полноэкранные стили для планшетов
+    if (responsiveManager && responsiveManager.isTabletDevice) {
+        setTimeout(() => {
+            responsiveManager.applyFullscreenModal(modal);
+        }, 100);
+    }
 
     // Ждем инициализации редактора и устанавливаем контент
     waitForEditor()

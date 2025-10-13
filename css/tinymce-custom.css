@@ -1197,6 +1197,20 @@
     line-height: 1.6 !important;
     font-size: 16px !important;
     transition: all 0.3s ease !important;
+    text-align: left !important;
+}
+
+/* Выравнивание по умолчанию для всех элементов в редакторе */
+.tox-edit-area iframe body p,
+.tox-edit-area iframe body div,
+.tox-edit-area iframe body span,
+.tox-edit-area iframe body h1,
+.tox-edit-area iframe body h2,
+.tox-edit-area iframe body h3,
+.tox-edit-area iframe body h4,
+.tox-edit-area iframe body h5,
+.tox-edit-area iframe body h6 {
+    text-align: left !important;
 }
 
 /* ===== ТЕМНАЯ ТЕМА ===== */
@@ -2026,6 +2040,20 @@
     line-height: 1.6 !important;
     font-size: 16px !important;
     transition: all 0.3s ease !important;
+    text-align: left !important;
+}
+
+/* Выравнивание по умолчанию для всех элементов в iframe с ID */
+#editorContainer_ifr body p,
+#editorContainer_ifr body div,
+#editorContainer_ifr body span,
+#editorContainer_ifr body h1,
+#editorContainer_ifr body h2,
+#editorContainer_ifr body h3,
+#editorContainer_ifr body h4,
+#editorContainer_ifr body h5,
+#editorContainer_ifr body h6 {
+    text-align: left !important;
 }
 
 /* ===== ТЕМНАЯ ТЕМА ДЛЯ IFRAME С ID ===== */

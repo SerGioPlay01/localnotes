@@ -806,11 +806,32 @@ body {
     margin-bottom: 5%;
     transition: all 0.4s ease-in-out;
 }
+
 #notesContainer.full-width-view .note {
     height: min-content;
+    min-height: 200px; /* Минимальная высота для заметки в режиме списка */
+    display: flex;
+    flex-direction: column;
 }
+
 #notesContainer.full-width-view .noteContent {
-    margin-top: 0%;
+    margin-top: 60px; /* Добавляем отступ для даты */
+    padding-top: 20px; /* Дополнительный отступ сверху */
+    flex: 1; /* Занимает оставшееся пространство */
+    overflow: visible; /* Позволяем контенту быть видимым */
+}
+
+/* Улучшаем отображение даты в режиме списка */
+#notesContainer.full-width-view .note-footer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: var(--note-footer-bg);
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(10px); /* Добавляем размытие фона */
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .note {
@@ -840,6 +861,10 @@ body {
     margin-top: 50px; /* Отступ для увеличенного хедера */
     overflow-y: auto;
     box-sizing: border-box;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    line-height: 1.6 !important;
+    font-size: 16px !important;
+    text-align: left !important;
 }
 
 /* Контейнер для кнопок заметки */
@@ -1684,6 +1709,20 @@ input {
     margin: 12px 0;
 }
 
+/* Темная тема для блоков кода */
+[data-theme="dark"] .note pre {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Светлая тема для блоков кода */
+[data-theme="light"] .note pre {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #212529 !important;
+    border: 1px solid #dee2e6 !important;
+}
+
 .note iframe {
     width: 100%;
     height: 300px;
@@ -1759,6 +1798,20 @@ input {
     box-shadow: inset 0 1px 3px var(--shadow-color);
 }
 
+/* Темная тема для цитат */
+[data-theme="dark"] .note blockquote {
+    border-left: 4px solid #aefc6e !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+}
+
+/* Светлая тема для цитат */
+[data-theme="light"] .note blockquote {
+    border-left: 4px solid #28a745 !important;
+    background: #f8f9fa !important;
+    color: #212529 !important;
+}
+
 /* Нумерованные списки в заметках */
 .note ol {
     list-style-type: decimal;
@@ -1769,8 +1822,19 @@ input {
 .note ol li {
     margin: 8px 0;
     color: var(--note-text);
-    font-size: 1.05em;
-    line-height: 1.7;
+    font-size: 16px;
+    line-height: 1.6;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Темная тема для нумерованных списков */
+[data-theme="dark"] .note ol li {
+    color: #ffffff !important;
+}
+
+/* Светлая тема для нумерованных списков */
+[data-theme="light"] .note ol li {
+    color: #212529 !important;
 }
 
 /* Ненумерованные списки в заметках */
@@ -1783,43 +1847,77 @@ input {
 .note ul li {
     margin: 8px 0;
     color: var(--note-text);
-    font-size: 1.05em;
-    line-height: 1.7;
+    font-size: 16px;
+    line-height: 1.6;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Заголовки в заметках */
+/* Темная тема для ненумерованных списков */
+[data-theme="dark"] .note ul li {
+    color: #ffffff !important;
+}
+
+/* Светлая тема для ненумерованных списков */
+[data-theme="light"] .note ul li {
+    color: #212529 !important;
+}
+
+/* Заголовки в заметках - соответствуют стилям редактора */
 .note h1, .note h2, .note h3, .note h4, .note h5, .note h6 {
     color: var(--note-text);
     margin: 24px 0 16px 0;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.3;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     letter-spacing: -0.02em;
+    text-align: left !important;
+}
+
+/* Темная тема для заголовков */
+[data-theme="dark"] .note h1,
+[data-theme="dark"] .note h2 {
+    color: #aefc6e !important;
+}
+
+[data-theme="dark"] .note h3,
+[data-theme="dark"] .note h4,
+[data-theme="dark"] .note h5,
+[data-theme="dark"] .note h6 {
+    color: #ffffff !important;
+}
+
+/* Светлая тема для заголовков */
+[data-theme="light"] .note h1,
+[data-theme="light"] .note h2 {
+    color: #28a745 !important;
+}
+
+[data-theme="light"] .note h3,
+[data-theme="light"] .note h4,
+[data-theme="light"] .note h5,
+[data-theme="light"] .note h6 {
+    color: #212529 !important;
 }
 
 .note h1 {
     font-size: 2.2em;
     border-bottom: 2px solid var(--primary-color);
     padding-bottom: 8px;
-    color: var(--note-text);
 }
 
 .note h2 {
     font-size: 1.7em;
     border-bottom: 1px solid var(--primary-color);
     padding-bottom: 6px;
-    color: var(--note-text);
 }
 
 .note h3 {
     font-size: 1.4em;
-    color: var(--note-text);
 }
 
 .note h4 {
     font-size: 1.2em;
-    color: var(--note-text);
 }
 
 .note-footer {
@@ -1843,20 +1941,47 @@ input {
 
 .note a {
     color: var(--primary-color);
-    text-decoration: wavy;
-    font-weight: 700;
-    border-bottom: 1px solid var(--primary-color);
+    text-decoration: underline;
+    font-weight: 500;
+    transition: color 0.2s ease;
 }
 
-/* Дополнительные стили для контента заметок */
+/* Темная тема для ссылок */
+[data-theme="dark"] .note a {
+    color: #aefc6e !important;
+}
+
+[data-theme="dark"] .note a:hover {
+    color: #8dd85a !important;
+}
+
+/* Светлая тема для ссылок */
+[data-theme="light"] .note a {
+    color: #28a745 !important;
+}
+
+[data-theme="light"] .note a:hover {
+    color: #218838 !important;
+}
+
+/* Дополнительные стили для контента заметок - соответствуют стилям редактора */
 .note p {
     margin-bottom: 16px;
-    line-height: 1.8;
+    line-height: 1.7;
     color: var(--note-text);
-    font-size: 1.05em;
-    text-align: justify;
-    text-justify: inter-word;
-    hyphens: auto;
+    font-size: 16px;
+    text-align: left !important;
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Темная тема для параграфов */
+[data-theme="dark"] .note p {
+    color: #ffffff !important;
+}
+
+/* Светлая тема для параграфов */
+[data-theme="light"] .note p {
+    color: #212529 !important;
 }
 
 .note strong,
@@ -1865,10 +1990,34 @@ input {
     color: var(--note-text);
 }
 
+/* Темная тема для жирного текста */
+[data-theme="dark"] .note strong,
+[data-theme="dark"] .note b {
+    color: #ffffff !important;
+}
+
+/* Светлая тема для жирного текста */
+[data-theme="light"] .note strong,
+[data-theme="light"] .note b {
+    color: #212529 !important;
+}
+
 .note em,
 .note i {
     font-style: italic;
     color: var(--note-text);
+}
+
+/* Темная тема для курсива */
+[data-theme="dark"] .note em,
+[data-theme="dark"] .note i {
+    color: #ffffff !important;
+}
+
+/* Светлая тема для курсива */
+[data-theme="light"] .note em,
+[data-theme="light"] .note i {
+    color: #212529 !important;
 }
 
 .note u {
@@ -1876,10 +2025,30 @@ input {
     color: var(--primary-color);
 }
 
+/* Темная тема для подчеркнутого текста */
+[data-theme="dark"] .note u {
+    color: #aefc6e !important;
+}
+
+/* Светлая тема для подчеркнутого текста */
+[data-theme="light"] .note u {
+    color: #28a745 !important;
+}
+
 .note s {
     text-decoration: line-through;
     color: var(--note-text);
     opacity: 0.7;
+}
+
+/* Темная тема для зачеркнутого текста */
+[data-theme="dark"] .note s {
+    color: #888888 !important;
+}
+
+/* Светлая тема для зачеркнутого текста */
+[data-theme="light"] .note s {
+    color: #6c757d !important;
 }
 
 .note code {
@@ -1892,11 +2061,35 @@ input {
     border: 1px solid var(--border-color);
 }
 
+/* Темная тема для кода */
+[data-theme="dark"] .note code {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Светлая тема для кода */
+[data-theme="light"] .note code {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #212529 !important;
+    border: 1px solid #dee2e6 !important;
+}
+
 .note hr {
     border: none;
     height: 1px;
     background: linear-gradient(90deg, transparent, #272727, transparent);
     margin: 24px 0;
+}
+
+/* Темная тема для горизонтальных линий */
+[data-theme="dark"] .note hr {
+    background: linear-gradient(90deg, transparent, #aefc6e, transparent) !important;
+}
+
+/* Светлая тема для горизонтальных линий */
+[data-theme="light"] .note hr {
+    background: linear-gradient(90deg, transparent, #28a745, transparent) !important;
 }
 
 /* Дополнительные стили форматирования текста */
@@ -1914,6 +2107,38 @@ input {
     vertical-align: sub;
     line-height: 0;
     color: var(--note-text);
+}
+
+/* Темная тема для верхнего и нижнего индекса */
+[data-theme="dark"] .note sup,
+[data-theme="dark"] .note sub {
+    color: #ffffff !important;
+}
+
+/* Светлая тема для верхнего и нижнего индекса */
+[data-theme="light"] .note sup,
+[data-theme="light"] .note sub {
+    color: #212529 !important;
+}
+
+/* Выделенный текст (mark) */
+.note mark {
+    background: var(--primary-color);
+    color: var(--note-text);
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* Темная тема для выделенного текста */
+[data-theme="dark"] .note mark {
+    background: #aefc6e !important;
+    color: #000000 !important;
+}
+
+/* Светлая тема для выделенного текста */
+[data-theme="light"] .note mark {
+    background: #ffdd44 !important;
+    color: #333333 !important;
 }
 
 /* Маркированные списки с разными стилями */
@@ -1947,32 +2172,92 @@ input {
     list-style-type: upper-roman;
 }
 
-/* Таблицы */
-.note table {
+/* ===== УЛУЧШЕННЫЕ СТИЛИ ТАБЛИЦ ДЛЯ АДАПТИВНОСТИ ===== */
+
+/* Контейнер для таблиц с прокруткой */
+.note .table-container {
     width: 100%;
-    border-collapse: collapse;
+    overflow-x: auto;
+    overflow-y: hidden;
     margin: 16px 0;
-    background: var(--input-bg);
     border-radius: 8px;
-    overflow: hidden;
     box-shadow: 0 2px 8px var(--shadow-color);
+    background: var(--input-bg);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) transparent;
 }
 
+/* Стили для скроллбара в контейнере таблиц */
+.note .table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.note .table-container::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+}
+
+.note .table-container::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.note .table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color-hover, #218838);
+}
+
+/* Основные стили таблиц */
+.note table {
+    width: 100%;
+    min-width: 600px; /* Минимальная ширина для корректного отображения */
+    border-collapse: collapse;
+    background: var(--input-bg);
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    table-layout: auto;
+}
+
+/* Стили для ячеек таблицы */
 .note table th,
 .note table td {
     padding: 12px 16px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
     color: var(--note-text);
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    vertical-align: top;
 }
 
+/* Убираем правую границу у последней колонки */
+.note table th:last-child,
+.note table td:last-child {
+    border-right: none;
+}
+
+/* Стили для заголовков таблицы */
 .note table th {
     background: var(--primary-color);
     color: white;
     font-weight: 600;
     text-transform: uppercase;
-    font-size: 0.9em;
+    font-size: 0.85em;
     letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+/* Стили для строк таблицы */
+.note table tr {
+    transition: background-color 0.2s ease;
 }
 
 .note table tr:hover {
@@ -1983,6 +2268,278 @@ input {
     border-bottom: none;
 }
 
+/* Стили для четных и нечетных строк */
+.note table tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.note table tr:nth-child(odd) {
+    background: transparent;
+}
+
+/* ===== ТЕМНАЯ ТЕМА ДЛЯ ТАБЛИЦ ===== */
+[data-theme="dark"] .note .table-container {
+    background: rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .note table {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="dark"] .note table td,
+[data-theme="dark"] .note table th {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .note table th {
+    background: #aefc6e !important;
+    color: #000000 !important;
+}
+
+[data-theme="dark"] .note table tr:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .note table tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* ===== СВЕТЛАЯ ТЕМА ДЛЯ ТАБЛИЦ ===== */
+[data-theme="light"] .note .table-container {
+    background: #f8f9fa !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .note table {
+    background: #f8f9fa !important;
+}
+
+[data-theme="light"] .note table td,
+[data-theme="light"] .note table th {
+    color: #212529 !important;
+    border-color: #dee2e6 !important;
+}
+
+[data-theme="light"] .note table th {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .note table tr:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .note table tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* ===== АДАПТИВНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ===== */
+
+/* Мобильные устройства (до 768px) */
+@media (max-width: 768px) {
+    /* Контейнер таблиц на мобильных */
+    .note .table-container {
+        margin: 12px 0;
+        border-radius: 6px;
+        box-shadow: 0 1px 4px var(--shadow-color);
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    /* Уменьшаем высоту скроллбара на мобильных */
+    .note .table-container::-webkit-scrollbar {
+        height: 6px;
+    }
+    
+    /* Основные стили таблиц на мобильных */
+    .note table {
+        min-width: 500px; /* Уменьшаем минимальную ширину */
+        font-size: 13px;
+    }
+    
+    /* Ячейки таблицы на мобильных */
+    .note table th,
+    .note table td {
+        padding: 8px 12px;
+        font-size: 13px;
+        line-height: 1.4;
+        min-width: 80px;
+    }
+    
+    /* Заголовки таблицы на мобильных */
+    .note table th {
+        font-size: 0.8em;
+        padding: 10px 12px;
+        min-width: 100px;
+    }
+    
+    /* Улучшаем touch-интерфейс */
+    .note .table-container {
+        touch-action: pan-x;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Индикатор прокрутки для мобильных */
+    .note .table-container::after {
+        content: '← Прокрутите для просмотра →';
+        display: block;
+        text-align: center;
+        font-size: 11px;
+        color: var(--text-muted);
+        padding: 4px 8px;
+        background: var(--input-bg);
+        border-top: 1px solid var(--border-color);
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+        position: relative;
+    }
+    
+    /* Анимация для индикатора */
+    .note .table-container::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        opacity: 0.5;
+        animation: scrollIndicator 2s ease-in-out infinite;
+    }
+    
+    /* Скрываем индикатор при прокрутке */
+    .note .table-container.scrolled::after,
+    .note .table-container.scrolled::before {
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    /* Анимация для индикатора прокрутки */
+    @keyframes scrollIndicator {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.8; }
+    }
+}
+
+/* Планшеты (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .note .table-container {
+        margin: 14px 0;
+    }
+    
+    .note table {
+        min-width: 550px;
+    }
+    
+    .note table th,
+    .note table td {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+    
+    .note table th {
+        font-size: 0.82em;
+    }
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ ДЛЯ ТАБЛИЦ ===== */
+
+/* Стили для таблиц с большим количеством данных */
+.note table.large-table {
+    min-width: 800px;
+}
+
+.note table.large-table th,
+.note table.large-table td {
+    min-width: 150px;
+}
+
+/* Стили для компактных таблиц */
+.note table.compact-table {
+    min-width: 400px;
+}
+
+.note table.compact-table th,
+.note table.compact-table td {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 60px;
+}
+
+/* Стили для таблиц с числовыми данными */
+.note table.numeric-table td {
+    text-align: right;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+/* Стили для таблиц с центрированным текстом */
+.note table.centered-table th,
+.note table.centered-table td {
+    text-align: center;
+}
+
+/* Стили для таблиц с фиксированными колонками */
+.note table.fixed-columns th:first-child,
+.note table.fixed-columns td:first-child {
+    position: sticky;
+    left: 0;
+    background: var(--input-bg);
+    z-index: 5;
+    border-right: 2px solid var(--primary-color);
+}
+
+[data-theme="dark"] .note table.fixed-columns th:first-child,
+[data-theme="dark"] .note table.fixed-columns td:first-child {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="light"] .note table.fixed-columns th:first-child,
+[data-theme="light"] .note table.fixed-columns td:first-child {
+    background: #f8f9fa !important;
+}
+
+/* ===== СТИЛИ ДЛЯ ИНДИКАТОРА ПРОКРУТКИ В ТЕМАХ ===== */
+
+/* Темная тема для индикатора прокрутки */
+[data-theme="dark"] .note .table-container::after {
+    color: #888888 !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-top-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .note .table-container::before {
+    background: linear-gradient(90deg, transparent, #aefc6e, transparent) !important;
+}
+
+/* Светлая тема для индикатора прокрутки */
+[data-theme="light"] .note .table-container::after {
+    color: #6c757d !important;
+    background: #f8f9fa !important;
+    border-top-color: #dee2e6 !important;
+}
+
+[data-theme="light"] .note .table-container::before {
+    background: linear-gradient(90deg, transparent, #28a745, transparent) !important;
+}
+
+/* ===== СТИЛИ ДЛЯ РЕЖИМА СПИСКА В ТЕМАХ ===== */
+
+/* Темная тема для режима списка */
+[data-theme="dark"] #notesContainer.full-width-view .note-footer {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+/* Светлая тема для режима списка */
+[data-theme="light"] #notesContainer.full-width-view .note-footer {
+    background: rgba(248, 249, 250, 0.9) !important;
+    border-bottom-color: #dee2e6 !important;
+    color: #212529 !important;
+}
+
 /* Выравнивание текста */
 .note [style*="text-align: center"] {
     text-align: center;
@@ -1990,6 +2547,39 @@ input {
 
 .note [style*="text-align: right"] {
     text-align: right;
+}
+
+/* Выделение текста */
+.note ::selection {
+    background: var(--primary-color);
+    color: #ffffff;
+}
+
+.note ::-moz-selection {
+    background: var(--primary-color);
+    color: #ffffff;
+}
+
+/* Темная тема для выделения текста */
+[data-theme="dark"] .note ::selection {
+    background: #aefc6e !important;
+    color: #000000 !important;
+}
+
+[data-theme="dark"] .note ::-moz-selection {
+    background: #aefc6e !important;
+    color: #000000 !important;
+}
+
+/* Светлая тема для выделения текста */
+[data-theme="light"] .note ::selection {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .note ::-moz-selection {
+    background: #28a745 !important;
+    color: #ffffff !important;
 }
 
 .note [style*="text-align: justify"] {

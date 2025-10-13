@@ -1992,6 +1992,12 @@ async function initTinyMCE() {
             'codesample', 'pagebreak', 'nonbreaking', 'quickbars', 'accordion',
             'autosave', 'directionality', 'visualchars'
         ],
+        // Настройки для автосоздания ссылок
+        autolink_pattern: /^(https?:\/\/|ssh:\/\/|ftp:\/\/|file:\/|www\.|(?:mailto:)?[A-Z0-9._%+-]+@)(.+)$/i,
+        autolink_url_filter: function(url, node) {
+            // Разрешаем все стандартные протоколы
+            return true;
+        },
         toolbar: [
             'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough superscript subscript | ' +
             'alignleft aligncenter alignright alignjustify | outdent indent | ' +
@@ -2074,6 +2080,14 @@ async function initTinyMCE() {
                 {start: '* ', cmd: 'InsertUnorderedList'},
                 {start: '- ', cmd: 'InsertUnorderedList'}
             ],
+            // Настройки выравнивания по умолчанию
+            block_formats: 'Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Heading 4=h4; Heading 5=h5; Heading 6=h6; Preformatted=pre',
+            // Устанавливаем выравнивание по умолчанию на left
+            default_paragraph_separator: 'p',
+            forced_root_block: 'p',
+            forced_root_block_attrs: {
+                'style': 'text-align: left;'
+            },
             
             // Настройки для пасты (базовые)
             paste_data_images: true,
@@ -2145,6 +2159,12 @@ async function initTinyMCE() {
                     margin: 0 !important;
                     padding: 16px !important;
                     min-height: 300px !important;
+                    text-align: left !important;
+                }
+                
+                /* Выравнивание по умолчанию для всех элементов */
+                p, div, span, h1, h2, h3, h4, h5, h6 {
+                    text-align: left !important;
                 }
                 
                 /* Темная тема */
@@ -2793,6 +2813,11 @@ async function loadNotes() {
         const notePreview = document.createElement("div");
         notePreview.classList.add("noteContent");
             notePreview.innerHTML = note.content;
+            
+            // Обрабатываем таблицы для адаптивности
+            setTimeout(() => {
+                processTablesForResponsiveness(notePreview);
+            }, 100);
             
             // Улучшаем загрузку изображений
             setTimeout(() => {
@@ -7245,4 +7270,225 @@ function dismissWelcomeMessage() {
         }, 300);
     }
 }
+
+// ===== ФУНКЦИИ ДЛЯ ОБРАБОТКИ ТАБЛИЦ =====
+
+/**
+ * Обрабатывает таблицы для адаптивности и добавляет прокрутку
+ * @param {HTMLElement} container - Контейнер с контентом заметки
+ */
+function processTablesForResponsiveness(container) {
+    const tables = container.querySelectorAll('table');
+    
+    tables.forEach(table => {
+        // Проверяем, не обернута ли уже таблица в контейнер
+        if (table.parentElement.classList.contains('table-container')) {
+            return;
+        }
+        
+        // Создаем контейнер для таблицы
+        const tableContainer = document.createElement('div');
+        tableContainer.classList.add('table-container');
+        
+        // Определяем тип таблицы и добавляем соответствующие классы
+        const tableClasses = determineTableClasses(table);
+        table.classList.add(...tableClasses);
+        
+        // Вставляем контейнер перед таблицей
+        table.parentNode.insertBefore(tableContainer, table);
+        
+        // Перемещаем таблицу в контейнер
+        tableContainer.appendChild(table);
+        
+        // Добавляем обработчики для индикатора прокрутки
+        addScrollIndicators(tableContainer);
+        
+        // Оптимизируем таблицу для мобильных устройств
+        optimizeTableForMobile(table);
+    });
+}
+
+/**
+ * Определяет классы для таблицы на основе её содержимого
+ * @param {HTMLTableElement} table - Таблица
+ * @returns {string[]} Массив классов
+ */
+function determineTableClasses(table) {
+    const classes = [];
+    
+    // Подсчитываем количество колонок
+    const columnCount = table.querySelectorAll('th, td').length / table.querySelectorAll('tr').length;
+    
+    // Определяем тип таблицы
+    if (columnCount > 6) {
+        classes.push('large-table');
+    } else if (columnCount <= 3) {
+        classes.push('compact-table');
+    }
+    
+    // Проверяем, содержит ли таблица числовые данные
+    const hasNumericData = Array.from(table.querySelectorAll('td')).some(td => {
+        const text = td.textContent.trim();
+        return /^\d+([.,]\d+)?$/.test(text) || /^\d+([.,]\d+)?%$/.test(text);
+    });
+    
+    if (hasNumericData) {
+        classes.push('numeric-table');
+    }
+    
+    // Проверяем, нужна ли фиксация первой колонки
+    if (columnCount > 4) {
+        classes.push('fixed-columns');
+    }
+    
+    return classes;
+}
+
+/**
+ * Добавляет индикаторы прокрутки для мобильных устройств
+ * @param {HTMLElement} container - Контейнер таблицы
+ */
+function addScrollIndicators(container) {
+    let isScrolling = false;
+    let scrollTimeout;
+    
+    // Обработчик прокрутки
+    const handleScroll = () => {
+        if (!isScrolling) {
+            container.classList.add('scrolled');
+            isScrolling = true;
+        }
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            // Проверяем, находится ли таблица в начальной позиции
+            if (container.scrollLeft === 0) {
+                container.classList.remove('scrolled');
+                isScrolling = false;
+            }
+        }, 150);
+    };
+    
+    // Добавляем обработчики событий
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    container.addEventListener('touchstart', handleScroll, { passive: true });
+    container.addEventListener('touchmove', handleScroll, { passive: true });
+}
+
+/**
+ * Оптимизирует таблицу для мобильных устройств
+ * @param {HTMLTableElement} table - Таблица
+ */
+function optimizeTableForMobile(table) {
+    // Добавляем атрибуты для лучшей производительности
+    table.setAttribute('role', 'table');
+    table.setAttribute('aria-label', 'Таблица данных');
+    
+    // Оптимизируем заголовки
+    const headers = table.querySelectorAll('th');
+    headers.forEach((header, index) => {
+        header.setAttribute('scope', 'col');
+        header.setAttribute('aria-label', `Колонка ${index + 1}`);
+    });
+    
+    // Оптимизируем ячейки
+    const cells = table.querySelectorAll('td');
+    cells.forEach(cell => {
+        // Добавляем атрибуты для доступности
+        cell.setAttribute('role', 'cell');
+        
+        // Оптимизируем длинный текст
+        const text = cell.textContent;
+        if (text.length > 50) {
+            cell.setAttribute('title', text);
+            cell.style.maxWidth = '200px';
+        }
+    });
+    
+    // Добавляем обработчики для touch-событий
+    table.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+    }, { passive: true });
+    
+    table.addEventListener('touchmove', (e) => {
+        e.stopPropagation();
+    }, { passive: true });
+}
+
+// ===== ОБРАБОТЧИКИ ДЛЯ ПЕРЕКЛЮЧЕНИЯ РЕЖИМОВ ОТОБРАЖЕНИЯ =====
+
+// Инициализация обработчиков после загрузки DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработчик для кнопки переключения режимов
+    const toggleViewButton = document.getElementById('toggleViewButton');
+    if (toggleViewButton) {
+        toggleViewButton.addEventListener('click', toggleViewMode);
+    }
+});
+
+/**
+ * Переключает режим отображения заметок между сеткой и списком
+ */
+function toggleViewMode() {
+    const notesContainer = document.getElementById('notesContainer');
+    const toggleButton = document.getElementById('toggleViewButton');
+    
+    if (!notesContainer || !toggleButton) return;
+    
+    // Переключаем классы
+    if (notesContainer.classList.contains('default-view')) {
+        // Переключаемся на режим списка
+        notesContainer.classList.remove('default-view');
+        notesContainer.classList.add('full-width-view');
+        
+        // Обновляем иконку и текст кнопки
+        toggleButton.innerHTML = '<i class="fas fa-th"></i> Grid View';
+        toggleButton.title = 'Переключить на сеточный вид';
+        
+        // Сохраняем предпочтение пользователя
+        localStorage.setItem('notesViewMode', 'list');
+    } else {
+        // Переключаемся на режим сетки
+        notesContainer.classList.remove('full-width-view');
+        notesContainer.classList.add('default-view');
+        
+        // Обновляем иконку и текст кнопки
+        toggleButton.innerHTML = '<i class="fas fa-list"></i> List View';
+        toggleButton.title = 'Переключить на список';
+        
+        // Сохраняем предпочтение пользователя
+        localStorage.setItem('notesViewMode', 'grid');
+    }
+    
+    // Перезагружаем заметки для применения новых стилей
+    loadNotes();
+}
+
+/**
+ * Восстанавливает сохраненный режим отображения при загрузке страницы
+ */
+function restoreViewMode() {
+    const savedMode = localStorage.getItem('notesViewMode');
+    const notesContainer = document.getElementById('notesContainer');
+    const toggleButton = document.getElementById('toggleViewButton');
+    
+    if (!notesContainer || !toggleButton) return;
+    
+    if (savedMode === 'list') {
+        // Устанавливаем режим списка
+        notesContainer.classList.remove('default-view');
+        notesContainer.classList.add('full-width-view');
+        toggleButton.innerHTML = '<i class="fas fa-th"></i> Grid View';
+        toggleButton.title = 'Переключить на сеточный вид';
+    } else {
+        // Устанавливаем режим сетки (по умолчанию)
+        notesContainer.classList.remove('full-width-view');
+        notesContainer.classList.add('default-view');
+        toggleButton.innerHTML = '<i class="fas fa-list"></i> List View';
+        toggleButton.title = 'Переключить на список';
+    }
+}
+
+// Вызываем восстановление режима при загрузке
+document.addEventListener('DOMContentLoaded', restoreViewMode);
 

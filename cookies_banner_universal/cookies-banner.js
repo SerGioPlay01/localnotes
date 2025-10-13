@@ -192,8 +192,8 @@
         },
         mk: {
             title: "🍪 Известување за колачиња",
-            message: "Local Notes користи колачиња за подобрување на вашето искуство при создавање на белешки, зачувување на поставки и помош при подобрување на апликацијата. Со кликнување на 'Прифати се' се согласувате со користењето на колачиња.",
-            acceptAll: "Прифати се",
+            message: "Local Notes користи колачиња за подобрување на вашето искуство при создавање на белешки, зачувување на поставки и помош при подобрување на апликацијата. Со кликнување на 'Прифати сите' се согласувате со користењето на колачиња.",
+            acceptAll: "Прифати сите",
             acceptNecessary: "Само потребни",
             customize: "Прилагоди",
             learnMore: "Дознај повеќе",
@@ -273,6 +273,18 @@
 
     // Get current language
     function getCurrentLanguage() {
+        // First, check if the main app has already set the language
+        if (window.currentLang && translations[window.currentLang]) {
+            return window.currentLang;
+        }
+
+        // Check pathname for language (most reliable for language-specific pages)
+        const pathname = window.location.pathname;
+        const pathLang = pathname.split('/')[1];
+        if (pathLang && translations[pathLang]) {
+            return pathLang;
+        }
+
         // Check URL parameter
         const urlParams = new URLSearchParams(window.location.search);
         const langParam = urlParams.get('lang');
@@ -293,11 +305,15 @@
             return langCode;
         }
 
-        // Check pathname for language
-        const pathname = window.location.pathname;
-        const pathLang = pathname.split('/')[1];
-        if (translations[pathLang]) {
-            return pathLang;
+        // Check for special cases (like ru for by, kz, md)
+        const countryCode = browserLang.split('-')[1]?.toLowerCase();
+        if (countryCode) {
+            if (countryCode === 'ua') {
+                return 'ua';
+            }
+            if (['by', 'kz', 'md'].includes(countryCode)) {
+                return 'ru';
+            }
         }
 
         return 'en'; // default
@@ -964,6 +980,34 @@
         setTimeout(showBanner, config.showDelay);
     }
 
+    // Update banner language
+    function updateBannerLanguage(newLang) {
+        if (!translations[newLang]) {
+            console.warn(`Language '${newLang}' not supported by cookies banner`);
+            return;
+        }
+
+        const banner = document.getElementById('cookies-banner');
+        const preferences = document.getElementById('cookies-preferences');
+        
+        if (banner || preferences) {
+            // Remove existing banner and preferences
+            if (banner) banner.remove();
+            if (preferences) preferences.remove();
+            
+            // Create new banner with updated language
+            const bannerElement = document.createElement('div');
+            bannerElement.innerHTML = createBannerHTML(newLang);
+            document.body.appendChild(bannerElement.firstElementChild);
+            document.body.appendChild(bannerElement.lastElementChild);
+            
+            // Show banner if it was visible before
+            if (banner && banner.style.display !== 'none') {
+                showBanner();
+            }
+        }
+    }
+
     // Public API
     window.CookiesBanner = {
         init: initBanner,
@@ -973,7 +1017,8 @@
         show: showBanner,
         hide: hideBanner,
         manageAnalytics: manageGoogleAnalytics,
-        getCookiesInfo: () => config.cookiesInfo
+        getCookiesInfo: () => config.cookiesInfo,
+        updateLanguage: updateBannerLanguage
     };
 
     // Auto-initialize when DOM is ready

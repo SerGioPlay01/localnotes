@@ -53,6 +53,11 @@ function updateInterface(langData, language) {
     window.langData[language] = langData;
     window.currentLang = language;
     
+    // Обновляем язык куки баннера, если он доступен
+    if (window.CookiesBanner && typeof window.CookiesBanner.updateLanguage === 'function') {
+        window.CookiesBanner.updateLanguage(language);
+    }
+    
     
     // Мета-теги теперь статические в HTML - не обновляем динамически
 

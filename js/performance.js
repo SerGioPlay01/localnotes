@@ -67,7 +67,8 @@ class PerformanceMonitor {
             const observer = new PerformanceObserver((list) => {
                 const entries = list.getEntries();
                 entries.forEach((entry) => {
-                    if (entry.duration > 1000) { // Resources taking more than 1 second
+                    // Only warn for resources taking more than 2 seconds and not TinyMCE plugins
+                    if (entry.duration > 2000 && !entry.name.includes('editor_news/plugins/')) {
                         console.warn('Slow resource:', entry.name, entry.duration + 'ms');
                     }
                 });

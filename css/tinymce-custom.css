@@ -2912,15 +2912,29 @@
 
 /* Стили для изображений */
 [data-theme="dark"] .tox-edit-area iframe body img {
+    max-width: 100% !important;
+    max-height: 250px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
     border-radius: 6px !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    display: block !important;
+    margin: 10px auto !important;
 }
 
 [data-theme="light"] .tox-edit-area iframe body img {
+    max-width: 100% !important;
+    max-height: 250px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
     border-radius: 6px !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     border: 1px solid #dee2e6 !important;
+    display: block !important;
+    margin: 10px auto !important;
 }
 
 /* Стили для видео */

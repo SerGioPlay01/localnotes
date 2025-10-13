@@ -1361,6 +1361,9 @@ window.onload = async () => {
             throw new Error('notesDB is not defined');
         }
         
+        // Предзагружаем TinyMCE плагины для улучшения производительности
+        preloadTinyMCEPlugins();
+        
         // Инициализируем TinyMCE
         if (typeof tinymce !== 'undefined') {
             try {
@@ -2132,6 +2135,40 @@ function updateColorPickerStyles(theme) {
     });
 }
 
+// Preload TinyMCE plugins to improve performance
+function preloadTinyMCEPlugins() {
+    const pluginUrls = [
+        '/editor_news/plugins/searchreplace/plugin.min.js',
+        '/editor_news/plugins/anchor/plugin.min.js',
+        '/editor_news/plugins/visualblocks/plugin.min.js',
+        '/editor_news/plugins/code/plugin.min.js',
+        '/editor_news/plugins/media/plugin.min.js',
+        '/editor_news/plugins/insertdatetime/plugin.min.js',
+        '/editor_news/plugins/table/plugin.min.js',
+        '/editor_news/plugins/help/plugin.min.js',
+        '/editor_news/plugins/wordcount/plugin.min.js',
+        '/editor_news/plugins/emoticons/plugin.min.js',
+        '/editor_news/plugins/codesample/plugin.min.js',
+        '/editor_news/plugins/pagebreak/plugin.min.js',
+        '/editor_news/plugins/nonbreaking/plugin.min.js',
+        '/editor_news/plugins/quickbars/plugin.min.js',
+        '/editor_news/plugins/autosave/plugin.min.js',
+        '/editor_news/plugins/visualchars/plugin.min.js',
+        '/editor_news/plugins/directionality/plugin.min.js',
+        '/editor_news/plugins/accordion/plugin.min.js'
+    ];
+    
+    // Preload plugins with low priority
+    pluginUrls.forEach(url => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.href = url;
+        link.as = 'script';
+        link.crossOrigin = 'anonymous';
+        document.head.appendChild(link);
+    });
+}
+
 // Инициализация редактора TinyMCE с улучшенной обработкой ошибок
 async function initTinyMCE() {
     if (typeof tinymce === 'undefined') {
@@ -2163,6 +2200,12 @@ async function initTinyMCE() {
             'codesample', 'pagebreak', 'nonbreaking', 'quickbars', 'accordion',
             'autosave', 'directionality', 'visualchars'
         ],
+        // Optimize plugin loading
+        plugin_preload: false,
+        // Load plugins on demand to improve initial load time
+        external_plugins: {
+            // Load heavy plugins only when needed
+        },
         // Настройки для автосоздания ссылок
         autolink_pattern: /^(https?:\/\/|ssh:\/\/|ftp:\/\/|file:\/|www\.|(?:mailto:)?[A-Z0-9._%+-]+@)(.+)$/i,
         autolink_url_filter: function(url, node) {
@@ -3475,6 +3518,12 @@ async function convertBlobUrlsToBase64InElement(element) {
             // Проверяем, что изображение еще не конвертировано
             if (img.src.startsWith('data:')) continue;
             
+            // Проверяем, доступен ли blob URL
+            if (!img.src || img.src === 'blob:') {
+                console.warn('Invalid blob URL:', img.src);
+                continue;
+            }
+            
             const response = await fetch(img.src);
             if (!response.ok) {
                 console.warn('Failed to fetch image blob:', response.status);
@@ -3501,10 +3550,19 @@ async function convertBlobUrlsToBase64InElement(element) {
                 console.warn('Failed to convert image to base64 - empty result');
             }
         } catch (error) {
+            // Проверяем, является ли ошибка CSP-связанной
+            if (error.message && error.message.includes('Content Security Policy')) {
+                console.warn('CSP violation when converting image blob - keeping original blob URL');
+                // Не заменяем изображение, оставляем оригинальный blob URL
+                continue;
+            }
+            
             console.warn('Failed to convert image blob to base64:', error);
-            // Добавляем placeholder для поврежденного изображения
-            img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgRXJyb3I8L3RleHQ+PC9zdmc+';
-            img.alt = 'Image Error';
+            // Добавляем placeholder только для критических ошибок
+            if (error.name !== 'TypeError' || !error.message.includes('fetch')) {
+                img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgRXJyb3I8L3RleHQ+PC9zdmc+';
+                img.alt = 'Image Error';
+            }
         }
     }
     

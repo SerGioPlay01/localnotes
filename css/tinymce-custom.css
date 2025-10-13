@@ -28,17 +28,51 @@
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    padding: 8px 0 !important;
+    padding: 16px 0 !important;
+    min-height: 56px !important;
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+}
+
+/* Группы кнопок в тулбаре */
+.tox .tox-toolbar__group {
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 6px !important;
+    padding: 0 !important;
+    gap: 2px !important;
+}
+
+/* Разделители в тулбаре */
+.tox .tox-toolbar__separator {
+    width: 1px !important;
+    height: 24px !important;
+    background: rgba(0, 0, 0, 0.1) !important;
+    margin: 0 8px !important;
+    flex-shrink: 0 !important;
+}
+
+[data-theme="dark"] .tox .tox-toolbar__separator {
+    background: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Кнопки тулбара */
 .tox .tox-tbtn {
     background: transparent !important;
     border: none !important;
-    border-radius: 4px !important;
-    margin: 0 2px !important;
-    padding: 6px 8px !important;
+    border-radius: 6px !important;
+    margin: 0 3px !important;
+    padding: 10px 12px !important;
     transition: all 0.2s ease !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    overflow: visible !important;
 }
 
 /* Темная тема */
@@ -81,6 +115,1242 @@
 [data-theme="light"] .tox .tox-tbtn--enabled {
     background: #28a745 !important;
     color: #ffffff !important;
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    .tox .tox-tbtn {
+        padding: 12px 14px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+    }
+    
+    .tox .tox-tbtn svg,
+    .tox .tox-tbtn .tox-icon {
+        width: 24px !important;
+        height: 24px !important;
+    }
+    
+    .tox .tox-toolbar,
+    .tox .tox-toolbar__primary {
+        padding: 20px 0 !important;
+        min-height: 64px !important;
+    }
+    
+    .tox .tox-toolbar__group {
+        margin: 0 8px !important;
+        gap: 4px !important;
+    }
+}
+
+/* ===== СОВРЕМЕННОЕ МОДАЛЬНОЕ ОКНО ===== */
+
+/* Overlay */
+.modern-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(8px);
+    }
+}
+
+/* Контейнер модального окна */
+.modern-modal-container {
+    background: var(--modal-bg);
+    border: 1px solid var(--modal-border);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-strong);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow: hidden;
+    animation: modalSlideIn 0.3s ease-out;
+    position: relative;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Заголовок модального окна */
+.modern-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--gradient-card);
+}
+
+.modern-modal-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.modern-modal-title i {
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.modern-modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--border-radius-small);
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+.modern-modal-close:hover {
+    background: var(--button-hover);
+    color: var(--text-color);
+}
+
+/* Тело модального окна */
+.modern-modal-body {
+    padding: 32px;
+}
+
+/* Вкладки */
+.modern-tabs {
+    display: flex;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-medium);
+    padding: 4px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border-color);
+}
+
+.modern-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    position: relative;
+}
+
+.modern-tab:hover {
+    color: var(--text-color);
+    background: var(--button-hover);
+}
+
+.modern-tab-active {
+    background: var(--primary-color) !important;
+    color: var(--bg-color) !important;
+    box-shadow: var(--shadow-soft);
+}
+
+.modern-tab i {
+    font-size: 14px;
+}
+
+/* Контент вкладок */
+.modern-tab-content {
+    animation: tabFadeIn 0.2s ease-out;
+}
+
+@keyframes tabFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Группы ввода */
+.modern-input-group {
+    margin-bottom: 20px;
+}
+
+.modern-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.modern-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--input-border);
+    border-radius: var(--border-radius-small);
+    background: var(--input-bg);
+    color: var(--input-text);
+    font-size: 14px;
+    transition: var(--transition-fast);
+    box-sizing: border-box;
+}
+
+.modern-input:focus {
+    outline: none;
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px rgba(174, 252, 110, 0.1);
+}
+
+.modern-input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Файловый ввод */
+.modern-file-input-wrapper {
+    position: relative;
+}
+
+.modern-file-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.modern-file-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 24px;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius-medium);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-weight: 500;
+    min-height: 60px;
+}
+
+.modern-file-label:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: var(--button-hover);
+}
+
+.modern-file-label i {
+    font-size: 20px;
+}
+
+/* Предварительный просмотр */
+.modern-preview {
+    margin-top: 16px;
+    text-align: center;
+    min-height: 40px;
+}
+
+.modern-preview img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: var(--border-radius-small);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border-color);
+}
+
+/* Информация о файле */
+.modern-file-info {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--border-color);
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Футер модального окна */
+.modern-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 24px 32px;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+/* Кнопки */
+.modern-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--border-radius-small);
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    min-width: 100px;
+    justify-content: center;
+}
+
+.modern-btn i {
+    font-size: 12px;
+}
+
+.modern-btn-primary {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    box-shadow: var(--shadow-soft);
+}
+
+.modern-btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+}
+
+.modern-btn-secondary {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--button-border);
+}
+
+.modern-btn-secondary:hover {
+    background: var(--button-hover);
+    border-color: var(--border-hover);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .modern-modal-container {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .modern-modal-header,
+    .modern-modal-body,
+    .modern-modal-footer {
+        padding: 20px;
+    }
+    
+    .modern-tabs {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .modern-tab {
+        justify-content: flex-start;
+    }
+    
+    .modern-modal-footer {
+        flex-direction: column;
+    }
+    
+    .modern-btn {
+        width: 100%;
+    }
+}
+
+/* ===== СТИЛИ ДЛЯ ВИДЕО МОДАЛЬНОГО ОКНА ===== */
+
+/* Опции видео */
+.video-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-color);
+    transition: var(--transition-fast);
+}
+
+.checkbox-label:hover {
+    color: var(--primary-color);
+}
+
+.modern-checkbox {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    background: var(--input-bg);
+    transition: var(--transition-fast);
+}
+
+.modern-checkbox:checked {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.modern-checkbox:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--bg-color);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.checkmark {
+    display: none;
+}
+
+/* Предварительный просмотр видео */
+.preview-container {
+    margin-top: 16px;
+    border-radius: var(--border-radius-small);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border-color);
+}
+
+.preview-container iframe {
+    width: 100%;
+    height: 200px;
+    border: none;
+}
+
+.preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background: var(--bg-secondary);
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius-medium);
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.preview-placeholder i {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+}
+
+.preview-placeholder p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Стили для select */
+.modern-input[type="select"],
+.modern-input select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 40px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Стили для number input */
+.modern-input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.modern-input[type="number"]::-webkit-outer-spin-button,
+.modern-input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Адаптивность для видео модального окна */
+@media (max-width: 768px) {
+    .video-options {
+        gap: 10px;
+    }
+    
+    .checkbox-label {
+        font-size: 13px;
+    }
+    
+    .modern-checkbox {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .preview-container iframe {
+        height: 150px;
+    }
+    
+    .preview-placeholder {
+        padding: 30px 15px;
+    }
+    
+    .preview-placeholder i {
+        font-size: 1.5rem;
+    }
+}
+
+/* ===== СТИЛИ ДЛЯ ШРИФТОВ И РАЗМЕРОВ ===== */
+
+/* Dropdown для шрифтов */
+.tox .tox-listboxfield {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    border-radius: var(--border-radius-small) !important;
+    color: var(--input-text) !important;
+}
+
+.tox .tox-listboxfield:focus {
+    border-color: var(--input-focus) !important;
+    box-shadow: 0 0 0 3px rgba(174, 252, 110, 0.1) !important;
+}
+
+.tox .tox-listboxfield .tox-listboxfield__select-label {
+    color: var(--text-color) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+/* Dropdown для размеров шрифта */
+.tox .tox-listboxfield[aria-label*="fontsize"],
+.tox .tox-listboxfield[aria-label*="размер"] {
+    min-width: 80px !important;
+}
+
+.tox .tox-listboxfield[aria-label*="fontsize"] .tox-listboxfield__select-label,
+.tox .tox-listboxfield[aria-label*="размер"] .tox-listboxfield__select-label {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+}
+
+.tox .tox-listboxfield[aria-label*="fontfamily"],
+.tox .tox-listboxfield[aria-label*="шрифт"] {
+    min-width: 140px !important;
+}
+
+/* Стили для dropdown меню */
+.tox .tox-collection {
+    background: var(--modal-bg) !important;
+    border: 1px solid var(--modal-border) !important;
+    border-radius: var(--border-radius-small) !important;
+    box-shadow: var(--shadow-medium) !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+}
+
+.tox .tox-collection__item {
+    color: var(--text-color) !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    transition: var(--transition-fast) !important;
+}
+
+.tox .tox-collection__item:hover {
+    background: var(--button-hover) !important;
+    color: var(--text-color) !important;
+}
+
+.tox .tox-collection__item--active {
+    background: var(--primary-color) !important;
+    color: var(--bg-color) !important;
+}
+
+/* Стили для шрифтов в dropdown (только те, что есть в папке fonts) */
+.tox .tox-collection__item[data-value*="Arial"] {
+    font-family: Arial, sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Times New Roman"] {
+    font-family: "Times New Roman", serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Georgia"] {
+    font-family: Georgia, serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Verdana"] {
+    font-family: Verdana, sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Tahoma"] {
+    font-family: Tahoma, sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Trebuchet MS"] {
+    font-family: "Trebuchet MS", sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Impact"] {
+    font-family: Impact, sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Comic Sans MS"] {
+    font-family: "Comic Sans MS", sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Courier New"] {
+    font-family: "Courier New", monospace !important;
+}
+
+.tox .tox-collection__item[data-value*="Consolas"] {
+    font-family: Consolas, monospace !important;
+}
+
+.tox .tox-collection__item[data-value*="Monaco"] {
+    font-family: Monaco, monospace !important;
+}
+
+.tox .tox-collection__item[data-value*="Golos Text"] {
+    font-family: 'Golos Text', sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Intro"] {
+    font-family: 'Intro', sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Roboto"] {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Open Sans"] {
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Lato"] {
+    font-family: 'Lato', sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Montserrat"] {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Lekton Nerd Font Mono"] {
+    font-family: 'Lekton Nerd Font Mono', monospace !important;
+}
+
+/* Стили для размеров шрифтов в dropdown */
+.tox .tox-collection__item[data-value*="pt"] {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+}
+
+.tox .tox-collection__item[data-value*="8pt"] {
+    font-size: 8pt !important;
+}
+
+.tox .tox-collection__item[data-value*="10pt"] {
+    font-size: 10pt !important;
+}
+
+.tox .tox-collection__item[data-value*="12pt"] {
+    font-size: 12pt !important;
+}
+
+.tox .tox-collection__item[data-value*="14pt"] {
+    font-size: 14pt !important;
+}
+
+.tox .tox-collection__item[data-value*="16pt"] {
+    font-size: 16pt !important;
+}
+
+.tox .tox-collection__item[data-value*="18pt"] {
+    font-size: 18pt !important;
+}
+
+.tox .tox-collection__item[data-value*="20pt"] {
+    font-size: 20pt !important;
+}
+
+.tox .tox-collection__item[data-value*="24pt"] {
+    font-size: 24pt !important;
+}
+
+.tox .tox-collection__item[data-value*="28pt"] {
+    font-size: 28pt !important;
+}
+
+.tox .tox-collection__item[data-value*="32pt"] {
+    font-size: 32pt !important;
+}
+
+.tox .tox-collection__item[data-value*="36pt"] {
+    font-size: 36pt !important;
+}
+
+.tox .tox-collection__item[data-value*="48pt"] {
+    font-size: 48pt !important;
+}
+
+.tox .tox-collection__item[data-value*="Times"] {
+    font-family: "Times New Roman", serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Courier"] {
+    font-family: "Courier New", monospace !important;
+}
+
+.tox .tox-collection__item[data-value*="Georgia"] {
+    font-family: Georgia, serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Verdana"] {
+    font-family: Verdana, sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Golos"] {
+    font-family: "Golos Text", sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Roboto"] {
+    font-family: "Roboto", sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Open Sans"] {
+    font-family: "Open Sans", sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Lato"] {
+    font-family: "Lato", sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Montserrat"] {
+    font-family: "Montserrat", sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Playfair"] {
+    font-family: "Playfair Display", serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Merriweather"] {
+    font-family: "Merriweather", serif !important;
+}
+
+.tox .tox-collection__item[data-value*="Fira Code"] {
+    font-family: "Fira Code", monospace !important;
+}
+
+.tox .tox-collection__item[data-value*="Source Code"] {
+    font-family: "Source Code Pro", monospace !important;
+}
+
+/* Стили для размеров шрифта в dropdown */
+.tox .tox-collection__item[data-value*="8px"] {
+    font-size: 8px !important;
+}
+
+.tox .tox-collection__item[data-value*="10px"] {
+    font-size: 10px !important;
+}
+
+.tox .tox-collection__item[data-value*="12px"] {
+    font-size: 12px !important;
+}
+
+.tox .tox-collection__item[data-value*="14px"] {
+    font-size: 14px !important;
+}
+
+.tox .tox-collection__item[data-value*="16px"] {
+    font-size: 16px !important;
+}
+
+.tox .tox-collection__item[data-value*="18px"] {
+    font-size: 18px !important;
+}
+
+.tox .tox-collection__item[data-value*="20px"] {
+    font-size: 20px !important;
+}
+
+.tox .tox-collection__item[data-value*="24px"] {
+    font-size: 24px !important;
+}
+
+.tox .tox-collection__item[data-value*="28px"] {
+    font-size: 28px !important;
+}
+
+.tox .tox-collection__item[data-value*="32px"] {
+    font-size: 32px !important;
+}
+
+.tox .tox-collection__item[data-value*="36px"] {
+    font-size: 36px !important;
+}
+
+.tox .tox-collection__item[data-value*="48px"] {
+    font-size: 48px !important;
+}
+
+.tox .tox-collection__item[data-value*="60px"] {
+    font-size: 60px !important;
+}
+
+.tox .tox-collection__item[data-value*="72px"] {
+    font-size: 72px !important;
+}
+
+/* Улучшенные стили для кнопок шрифтов */
+.tox .tox-tbtn[aria-label*="fontfamily"],
+.tox .tox-tbtn[aria-label*="шрифт"] {
+    min-width: 120px !important;
+}
+
+.tox .tox-tbtn[aria-label*="fontsize"],
+.tox .tox-tbtn[aria-label*="размер"] {
+    min-width: 80px !important;
+}
+
+/* Стили для кастомной кнопки изображения */
+.tox .tox-tbtn[aria-label*="изображение"],
+.tox .tox-tbtn[aria-label*="Image"] {
+    position: relative;
+}
+
+.tox .tox-tbtn[aria-label*="изображение"]:hover,
+.tox .tox-tbtn[aria-label*="Image"]:hover {
+    background: rgba(0, 123, 186, 0.1) !important;
+}
+
+/* Улучшенные стили для иконок */
+.tox .tox-tbtn svg {
+    width: 22px !important;
+    height: 22px !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+/* Стили для иконок в кнопках */
+.tox .tox-tbtn .tox-icon {
+    width: 22px !important;
+    height: 22px !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+/* Обеспечиваем правильное отображение иконок */
+.tox .tox-tbtn .tox-icon svg {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+/* Специальные стили для текстовых иконок */
+.tox .tox-tbtn .tox-icon:not(svg) {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 22px !important;
+    height: 22px !important;
+}
+
+/* Стили для кнопок с текстом (B, I, U, S) */
+.tox .tox-tbtn[aria-label*="Bold"],
+.tox .tox-tbtn[aria-label*="Italic"],
+.tox .tox-tbtn[aria-label*="Underline"],
+.tox .tox-tbtn[aria-label*="Strikethrough"] {
+    font-family: 'Times New Roman', serif !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+}
+
+.tox .tox-tbtn[aria-label*="Italic"] {
+    font-style: italic !important;
+}
+
+.tox .tox-tbtn[aria-label*="Underline"] {
+    text-decoration: underline !important;
+}
+
+.tox .tox-tbtn[aria-label*="Strikethrough"] {
+    text-decoration: line-through !important;
+}
+
+/* Специальные стили для проблемных иконок */
+.tox .tox-tbtn[aria-label*="Superscript"],
+.tox .tox-tbtn[aria-label*="Subscript"] {
+    font-size: 12px !important;
+    line-height: 1 !important;
+}
+
+.tox .tox-tbtn[aria-label*="Word count"] {
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+}
+
+/* Улучшенные стили для всех текстовых иконок */
+.tox .tox-tbtn .tox-icon:not(svg):not(.tox-icon--image) {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 22px !important;
+    height: 22px !important;
+    text-align: center !important;
+    overflow: visible !important;
+}
+
+/* Специальные стили для кнопок с маленькими иконками */
+.tox .tox-tbtn[aria-label*="superscript"] .tox-icon,
+.tox .tox-tbtn[aria-label*="subscript"] .tox-icon {
+    font-size: 11px !important;
+    line-height: 1 !important;
+}
+
+.tox .tox-tbtn[aria-label*="wordcount"] .tox-icon {
+    font-size: 9px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+}
+
+/* Дополнительные стили для предотвращения обрезания */
+.tox .tox-tbtn {
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+}
+
+.tox .tox-tbtn * {
+    box-sizing: border-box !important;
+}
+
+/* Стили для dropdown кнопок */
+.tox .tox-tbtn--select {
+    min-width: 120px !important;
+    padding: 10px 16px !important;
+}
+
+.tox .tox-tbtn--select .tox-tbtn__select-label {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+/* Стили для кнопок с иконками и текстом */
+.tox .tox-tbtn--bespoke {
+    min-width: auto !important;
+    padding: 10px 12px !important;
+}
+
+/* Обеспечиваем правильное отображение всех элементов */
+.tox .tox-tbtn .tox-tbtn__select-label,
+.tox .tox-tbtn .tox-tbtn__select-chevron {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* ===== СТИЛИ ДЛЯ ОТОБРАЖЕНИЯ ШРИФТОВ В РЕДАКТОРЕ ===== */
+
+/* Обеспечиваем правильное отображение пользовательских шрифтов */
+.tox-edit-area__iframe {
+    font-family: inherit !important;
+}
+
+.tox-edit-area__iframe body {
+    font-family: inherit !important;
+}
+
+.tox-edit-area__iframe * {
+    font-family: inherit !important;
+}
+
+/* Стили для inline элементов с пользовательскими шрифтами */
+.tox-edit-area__iframe span[style*="font-family"] {
+    font-family: inherit !important;
+}
+
+.tox-edit-area__iframe span[style*="font-size"] {
+    font-size: inherit !important;
+}
+
+
+/* Контейнер для элементов управления изображением */
+.image-controls {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--modal-bg, #ffffff);
+    border: 1px solid var(--border-color, #e0e0e0);
+    border-radius: var(--border-radius-small, 6px);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--shadow-medium, 0 4px 12px rgba(0, 0, 0, 0.15));
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-fast, all 0.2s ease);
+    white-space: nowrap;
+}
+
+.image-controls.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Кнопки управления размером */
+.size-control-btn {
+    background: var(--button-bg, #f8f9fa);
+    border: 1px solid var(--button-border, #dee2e6);
+    color: var(--button-text, #495057);
+    padding: 6px 10px;
+    border-radius: var(--border-radius-small, 4px);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: var(--transition-fast, all 0.2s ease);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 32px;
+    justify-content: center;
+    text-decoration: none;
+    outline: none;
+}
+
+.size-control-btn:hover {
+    background: var(--button-hover, #e9ecef);
+    border-color: var(--border-hover, #adb5bd);
+    transform: translateY(-1px);
+}
+
+.size-control-btn.active {
+    background: var(--primary-color, #007bff);
+    color: var(--bg-color, #ffffff);
+    border-color: var(--primary-color, #007bff);
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+/* Слайдер размера */
+.size-slider {
+    width: 80px;
+    height: 4px;
+    background: var(--border-color, #e0e0e0);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0 8px;
+}
+
+.size-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--primary-color, #007bff);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft, 0 2px 4px rgba(0, 0, 0, 0.2));
+    border: 2px solid #ffffff;
+}
+
+.size-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--primary-color, #007bff);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    box-shadow: var(--shadow-soft, 0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Индикатор размера */
+.size-indicator {
+    font-size: 11px;
+    color: var(--text-secondary, #6c757d);
+    font-weight: 500;
+    min-width: 40px;
+    text-align: center;
+    background: var(--bg-secondary, #f8f9fa);
+    padding: 2px 6px;
+    border-radius: var(--border-radius-small, 4px);
+    border: 1px solid var(--border-color, #e0e0e0);
+}
+
+/* Контейнер изображения с возможностью изменения размера */
+.resizable-image-container {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    margin: 8px 0;
+}
+
+.resizable-image-container:hover .image-controls {
+    opacity: 1;
+    visibility: visible;
+}
+
+.resizable-image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-small);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border-color);
+    transition: var(--transition-fast);
+    cursor: pointer;
+}
+
+.resizable-image-container img:hover {
+    box-shadow: var(--shadow-medium);
+}
+
+/* Кнопка удаления изображения */
+.remove-image-btn {
+    background: #dc3545;
+    border: none;
+    color: white;
+    padding: 4px 8px;
+    border-radius: var(--border-radius-small, 4px);
+    cursor: pointer;
+    font-size: 12px;
+    transition: var(--transition-fast, all 0.2s ease);
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+}
+
+.remove-image-btn:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+}
+
+/* Предустановленные размеры */
+.preset-sizes {
+    display: flex;
+    gap: 4px;
+}
+
+.preset-size-btn {
+    background: var(--button-bg, #f8f9fa);
+    border: 1px solid var(--button-border, #dee2e6);
+    color: var(--button-text, #495057);
+    padding: 4px 8px;
+    border-radius: var(--border-radius-small, 4px);
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 500;
+    transition: var(--transition-fast, all 0.2s ease);
+    min-width: 24px;
+    text-align: center;
+    outline: none;
+}
+
+.preset-size-btn:hover {
+    background: var(--button-hover, #e9ecef);
+    transform: translateY(-1px);
+}
+
+.preset-size-btn.active {
+    background: var(--primary-color, #007bff);
+    color: var(--bg-color, #ffffff);
+    border-color: var(--primary-color, #007bff);
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .image-controls {
+        top: -50px;
+        padding: 10px 14px;
+        gap: 10px;
+    }
+    
+    .size-control-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+        min-width: 36px;
+    }
+    
+    .size-slider {
+        width: 100px;
+    }
+    
+    .preset-sizes {
+        gap: 6px;
+    }
+    
+    .preset-size-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+        min-width: 28px;
+    }
 }
 
 /* Иконки - темная тема */
@@ -1292,22 +2562,46 @@
 /* Таблицы в темной теме */
 [data-theme="dark"] .tox-edit-area iframe body table {
     border-collapse: collapse !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: #000000 !important;
     border-radius: 8px !important;
     overflow: hidden !important;
+    border: 2px solid #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    /* Убираем стили листа тетради для таблиц */
+    background-image: none !important;
+    margin: 20px 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
 }
 
 [data-theme="dark"] .tox-edit-area iframe body td,
 [data-theme="dark"] .tox-edit-area iframe body th {
     color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid #ffffff !important;
     padding: 12px 16px !important;
+    background: #000000 !important;
+    transition: all 0.2s ease !important;
+    /* Убираем стили листа тетради для ячеек */
+    background-image: none !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body td:hover,
+[data-theme="dark"] .tox-edit-area iframe body th:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: #aefc6e !important;
 }
 
 [data-theme="dark"] .tox-edit-area iframe body th {
-    background: #aefc6e !important;
+    background: linear-gradient(135deg, #aefc6e 0%, #9ce55a 100%) !important;
     color: #000000 !important;
     font-weight: 600 !important;
+    border: 1px solid #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body th:hover {
+    background: linear-gradient(135deg, #9ce55a 0%, #8dd85a 100%) !important;
+    border-color: #ffffff !important;
 }
 
 /* Код в темной теме */
@@ -1435,16 +2729,25 @@
 /* Таблицы в светлой теме */
 [data-theme="light"] .tox-edit-area iframe body table {
     border-collapse: collapse !important;
-    background: #f8f9fa !important;
+    background: #ffffff !important;
     border-radius: 8px !important;
     overflow: hidden !important;
+    border: 2px solid #000000 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    background-image: none !important;
+    margin: 20px 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
 }
 
 [data-theme="light"] .tox-edit-area iframe body td,
 [data-theme="light"] .tox-edit-area iframe body th {
-    color: #212529 !important;
-    border: 1px solid #dee2e6 !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
     padding: 12px 16px !important;
+    background: #ffffff !important;
+    transition: all 0.2s ease !important;
+    background-image: none !important;
 }
 
 [data-theme="light"] .tox-edit-area iframe body th {
@@ -1828,6 +3131,435 @@
     content: '"' !important;
 }
 
+/* ===== СТИЛИ ДЛЯ ПРЕДПРОСМОТРА ШРИФТОВ И РАЗМЕРОВ ===== */
+
+/* Стили для выпадающих меню шрифтов */
+.tox .tox-collection__item {
+    font-family: inherit !important;
+    font-size: inherit !important;
+}
+
+/* Предпросмотр шрифтов в выпадающем меню */
+.tox .tox-collection__item[data-value] {
+    font-family: var(--font-family, inherit) !important;
+}
+
+/* Специальные стили для предпросмотра шрифтов */
+.tox .tox-collection__item[data-value="Arial"] {
+    font-family: Arial, sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value="Times New Roman"] {
+    font-family: "Times New Roman", serif !important;
+}
+
+.tox .tox-collection__item[data-value="Courier New"] {
+    font-family: "Courier New", monospace !important;
+}
+
+.tox .tox-collection__item[data-value="Georgia"] {
+    font-family: Georgia, serif !important;
+}
+
+.tox .tox-collection__item[data-value="Verdana"] {
+    font-family: Verdana, sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value="Helvetica"] {
+    font-family: Helvetica, sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value="Golos Text"] {
+    font-family: "Golos Text", sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value="Montserrat"] {
+    font-family: "Montserrat", sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value="Lato"] {
+    font-family: "Lato", sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value="Open Sans"] {
+    font-family: "Open Sans", sans-serif !important;
+}
+
+.tox .tox-collection__item[data-value="Roboto"] {
+    font-family: "Roboto", sans-serif !important;
+}
+
+/* Предпросмотр размеров шрифтов */
+.tox .tox-collection__item[data-value="8pt"] {
+    font-size: 8pt !important;
+}
+
+.tox .tox-collection__item[data-value="9pt"] {
+    font-size: 9pt !important;
+}
+
+.tox .tox-collection__item[data-value="10pt"] {
+    font-size: 10pt !important;
+}
+
+.tox .tox-collection__item[data-value="11pt"] {
+    font-size: 11pt !important;
+}
+
+.tox .tox-collection__item[data-value="12pt"] {
+    font-size: 12pt !important;
+}
+
+.tox .tox-collection__item[data-value="14pt"] {
+    font-size: 14pt !important;
+}
+
+.tox .tox-collection__item[data-value="16pt"] {
+    font-size: 16pt !important;
+}
+
+.tox .tox-collection__item[data-value="18pt"] {
+    font-size: 18pt !important;
+}
+
+.tox .tox-collection__item[data-value="20pt"] {
+    font-size: 20pt !important;
+}
+
+.tox .tox-collection__item[data-value="24pt"] {
+    font-size: 24pt !important;
+}
+
+.tox .tox-collection__item[data-value="28pt"] {
+    font-size: 28pt !important;
+}
+
+.tox .tox-collection__item[data-value="32pt"] {
+    font-size: 32pt !important;
+}
+
+.tox .tox-collection__item[data-value="36pt"] {
+    font-size: 36pt !important;
+}
+
+.tox .tox-collection__item[data-value="48pt"] {
+    font-size: 48pt !important;
+}
+
+.tox .tox-collection__item[data-value="72pt"] {
+    font-size: 72pt !important;
+}
+
+/* Стили для темной темы */
+[data-theme="dark"] .tox .tox-collection__item {
+    color: #ffffff !important;
+    background: #2d2d2d !important;
+}
+
+[data-theme="dark"] .tox .tox-collection__item:hover {
+    background: #404040 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox .tox-collection__item--active {
+    background: #aefc6e !important;
+    color: #000000 !important;
+}
+
+/* Стили для светлой темы */
+[data-theme="light"] .tox .tox-collection__item {
+    color: #212529 !important;
+    background: #ffffff !important;
+}
+
+[data-theme="light"] .tox .tox-collection__item:hover {
+    background: #f8f9fa !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox .tox-collection__item--active {
+    background: #28a745 !important;
+    color: #ffffff !important;
+}
+
+/* Стили для выпадающих меню */
+.tox .tox-collection {
+    background: var(--menu-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.tox .tox-collection__item {
+    padding: 8px 12px !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    min-height: 32px !important;
+}
+
+.tox .tox-collection__item:last-child {
+    border-bottom: none !important;
+}
+
+/* Стили для иконок в выпадающих меню */
+.tox .tox-collection__item-icon {
+    margin-right: 8px !important;
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* Дополнительные стили для предпросмотра */
+.tox .tox-collection__item-text {
+    flex: 1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Стили для активного элемента */
+.tox .tox-collection__item--active .tox-collection__item-text {
+    font-weight: 600 !important;
+}
+
+/* Стили для разделителей в меню */
+.tox .tox-collection__item--separator {
+    height: 1px !important;
+    background: var(--border-color) !important;
+    margin: 4px 0 !important;
+    padding: 0 !important;
+}
+
+/* Стили для групп в меню */
+.tox .tox-collection__item--group {
+    font-weight: 600 !important;
+    color: var(--text-color) !important;
+    background: var(--menu-bg) !important;
+    border-bottom: 2px solid var(--border-color) !important;
+}
+
+/* Стили для подсказок */
+.tox .tox-collection__item--hint {
+    font-style: italic !important;
+    color: var(--text-color-secondary) !important;
+    font-size: 0.9em !important;
+}
+
+/* Анимации для выпадающих меню */
+.tox .tox-collection {
+    animation: fadeIn 0.2s ease-in-out !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Стили для мобильных устройств */
+@media (max-width: 768px) {
+    .tox .tox-collection__item {
+        padding: 12px 16px !important;
+        min-height: 44px !important;
+        font-size: 16px !important;
+    }
+    
+    .tox .tox-collection__item-icon {
+        width: 20px !important;
+        height: 20px !important;
+    }
+}
+
+/* Стили для планшетов */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .tox .tox-collection__item {
+        padding: 10px 14px !important;
+        min-height: 38px !important;
+        font-size: 15px !important;
+    }
+}
+
+/* Стили для кнопок выбора шрифта и размера */
+.tox .tox-listboxfield .tox-listbox--select {
+    font-family: inherit !important;
+    font-size: inherit !important;
+}
+
+/* Предпросмотр в кнопках панели инструментов */
+.tox .tox-listboxfield .tox-listbox--select[data-value] {
+    font-family: var(--font-family, inherit) !important;
+    font-size: var(--font-size, inherit) !important;
+}
+
+/* Специальные стили для кнопок шрифтов */
+.tox .tox-listboxfield .tox-listbox--select[data-value="Arial"] {
+    font-family: Arial, sans-serif !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="Times New Roman"] {
+    font-family: "Times New Roman", serif !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="Courier New"] {
+    font-family: "Courier New", monospace !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="Georgia"] {
+    font-family: Georgia, serif !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="Verdana"] {
+    font-family: Verdana, sans-serif !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="Helvetica"] {
+    font-family: Helvetica, sans-serif !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="Golos Text"] {
+    font-family: "Golos Text", sans-serif !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="Montserrat"] {
+    font-family: "Montserrat", sans-serif !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="Lato"] {
+    font-family: "Lato", sans-serif !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="Open Sans"] {
+    font-family: "Open Sans", sans-serif !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="Roboto"] {
+    font-family: "Roboto", sans-serif !important;
+}
+
+/* Специальные стили для кнопок размеров */
+.tox .tox-listboxfield .tox-listbox--select[data-value="8pt"] {
+    font-size: 8pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="9pt"] {
+    font-size: 9pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="10pt"] {
+    font-size: 10pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="11pt"] {
+    font-size: 11pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="12pt"] {
+    font-size: 12pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="14pt"] {
+    font-size: 14pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="16pt"] {
+    font-size: 16pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="18pt"] {
+    font-size: 18pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="20pt"] {
+    font-size: 20pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="24pt"] {
+    font-size: 24pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="28pt"] {
+    font-size: 28pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="32pt"] {
+    font-size: 32pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="36pt"] {
+    font-size: 36pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="48pt"] {
+    font-size: 48pt !important;
+}
+
+.tox .tox-listboxfield .tox-listbox--select[data-value="72pt"] {
+    font-size: 72pt !important;
+}
+
+/* ===== СТИЛИ ДЛЯ ВЫРАВНИВАНИЯ КУРСОРА ПО ЛИНИЯМ ТЕТРАДИ ===== */
+
+/* Стили для пустых параграфов и курсора */
+#editorContainer_ifr body p:empty,
+#editorContainer_ifr body div:empty {
+    min-height: 25px !important;
+    line-height: 25px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+/* Стили для курсора ввода */
+#editorContainer_ifr body p:empty::before,
+#editorContainer_ifr body div:empty::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 0 !important;
+    height: 25px !important;
+    line-height: 25px !important;
+}
+
+/* Стили для текстовых элементов с курсором */
+#editorContainer_ifr body p,
+#editorContainer_ifr body div {
+    vertical-align: baseline !important;
+    position: relative !important;
+}
+
+/* Стили для курсора TinyMCE */
+#editorContainer_ifr body .mce-content-body {
+    line-height: 25px !important;
+    font-size: 16px !important;
+}
+
+/* Стили для выделения текста */
+#editorContainer_ifr body ::selection {
+    background: rgba(174, 252, 110, 0.3) !important;
+    color: inherit !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body ::selection {
+    background: rgba(174, 252, 110, 0.4) !important;
+    color: #ffffff !important;
+}
+
+/* Стили для курсора ввода в разных темах */
+[data-theme="dark"] #editorContainer_ifr body p:empty,
+[data-theme="dark"] #editorContainer_ifr body div:empty {
+    background: transparent !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body p:empty,
+[data-theme="light"] #editorContainer_ifr body div:empty {
+    background: transparent !important;
+}
+
 /* ===== АДАПТИВНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ===== */
 @media (max-width: 768px) {
     .tox-edit-area iframe body {
@@ -2090,12 +3822,56 @@
         overflow: hidden !important;
     }
     
+    [data-theme="light"] .tox-edit-area iframe body table {
+        background: #ffffff !important;
+        border: 2px solid #000000 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        background-image: none !important;
+        margin: 20px 0 !important;
+        position: relative !important;
+        z-index: 10 !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body table {
+        border: 2px solid #ffffff !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+        background: #000000 !important;
+        background-image: none !important;
+        margin: 20px 0 !important;
+        position: relative !important;
+        z-index: 10 !important;
+    }
+    
     [data-theme="dark"] .tox-edit-area iframe body th,
     [data-theme="dark"] .tox-edit-area iframe body td,
     [data-theme="light"] .tox-edit-area iframe body th,
     [data-theme="light"] .tox-edit-area iframe body td {
         padding: 12px 16px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid #ffffff !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body td,
+    [data-theme="dark"] .tox-edit-area iframe body th {
+        background: #000000 !important;
+        background-image: none !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body td:hover,
+    [data-theme="dark"] .tox-edit-area iframe body th:hover {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-color: #aefc6e !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body th {
+        background: linear-gradient(135deg, #aefc6e 0%, #9ce55a 100%) !important;
+        border: 1px solid #ffffff !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body th:hover {
+        background: linear-gradient(135deg, #9ce55a 0%, #8dd85a 100%) !important;
+        border-color: #ffffff !important;
         font-size: 15px !important;
     }
     
@@ -2368,12 +4144,56 @@
         overflow: hidden !important;
     }
     
+    [data-theme="light"] .tox-edit-area iframe body table {
+        background: #ffffff !important;
+        border: 2px solid #000000 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        background-image: none !important;
+        margin: 20px 0 !important;
+        position: relative !important;
+        z-index: 10 !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body table {
+        border: 2px solid #ffffff !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+        background: #000000 !important;
+        background-image: none !important;
+        margin: 20px 0 !important;
+        position: relative !important;
+        z-index: 10 !important;
+    }
+    
     [data-theme="dark"] .tox-edit-area iframe body th,
     [data-theme="dark"] .tox-edit-area iframe body td,
     [data-theme="light"] .tox-edit-area iframe body th,
     [data-theme="light"] .tox-edit-area iframe body td {
         padding: 14px 18px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid #ffffff !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body td,
+    [data-theme="dark"] .tox-edit-area iframe body th {
+        background: #000000 !important;
+        background-image: none !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body td:hover,
+    [data-theme="dark"] .tox-edit-area iframe body th:hover {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-color: #aefc6e !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body th {
+        background: linear-gradient(135deg, #aefc6e 0%, #9ce55a 100%) !important;
+        border: 1px solid #ffffff !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    [data-theme="dark"] .tox-edit-area iframe body th:hover {
+        background: linear-gradient(135deg, #9ce55a 0%, #8dd85a 100%) !important;
+        border-color: #ffffff !important;
         font-size: 16px !important;
     }
     
@@ -2581,6 +4401,86 @@
     background: transparent !important;
 }
 
+/* ===== СТИЛИ ДЛЯ ЛИСТА ТЕТРАДИ ===== */
+
+/* Основной контейнер редактора с эффектом тетради */
+#editorContainer_ifr {
+    background: 
+        /* Горизонтальные линии тетради */
+        repeating-linear-gradient(
+            transparent 0px,
+            transparent 23px,
+            rgba(0, 0, 0, 0.1) 24px,
+            rgba(0, 0, 0, 0.1) 25px
+        ),
+        /* Вертикальная красная линия слева */
+        linear-gradient(
+            to right,
+            #ff6b6b 0px,
+            #ff6b6b 1px,
+            transparent 1px
+        ),
+        /* Основной фон */
+        #fefefe !important;
+    background-size: 100% 25px, 1px 100%, 100% 100% !important;
+    background-position: 0 0, 40px 0, 0 0 !important;
+    background-repeat: repeat-y, repeat-y, no-repeat !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    margin: 5px !important;
+    padding: 0 !important;
+    min-height: calc(100vh - 200px) !important;
+    max-height: calc(100vh - 200px) !important;
+    width: calc(100% - 10px) !important;
+    max-width: calc(100% - 10px) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* Стили для содержимого iframe с отступами от линий */
+#editorContainer_ifr body {
+    margin-left: 50px !important;
+    margin-right: 20px !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    position: relative !important;
+    /* Настройки для выравнивания курсора по линиям тетради */
+    line-height: 25px !important;
+    font-size: 16px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Дополнительные стили для лучшего отображения текста на линиях */
+#editorContainer_ifr body p,
+#editorContainer_ifr body div,
+#editorContainer_ifr body span {
+    background: rgba(255, 255, 255, 0.8) !important;
+    padding: 2px 4px !important;
+    margin: 0 !important;
+    border-radius: 2px !important;
+    line-height: 25px !important;
+    min-height: 25px !important;
+    display: block !important;
+}
+
+/* Стили для заголовков на листе тетради */
+#editorContainer_ifr body h1,
+#editorContainer_ifr body h2,
+#editorContainer_ifr body h3,
+#editorContainer_ifr body h4,
+#editorContainer_ifr body h5,
+#editorContainer_ifr body h6 {
+    background: rgba(255, 255, 255, 0.9) !important;
+    padding: 4px 8px !important;
+    margin: 8px 0 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
 /* Стили для содержимого iframe с ID */
 #editorContainer_ifr body {
     font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
@@ -2604,10 +4504,77 @@
 }
 
 /* ===== ТЕМНАЯ ТЕМА ДЛЯ IFRAME С ID ===== */
+
+/* Темная тема для листа тетради */
+[data-theme="dark"] #editorContainer_ifr {
+    background: 
+        /* Горизонтальные линии тетради для темной темы */
+        repeating-linear-gradient(
+            transparent 0px,
+            transparent 23px,
+            rgba(255, 255, 255, 0.15) 24px,
+            rgba(255, 255, 255, 0.15) 25px
+        ),
+        /* Вертикальная красная линия слева для темной темы */
+        linear-gradient(
+            to right,
+            #ff6b6b 0px,
+            #ff6b6b 1px,
+            transparent 1px
+        ),
+        /* Основной фон для темной темы */
+        #2a2a2a !important;
+    background-size: 100% 25px, 1px 100%, 100% 100% !important;
+    background-position: 0 0, 40px 0, 0 0 !important;
+    background-repeat: repeat-y, repeat-y, no-repeat !important;
+    border: 2px solid #404040 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    margin: 5px !important;
+    min-height: calc(100vh - 200px) !important;
+    max-height: calc(100vh - 200px) !important;
+    width: calc(100% - 10px) !important;
+    max-width: calc(100% - 10px) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* Темная тема для текста на листе тетради */
+[data-theme="dark"] #editorContainer_ifr body p,
+[data-theme="dark"] #editorContainer_ifr body div,
+[data-theme="dark"] #editorContainer_ifr body span {
+    background: rgba(42, 42, 42, 0.8) !important;
+    padding: 2px 4px !important;
+    margin: 0 !important;
+    border-radius: 2px !important;
+    line-height: 25px !important;
+    min-height: 25px !important;
+    display: block !important;
+}
+
+/* Темная тема для заголовков на листе тетради */
+[data-theme="dark"] #editorContainer_ifr body h1,
+[data-theme="dark"] #editorContainer_ifr body h2,
+[data-theme="dark"] #editorContainer_ifr body h3,
+[data-theme="dark"] #editorContainer_ifr body h4,
+[data-theme="dark"] #editorContainer_ifr body h5,
+[data-theme="dark"] #editorContainer_ifr body h6 {
+    background: rgba(42, 42, 42, 0.9) !important;
+    padding: 4px 8px !important;
+    margin: 8px 0 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
 [data-theme="dark"] #editorContainer_ifr body {
     background: transparent !important;
     color: #ffffff !important;
     font-weight: 400 !important;
+    /* Настройки для выравнивания курсора по линиям тетради в темной теме */
+    line-height: 25px !important;
+    font-size: 16px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 [data-theme="dark"] #editorContainer_ifr body * {
@@ -2682,22 +4649,46 @@
 /* Таблицы в темной теме для iframe с ID */
 [data-theme="dark"] #editorContainer_ifr body table {
     border-collapse: collapse !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: #000000 !important;
     border-radius: 8px !important;
     overflow: hidden !important;
+    border: 2px solid #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    /* Убираем стили листа тетради для таблиц */
+    background-image: none !important;
+    margin: 20px 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
 }
 
 [data-theme="dark"] #editorContainer_ifr body td,
 [data-theme="dark"] #editorContainer_ifr body th {
     color: #ffffff !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid #ffffff !important;
     padding: 12px 16px !important;
+    background: #000000 !important;
+    transition: all 0.2s ease !important;
+    /* Убираем стили листа тетради для ячеек */
+    background-image: none !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body td:hover,
+[data-theme="dark"] #editorContainer_ifr body th:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: #aefc6e !important;
 }
 
 [data-theme="dark"] #editorContainer_ifr body th {
-    background: #aefc6e !important;
+    background: linear-gradient(135deg, #aefc6e 0%, #9ce55a 100%) !important;
     color: #000000 !important;
     font-weight: 600 !important;
+    border: 1px solid #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body th:hover {
+    background: linear-gradient(135deg, #9ce55a 0%, #8dd85a 100%) !important;
+    border-color: #ffffff !important;
 }
 
 /* Код в темной теме для iframe с ID */
@@ -2743,10 +4734,77 @@
 }
 
 /* ===== СВЕТЛАЯ ТЕМА ДЛЯ IFRAME С ID ===== */
+
+/* Светлая тема для листа тетради */
+[data-theme="light"] #editorContainer_ifr {
+    background: 
+        /* Горизонтальные линии тетради для светлой темы */
+        repeating-linear-gradient(
+            transparent 0px,
+            transparent 23px,
+            rgba(0, 0, 0, 0.08) 24px,
+            rgba(0, 0, 0, 0.08) 25px
+        ),
+        /* Вертикальная красная линия слева для светлой темы */
+        linear-gradient(
+            to right,
+            #ff6b6b 0px,
+            #ff6b6b 1px,
+            transparent 1px
+        ),
+        /* Основной фон для светлой темы */
+        #ffffff !important;
+    background-size: 100% 25px, 1px 100%, 100% 100% !important;
+    background-position: 0 0, 40px 0, 0 0 !important;
+    background-repeat: repeat-y, repeat-y, no-repeat !important;
+    border: 2px solid #d0d0d0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    margin: 5px !important;
+    min-height: calc(100vh - 200px) !important;
+    max-height: calc(100vh - 200px) !important;
+    width: calc(100% - 10px) !important;
+    max-width: calc(100% - 10px) !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* Светлая тема для текста на листе тетради */
+[data-theme="light"] #editorContainer_ifr body p,
+[data-theme="light"] #editorContainer_ifr body div,
+[data-theme="light"] #editorContainer_ifr body span {
+    background: rgba(255, 255, 255, 0.9) !important;
+    padding: 2px 4px !important;
+    margin: 0 !important;
+    border-radius: 2px !important;
+    line-height: 25px !important;
+    min-height: 25px !important;
+    display: block !important;
+}
+
+/* Светлая тема для заголовков на листе тетради */
+[data-theme="light"] #editorContainer_ifr body h1,
+[data-theme="light"] #editorContainer_ifr body h2,
+[data-theme="light"] #editorContainer_ifr body h3,
+[data-theme="light"] #editorContainer_ifr body h4,
+[data-theme="light"] #editorContainer_ifr body h5,
+[data-theme="light"] #editorContainer_ifr body h6 {
+    background: rgba(255, 255, 255, 0.95) !important;
+    padding: 4px 8px !important;
+    margin: 8px 0 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
 [data-theme="light"] #editorContainer_ifr body {
     background: transparent !important;
     color: #212529 !important;
     font-weight: 400 !important;
+    /* Настройки для выравнивания курсора по линиям тетради в светлой теме */
+    line-height: 25px !important;
+    font-size: 16px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 [data-theme="light"] #editorContainer_ifr body * {
@@ -2820,16 +4878,25 @@
 /* Таблицы в светлой теме для iframe с ID */
 [data-theme="light"] #editorContainer_ifr body table {
     border-collapse: collapse !important;
-    background: #f8f9fa !important;
+    background: #ffffff !important;
     border-radius: 8px !important;
     overflow: hidden !important;
+    border: 2px solid #000000 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    background-image: none !important;
+    margin: 20px 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
 }
 
 [data-theme="light"] #editorContainer_ifr body td,
 [data-theme="light"] #editorContainer_ifr body th {
-    color: #212529 !important;
-    border: 1px solid #dee2e6 !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
     padding: 12px 16px !important;
+    background: #ffffff !important;
+    transition: all 0.2s ease !important;
+    background-image: none !important;
 }
 
 [data-theme="light"] #editorContainer_ifr body th {
@@ -3535,6 +5602,434 @@
     color: #212529 !important;
 }
 
+/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ УЛУЧШЕНИЯ ВНЕШНЕГО ВИДА ТЕТРАДИ ===== */
+
+/* Стили для списков на листе тетради */
+#editorContainer_ifr body ul,
+#editorContainer_ifr body ol {
+    background: rgba(255, 255, 255, 0.7) !important;
+    padding: 8px 12px !important;
+    margin: 8px 0 !important;
+    border-radius: 4px !important;
+    border-left: 3px solid #ff6b6b !important;
+}
+
+/* Стили для цитат на листе тетради */
+#editorContainer_ifr body blockquote {
+    background: rgba(255, 255, 255, 0.8) !important;
+    padding: 12px 16px !important;
+    margin: 12px 0 !important;
+    border-radius: 6px !important;
+    border-left: 4px solid #ff6b6b !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Стили для кода на листе тетради */
+#editorContainer_ifr body code {
+    background: rgba(255, 255, 255, 0.9) !important;
+    padding: 3px 6px !important;
+    border-radius: 3px !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    font-family: 'Courier New', monospace !important;
+}
+
+/* Стили для блоков кода на листе тетради */
+#editorContainer_ifr body pre {
+    background: rgba(255, 255, 255, 0.9) !important;
+    padding: 12px 16px !important;
+    margin: 12px 0 !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    overflow-x: auto !important;
+}
+
+/* Стили для таблиц на листе тетради */
+#editorContainer_ifr body table {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden !important;
+}
+
+/* Темная тема для дополнительных элементов */
+[data-theme="dark"] #editorContainer_ifr body ul,
+[data-theme="dark"] #editorContainer_ifr body ol {
+    background: rgba(42, 42, 42, 0.7) !important;
+    border-left-color: #ff6b6b !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body blockquote {
+    background: rgba(42, 42, 42, 0.8) !important;
+    border-left-color: #ff6b6b !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body code {
+    background: rgba(42, 42, 42, 0.9) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body pre {
+    background: rgba(42, 42, 42, 0.9) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body table {
+    background: #000000 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    border: 2px solid #ffffff !important;
+    background-image: none !important;
+    margin: 20px 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+/* Светлая тема для дополнительных элементов */
+[data-theme="light"] #editorContainer_ifr body ul,
+[data-theme="light"] #editorContainer_ifr body ol {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-left-color: #ff6b6b !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body blockquote {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-left-color: #ff6b6b !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body code {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body pre {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body table {
+    background: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    border: 2px solid #000000 !important;
+    background-image: none !important;
+    margin: 20px 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+/* ===== УНИВЕРСАЛЬНЫЕ СТИЛИ ДЛЯ ВСЕХ ТАБЛИЦ ===== */
+
+/* Принудительное переопределение для всех таблиц в темной теме */
+[data-theme="dark"] #editorContainer_ifr body table,
+[data-theme="dark"] .tox-edit-area iframe body table {
+    color: #ffffff !important;
+    background: #000000 !important;
+    border: 2px solid #ffffff !important;
+    background-image: none !important;
+    margin: 20px 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body table td,
+[data-theme="dark"] #editorContainer_ifr body table th,
+[data-theme="dark"] .tox-edit-area iframe body table td,
+[data-theme="dark"] .tox-edit-area iframe body table th {
+    color: #ffffff !important;
+    background: #000000 !important;
+    border: 1px solid #ffffff !important;
+    background-image: none !important;
+    transition: all 0.2s ease !important;
+    padding: 12px 16px !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body table th,
+[data-theme="dark"] .tox-edit-area iframe body table th {
+    background: linear-gradient(135deg, #aefc6e 0%, #9ce55a 100%) !important;
+    color: #000000 !important;
+    font-weight: 600 !important;
+    border: 1px solid #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body table td:hover,
+[data-theme="dark"] #editorContainer_ifr body table th:hover,
+[data-theme="dark"] .tox-edit-area iframe body table td:hover,
+[data-theme="dark"] .tox-edit-area iframe body table th:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: #aefc6e !important;
+}
+
+/* Принудительное переопределение для всех таблиц в светлой теме */
+[data-theme="light"] #editorContainer_ifr body table,
+[data-theme="light"] .tox-edit-area iframe body table {
+    color: #000000 !important;
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    background-image: none !important;
+    margin: 20px 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body table td,
+[data-theme="light"] #editorContainer_ifr body table th,
+[data-theme="light"] .tox-edit-area iframe body table td,
+[data-theme="light"] .tox-edit-area iframe body table th {
+    color: #000000 !important;
+    background: #ffffff !important;
+    border: 1px solid #000000 !important;
+    background-image: none !important;
+    transition: all 0.2s ease !important;
+    padding: 12px 16px !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body table th,
+[data-theme="light"] .tox-edit-area iframe body table th {
+    background: #28a745 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    border: 1px solid #000000 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body table td:hover,
+[data-theme="light"] #editorContainer_ifr body table th:hover,
+[data-theme="light"] .tox-edit-area iframe body table td:hover,
+[data-theme="light"] .tox-edit-area iframe body table th:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: #28a745 !important;
+}
+
+/* Стили для всех элементов таблиц в темной теме */
+[data-theme="dark"] #editorContainer_ifr body table colgroup,
+[data-theme="dark"] #editorContainer_ifr body table col,
+[data-theme="dark"] #editorContainer_ifr body table tbody,
+[data-theme="dark"] #editorContainer_ifr body table tr,
+[data-theme="dark"] #editorContainer_ifr body table br,
+[data-theme="dark"] .tox-edit-area iframe body table colgroup,
+[data-theme="dark"] .tox-edit-area iframe body table col,
+[data-theme="dark"] .tox-edit-area iframe body table tbody,
+[data-theme="dark"] .tox-edit-area iframe body table tr,
+[data-theme="dark"] .tox-edit-area iframe body table br {
+    color: #ffffff !important;
+}
+
+/* Стили для всех элементов таблиц в светлой теме */
+[data-theme="light"] #editorContainer_ifr body table colgroup,
+[data-theme="light"] #editorContainer_ifr body table col,
+[data-theme="light"] #editorContainer_ifr body table tbody,
+[data-theme="light"] #editorContainer_ifr body table tr,
+[data-theme="light"] #editorContainer_ifr body table br,
+[data-theme="light"] .tox-edit-area iframe body table colgroup,
+[data-theme="light"] .tox-edit-area iframe body table col,
+[data-theme="light"] .tox-edit-area iframe body table tbody,
+[data-theme="light"] .tox-edit-area iframe body table tr,
+[data-theme="light"] .tox-edit-area iframe body table br {
+    color: #000000 !important;
+}
+
+/* ===== ПЕРЕОПРЕДЕЛЕНИЕ INLINE СТИЛЕЙ ТАБЛИЦ ===== */
+
+/* Переопределение inline стилей для темной темы */
+[data-theme="dark"] #editorContainer_ifr body table[style*="color"],
+[data-theme="dark"] #editorContainer_ifr body table[data-mce-style*="color"] {
+    color: #ffffff !important;
+    background: #000000 !important;
+    border: 2px solid #ffffff !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body table[style*="color"] td,
+[data-theme="dark"] #editorContainer_ifr body table[style*="color"] th,
+[data-theme="dark"] #editorContainer_ifr body table[data-mce-style*="color"] td,
+[data-theme="dark"] #editorContainer_ifr body table[data-mce-style*="color"] th {
+    color: #ffffff !important;
+    background: #000000 !important;
+    border: 1px solid #ffffff !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body table[style*="color"] colgroup,
+[data-theme="dark"] #editorContainer_ifr body table[style*="color"] col,
+[data-theme="dark"] #editorContainer_ifr body table[data-mce-style*="color"] colgroup,
+[data-theme="dark"] #editorContainer_ifr body table[data-mce-style*="color"] col {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body table[style*="color"] tbody,
+[data-theme="dark"] #editorContainer_ifr body table[style*="color"] tr,
+[data-theme="dark"] #editorContainer_ifr body table[data-mce-style*="color"] tbody,
+[data-theme="dark"] #editorContainer_ifr body table[data-mce-style*="color"] tr {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] #editorContainer_ifr body table[style*="color"] br,
+[data-theme="dark"] #editorContainer_ifr body table[data-mce-style*="color"] br {
+    color: #ffffff !important;
+}
+
+/* Переопределение inline стилей для светлой темы */
+[data-theme="light"] #editorContainer_ifr body table[style*="color"],
+[data-theme="light"] #editorContainer_ifr body table[data-mce-style*="color"] {
+    color: #000000 !important;
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body table[style*="color"] td,
+[data-theme="light"] #editorContainer_ifr body table[style*="color"] th,
+[data-theme="light"] #editorContainer_ifr body table[data-mce-style*="color"] td,
+[data-theme="light"] #editorContainer_ifr body table[data-mce-style*="color"] th {
+    color: #000000 !important;
+    background: #ffffff !important;
+    border: 1px solid #000000 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body table[style*="color"] colgroup,
+[data-theme="light"] #editorContainer_ifr body table[style*="color"] col,
+[data-theme="light"] #editorContainer_ifr body table[data-mce-style*="color"] colgroup,
+[data-theme="light"] #editorContainer_ifr body table[data-mce-style*="color"] col {
+    color: #000000 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body table[style*="color"] tbody,
+[data-theme="light"] #editorContainer_ifr body table[style*="color"] tr,
+[data-theme="light"] #editorContainer_ifr body table[data-mce-style*="color"] tbody,
+[data-theme="light"] #editorContainer_ifr body table[data-mce-style*="color"] tr {
+    color: #000000 !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body table[style*="color"] br,
+[data-theme="light"] #editorContainer_ifr body table[data-mce-style*="color"] br {
+    color: #000000 !important;
+}
+
+/* Универсальные стили для переопределения inline стилей */
+#editorContainer_ifr body table[style*="color"] {
+    background-image: none !important;
+    margin: 20px 0 !important;
+    position: relative !important;
+    z-index: 10 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+#editorContainer_ifr body table[style*="color"] td,
+#editorContainer_ifr body table[style*="color"] th {
+    background-image: none !important;
+    transition: all 0.2s ease !important;
+    padding: 12px 16px !important;
+}
+
+/* Стили для заголовков таблиц с inline стилями */
+[data-theme="dark"] #editorContainer_ifr body table[style*="color"] th {
+    background: linear-gradient(135deg, #aefc6e 0%, #9ce55a 100%) !important;
+    color: #000000 !important;
+    font-weight: 600 !important;
+    border: 1px solid #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body table[style*="color"] th {
+    background: #28a745 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    border: 1px solid #000000 !important;
+}
+
+/* Hover эффекты для таблиц с inline стилями */
+[data-theme="dark"] #editorContainer_ifr body table[style*="color"] td:hover,
+[data-theme="dark"] #editorContainer_ifr body table[style*="color"] th:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: #aefc6e !important;
+}
+
+[data-theme="light"] #editorContainer_ifr body table[style*="color"] td:hover,
+[data-theme="light"] #editorContainer_ifr body table[style*="color"] th:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: #28a745 !important;
+}
+
+/* Переопределение inline стилей для основных iframe TinyMCE */
+[data-theme="dark"] .tox-edit-area iframe body table[style*="color"],
+[data-theme="dark"] .tox-edit-area iframe body table[data-mce-style*="color"] {
+    color: #ffffff !important;
+    background: #000000 !important;
+    border: 2px solid #ffffff !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body table[style*="color"] td,
+[data-theme="dark"] .tox-edit-area iframe body table[style*="color"] th,
+[data-theme="dark"] .tox-edit-area iframe body table[data-mce-style*="color"] td,
+[data-theme="dark"] .tox-edit-area iframe body table[data-mce-style*="color"] th {
+    color: #ffffff !important;
+    background: #000000 !important;
+    border: 1px solid #ffffff !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body table[style*="color"] colgroup,
+[data-theme="dark"] .tox-edit-area iframe body table[style*="color"] col,
+[data-theme="dark"] .tox-edit-area iframe body table[data-mce-style*="color"] colgroup,
+[data-theme="dark"] .tox-edit-area iframe body table[data-mce-style*="color"] col {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body table[style*="color"] tbody,
+[data-theme="dark"] .tox-edit-area iframe body table[style*="color"] tr,
+[data-theme="dark"] .tox-edit-area iframe body table[data-mce-style*="color"] tbody,
+[data-theme="dark"] .tox-edit-area iframe body table[data-mce-style*="color"] tr {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .tox-edit-area iframe body table[style*="color"] br,
+[data-theme="dark"] .tox-edit-area iframe body table[data-mce-style*="color"] br {
+    color: #ffffff !important;
+}
+
+/* Переопределение inline стилей для светлой темы в основных iframe */
+[data-theme="light"] .tox-edit-area iframe body table[style*="color"],
+[data-theme="light"] .tox-edit-area iframe body table[data-mce-style*="color"] {
+    color: #000000 !important;
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body table[style*="color"] td,
+[data-theme="light"] .tox-edit-area iframe body table[style*="color"] th,
+[data-theme="light"] .tox-edit-area iframe body table[data-mce-style*="color"] td,
+[data-theme="light"] .tox-edit-area iframe body table[data-mce-style*="color"] th {
+    color: #000000 !important;
+    background: #ffffff !important;
+    border: 1px solid #000000 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body table[style*="color"] colgroup,
+[data-theme="light"] .tox-edit-area iframe body table[style*="color"] col,
+[data-theme="light"] .tox-edit-area iframe body table[data-mce-style*="color"] colgroup,
+[data-theme="light"] .tox-edit-area iframe body table[data-mce-style*="color"] col {
+    color: #000000 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body table[style*="color"] tbody,
+[data-theme="light"] .tox-edit-area iframe body table[style*="color"] tr,
+[data-theme="light"] .tox-edit-area iframe body table[data-mce-style*="color"] tbody,
+[data-theme="light"] .tox-edit-area iframe body table[data-mce-style*="color"] tr {
+    color: #000000 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body table[style*="color"] br,
+[data-theme="light"] .tox-edit-area iframe body table[data-mce-style*="color"] br {
+    color: #000000 !important;
+}
+
 /* ===== МАКСИМАЛЬНАЯ БЛОКИРОВКА ВСЕХ INLINE СТИЛЕЙ TINYMCE ===== */
 
 /* Блокируем все inline стили для body с ID tinymce */
@@ -3696,4 +6191,168 @@
     min-height: 300px !important;
     overflow-wrap: normal !important;
     word-wrap: normal !important;
+}
+
+/* ===== АДАПТИВНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ===== */
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    #editorContainer_ifr {
+        margin: 2px !important;
+        min-height: calc(100vh - 150px) !important;
+        max-height: calc(100vh - 150px) !important;
+        width: calc(100% - 4px) !important;
+        max-width: calc(100% - 4px) !important;
+    }
+    
+    #editorContainer_ifr body {
+        margin-left: 35px !important;
+        margin-right: 10px !important;
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+        line-height: 25px !important;
+        font-size: 16px !important;
+    }
+    
+    /* Стили для таблиц на мобильных устройствах */
+    [data-theme="dark"] #editorContainer_ifr body table,
+    [data-theme="dark"] .tox-edit-area iframe body table {
+        color: #ffffff !important;
+        background: #000000 !important;
+        border: 2px solid #ffffff !important;
+        background-image: none !important;
+        margin: 15px 0 !important;
+        position: relative !important;
+        z-index: 10 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+    
+    [data-theme="dark"] #editorContainer_ifr body table td,
+    [data-theme="dark"] #editorContainer_ifr body table th,
+    [data-theme="dark"] .tox-edit-area iframe body table td,
+    [data-theme="dark"] .tox-edit-area iframe body table th {
+        color: #ffffff !important;
+        background: #000000 !important;
+        border: 1px solid #ffffff !important;
+        background-image: none !important;
+        padding: 8px 12px !important;
+    }
+    
+    [data-theme="light"] #editorContainer_ifr body table,
+    [data-theme="light"] .tox-edit-area iframe body table {
+        color: #000000 !important;
+        background: #ffffff !important;
+        border: 2px solid #000000 !important;
+        background-image: none !important;
+        margin: 15px 0 !important;
+        position: relative !important;
+        z-index: 10 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+    
+    [data-theme="light"] #editorContainer_ifr body table td,
+    [data-theme="light"] #editorContainer_ifr body table th,
+    [data-theme="light"] .tox-edit-area iframe body table td,
+    [data-theme="light"] .tox-edit-area iframe body table th {
+        color: #000000 !important;
+        background: #ffffff !important;
+        border: 1px solid #000000 !important;
+        background-image: none !important;
+        padding: 8px 12px !important;
+    }
+}
+
+/* Планшеты */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #editorContainer_ifr {
+        margin: 3px !important;
+        min-height: calc(100vh - 180px) !important;
+        max-height: calc(100vh - 180px) !important;
+        width: calc(100% - 6px) !important;
+        max-width: calc(100% - 6px) !important;
+    }
+    
+    #editorContainer_ifr body {
+        margin-left: 45px !important;
+        margin-right: 15px !important;
+        margin-top: 18px !important;
+        margin-bottom: 18px !important;
+        line-height: 25px !important;
+        font-size: 16px !important;
+    }
+    
+    /* Стили для таблиц на планшетах */
+    [data-theme="dark"] #editorContainer_ifr body table,
+    [data-theme="dark"] .tox-edit-area iframe body table {
+        color: #ffffff !important;
+        background: #000000 !important;
+        border: 2px solid #ffffff !important;
+        background-image: none !important;
+        margin: 18px 0 !important;
+        position: relative !important;
+        z-index: 10 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+    
+    [data-theme="dark"] #editorContainer_ifr body table td,
+    [data-theme="dark"] #editorContainer_ifr body table th,
+    [data-theme="dark"] .tox-edit-area iframe body table td,
+    [data-theme="dark"] .tox-edit-area iframe body table th {
+        color: #ffffff !important;
+        background: #000000 !important;
+        border: 1px solid #ffffff !important;
+        background-image: none !important;
+        padding: 10px 14px !important;
+    }
+    
+    [data-theme="light"] #editorContainer_ifr body table,
+    [data-theme="light"] .tox-edit-area iframe body table {
+        color: #000000 !important;
+        background: #ffffff !important;
+        border: 2px solid #000000 !important;
+        background-image: none !important;
+        margin: 18px 0 !important;
+        position: relative !important;
+        z-index: 10 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+    
+    [data-theme="light"] #editorContainer_ifr body table td,
+    [data-theme="light"] #editorContainer_ifr body table th,
+    [data-theme="light"] .tox-edit-area iframe body table td,
+    [data-theme="light"] .tox-edit-area iframe body table th {
+        color: #000000 !important;
+        background: #ffffff !important;
+        border: 1px solid #000000 !important;
+        background-image: none !important;
+        padding: 10px 14px !important;
+    }
+}
+
+/* Большие экраны */
+@media (min-width: 1025px) {
+    #editorContainer_ifr {
+        margin: 5px !important;
+        min-height: calc(100vh - 200px) !important;
+        max-height: calc(100vh - 200px) !important;
+        width: calc(100% - 10px) !important;
+        max-width: calc(100% - 10px) !important;
+    }
+    
+    #editorContainer_ifr body {
+        margin-left: 50px !important;
+        margin-right: 20px !important;
+        margin-top: 20px !important;
+        margin-bottom: 20px !important;
+        line-height: 25px !important;
+        font-size: 16px !important;
+    }
 }

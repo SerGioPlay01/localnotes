@@ -1147,6 +1147,21 @@ body.modal-open {
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     backdrop-filter: none;
+    /* Дополнительные стили для сочетания с дизайном тетради */
+    background-image: 
+        repeating-linear-gradient(
+            transparent 0px,
+            transparent 23px,
+            rgba(0, 0, 0, 0.02) 24px,
+            rgba(0, 0, 0, 0.02) 25px
+        );
+    background-size: 100% 25px;
+    background-position: 0 0;
+    background-repeat: repeat-y;
+    /* Обеспечиваем правильное отображение листа тетради */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     position: relative;
     z-index: 50;
     display: flex;

@@ -2173,10 +2173,110 @@ async function initTinyMCE() {
             'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough superscript subscript | ' +
             'alignleft aligncenter alignright alignjustify | outdent indent | ' +
             'numlist bullist | forecolor backcolor removeformat | ' +
-            'link image media iframe | table | charmap emoticons | ' +
+            'link customimage media iframe | table | charmap emoticons | ' +
             'code | preview | insertfile anchor codesample | ' +
             'ltr rtl | pagebreak | visualblocks visualchars | searchreplace | wordcount | help'
         ],
+        
+        // Настройки шрифтов (только те, что есть в папке fonts + системные)
+        font_formats: 'Arial=arial,helvetica,sans-serif; ' +
+            'Arial Black=arial black,avant garde; ' +
+            'Book Antiqua=book antiqua,palatino; ' +
+            'Comic Sans MS=comic sans ms,sans-serif; ' +
+            'Courier New=courier new,courier; ' +
+            'Georgia=georgia,palatino; ' +
+            'Helvetica=helvetica; ' +
+            'Impact=impact,chicago; ' +
+            'Symbol=symbol; ' +
+            'Tahoma=tahoma,arial,helvetica,sans-serif; ' +
+            'Terminal=terminal,monaco; ' +
+            'Times New Roman=times new roman,times; ' +
+            'Trebuchet MS=trebuchet ms,geneva; ' +
+            'Verdana=verdana,geneva; ' +
+            'Webdings=webdings; ' +
+            'Wingdings=wingdings,zapf dingbats; ' +
+            'Golos Text=Golos Text,arial,helvetica,sans-serif; ' +
+            'Intro=Intro,arial,helvetica,sans-serif; ' +
+            'Roboto=Roboto,arial,helvetica,sans-serif; ' +
+            'Open Sans=Open Sans,arial,helvetica,sans-serif; ' +
+            'Lato=Lato,arial,helvetica,sans-serif; ' +
+            'Montserrat=Montserrat,arial,helvetica,sans-serif; ' +
+            'Lekton Nerd Font Mono=Lekton Nerd Font Mono,monospace; ' +
+            'Consolas=Consolas,monospace; ' +
+            'Monaco=Monaco,monospace',
+            
+        fontsize_formats: '8pt 9pt 10pt 11pt 12pt 14pt 16pt 18pt 20pt 22pt 24pt 26pt 28pt 30pt 32pt 34pt 36pt 38pt 40pt 42pt 44pt 46pt 48pt 50pt 52pt 54pt 56pt 58pt 60pt 72pt 84pt 96pt',
+        
+        // Настройки для блоков
+        block_formats: 'Paragraph=p; ' +
+            'Heading 1=h1; ' +
+            'Heading 2=h2; ' +
+            'Heading 3=h3; ' +
+            'Heading 4=h4; ' +
+            'Heading 5=h5; ' +
+            'Heading 6=h6; ' +
+            'Preformatted=pre; ' +
+            'Blockquote=blockquote; ' +
+            'Div=div; ' +
+            'Address=address; ' +
+            'Code=code',
+            
+        // Дополнительные настройки для шрифтов
+        font_family_formats: 'Arial=arial,helvetica,sans-serif; ' +
+            'Arial Black=arial black,avant garde; ' +
+            'Book Antiqua=book antiqua,palatino; ' +
+            'Comic Sans MS=comic sans ms,sans-serif; ' +
+            'Courier New=courier new,courier; ' +
+            'Georgia=georgia,palatino; ' +
+            'Helvetica=helvetica; ' +
+            'Impact=impact,chicago; ' +
+            'Symbol=symbol; ' +
+            'Tahoma=tahoma,arial,helvetica,sans-serif; ' +
+            'Terminal=terminal,monaco; ' +
+            'Times New Roman=times new roman,times; ' +
+            'Trebuchet MS=trebuchet ms,geneva; ' +
+            'Verdana=verdana,geneva; ' +
+            'Webdings=webdings; ' +
+            'Wingdings=wingdings,zapf dingbats; ' +
+            'Golos Text=Golos Text,arial,helvetica,sans-serif; ' +
+            'Roboto=Roboto,arial,helvetica,sans-serif; ' +
+            'Open Sans=Open Sans,arial,helvetica,sans-serif; ' +
+            'Lato=Lato,arial,helvetica,sans-serif; ' +
+            'Montserrat=Montserrat,arial,helvetica,sans-serif; ' +
+            'Source Sans Pro=Source Sans Pro,arial,helvetica,sans-serif; ' +
+            'PT Sans=PT Sans,arial,helvetica,sans-serif; ' +
+            'Ubuntu=Ubuntu,arial,helvetica,sans-serif; ' +
+            'Playfair Display=Playfair Display,serif; ' +
+            'Merriweather=Merriweather,serif; ' +
+            'Lora=Lora,serif; ' +
+            'Crimson Text=Crimson Text,serif; ' +
+            'Libre Baskerville=Libre Baskerville,serif; ' +
+            'Fira Code=Fira Code,monospace; ' +
+            'Source Code Pro=Source Code Pro,monospace; ' +
+            'JetBrains Mono=JetBrains Mono,monospace; ' +
+            'Consolas=Consolas,monospace; ' +
+            'Monaco=Monaco,monospace; ' +
+            'Courier New=courier new,courier,monospace',
+            
+        // Настройки для форматирования
+        formats: {
+            // Кастомные форматы для шрифтов
+            fontfamily: {
+                inline: 'span',
+                styles: { 'font-family': '%value' },
+                clear_child_styles: true
+            },
+            fontsize: {
+                inline: 'span',
+                styles: { 'font-size': '%value' },
+                clear_child_styles: true
+            }
+        },
+        
+        
+        // Дополнительные настройки для обработки размеров
+        font_size_legacy_values: '8pt,9pt,10pt,11pt,12pt,14pt,16pt,18pt,20pt,22pt,24pt,26pt,28pt,30pt,32pt,34pt,36pt,38pt,40pt,42pt,44pt,46pt,48pt,50pt,52pt,54pt,56pt,58pt,60pt,72pt,84pt,96pt',
+        
         toolbar_mode: 'sliding',
             toolbar_sticky: responsiveManager.isDesktop,
         language: lang,
@@ -2185,14 +2285,13 @@ async function initTinyMCE() {
         branding: false,
         promotion: false,
         tooltip: true,
-        quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-        quickbars_image_toolbar: 'alignleft aligncenter alignright | imageoptions',
+        quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable customimage',
             resize: false,
             height: '100%',
             min_height: responsiveManager.isTabletDevice ? 450 : 400,
             elementpath: responsiveManager.isDesktop,
         statusbar: false,
-            quickbars_insert_toolbar: 'quickimage quicktable',
+            quickbars_insert_toolbar: 'quickimage quicktable customimage',
             contextmenu: (responsiveManager.isTouch || pointerManager.isTouch()) ? 'link image imagetools table' : 'link image imagetools table',
             mobile: responsiveManager.isMobile,
             touch: responsiveManager.isTouch || pointerManager.isTouch(),
@@ -2214,10 +2313,8 @@ async function initTinyMCE() {
         // Улучшенные настройки для планшетов
         content_style: responsiveManager.isTabletDevice ? `
             body { 
-                font-size: 16px !important; 
                 line-height: 1.7 !important; 
                 padding: 20px !important;
-                font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
             }
             h1, h2, h3, h4, h5, h6 { 
                 margin: 20px 0 15px 0 !important; 
@@ -2246,7 +2343,50 @@ async function initTinyMCE() {
                 margin: 16px 0 !important; 
                 border-radius: 8px !important;
             }
-        ` : undefined,
+        ` : `
+            body { 
+                line-height: 1.6; 
+                color: var(--text-color);
+                background: var(--editor-bg);
+            }
+            h1, h2, h3, h4, h5, h6 { 
+                font-weight: 600;
+                line-height: 1.3;
+                margin: 20px 0 15px 0;
+            }
+            p { 
+                margin-bottom: 16px; 
+                line-height: 1.6;
+            }
+            blockquote { 
+                padding: 20px 24px; 
+                margin: 20px 0; 
+                border-left: 4px solid var(--primary-color);
+                background: var(--bg-secondary);
+                border-radius: var(--border-radius-small);
+            }
+            pre, code { 
+                font-family: 'Fira Code', 'Source Code Pro', 'JetBrains Mono', Consolas, Monaco, monospace;
+                background: var(--bg-secondary);
+                padding: 12px 16px;
+                border-radius: var(--border-radius-small);
+                border: 1px solid var(--border-color);
+            }
+            table { 
+                border-collapse: collapse; 
+                width: 100%; 
+                margin: 16px 0;
+                border: 1px solid var(--border-color);
+            }
+            th, td { 
+                padding: 12px 16px; 
+                border: 1px solid var(--border-color);
+            }
+            th {
+                background: var(--bg-secondary);
+                font-weight: 600;
+            }
+        `,
             // Настройки для таблиц
             table_default_attributes: {
                 border: '1'
@@ -2374,8 +2514,6 @@ async function initTinyMCE() {
             content_style: `
                 body {
                     background: transparent !important;
-                    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-                    font-size: 16px !important;
                     line-height: 1.6 !important;
                     margin: 0 !important;
                     padding: 16px !important;
@@ -2643,7 +2781,11 @@ async function initTinyMCE() {
                     await convertBlobUrlsToBase64InElement(editor.getBody());
                 });
                 
-                
+                // Инициализация управления размером изображений
+                editor.on('init', function() {
+                    setTimeout(() => {
+                    }, 100);
+                });
                 
                 // Добавляем обработчики для кнопок
                 
@@ -2672,8 +2814,20 @@ async function initTinyMCE() {
                 });
             },
         setup: function (editor) {
+                // Добавляем кастомную иконку для изображений
+                editor.ui.registry.addIcon('customimage', '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/><path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+                
                 // Добавляем кастомную иконку для iframe
                 editor.ui.registry.addIcon('iframe', '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><rect x="6" y="6" width="12" height="8" rx="1" fill="currentColor" opacity="0.3"/><path d="M8 8h8M8 12h6M8 16h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>');
+                
+                // Регистрируем кнопку для изображений
+                editor.ui.registry.addButton('customimage', {
+                    icon: 'customimage',
+                    tooltip: currentLang.startsWith("ru") ? 'Вставить изображение' : 'Insert Image',
+                    onAction: function() {
+                        insertImage();
+                    }
+                });
                 
                 // Регистрируем кнопку iframe
                 editor.ui.registry.addButton('iframe', {
@@ -2834,6 +2988,7 @@ function openModal(noteId, noteContent, noteCreationTime) {
         const validatedContent = validateAndFixImages(noteContent);
         tinymceEditor.setContent(validatedContent);
         currentNoteId = noteId;
+        
     } else {
         tinymceEditor.setContent("");
         currentNoteId = null;
@@ -2885,6 +3040,7 @@ function openModal(noteId, noteContent, noteCreationTime) {
         
         // Проверяем и исправляем поврежденные изображения
         content = validateAndFixImages(content);
+        
 
         const timestamp = Date.now();
 
@@ -2934,6 +3090,7 @@ function openModal(noteId, noteContent, noteCreationTime) {
             if (editorContainer) {
                 editorContainer.value = "";
             }
+
         }
     };
 }
@@ -3184,17 +3341,54 @@ async function processMediaContent(content) {
         // Обрабатываем изображения
         for (const imgSrc of images) {
             if (imgSrc.startsWith('data:')) {
-                // Изображение уже в base64, оставляем как есть
+                // Изображение уже в base64, проверяем его валидность
+                if (!isValidBase64Image(imgSrc)) {
+                    console.warn('Invalid base64 image detected, replacing with placeholder');
+                    const placeholder = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgRXJyb3I8L3RleHQ+PC9zdmc+';
+                    processedContent = processedContent.replace(imgSrc, placeholder);
+                }
                 continue;
             } else if (imgSrc.startsWith('blob:')) {
                 // Конвертируем blob в base64
                 try {
                     const response = await fetch(imgSrc);
+                    if (!response.ok) {
+                        console.warn('Failed to fetch blob image:', response.status);
+                        continue;
+                    }
                     const blob = await response.blob();
+                    if (blob.size === 0) {
+                        console.warn('Empty blob detected');
+                        continue;
+                    }
                     const base64 = await blobToBase64(blob);
-                    processedContent = processedContent.replace(imgSrc, base64);
+                    if (base64 && base64.length > 0) {
+                        processedContent = processedContent.replace(imgSrc, base64);
+                        console.log('Successfully converted blob to base64 for export');
+                    }
                 } catch (error) {
                     console.warn('Failed to convert blob to base64:', error);
+                    // Заменяем на placeholder при ошибке
+                    const placeholder = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgRXJyb3I8L3RleHQ+PC9zdmc+';
+                    processedContent = processedContent.replace(imgSrc, placeholder);
+                }
+            } else if (imgSrc.startsWith('http')) {
+                // Для внешних изображений пытаемся загрузить и конвертировать в base64
+                try {
+                    const response = await fetch(imgSrc, { mode: 'cors' });
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        if (blob.type.startsWith('image/')) {
+                            const base64 = await blobToBase64(blob);
+                            if (base64 && base64.length > 0) {
+                                processedContent = processedContent.replace(imgSrc, base64);
+                                console.log('Successfully converted external image to base64 for export');
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Failed to convert external image to base64:', error);
+                    // Оставляем оригинальную ссылку для внешних изображений
                 }
             }
         }
@@ -3389,10 +3583,11 @@ function validateAndFixImages(content) {
     const images = tempDiv.querySelectorAll('img');
     images.forEach(img => {
         // Проверяем, что изображение имеет корректный src
-        if (!img.src || img.src === '' || img.src === 'undefined') {
+        if (!img.src || img.src === '' || img.src === 'undefined' || img.src === 'null') {
             // Заменяем на placeholder
             img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgRXJyb3I8L3RleHQ+PC9zdmc+';
             img.alt = 'Image Error';
+            img.classList.add('image-error');
         }
         
         // Проверяем, что base64 изображение корректно
@@ -3403,7 +3598,26 @@ function validateAndFixImages(content) {
                 // Заменяем на placeholder
                 img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2NjYyIvPjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNjY2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW1hZ2UgRXJyb3I8L3RleHQ+PC9zdmc+';
                 img.alt = 'Image Error';
+                img.classList.add('image-error');
             }
+        }
+        
+        // Проверяем blob URLs и конвертируем их в base64 если нужно
+        if (img.src.startsWith('blob:')) {
+            // Добавляем класс для отслеживания blob изображений
+            img.classList.add('blob-image');
+        }
+        
+        // Убираем атрибуты width и height для предотвращения проблем с отображением
+        img.removeAttribute('width');
+        img.removeAttribute('height');
+        
+        // Добавляем стили для правильного отображения
+        if (!img.style.maxWidth) {
+            img.style.maxWidth = '100%';
+        }
+        if (!img.style.height) {
+            img.style.height = 'auto';
         }
     });
     
@@ -3720,13 +3934,67 @@ function showCustomImageDialog(editor) {
     imageModal.className = 'modal';
     imageModal.id = 'customImageModal';
     imageModal.innerHTML = `
-        <div class="modal-content-error">
-            <h3>${currentLang.startsWith("ru") ? "Вставка изображения" : "Insert Image"}</h3>
-            <p>${currentLang.startsWith("ru") ? "Введите URL изображения:" : "Enter image URL:"}</p>
-            <input type="url" id="imageUrlInput" placeholder="https://example.com/image.jpg">
-            <div class="modal-buttons-container">
-                <button id="imageInsertBtn" class="btn"><i class="fas fa-check"></i> ${currentLang.startsWith("ru") ? "Вставить" : "Insert"}</button>
-                <button id="imageCancelBtn" class="btn cancel"><i class="fas fa-times"></i> ${currentLang.startsWith("ru") ? "Отмена" : "Cancel"}</button>
+        <div class="modern-modal-overlay">
+            <div class="modern-modal-container">
+                <div class="modern-modal-header">
+                    <h3 class="modern-modal-title">
+                        <i class="fas fa-image"></i>
+                        ${currentLang.startsWith("ru") ? "Вставка изображения" : "Insert Image"}
+                    </h3>
+                    <button class="modern-modal-close" id="modalCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="modern-modal-body">
+                    <!-- Вкладки для выбора способа вставки -->
+                    <div class="modern-tabs">
+                        <button id="urlTab" class="modern-tab modern-tab-active">
+                            <i class="fas fa-link"></i>
+                            <span>${currentLang.startsWith("ru") ? "URL" : "URL"}</span>
+                        </button>
+                        <button id="fileTab" class="modern-tab">
+                            <i class="fas fa-upload"></i>
+                            <span>${currentLang.startsWith("ru") ? "Файл" : "File"}</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Контент для URL -->
+                    <div id="urlContent" class="modern-tab-content">
+                        <div class="modern-input-group">
+                            <label class="modern-label">${currentLang.startsWith("ru") ? "URL изображения" : "Image URL"}</label>
+                            <input type="url" id="imageUrlInput" class="modern-input" placeholder="https://example.com/image.jpg">
+                        </div>
+                        <div id="urlPreview" class="modern-preview"></div>
+                    </div>
+                    
+                    <!-- Контент для файла -->
+                    <div id="fileContent" class="modern-tab-content" style="display: none;">
+                        <div class="modern-input-group">
+                            <label class="modern-label">${currentLang.startsWith("ru") ? "Выберите файл" : "Select File"}</label>
+                            <div class="modern-file-input-wrapper">
+                                <input type="file" id="imageFileInput" accept="image/*" class="modern-file-input">
+                                <label for="imageFileInput" class="modern-file-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>${currentLang.startsWith("ru") ? "Выбрать файл" : "Choose File"}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="filePreview" class="modern-preview"></div>
+                        <div id="fileInfo" class="modern-file-info"></div>
+                    </div>
+                </div>
+                
+                <div class="modern-modal-footer">
+                    <button id="imageCancelBtn" class="modern-btn modern-btn-secondary">
+                        <i class="fas fa-times"></i>
+                        ${currentLang.startsWith("ru") ? "Отмена" : "Cancel"}
+                    </button>
+                    <button id="imageInsertBtn" class="modern-btn modern-btn-primary">
+                        <i class="fas fa-check"></i>
+                        ${currentLang.startsWith("ru") ? "Вставить" : "Insert"}
+                    </button>
+                </div>
             </div>
         </div>
     `;
@@ -3735,16 +4003,112 @@ function showCustomImageDialog(editor) {
     imageModal.style.display = "block";
     
     const urlInput = document.getElementById('imageUrlInput');
+    const fileInput = document.getElementById('imageFileInput');
     const insertBtn = document.getElementById('imageInsertBtn');
     const cancelBtn = document.getElementById('imageCancelBtn');
+    const closeBtn = document.getElementById('modalCloseBtn');
+    const urlTab = document.getElementById('urlTab');
+    const fileTab = document.getElementById('fileTab');
+    const urlContent = document.getElementById('urlContent');
+    const fileContent = document.getElementById('fileContent');
+    const urlPreview = document.getElementById('urlPreview');
+    const filePreview = document.getElementById('filePreview');
+    const fileInfo = document.getElementById('fileInfo');
+    
+    let currentMode = 'url';
+    let selectedFile = null;
+    
+    // Обработчики переключения вкладок
+    urlTab.addEventListener('click', () => {
+        currentMode = 'url';
+        urlTab.classList.add('modern-tab-active');
+        fileTab.classList.remove('modern-tab-active');
+        urlContent.style.display = 'block';
+        fileContent.style.display = 'none';
+        urlInput.focus();
+    });
+    
+    fileTab.addEventListener('click', () => {
+        currentMode = 'file';
+        fileTab.classList.add('modern-tab-active');
+        urlTab.classList.remove('modern-tab-active');
+        fileContent.style.display = 'block';
+        urlContent.style.display = 'none';
+    });
+    
+    // Предварительный просмотр URL
+    urlInput.addEventListener('input', () => {
+        const url = urlInput.value.trim();
+        if (url && isValidImageUrl(url)) {
+            urlPreview.innerHTML = `<img src="${url}" style="max-width: 200px; max-height: 150px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onerror="this.style.display='none'">`;
+        } else {
+            urlPreview.innerHTML = '';
+        }
+    });
+    
+    // Обработка выбора файла
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            selectedFile = file;
+            
+            // Проверяем размер файла (максимум 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                showCustomAlert(
+                    currentLang.startsWith("ru") ? "Ошибка" : "Error",
+                    currentLang.startsWith("ru") ? "Размер файла не должен превышать 10MB" : "File size should not exceed 10MB",
+                    "error"
+                );
+                fileInput.value = '';
+                selectedFile = null;
+                return;
+            }
+            
+            // Показываем информацию о файле
+            fileInfo.innerHTML = `
+                <strong>${currentLang.startsWith("ru") ? "Файл:" : "File:"}</strong> ${file.name}<br>
+                <strong>${currentLang.startsWith("ru") ? "Размер:" : "Size:"}</strong> ${formatFileSize(file.size)}<br>
+                <strong>${currentLang.startsWith("ru") ? "Тип:" : "Type:"}</strong> ${file.type}
+            `;
+            
+            // Предварительный просмотр
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                filePreview.innerHTML = `<img src="${e.target.result}" style="max-width: 200px; max-height: 150px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
     
     setTimeout(() => urlInput.focus(), 100);
     
-    const handleInsert = () => {
-        const url = urlInput.value.trim();
-        if (url) {
-            editor.insertContent(`<img src="${url}" alt="Image" style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);">`);
+    const handleInsert = async () => {
+        if (currentMode === 'url') {
+            const url = urlInput.value.trim();
+            if (url) {
+                const imageId = `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                editor.insertContent(`<img id="${imageId}" src="${url}" alt="Image" style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);">`);
+            }
+        } else if (currentMode === 'file' && selectedFile) {
+            try {
+                // Конвертируем файл в base64
+                const base64 = await fileToBase64(selectedFile);
+                const imageId = `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                editor.insertContent(`<img id="${imageId}" src="${base64}" alt="${selectedFile.name}" style="max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color);">`);
+            } catch (error) {
+                showCustomAlert(
+                    currentLang.startsWith("ru") ? "Ошибка" : "Error",
+                    currentLang.startsWith("ru") ? "Не удалось загрузить изображение" : "Failed to load image",
+                    "error"
+                );
+                return;
+            }
         }
+        
+        // Инициализируем элементы управления для новых изображений
+        setTimeout(() => {
+        }, 100);
+        
         document.body.removeChild(imageModal);
     };
     
@@ -3754,14 +4118,27 @@ function showCustomImageDialog(editor) {
     
     insertBtn.addEventListener('click', handleInsert);
     cancelBtn.addEventListener('click', handleCancel);
+    closeBtn.addEventListener('click', handleCancel);
     
     urlInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleInsert();
     });
     
+    // Закрытие по клику на overlay
     imageModal.addEventListener('click', (e) => {
-        if (e.target === imageModal) handleCancel();
+        if (e.target.classList.contains('modern-modal-overlay')) {
+            handleCancel();
+        }
     });
+    
+    // Закрытие по Escape
+    const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+            handleCancel();
+            document.removeEventListener('keydown', handleEscape);
+        }
+    };
+    document.addEventListener('keydown', handleEscape);
 }
 
 function showCustomLinkDialog(editor) {
@@ -3918,20 +4295,103 @@ function showCustomIframeDialog(editor) {
     iframeModal.className = 'modal';
     iframeModal.id = 'customIframeModal';
     iframeModal.innerHTML = `
-        <div class="modal-content-error">
-            <h3>${currentLang.startsWith("ru") ? "Вставка видео" : "Insert Video"}</h3>
-            <p>${currentLang.startsWith("ru") ? "Выберите платформу:" : "Select platform:"}</p>
-            <select id="platformSelect">
-                <option value="youtube">YouTube</option>
-                <option value="rutube">Rutube</option>
-                <option value="vk">VK Video</option>
-                <option value="vimeo">Vimeo</option>
-            </select>
-            <p>${currentLang.startsWith("ru") ? "Введите URL видео:" : "Enter video URL:"}</p>
-            <input type="url" id="videoUrlInput" placeholder="https://www.youtube.com/watch?v=...">
-            <div class="modal-buttons-container">
-                <button id="iframeInsertBtn" class="btn"><i class="fas fa-check"></i> ${currentLang.startsWith("ru") ? "Вставить" : "Insert"}</button>
-                <button id="iframeCancelBtn" class="btn cancel"><i class="fas fa-times"></i> ${currentLang.startsWith("ru") ? "Отмена" : "Cancel"}</button>
+        <div class="modern-modal-overlay">
+            <div class="modern-modal-container">
+                <div class="modern-modal-header">
+                    <h3 class="modern-modal-title">
+                        <i class="fas fa-video"></i>
+                        ${currentLang.startsWith("ru") ? "Вставка видео" : "Insert Video"}
+                    </h3>
+                    <button class="modern-modal-close" id="iframeModalCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="modern-modal-body">
+                    <!-- Вкладки для выбора способа вставки -->
+                    <div class="modern-tabs">
+                        <button id="platformTab" class="modern-tab modern-tab-active">
+                            <i class="fas fa-globe"></i>
+                            <span>${currentLang.startsWith("ru") ? "Платформа" : "Platform"}</span>
+                        </button>
+                        <button id="directTab" class="modern-tab">
+                            <i class="fas fa-code"></i>
+                            <span>${currentLang.startsWith("ru") ? "Прямая ссылка" : "Direct Link"}</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Контент для платформы -->
+                    <div id="platformContent" class="modern-tab-content">
+                        <div class="modern-input-group">
+                            <label class="modern-label">${currentLang.startsWith("ru") ? "Выберите платформу" : "Select Platform"}</label>
+                            <select id="platformSelect" class="modern-input">
+                                <option value="youtube">YouTube</option>
+                                <option value="rutube">Rutube</option>
+                                <option value="vk">VK Video</option>
+                                <option value="vimeo">Vimeo</option>
+                                <option value="dailymotion">Dailymotion</option>
+                                <option value="twitch">Twitch</option>
+                            </select>
+                        </div>
+                        
+                        <div class="modern-input-group">
+                            <label class="modern-label">${currentLang.startsWith("ru") ? "URL видео" : "Video URL"}</label>
+                            <input type="url" id="videoUrlInput" class="modern-input" placeholder="https://www.youtube.com/watch?v=...">
+                        </div>
+                        
+                        <div class="modern-input-group">
+                            <label class="modern-label">${currentLang.startsWith("ru") ? "Настройки воспроизведения" : "Playback Settings"}</label>
+                            <div class="video-options">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="autoplayCheck" class="modern-checkbox">
+                                    <span class="checkmark"></span>
+                                    ${currentLang.startsWith("ru") ? "Автовоспроизведение" : "Autoplay"}
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="loopCheck" class="modern-checkbox">
+                                    <span class="checkmark"></span>
+                                    ${currentLang.startsWith("ru") ? "Зацикливание" : "Loop"}
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="muteCheck" class="modern-checkbox">
+                                    <span class="checkmark"></span>
+                                    ${currentLang.startsWith("ru") ? "Без звука" : "Muted"}
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="videoPreview" class="modern-preview"></div>
+                    </div>
+                    
+                    <!-- Контент для прямой ссылки -->
+                    <div id="directContent" class="modern-tab-content" style="display: none;">
+                        <div class="modern-input-group">
+                            <label class="modern-label">${currentLang.startsWith("ru") ? "URL iframe" : "Iframe URL"}</label>
+                            <input type="url" id="directUrlInput" class="modern-input" placeholder="https://example.com/embed/...">
+                        </div>
+                        
+                        <div class="modern-input-group">
+                            <label class="modern-label">${currentLang.startsWith("ru") ? "Ширина (px)" : "Width (px)"}</label>
+                            <input type="number" id="iframeWidth" class="modern-input" value="560" min="100" max="1920">
+                        </div>
+                        
+                        <div class="modern-input-group">
+                            <label class="modern-label">${currentLang.startsWith("ru") ? "Высота (px)" : "Height (px)"}</label>
+                            <input type="number" id="iframeHeight" class="modern-input" value="315" min="100" max="1080">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modern-modal-footer">
+                    <button id="iframeCancelBtn" class="modern-btn modern-btn-secondary">
+                        <i class="fas fa-times"></i>
+                        ${currentLang.startsWith("ru") ? "Отмена" : "Cancel"}
+                    </button>
+                    <button id="iframeInsertBtn" class="modern-btn modern-btn-primary">
+                        <i class="fas fa-check"></i>
+                        ${currentLang.startsWith("ru") ? "Вставить" : "Insert"}
+                    </button>
+                </div>
             </div>
         </div>
     `;
@@ -3941,8 +4401,35 @@ function showCustomIframeDialog(editor) {
     
     const platformSelect = document.getElementById('platformSelect');
     const urlInput = document.getElementById('videoUrlInput');
+    const directUrlInput = document.getElementById('directUrlInput');
+    const iframeWidth = document.getElementById('iframeWidth');
+    const iframeHeight = document.getElementById('iframeHeight');
+    const autoplayCheck = document.getElementById('autoplayCheck');
+    const loopCheck = document.getElementById('loopCheck');
+    const muteCheck = document.getElementById('muteCheck');
     const insertBtn = document.getElementById('iframeInsertBtn');
     const cancelBtn = document.getElementById('iframeCancelBtn');
+    const closeBtn = document.getElementById('iframeModalCloseBtn');
+    const platformTab = document.getElementById('platformTab');
+    const directTab = document.getElementById('directTab');
+    const platformContent = document.getElementById('platformContent');
+    const directContent = document.getElementById('directContent');
+    const videoPreview = document.getElementById('videoPreview');
+    
+    // Обработчики переключения вкладок
+    platformTab.addEventListener('click', () => {
+        platformTab.classList.add('modern-tab-active');
+        directTab.classList.remove('modern-tab-active');
+        platformContent.style.display = 'block';
+        directContent.style.display = 'none';
+    });
+    
+    directTab.addEventListener('click', () => {
+        directTab.classList.add('modern-tab-active');
+        platformTab.classList.remove('modern-tab-active');
+        directContent.style.display = 'block';
+        platformContent.style.display = 'none';
+    });
     
     // Обновляем placeholder при изменении платформы
     platformSelect.addEventListener('change', function() {
@@ -3951,29 +4438,101 @@ function showCustomIframeDialog(editor) {
             youtube: 'https://www.youtube.com/watch?v=...',
             rutube: 'https://rutube.ru/video/...',
             vk: 'https://vk.com/video...',
-            vimeo: 'https://vimeo.com/...'
+            vimeo: 'https://vimeo.com/...',
+            dailymotion: 'https://www.dailymotion.com/video/...',
+            twitch: 'https://www.twitch.tv/videos/...'
         };
         urlInput.placeholder = placeholders[platform];
+        updateVideoPreview();
     });
+    
+    // Предварительный просмотр видео
+    urlInput.addEventListener('input', updateVideoPreview);
+    
+    function updateVideoPreview() {
+        const url = urlInput.value.trim();
+        const platform = platformSelect.value;
+        
+        if (url && isValidVideoUrl(url, platform)) {
+            const embedUrl = generateEmbedUrl(url, platform);
+            if (embedUrl) {
+                videoPreview.innerHTML = `
+                    <div class="preview-container">
+                        <iframe src="${embedUrl}" width="100%" height="200" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                `;
+            }
+        } else {
+            videoPreview.innerHTML = `
+                <div class="preview-placeholder">
+                    <i class="fas fa-video"></i>
+                    <p>${currentLang.startsWith("ru") ? "Предварительный просмотр появится здесь" : "Preview will appear here"}</p>
+                </div>
+            `;
+        }
+    }
     
     setTimeout(() => urlInput.focus(), 100);
     
     const handleInsert = () => {
-        const url = urlInput.value.trim();
-        const platform = platformSelect.value;
+        // Проверяем активную вкладку
+        const isPlatformTab = platformTab.classList.contains('modern-tab-active');
         
-        if (url) {
+        if (isPlatformTab) {
+            // Вставка через платформу
+            const url = urlInput.value.trim();
+            const platform = platformSelect.value;
+            
+            if (!url) {
+                showCustomAlert(
+                    currentLang.startsWith("ru") ? "Ошибка" : "Error",
+                    currentLang.startsWith("ru") ? "Введите URL видео" : "Enter video URL",
+                    "error"
+                );
+                return;
+            }
+            
             const iframeCode = generateIframeCode(url, platform);
             if (iframeCode) {
-                editor.insertContent(iframeCode);
+                // Добавляем параметры воспроизведения
+                let finalCode = iframeCode;
+                if (autoplayCheck.checked || loopCheck.checked || muteCheck.checked) {
+                    const params = new URLSearchParams();
+                    if (autoplayCheck.checked) params.append('autoplay', '1');
+                    if (loopCheck.checked) params.append('loop', '1');
+                    if (muteCheck.checked) params.append('mute', '1');
+                    
+                    // Обновляем src в iframe коде
+                    finalCode = iframeCode.replace(/src="([^"]+)"/, `src="$1?${params.toString()}"`);
+                }
+                
+                editor.insertContent(finalCode);
             } else {
                 showCustomAlert(
-                    t("error"),
+                    currentLang.startsWith("ru") ? "Ошибка" : "Error",
                     currentLang.startsWith("ru") ? "Неверный URL для выбранной платформы" : "Invalid URL for selected platform",
                     "error"
                 );
+                return;
             }
+        } else {
+            // Вставка прямой ссылки
+            const directUrl = directUrlInput.value.trim();
+            const width = iframeWidth.value || 560;
+            const height = iframeHeight.value || 315;
+            
+            if (!directUrl) {
+                showCustomAlert(
+                    currentLang.startsWith("ru") ? "Ошибка" : "Error",
+                    currentLang.startsWith("ru") ? "Введите URL iframe" : "Enter iframe URL",
+                    "error"
+                );
+                return;
+            }
+            
+            editor.insertContent(`<iframe src="${directUrl}" width="${width}" height="${height}" frameborder="0" allowfullscreen style="border-radius: 8px; box-shadow: 0 4px 12px var(--shadow-color);"></iframe>`);
         }
+        
         document.body.removeChild(iframeModal);
     };
     
@@ -3983,6 +4542,7 @@ function showCustomIframeDialog(editor) {
     
     insertBtn.addEventListener('click', handleInsert);
     cancelBtn.addEventListener('click', handleCancel);
+    closeBtn.addEventListener('click', handleCancel);
     
     // Закрытие по Enter
     urlInput.addEventListener('keypress', (e) => {
@@ -3991,20 +4551,27 @@ function showCustomIframeDialog(editor) {
         }
     });
     
-    // Закрытие по Escape
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && iframeModal.parentNode) {
-            handleCancel();
+    directUrlInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleInsert();
         }
     });
     
-    // Закрытие по клику вне модального окна
-    const handleBackdropClick = (e) => {
-        if (e.target === iframeModal) {
+    // Закрытие по Escape
+    const handleEscape = (e) => {
+        if (e.key === 'Escape') {
             handleCancel();
+            document.removeEventListener('keydown', handleEscape);
         }
     };
-    iframeModal.addEventListener('click', handleBackdropClick);
+    document.addEventListener('keydown', handleEscape);
+    
+    // Закрытие по клику на overlay
+    iframeModal.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modern-modal-overlay')) {
+            handleCancel();
+        }
+    });
 }
 
 // Функция для генерации iframe кода
@@ -4016,9 +4583,25 @@ function generateIframeCode(url, platform) {
         
         switch (platform) {
             case 'youtube':
-                const youtubeMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
-                if (youtubeMatch) {
-                    embedUrl = `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+                // Улучшенная поддержка различных форматов YouTube URL
+                let videoId = '';
+                
+                if (url.includes('youtu.be/')) {
+                    videoId = url.split('youtu.be/')[1].split('?')[0].split('&')[0];
+                } else if (url.includes('youtube.com/watch')) {
+                    const match = url.match(/[?&]v=([^&]+)/);
+                    if (match) videoId = match[1];
+                } else if (url.includes('youtube.com/embed/')) {
+                    const match = url.match(/embed\/([^?&]+)/);
+                    if (match) videoId = match[1];
+                } else if (url.includes('youtube.com/v/')) {
+                    const match = url.match(/\/v\/([^?&]+)/);
+                    if (match) videoId = match[1];
+                }
+                
+                if (videoId) {
+                    // Используем youtube-nocookie.com для обхода проверок на бота
+                    embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}`;
                 }
                 break;
                 
@@ -4040,6 +4623,20 @@ function generateIframeCode(url, platform) {
                 const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
                 if (vimeoMatch) {
                     embedUrl = `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+                }
+                break;
+                
+            case 'dailymotion':
+                const dailymotionMatch = url.match(/dailymotion\.com\/video\/([^_]+)/);
+                if (dailymotionMatch) {
+                    embedUrl = `https://www.dailymotion.com/embed/video/${dailymotionMatch[1]}`;
+                }
+                break;
+                
+            case 'twitch':
+                const twitchMatch = url.match(/twitch\.tv\/videos\/(\d+)/);
+                if (twitchMatch) {
+                    embedUrl = `https://player.twitch.tv/?video=${twitchMatch[1]}&parent=${window.location.hostname}`;
                 }
                 break;
         }
@@ -5909,6 +6506,77 @@ function showWordCount() {
 
 
 
+// Вспомогательные функции для работы с изображениями
+function isValidImageUrl(url) {
+    try {
+        const urlObj = new URL(url);
+        const validProtocols = ['http:', 'https:'];
+        const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp'];
+        
+        if (!validProtocols.includes(urlObj.protocol)) {
+            return false;
+        }
+        
+        const pathname = urlObj.pathname.toLowerCase();
+        return validExtensions.some(ext => pathname.endsWith(ext)) || 
+               pathname.includes('image') || 
+               url.includes('data:image/');
+    } catch {
+        return false;
+    }
+}
+
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+function isValidBase64Image(base64String) {
+    if (!base64String || !base64String.startsWith('data:image/')) {
+        return false;
+    }
+    
+    try {
+        const base64Part = base64String.split(',')[1];
+        if (!base64Part || base64Part.length < 100) {
+            return false;
+        }
+        
+        // Проверяем, что base64 строка содержит только допустимые символы
+        const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+        return base64Regex.test(base64Part);
+    } catch (error) {
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+// Показать элементы управления для изображения
+
+
+
+
 // Функция для вставки изображения
 function insertImage() {
     if (tinymceEditor) {
@@ -6919,60 +7587,92 @@ class NotesDatabase {
 const notesDB = new NotesDatabase();
 
 // Функции для экспорта в различные форматы
-function exportToMarkdown(noteContent) {
-    // Простое преобразование HTML в Markdown
-    let markdown = noteContent
-        .replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1\n\n')
-        .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1\n\n')
-        .replace(/<h3[^>]*>(.*?)<\/h3>/gi, '### $1\n\n')
-        .replace(/<h4[^>]*>(.*?)<\/h4>/gi, '#### $1\n\n')
-        .replace(/<h5[^>]*>(.*?)<\/h5>/gi, '##### $1\n\n')
-        .replace(/<h6[^>]*>(.*?)<\/h6>/gi, '###### $1\n\n')
-        .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**')
-        .replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**')
-        .replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*')
-        .replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*')
-        .replace(/<u[^>]*>(.*?)<\/u>/gi, '<u>$1</u>')
-        .replace(/<s[^>]*>(.*?)<\/s>/gi, '~~$1~~')
-        .replace(/<blockquote[^>]*>(.*?)<\/blockquote>/gi, '> $1\n')
-        .replace(/<code[^>]*>(.*?)<\/code>/gi, '`$1`')
-        .replace(/<pre[^>]*>(.*?)<\/pre>/gi, '```\n$1\n```\n')
-        .replace(/<ul[^>]*>(.*?)<\/ul>/gi, (match, content) => {
-            return content.replace(/<li[^>]*>(.*?)<\/li>/gi, '- $1\n') + '\n';
-        })
-        .replace(/<ol[^>]*>(.*?)<\/ol>/gi, (match, content) => {
-            let counter = 1;
-            return content.replace(/<li[^>]*>(.*?)<\/li>/gi, () => `${counter++}. $1\n`) + '\n';
-        })
-        .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
-        .replace(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>/gi, '![$2]($1)')
-        .replace(/<img[^>]*src="([^"]*)"[^>]*>/gi, '![]($1)')
-        .replace(/<br\s*\/?>/gi, '\n')
-        .replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n\n')
-        .replace(/<div[^>]*>(.*?)<\/div>/gi, '$1\n')
-        .replace(/<span[^>]*>(.*?)<\/span>/gi, '$1')
-        .replace(/<table[^>]*>(.*?)<\/table>/gi, (match, content) => {
-            // Простое преобразование таблиц
-            let table = content
-                .replace(/<tr[^>]*>(.*?)<\/tr>/gi, (trMatch, trContent) => {
-                    return trContent.replace(/<td[^>]*>(.*?)<\/td>/gi, '| $1 ') + '|\n';
-                })
-                .replace(/<th[^>]*>(.*?)<\/th>/gi, '| $1 ');
-            return '\n' + table + '\n';
-        })
-        .replace(/<[^>]*>/g, '') // Удаляем оставшиеся HTML теги
-        .replace(/\n\s*\n\s*\n/g, '\n\n') // Убираем лишние переносы строк
-        .trim();
-    
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const filename = `note_${timestamp}.md`;
-    const blob = new Blob([markdown], { type: "text/markdown" });
-    downloadFile(blob, filename, "text/markdown");
+async function exportToMarkdown(noteContent) {
+    try {
+        // Обрабатываем медиа-контент перед экспортом
+        const processedContent = await processMediaContent(noteContent);
+        
+        // Простое преобразование HTML в Markdown
+        let markdown = processedContent
+            .replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1\n\n')
+            .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1\n\n')
+            .replace(/<h3[^>]*>(.*?)<\/h3>/gi, '### $1\n\n')
+            .replace(/<h4[^>]*>(.*?)<\/h4>/gi, '#### $1\n\n')
+            .replace(/<h5[^>]*>(.*?)<\/h5>/gi, '##### $1\n\n')
+            .replace(/<h6[^>]*>(.*?)<\/h6>/gi, '###### $1\n\n')
+            .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**')
+            .replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**')
+            .replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*')
+            .replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*')
+            .replace(/<u[^>]*>(.*?)<\/u>/gi, '<u>$1</u>')
+            .replace(/<s[^>]*>(.*?)<\/s>/gi, '~~$1~~')
+            .replace(/<blockquote[^>]*>(.*?)<\/blockquote>/gi, '> $1\n')
+            .replace(/<code[^>]*>(.*?)<\/code>/gi, '`$1`')
+            .replace(/<pre[^>]*>(.*?)<\/pre>/gi, '```\n$1\n```\n')
+            .replace(/<ul[^>]*>(.*?)<\/ul>/gi, (match, content) => {
+                return content.replace(/<li[^>]*>(.*?)<\/li>/gi, '- $1\n') + '\n';
+            })
+            .replace(/<ol[^>]*>(.*?)<\/ol>/gi, (match, content) => {
+                let counter = 1;
+                return content.replace(/<li[^>]*>(.*?)<\/li>/gi, () => `${counter++}. $1\n`) + '\n';
+            })
+            .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+            .replace(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>/gi, '![$2]($1)')
+            .replace(/<img[^>]*src="([^"]*)"[^>]*>/gi, (match, src) => {
+                // Для base64 изображений создаем встроенные изображения
+                if (src.startsWith('data:image/')) {
+                    return `![Image](${src})`;
+                }
+                return `![](${src})`;
+            })
+            .replace(/<br\s*\/?>/gi, '\n')
+            .replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n\n')
+            .replace(/<div[^>]*>(.*?)<\/div>/gi, '$1\n')
+            .replace(/<span[^>]*>(.*?)<\/span>/gi, '$1')
+            .replace(/<table[^>]*>(.*?)<\/table>/gi, (match, content) => {
+                // Простое преобразование таблиц
+                let table = content
+                    .replace(/<tr[^>]*>(.*?)<\/tr>/gi, (trMatch, trContent) => {
+                        return trContent.replace(/<td[^>]*>(.*?)<\/td>/gi, '| $1 ') + '|\n';
+                    })
+                    .replace(/<th[^>]*>(.*?)<\/th>/gi, '| $1 ');
+                return '\n' + table + '\n';
+            })
+            .replace(/<[^>]*>/g, '') // Удаляем оставшиеся HTML теги
+            .replace(/\n\s*\n\s*\n/g, '\n\n') // Убираем лишние переносы строк
+            .trim();
+        
+        // Добавляем заголовок с метаданными
+        const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+        const header = `# Exported Note\n\n*Exported from Local Notes on ${new Date().toLocaleString()}*\n\n---\n\n`;
+        const finalMarkdown = header + markdown;
+        
+        const filename = `note_${timestamp}.md`;
+        const blob = new Blob([finalMarkdown], { type: "text/markdown" });
+        downloadFile(blob, filename, "text/markdown");
+        
+        showCustomAlert(
+            t("success"),
+            t("noteExported"),
+            "success"
+        );
+    } catch (error) {
+        showCustomAlert(
+            t("error"),
+            t("errorExport", { message: error.message }),
+            "error"
+        );
+    }
 }
 
-function exportToHTML(noteContent) {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const htmlContent = `
+async function exportToHTML(noteContent) {
+    try {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+        
+        // Обрабатываем медиа-контент перед экспортом
+        const processedContent = await processMediaContent(noteContent);
+        
+        const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7048,19 +7748,46 @@ function exportToHTML(noteContent) {
             height: auto;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: block;
+            margin: 10px auto;
+        }
+        .image-error {
+            background: #2d2d2d;
+            border: 1px dashed #666;
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            border-radius: 6px;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
-    ${noteContent}
+    ${processedContent}
+    <footer style="text-align: center; margin-top: 30px; color: #666; font-size: 12px;">
+        Exported from Local Notes on ${new Date().toLocaleString()}
+    </footer>
 </body>
 </html>`;
-    
-    const blob = new Blob([htmlContent], { type: "text/html" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `note_${timestamp}.html`;
-    link.click();
+        
+        const blob = new Blob([htmlContent], { type: "text/html" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `note_${timestamp}.html`;
+        link.click();
+        
+        showCustomAlert(
+            t("success"),
+            t("noteExported"),
+            "success"
+        );
+    } catch (error) {
+        showCustomAlert(
+            t("error"),
+            t("errorExport", { message: error.message }),
+            "error"
+        );
+    }
 }
 
 function exportToPDF(noteContent) {
@@ -7727,4 +8454,5 @@ function restoreViewMode() {
 
 // Вызываем восстановление режима при загрузке
 document.addEventListener('DOMContentLoaded', restoreViewMode);
+
 

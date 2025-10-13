@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     
     <!-- Main English page -->
     <url>
@@ -8,6 +9,24 @@
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <image:image>
+            <image:loc>https://localnotes-web.netlify.app/resources/obl_web.jpg</image:loc>
+            <image:title>Local Notes - Secure Note Taking App</image:title>
+            <image:caption>Secure note-taking application with AES-256 encryption and multi-language support</image:caption>
+        </image:image>
     </url>
     
     <!-- Russian version -->
@@ -15,7 +34,25 @@
         <loc>https://localnotes-web.netlify.app/ru/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
-        <priority>0.9</priority>
+        <priority>0.95</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <image:image>
+            <image:loc>https://localnotes-web.netlify.app/resources/obl_web.jpg</image:loc>
+            <image:title>Локальные заметки - Безопасное приложение для заметок</image:title>
+            <image:caption>Безопасное приложение для заметок с шифрованием AES-256 и поддержкой многоязычности</image:caption>
+        </image:image>
     </url>
     
     <!-- Ukrainian version -->
@@ -24,6 +61,19 @@
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
     </url>
     
     <!-- Polish version -->
@@ -32,6 +82,19 @@
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
     </url>
     
     <!-- Czech version -->
@@ -40,6 +103,19 @@
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
     </url>
     
     <!-- Slovak version -->
@@ -48,6 +124,19 @@
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
     </url>
     
     <!-- Bulgarian version -->
@@ -56,6 +145,19 @@
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
     </url>
     
     <!-- Croatian version -->
@@ -64,6 +166,19 @@
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
     </url>
     
     <!-- Serbian version -->
@@ -72,6 +187,19 @@
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
     </url>
     
     <!-- Bosnian version -->
@@ -80,6 +208,19 @@
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
     </url>
     
     <!-- Macedonian version -->
@@ -88,6 +229,19 @@
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
     </url>
     
     <!-- Slovenian version -->
@@ -96,6 +250,19 @@
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
     </url>
     
     <!-- Cookie Policy pages -->

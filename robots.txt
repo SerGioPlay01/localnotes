@@ -1,12 +1,77 @@
+# Robots.txt for Local Notes - Secure Note Taking App
+# Optimized for all major search engines
+
+# Global rules for all bots
 User-agent: *
+Allow: /
+Allow: /ru/
+Allow: /ua/
+Allow: /pl/
+Allow: /cs/
+Allow: /sk/
+Allow: /bg/
+Allow: /hr/
+Allow: /sr/
+Allow: /bs/
+Allow: /mk/
+Allow: /sl/
+Allow: /cookie.html
+Allow: /privacy_policy.html
+Allow: /usage_policy.html
+Allow: /resources/obl_web.jpg
+Allow: /favicon/favicon.ico
+Allow: /favicon/apple-touch-icon.png
+Allow: /favicon/android-chrome-192x192.png
+Allow: /favicon/android-chrome-512x512.png
+
+# Disallow technical directories
 Disallow: /css/
 Disallow: /fonts/
 Disallow: /js/
-Disallow: /resources/
-Disallow: /favicon/
+Disallow: /editor_news/
+Disallow: /lottiesnimstion/
+Disallow: /json/
 Disallow: /yandex_0c0ab9bc96dcb723.html
-Disallow: /manifest.json
-Allow: /
+Disallow: /google498025cb8703b0b0.html
+Disallow: /sccc.png
 
+# Allow manifest files for PWA
+Allow: /manifest.json
+Allow: /sw.js
+
+# Specific rules for Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Specific rules for Bing
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Specific rules for Yandex
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+# Specific rules for Baidu
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Site information
 Host: https://localnotes-web.netlify.app/
+Sitemap: https://localnotes-web.netlify.app/sitemap.xml
+
+# Additional sitemaps for different languages
 Sitemap: https://localnotes-web.netlify.app/sitemap.xml

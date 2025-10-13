@@ -1,7 +1,7 @@
 {
     "name": "Local Notes - Secure Note Taking App v1.0.2",
     "short_name": "Local Notes",
-    "description": "Secure local note-taking application with encryption, multi-language support, and performance optimizations",
+    "description": "Secure local note-taking application with AES-256 encryption, multi-language support (12 languages), offline functionality, and performance optimizations. Create, store, and export notes directly in your browser.",
     "theme_color": "#060116",
     "background_color": "#060116",
     "display": "standalone",
@@ -10,7 +10,9 @@
     "start_url": "/",
     "lang": "en",
     "dir": "ltr",
-    "categories": ["productivity", "utilities", "business"],
+    "categories": ["productivity", "utilities", "business", "education", "lifestyle"],
+    "keywords": ["notes", "secure", "encryption", "AES-256", "offline", "PWA", "productivity", "privacy", "local storage", "multi-language"],
+    "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
     "screenshots": [
         {
             "src": "/resources/screenshot-desktop.png",

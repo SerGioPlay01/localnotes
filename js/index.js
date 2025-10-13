@@ -3207,9 +3207,16 @@ function downloadFile(blob, filename, mimeType = "application/octet-stream") {
     }
     
     if (isMobile) {
-        // На мобильных устройствах добавляем дополнительные атрибуты
+        // На мобильных устройствах добавляем дополнительные атрибуты для принудительного скачивания
         link.setAttribute('target', '_blank');
         link.setAttribute('rel', 'noopener');
+        link.setAttribute('download', filename); // Явно указываем атрибут download
+        
+        // Для мобильных устройств принудительно устанавливаем MIME-тип как octet-stream
+        if (mimeType === "application/json") {
+            const mobileBlob = new Blob([blob], { type: "application/octet-stream" });
+            link.href = URL.createObjectURL(mobileBlob);
+        }
         
         if (isIOS) {
             // iOS требует специальной обработки
@@ -3234,7 +3241,8 @@ function downloadFile(blob, filename, mimeType = "application/octet-stream") {
                 }
             }, 100);
         } else if (isAndroid) {
-            // Android - стандартный подход
+            // Android - добавляем дополнительные атрибуты для принудительного скачивания
+            link.setAttribute('target', '_self');
             link.click();
         } else {
             // Другие мобильные браузеры
@@ -3330,8 +3338,11 @@ async function exportNote(noteContent, password) {
         const filename = `encrypted_note_${timestamp}.note`;
         
         // Используем универсальную функцию скачивания
-        const blob = new Blob([finalData], { type: "application/json" });
-        downloadFile(blob, filename, "application/json");
+        // На мобильных устройствах используем application/octet-stream для принудительного скачивания
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const mimeType = isMobile ? "application/octet-stream" : "application/json";
+        const blob = new Blob([finalData], { type: mimeType });
+        downloadFile(blob, filename, mimeType);
         
         // Показываем уведомление об успехе
         showCustomAlert(

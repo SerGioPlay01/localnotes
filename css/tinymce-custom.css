@@ -385,6 +385,8 @@
     margin-top: 16px;
     text-align: center;
     min-height: 40px;
+    max-height: 180px;
+    overflow: hidden;
 }
 
 .modern-preview img {
@@ -393,6 +395,169 @@
     border-radius: var(--border-radius-small);
     box-shadow: var(--shadow-soft);
     border: 1px solid var(--border-color);
+}
+
+/* Превью видео */
+.preview-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+.preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.preview-overlay i {
+    font-size: 32px;
+    margin-bottom: 8px;
+    opacity: 0.8;
+}
+
+.preview-overlay p {
+    margin: 0;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Стили для кнопок модального окна iframe */
+#customIframeModal .modern-modal-footer {
+    position: relative;
+    z-index: 100;
+    background: var(--modal-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 16px 20px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    min-height: 60px;
+    align-items: center;
+}
+
+#customIframeModal .modern-btn {
+    position: relative;
+    z-index: 101;
+    padding: 12px 24px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #f8f9fa;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 100px;
+    text-decoration: none;
+    outline: none;
+}
+
+#customIframeModal .modern-btn:hover {
+    background: #e9ecef;
+    border-color: #28a745;
+    color: #333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#customIframeModal .modern-btn-primary {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+#customIframeModal .modern-btn-primary:hover {
+    background: #218838;
+    border-color: #218838;
+    color: white;
+}
+
+#customIframeModal .modern-btn-secondary {
+    background: #6c757d;
+    color: white;
+    border-color: #6c757d;
+}
+
+#customIframeModal .modern-btn-secondary:hover {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+/* Стили для модального контейнера iframe */
+#customIframeModal .modern-modal-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+#customIframeModal .modern-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+#customIframeModal .modern-modal-footer {
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+/* Темная тема для кнопок iframe модального окна */
+[data-theme="dark"] #customIframeModal .modern-btn {
+    background: #343a40;
+    color: #ffffff;
+    border-color: #495057;
+}
+
+[data-theme="dark"] #customIframeModal .modern-btn:hover {
+    background: #495057;
+    border-color: #28a745;
+    color: #ffffff;
+}
+
+[data-theme="dark"] #customIframeModal .modern-btn-primary {
+    background: #28a745;
+    color: #ffffff;
+    border-color: #28a745;
+}
+
+[data-theme="dark"] #customIframeModal .modern-btn-primary:hover {
+    background: #218838;
+    border-color: #218838;
+    color: #ffffff;
+}
+
+[data-theme="dark"] #customIframeModal .modern-btn-secondary {
+    background: #6c757d;
+    color: #ffffff;
+    border-color: #6c757d;
+}
+
+[data-theme="dark"] #customIframeModal .modern-btn-secondary:hover {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: #ffffff;
 }
 
 /* Информация о файле */
@@ -599,14 +764,13 @@
     padding-right: 40px;
     -webkit-appearance: none;
     -moz-appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
 }
 
 /* Стили для number input */
 .modern-input[type="number"] {
     -moz-appearance: textfield;
+     appearance: textfield;
 }
 
 .modern-input[type="number"]::-webkit-outer-spin-button,

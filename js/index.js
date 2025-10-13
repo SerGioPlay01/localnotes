@@ -2193,6 +2193,8 @@ async function initTinyMCE() {
         ],
         // Optimize plugin loading
         plugin_preload: false,
+        // Disable automatic preload to avoid crossorigin issues
+        preload_plugins: false,
         // Load plugins on demand to improve initial load time
         external_plugins: {
             // Load heavy plugins only when needed
@@ -2515,16 +2517,33 @@ async function initTinyMCE() {
                 let url = data.url;
                 
                 // YouTube
-                if (url.indexOf('youtube.com/watch') > 0 || url.indexOf('youtu.be/') > 0) {
+                if (url.indexOf('youtube.com/watch') > 0 || url.indexOf('youtu.be/') > 0 || url.indexOf('youtube.com/live/') > 0) {
                     let videoId = '';
                     if (url.indexOf('youtu.be/') > 0) {
                         videoId = url.split('youtu.be/')[1].split('?')[0];
                     } else if (url.indexOf('youtube.com/watch') > 0) {
                         videoId = url.split('v=')[1].split('&')[0];
+                    } else if (url.indexOf('youtube.com/live/') > 0) {
+                        // Поддержка YouTube Live стримов
+                        const match = url.match(/youtube\.com\/live\/([^?&]+)/);
+                        if (match) videoId = match[1];
                     }
-                    resolve({
-                        html: '<iframe src="https://www.youtube.com/embed/' + videoId + '" width="560" height="315" frameborder="0" allowfullscreen></iframe>'
-                    });
+                    if (videoId) {
+                        // Добавляем параметры для лучшей совместимости
+                        const params = new URLSearchParams({
+                            'rel': '0',
+                            'modestbranding': '1',
+                            'fs': '1',
+                            'cc_load_policy': '0',
+                            'iv_load_policy': '3',
+                            'autohide': '0',
+                            'enablejsapi': '1'
+                        });
+                        const embedUrl = `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
+                        resolve({
+                            html: `<iframe src="${embedUrl}" width="560" height="315" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe>`
+                        });
+                    }
                 }
                 // Vimeo
                 else if (url.indexOf('vimeo.com/') > 0) {
@@ -4484,7 +4503,7 @@ function showCustomIframeDialog(editor) {
     platformSelect.addEventListener('change', function() {
         const platform = this.value;
         const placeholders = {
-            youtube: 'https://www.youtube.com/watch?v=...',
+            youtube: 'https://www.youtube.com/watch?v=... или /live/...',
             rutube: 'https://rutube.ru/video/...',
             vk: 'https://vk.com/video...',
             vimeo: 'https://vimeo.com/...',
@@ -4507,7 +4526,11 @@ function showCustomIframeDialog(editor) {
             if (embedUrl) {
                 videoPreview.innerHTML = `
                     <div class="preview-container">
-                        <iframe src="${embedUrl}" width="100%" height="200" frameborder="0" allowfullscreen></iframe>
+                        <iframe src="${embedUrl}" width="100%" height="150" frameborder="0" allowfullscreen style="pointer-events: none; border-radius: 6px; box-shadow: 0 2px 8px var(--shadow-color); max-height: 150px;"></iframe>
+                        <div class="preview-overlay">
+                            <i class="fas fa-play-circle"></i>
+                            <p>${currentLang.startsWith("ru") ? "Превью видео" : "Video Preview"}</p>
+                        </div>
                     </div>
                 `;
             }
@@ -4623,6 +4646,101 @@ function showCustomIframeDialog(editor) {
     });
 }
 
+// Функция для проверки валидности URL видео
+function isValidVideoUrl(url, platform) {
+    if (!url || !platform) return false;
+    
+    try {
+        const urlObj = new URL(url);
+        
+        switch (platform) {
+            case 'youtube':
+                return urlObj.hostname.includes('youtube.com') || urlObj.hostname.includes('youtu.be');
+            case 'rutube':
+                return urlObj.hostname.includes('rutube.ru');
+            case 'vk':
+                return urlObj.hostname.includes('vk.com');
+            case 'vimeo':
+                return urlObj.hostname.includes('vimeo.com');
+            case 'dailymotion':
+                return urlObj.hostname.includes('dailymotion.com');
+            case 'twitch':
+                return urlObj.hostname.includes('twitch.tv');
+            default:
+                return false;
+        }
+    } catch (e) {
+        return false;
+    }
+}
+
+// Функция для генерации embed URL
+function generateEmbedUrl(url, platform) {
+    if (!url || !platform) return null;
+    
+    try {
+        switch (platform) {
+            case 'youtube':
+                let videoId = '';
+                if (url.includes('youtu.be/')) {
+                    videoId = url.split('youtu.be/')[1].split('?')[0].split('&')[0];
+                } else if (url.includes('youtube.com/watch')) {
+                    const match = url.match(/[?&]v=([^&]+)/);
+                    if (match) videoId = match[1];
+                } else if (url.includes('youtube.com/embed/')) {
+                    const match = url.match(/embed\/([^?&]+)/);
+                    if (match) videoId = match[1];
+                } else if (url.includes('youtube.com/live/')) {
+                    // Поддержка YouTube Live стримов
+                    const match = url.match(/youtube\.com\/live\/([^?&]+)/);
+                    if (match) videoId = match[1];
+                } else if (url.includes('youtube.com/v/')) {
+                    const match = url.match(/\/v\/([^?&]+)/);
+                    if (match) videoId = match[1];
+                }
+                if (videoId) {
+                    // Добавляем параметры для лучшей совместимости
+                    const params = new URLSearchParams({
+                        'rel': '0',
+                        'modestbranding': '1',
+                        'fs': '1',
+                        'cc_load_policy': '0',
+                        'iv_load_policy': '3',
+                        'autohide': '0',
+                        'enablejsapi': '1'
+                    });
+                    return `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
+                }
+                return null;
+                
+            case 'rutube':
+                const rutubeMatch = url.match(/rutube\.ru\/video\/([^\/\?]+)/);
+                return rutubeMatch ? `https://rutube.ru/play/embed/${rutubeMatch[1]}` : null;
+                
+            case 'vk':
+                const vkMatch = url.match(/vk\.com\/video(-?\d+_\d+)/);
+                return vkMatch ? `https://vk.com/video_ext.php?oid=${vkMatch[1].split('_')[0]}&id=${vkMatch[1].split('_')[1]}&hd=2` : null;
+                
+            case 'vimeo':
+                const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+                return vimeoMatch ? `https://player.vimeo.com/video/${vimeoMatch[1]}` : null;
+                
+            case 'dailymotion':
+                const dailymotionMatch = url.match(/dailymotion\.com\/video\/([^_]+)/);
+                return dailymotionMatch ? `https://www.dailymotion.com/embed/video/${dailymotionMatch[1]}` : null;
+                
+            case 'twitch':
+                const twitchMatch = url.match(/twitch\.tv\/videos\/(\d+)/);
+                return twitchMatch ? `https://player.twitch.tv/?video=${twitchMatch[1]}&parent=${window.location.hostname}` : null;
+                
+            default:
+                return null;
+        }
+    } catch (e) {
+        return null;
+    }
+}
+
 // Функция для генерации iframe кода
 function generateIframeCode(url, platform) {
     try {
@@ -4643,14 +4761,27 @@ function generateIframeCode(url, platform) {
                 } else if (url.includes('youtube.com/embed/')) {
                     const match = url.match(/embed\/([^?&]+)/);
                     if (match) videoId = match[1];
+                } else if (url.includes('youtube.com/live/')) {
+                    // Поддержка YouTube Live стримов
+                    const match = url.match(/youtube\.com\/live\/([^?&]+)/);
+                    if (match) videoId = match[1];
                 } else if (url.includes('youtube.com/v/')) {
                     const match = url.match(/\/v\/([^?&]+)/);
                     if (match) videoId = match[1];
                 }
                 
                 if (videoId) {
-                    // Используем youtube-nocookie.com для обхода проверок на бота
-                    embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}`;
+                    // Добавляем параметры для лучшей совместимости
+                    const params = new URLSearchParams({
+                        'rel': '0',
+                        'modestbranding': '1',
+                        'fs': '1',
+                        'cc_load_policy': '0',
+                        'iv_load_policy': '3',
+                        'autohide': '0',
+                        'enablejsapi': '1'
+                    });
+                    embedUrl = `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
                 }
                 break;
                 

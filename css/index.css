@@ -137,14 +137,19 @@ body.modal-open {
     /* Модальное окно редактора на полный экран для мобильных устройств */
     .modal-content {
         margin: 0 !important;
-        height: 100% !important;
-        width: 100% !important;
+        height: 100vh !important;
+        width: 100vw !important;
         top: 0 !important;
         left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
         border-radius: 0 !important;
         position: fixed !important;
         display: flex !important;
         flex-direction: column !important;
+        max-height: 100vh !important;
+        max-width: 100vw !important;
+        overflow: hidden !important;
     }
     
     /* Убеждаемся что TinyMCE занимает всю доступную высоту */
@@ -173,6 +178,21 @@ body.modal-open {
     .tox .tox-edit-area iframe {
         height: 100% !important;
         min-height: 200px !important;
+    }
+    
+    /* Убеждаемся что модальное окно занимает весь экран */
+    .modal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        z-index: 999 !important;
+        overflow: hidden !important;
     }
     
     /* Улучшенный хедер для мобильных устройств */
@@ -213,12 +233,13 @@ body.modal-open {
     /* Кнопки в горизонтальном ряду */
     .block_btn {
         display: flex !important;
-        gap: 8px !important;
+        gap: 12px !important;
         width: 100% !important;
         overflow-x: auto !important;
-        padding-bottom: 5px !important;
+        padding: 0 8px 12px 8px !important;
         scrollbar-width: thin !important;
         scrollbar-color: var(--primary-color) transparent !important;
+        box-sizing: border-box !important;
     }
     
     .block_btn::-webkit-scrollbar {
@@ -237,12 +258,12 @@ body.modal-open {
     /* Улучшенные кнопки */
     .block_btn button {
         flex-shrink: 0 !important;
-        min-width: 120px !important;
-        height: 48px !important;
-        padding: 12px 16px !important;
-        font-size: 14px !important;
+        min-width: 250px !important;
+        height: 80px !important;
+        padding: 24px 28px !important;
+        font-size: 17px !important;
         font-weight: 600 !important;
-        border-radius: 8px !important;
+        border-radius: 12px !important;
         border: 1px solid var(--button-border) !important;
         background: var(--button-bg) !important;
         color: var(--button-text) !important;
@@ -250,7 +271,7 @@ body.modal-open {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 6px !important;
+        gap: 12px !important;
         white-space: nowrap !important;
     }
     
@@ -267,19 +288,19 @@ body.modal-open {
     }
     
     .block_btn button i {
-        font-size: 16px !important;
+        font-size: 20px !important;
     }
     
     /* Строка поиска на новой строке во всю ширину */
     #searchInput {
         width: 100% !important;
-        height: 50px !important;
+        height: 200px !important;
         border-radius: 8px !important;
         border: 1px solid var(--button-border) !important;
         background: var(--input-bg) !important;
         color: var(--input-text) !important;
         font-size: 16px !important;
-        padding: 0 20px !important;
+        padding: 20px !important;
         text-indent: 0 !important;
         box-sizing: border-box !important;
         transition: all 0.2s ease !important;
@@ -301,6 +322,32 @@ body.modal-open {
         font-size: 16px !important;
         font-weight: 500 !important;
         color: var(--text-muted) !important;
+    }
+    
+    /* Улучшенные кнопки в модальном окне редактора для мобильных */
+    .modal-buttons-container {
+        padding: 20px !important;
+        gap: 15px !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+    }
+    
+    .modal-buttons-container button {
+        flex: 1 !important;
+        min-width: 150px !important;
+        height: 60px !important;
+        padding: 18px 24px !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        border-radius: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+    }
+    
+    .modal-buttons-container button i {
+        font-size: 18px !important;
     }
 }
 
@@ -3062,24 +3109,42 @@ input {
     }
     
     .block_btn {
-        gap: 6px !important;
+        gap: 10px !important;
+        padding: 0 5px 10px 5px !important;
     }
     
     .block_btn button {
-        min-width: 100px !important;
-        height: 44px !important;
-        padding: 10px 12px !important;
-        font-size: 13px !important;
+        min-width: 250px !important;
+        height: 80px !important;
+        padding: 22px 24px !important;
+        font-size: 16px !important;
     }
     
     .block_btn button i {
-        font-size: 14px !important;
+        font-size: 19px !important;
     }
     
     #searchInput {
-        height: 44px !important;
+        height: 200px !important;
+        font-size: 16px !important;
+        padding: 20px !important;
+    }
+    
+    /* Кнопки в модальном окне для очень маленьких экранов */
+    .modal-buttons-container {
+        padding: 15px !important;
+        gap: 12px !important;
+    }
+    
+    .modal-buttons-container button {
+        min-width: 140px !important;
+        height: 55px !important;
+        padding: 16px 20px !important;
         font-size: 15px !important;
-        padding: 0 15px !important;
+    }
+    
+    .modal-buttons-container button i {
+        font-size: 17px !important;
     }
     
     /* Заголовок */

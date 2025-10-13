@@ -82,18 +82,7 @@ class FooterSelectors {
         if (languageSelect) {
             languageSelect.addEventListener('change', (e) => {
                 const selectedLang = e.target.value;
-                
-                // Если мы на главной странице и есть функция changeLanguage, обновляем интерфейс
-                if (!window.location.pathname.match(/^\/([a-z]{2})\//) && typeof window.changeLanguage === 'function') {
-                    // Сохраняем выбранный язык
-                    localStorage.setItem('preferredLanguage', selectedLang);
-                    
-                    // Обновляем интерфейс
-                    window.changeLanguage(selectedLang);
-                } else {
-                    // Иначе используем стандартную логику перенаправления
-                    this.changeLanguage(selectedLang);
-                }
+                this.changeLanguage(selectedLang);
             });
         }
         
@@ -120,43 +109,26 @@ class FooterSelectors {
     
     // Смена языка
     changeLanguage(langCode) {
+        // Сохраняем выбранный язык
+        localStorage.setItem('preferredLanguage', langCode);
+        
         // Проверяем, находимся ли мы на языковой странице
         const isLanguagePage = window.location.pathname.match(/^\/([a-z]{2})\//);
+        const currentLang = isLanguagePage ? window.location.pathname.split('/')[1] : 'en';
         
-        if (isLanguagePage) {
-            // Если мы на языковой странице, можем попробовать обновить интерфейс без перезагрузки
+        // Если язык не изменился, просто обновляем интерфейс
+        if (langCode === currentLang) {
             if (typeof window.changeLanguage === 'function') {
-                // Сохраняем выбранный язык
-                localStorage.setItem('preferredLanguage', langCode);
-                
-                // Обновляем интерфейс
                 window.changeLanguage(langCode);
-                
-                // Если это смена на другую языковую страницу, перенаправляем
-                if (langCode !== window.currentLang) {
-                    setTimeout(() => {
-                        if (langCode === 'en') {
-                            window.location.href = '/';
-                        } else {
-                            window.location.href = `/${langCode}/`;
-                        }
-                    }, 100);
-                }
-            } else {
-                // Fallback на перезагрузку страницы
-                if (langCode === 'en') {
-                    window.location.href = '/';
-                } else {
-                    window.location.href = `/${langCode}/`;
-                }
             }
+            return;
+        }
+        
+        // Если язык изменился, перенаправляем на нужную страницу
+        if (langCode === 'en') {
+            window.location.href = '/';
         } else {
-            // Если мы на главной странице, просто перенаправляем
-            if (langCode === 'en') {
-                window.location.href = '/';
-            } else {
-                window.location.href = `/${langCode}/`;
-            }
+            window.location.href = `/${langCode}/`;
         }
     }
     

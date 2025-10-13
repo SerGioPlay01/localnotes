@@ -75,7 +75,6 @@ class AppUtils {
             this.useFallbackText(btn, isFullWidth, currentLang);
         }
         
-        console.log("Button text updated:", btn.innerHTML, "isFullWidth:", isFullWidth);
     }
     
     // Fallback метод для установки текста кнопки
@@ -167,7 +166,6 @@ class AppUtils {
             this.updateToggleViewButton();
         }, 500);
         
-        console.log("AppUtils initialized with language:", this.currentLang);
     }
 }
 

@@ -240,11 +240,34 @@ function initializeEventListeners() {
         importInput.addEventListener("change", importNotesWithFormat);
     }
     
-    // Обработчик для поля поиска
-    const searchInput = document.getElementById("searchInput");
-    if (searchInput) {
-        searchInput.addEventListener("input", debounce(filterNotes, 300));
-    }
+        // Обработчик для поля поиска
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) {
+            searchInput.addEventListener("input", (e) => {
+                filterNotes();
+            });
+        
+        // Добавляем обработчик для клавиши Escape (очистка поиска)
+        searchInput.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                searchInput.value = "";
+                filterNotes();
+                searchInput.blur(); // Убираем фокус с поля поиска
+            }
+        });
+        
+        // Добавляем обработчик для клавиши Enter (фокус на первую найденную заметку)
+        searchInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                const firstVisibleNote = document.querySelector(".note:not(.hidden)");
+                if (firstVisibleNote) {
+                    firstVisibleNote.scrollIntoView({ behavior: "smooth", block: "center" });
+                    firstVisibleNote.focus();
+                }
+            }
+        });
+        }
     
     // Обработчик для кнопки очистки всех заметок
     const clearAllButton = document.getElementById("clearAllButton");
@@ -2402,7 +2425,6 @@ async function initTinyMCE() {
                 
                 // Обработка ошибок инициализации
             editor.on('init', function() {
-                    console.log('TinyMCE editor initialized');
                     
                     // Проверяем доступность редактора
                     if (!editor.getContainer()) {
@@ -2445,7 +2467,10 @@ async function initTinyMCE() {
                     if (window.matchMedia) {
                         const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
                         mediaQuery.addEventListener('change', function(e) {
-                            const currentTheme = document.documentElement.getAttribute('data-theme');
+                            // Reapply theme when system theme changes
+                            if (document.documentElement.getAttribute('data-theme') === 'auto') {
+                                applyThemeToTinyMCE();
+                            }
                         });
                     }
                 });
@@ -4757,18 +4782,91 @@ async function importNotesWithFiles(files) {
 }
 
 function transliterate(text) {
+    // Расширенная карта транслитерации для всех поддерживаемых языков
     const translitMap = {
+        // Русский язык
         'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e', 'ж': 'zh', 'з': 'z',
         'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r',
         'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch',
         'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya',
-        // Добавляем заглавные буквы
+        
+        // Украинский язык
+        'і': 'i', 'ї': 'yi', 'є': 'ye', 'ґ': 'g',
+        
+        // Польский язык
+        'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z',
+        
+        // Чешский и словацкий языки
+        'č': 'c', 'ď': 'd', 'ě': 'e', 'ň': 'n', 'ř': 'r', 'š': 's', 'ť': 't', 'ů': 'u', 'ž': 'z',
+        'ý': 'y', 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
+        
+        // Болгарский язык
+        'ъ': '', 'ь': '',
+        
+        // Хорватский, сербский, боснийский языки
+        'đ': 'd', 'ć': 'c', 'č': 'c', 'š': 's', 'ž': 'z',
+        
+        // Македонский язык
+        'ѓ': 'g', 'ѕ': 'z', 'ј': 'j', 'љ': 'lj', 'њ': 'nj', 'ќ': 'k', 'џ': 'dz',
+        
+        // Словенский язык
+        'č': 'c', 'š': 's', 'ž': 'z',
+        
+        // Немецкий язык
+        'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss',
+        
+        // Французский язык
+        'à': 'a', 'â': 'a', 'ç': 'c', 'è': 'e', 'é': 'e', 'ê': 'e', 'ë': 'e', 'î': 'i', 'ï': 'i',
+        'ô': 'o', 'ù': 'u', 'û': 'u', 'ü': 'u', 'ÿ': 'y',
+        
+        // Испанский язык
+        'ñ': 'n', 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
+        
+        // Итальянский язык
+        'à': 'a', 'è': 'e', 'é': 'e', 'ì': 'i', 'ò': 'o', 'ù': 'u',
+        
+        // Португальский язык
+        'ã': 'a', 'õ': 'o', 'ç': 'c', 'á': 'a', 'à': 'a', 'â': 'a', 'é': 'e', 'ê': 'e', 'í': 'i',
+        'ó': 'o', 'ô': 'o', 'ú': 'u',
+        
+        // Скандинавские языки
+        'å': 'a', 'æ': 'ae', 'ø': 'o', 'ö': 'o', 'ä': 'a',
+        
+        // Турецкий язык
+        'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u',
+        
+        // Греческий язык
+        'α': 'a', 'β': 'b', 'γ': 'g', 'δ': 'd', 'ε': 'e', 'ζ': 'z', 'η': 'i', 'θ': 'th', 'ι': 'i',
+        'κ': 'k', 'λ': 'l', 'μ': 'm', 'ν': 'n', 'ξ': 'x', 'ο': 'o', 'π': 'p', 'ρ': 'r', 'σ': 's',
+        'τ': 't', 'υ': 'y', 'φ': 'f', 'χ': 'ch', 'ψ': 'ps', 'ω': 'o',
+        
+        // Заглавные буквы для всех языков
         'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'E', 'Ж': 'Zh', 'З': 'Z',
         'И': 'I', 'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N', 'О': 'O', 'П': 'P', 'Р': 'R',
         'С': 'S', 'Т': 'T', 'У': 'U', 'Ф': 'F', 'Х': 'H', 'Ц': 'Ts', 'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Shch',
-        'Ъ': '', 'Ы': 'Y', 'Ь': '', 'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya'
+        'Ъ': '', 'Ы': 'Y', 'Ь': '', 'Э': 'E', 'Ю': 'Yu', 'Я': 'Ya',
+        'І': 'I', 'Ї': 'Yi', 'Є': 'Ye', 'Ґ': 'G',
+        'Ą': 'A', 'Ć': 'C', 'Ę': 'E', 'Ł': 'L', 'Ń': 'N', 'Ó': 'O', 'Ś': 'S', 'Ź': 'Z', 'Ż': 'Z',
+        'Č': 'C', 'Ď': 'D', 'Ě': 'E', 'Ň': 'N', 'Ř': 'R', 'Š': 'S', 'Ť': 'T', 'Ů': 'U', 'Ž': 'Z',
+        'Ý': 'Y', 'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U',
+        'Đ': 'D', 'Ђ': 'D', 'Ћ': 'C', 'Џ': 'Dz',
+        'Ѓ': 'G', 'Ѕ': 'Z', 'Ј': 'J', 'Љ': 'Lj', 'Њ': 'Nj', 'Ќ': 'K', 'Џ': 'Dz',
+        'Ä': 'Ae', 'Ö': 'Oe', 'Ü': 'Ue', 'ß': 'Ss',
+        'À': 'A', 'Â': 'A', 'Ç': 'C', 'È': 'E', 'É': 'E', 'Ê': 'E', 'Ë': 'E', 'Î': 'I', 'Ï': 'I',
+        'Ô': 'O', 'Ù': 'U', 'Û': 'U', 'Ü': 'U', 'Ÿ': 'Y',
+        'Ñ': 'N', 'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U',
+        'À': 'A', 'È': 'E', 'É': 'E', 'Ì': 'I', 'Ò': 'O', 'Ù': 'U',
+        'Ã': 'A', 'Õ': 'O', 'Ç': 'C', 'Á': 'A', 'À': 'A', 'Â': 'A', 'É': 'E', 'Ê': 'E', 'Í': 'I',
+        'Ó': 'O', 'Ô': 'O', 'Ú': 'U',
+        'Å': 'A', 'Æ': 'Ae', 'Ø': 'O', 'Ö': 'O', 'Ä': 'A',
+        'Ç': 'C', 'Ğ': 'G', 'I': 'I', 'Ö': 'O', 'Ş': 'S', 'Ü': 'U',
+        'Α': 'A', 'Β': 'B', 'Γ': 'G', 'Δ': 'D', 'Ε': 'E', 'Ζ': 'Z', 'Η': 'I', 'Θ': 'Th', 'Ι': 'I',
+        'Κ': 'K', 'Λ': 'L', 'Μ': 'M', 'Ν': 'N', 'Ξ': 'X', 'Ο': 'O', 'Π': 'P', 'Ρ': 'R', 'Σ': 'S',
+        'Τ': 'T', 'Υ': 'Y', 'Φ': 'F', 'Χ': 'Ch', 'Ψ': 'Ps', 'Ω': 'O'
     };
-    return text.replace(/[а-яёА-ЯЁ]/g, char => translitMap[char] || char);
+    
+    // Транслитерация с поддержкой всех кириллических и латинских символов
+    return text.replace(/[а-яёА-ЯЁіїєґІЇЄҐąćęłńóśźżĄĆĘŁŃÓŚŹŻčďěňřšťůžýáéíóúČĎĚŇŘŠŤŮŽÝÁÉÍÓÚđćčšžĐЂЋЏѓѕјљњќџЃЅЈЉЊЌЏäöüßÄÖÜàâçèéêëîïôùûüÿÀÂÇÈÉÊËÎÏÔÙÛÜŸñáéíóúÑÁÉÍÓÚàèéìòùÀÈÉÌÒÙãõçáàâéêíóôúÃÕÇÁÀÂÉÊÍÓÔÚåæøöäÅÆØÖÄçğıöşüÇĞIÖŞÜαβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ]/g, char => translitMap[char] || char);
 }
 
 
@@ -4780,23 +4878,135 @@ function debounce(func, delay) {
     };
 }
 
-function filterNotes() {
-    const searchQuery = document.getElementById("searchInput").value.toLowerCase().trim();
+// Упрощенная функция для подсветки найденного текста
+function highlightSearchResults(searchQuery) {
     if (!searchQuery) {
-        document.querySelectorAll(".note").forEach(note => note.classList.remove("hidden"));
+        // Убираем все подсветки
+        document.querySelectorAll(".search-highlight").forEach(highlight => {
+            const parent = highlight.parentNode;
+            if (parent) {
+                parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+                parent.normalize();
+            }
+        });
         return;
     }
-    const transliteratedQuery = transliterate(searchQuery);
-    document.querySelectorAll(".note").forEach(note => {
-        const content = note.querySelector("div").textContent.toLowerCase();
-        const transliteratedContent = transliterate(content);
-        if (content.includes(searchQuery) || transliteratedContent.includes(transliteratedQuery)) {
+    
+        // Подсветка отключена для стабильности
+}
+
+// Функция для экранирования специальных символов в регулярных выражениях
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// Упрощенная и исправленная функция поиска
+function filterNotes() {
+    const searchInput = document.getElementById("searchInput");
+    if (!searchInput) {
+        return;
+    }
+    
+    const searchQuery = searchInput.value.toLowerCase().trim();
+    
+    // Если поисковый запрос пустой, показываем все заметки
+    if (!searchQuery) {
+        document.querySelectorAll(".note").forEach(note => {
             note.classList.remove("hidden");
+        });
+        highlightSearchResults(""); // Убираем подсветку
+        return;
+    }
+    
+    // Транслитерируем поисковый запрос
+    const transliteratedQuery = transliterate(searchQuery);
+    
+    // Получаем все заметки
+    const notes = document.querySelectorAll(".note");
+    let visibleCount = 0;
+    
+    notes.forEach((note, index) => {
+        // Получаем содержимое заметки - ищем основной контент, а не метаданные
+        const contentDiv = note.querySelector(".noteContent");
+        if (!contentDiv) {
+            note.classList.add("hidden");
+            return;
+        }
+        
+        const content = contentDiv.textContent.toLowerCase();
+        const transliteratedContent = transliterate(content);
+        
+        // Также получаем метаданные для поиска
+        const footerDiv = note.querySelector(".note-footer");
+        const footerContent = footerDiv ? footerDiv.textContent.toLowerCase() : "";
+        const transliteratedFooter = footerContent ? transliterate(footerContent) : "";
+        
+        // Получаем заголовок заметки (если есть)
+        const titleElement = note.querySelector("h1, h2, h3, h4, h5, h6, .note-title");
+        const title = titleElement ? titleElement.textContent.toLowerCase() : "";
+        const transliteratedTitle = title ? transliterate(title) : "";
+        
+        // Простой и эффективный поиск
+        const isMatch = (() => {
+            // Объединяем весь текст для поиска
+            const allText = (content + " " + footerContent + " " + title).toLowerCase();
+            const allTransliterated = transliterate(allText);
+            
+            // 1. Точное совпадение в оригинальном тексте
+            if (allText.includes(searchQuery)) {
+                return true;
+            }
+            
+            // 2. Точное совпадение в транслитерированном тексте
+            if (allTransliterated.includes(transliteratedQuery)) {
+                return true;
+            }
+            
+            // 3. Поиск по словам (каждое слово должно быть найдено)
+            const searchWords = searchQuery.split(/\s+/).filter(word => word.length > 0);
+            if (searchWords.length > 1) {
+                const allWordsFound = searchWords.every(searchWord => {
+                    const transliteratedWord = transliterate(searchWord);
+                    return allText.includes(searchWord) || allTransliterated.includes(transliteratedWord);
+                });
+                if (allWordsFound) return true;
+            }
+            
+            // 4. Поиск по первым буквам слов
+            const words = allText.split(/\s+/);
+            const transliteratedWords = allTransliterated.split(/\s+/);
+            
+            if (words.some(word => word.startsWith(searchQuery)) || 
+                transliteratedWords.some(word => word.startsWith(transliteratedQuery))) {
+                return true;
+            }
+            
+            // 5. Нечеткий поиск (опускаем последнюю букву для слов длиннее 2 символов)
+            if (searchQuery.length > 2) {
+                const fuzzyQuery = searchQuery.substring(0, searchQuery.length - 1);
+                const transliteratedFuzzy = transliterate(fuzzyQuery);
+                
+                if (allText.includes(fuzzyQuery) || allTransliterated.includes(transliteratedFuzzy)) {
+                    return true;
+                }
+            }
+            
+            return false;
+        })();
+        
+        if (isMatch) {
+            note.classList.remove("hidden");
+            visibleCount++;
         } else {
             note.classList.add("hidden");
         }
     });
+    
+    // Подсвечиваем найденный текст
+    highlightSearchResults(searchQuery);
+    
 }
+
 
 
 // Улучшенные функции экспорта и импорта
@@ -4851,33 +5061,55 @@ async function importNotesHTML(files) {
             try {
                 const importedText = e.target.result;
 
-                // Проверяем наличие уникального тега
-                const tagPattern = /<!-- Exported on [\d-T:.Z]+ -->/;
-                if (!tagPattern.test(importedText)) {
+                // Проверяем, не является ли файл зашифрованным
+                if (isEncryptedFile(importedText)) {
                     errorCount++;
-                    showCustomAlert(t("error"), t("errorNoUniqueTag", { filename: file.name }), "error");
-                        resolve();
+                    showCustomAlert(
+                        t("warning"), 
+                        t("encryptedFileDetected", { filename: file.name }) + "<br><br>" + t("pleaseSelectEncryptedFormat"), 
+                        "warning"
+                    );
+                    resolve();
                     return;
                 }
 
-                // Удаляем тег и разделяем заметки
-                const cleanedText = importedText.replace(tagPattern, "").trim();
-                const notes = cleanedText.split("\n\n---\n\n");
-
-                for (const note of notes) {
-                    if (note.trim()) {
-                        const newId = 'note_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                        const noteObj = {
-                            id: newId,
-                            content: note,
-                            creationTime: Date.now(),
-                            lastModified: Date.now(),
-                            title: notesDB.extractTitle(note)
-                        };
-                        await notesDB.saveNote(noteObj);
-                        importedCount++;
+                // Для HTML файлов не требуется уникальный тег
+                // Проверяем, есть ли тег (для совместимости с экспортированными файлами)
+                const tagPattern = /<!-- Exported on [\d-T:.Z]+ -->/;
+                let cleanedText = importedText;
+                
+                if (tagPattern.test(importedText)) {
+                    // Если есть тег, удаляем его и разделяем заметки
+                    cleanedText = importedText.replace(tagPattern, "").trim();
+                    const notes = cleanedText.split("\n\n---\n\n");
+                    
+                    for (const note of notes) {
+                        if (note.trim()) {
+                            const newId = 'note_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                            const noteObj = {
+                                id: newId,
+                                content: note,
+                                creationTime: Date.now(),
+                                lastModified: Date.now(),
+                                title: notesDB.extractTitle(note)
+                            };
+                            await notesDB.saveNote(noteObj);
+                            importedCount++;
+                        }
                     }
-                    }
+                } else {
+                    // Если нет тега, импортируем как одну заметку
+                    const newId = 'note_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    const noteObj = {
+                        id: newId,
+                        content: importedText,
+                        creationTime: Date.now(),
+                        lastModified: Date.now(),
+                        title: notesDB.extractTitle(importedText)
+                    };
+                    await notesDB.saveNote(noteObj);
+                    importedCount++;
+                }
                 } catch (error) {
                     errorCount++;
                     console.error('Import error:', error);
@@ -4910,6 +5142,205 @@ async function importNotesHTML(files) {
     await Promise.all(promises);
 }
 
+// Функция импорта Markdown файлов
+async function importNotesMarkdown(files) {
+    if (!files || files.length === 0) return;
+    
+    let importedCount = 0;
+    let errorCount = 0;
+    let totalFiles = files.length;
+    let processedFiles = 0;
+
+    const processFile = (file) => {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = async function (e) {
+                try {
+                    const markdownContent = e.target.result;
+
+                    // Проверяем, не является ли файл зашифрованным
+                    if (isEncryptedFile(markdownContent)) {
+                        errorCount++;
+                        showCustomAlert(
+                            t("warning"), 
+                            t("encryptedFileDetected", { filename: file.name }) + "<br><br>" + t("pleaseSelectEncryptedFormat"), 
+                            "warning"
+                        );
+                        resolve();
+                        return;
+                    }
+
+                    // Простое преобразование Markdown в HTML
+                    const htmlContent = convertMarkdownToHTML(markdownContent);
+                    
+                    const newId = 'note_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    const noteObj = {
+                        id: newId,
+                        content: htmlContent,
+                        creationTime: Date.now(),
+                        lastModified: Date.now(),
+                        title: notesDB.extractTitle(htmlContent)
+                    };
+                    await notesDB.saveNote(noteObj);
+                    importedCount++;
+                    
+                } catch (error) {
+                    errorCount++;
+                    console.error('Markdown import error:', error);
+                    showCustomAlert(t("error"), t("errorImport", { filename: file.name, message: error.message }), "error");
+                }
+                
+                processedFiles++;
+                if (processedFiles === totalFiles) {
+                    showImportResult(importedCount, errorCount, totalFiles);
+                }
+                resolve();
+            };
+            reader.readAsText(file);
+        });
+    };
+
+    const promises = Array.from(files).map(file => processFile(file));
+    await Promise.all(promises);
+}
+
+// Функция импорта PDF файлов
+async function importNotesPDF(files) {
+    if (!files || files.length === 0) return;
+    
+    let importedCount = 0;
+    let errorCount = 0;
+    let totalFiles = files.length;
+    let processedFiles = 0;
+
+    const processFile = (file) => {
+        return new Promise((resolve) => {
+            // Для PDF файлов показываем предупреждение
+            errorCount++;
+            showCustomAlert(
+                t("warning"), 
+                t("pdfImportNotSupported", { filename: file.name }) + "<br><br>" + t("pdfImportSuggestion"), 
+                "warning"
+            );
+            
+            processedFiles++;
+            if (processedFiles === totalFiles) {
+                showImportResult(importedCount, errorCount, totalFiles);
+            }
+            resolve();
+        });
+    };
+
+    const promises = Array.from(files).map(file => processFile(file));
+    await Promise.all(promises);
+}
+
+// Функция для преобразования Markdown в HTML
+function convertMarkdownToHTML(markdown) {
+    return markdown
+        // Заголовки
+        .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+        .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+        // Жирный текст
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/__(.*?)__/g, '<strong>$1</strong>')
+        // Курсив
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/_(.*?)_/g, '<em>$1</em>')
+        // Зачеркнутый текст
+        .replace(/~~(.*?)~~/g, '<s>$1</s>')
+        // Код
+        .replace(/`(.*?)`/g, '<code>$1</code>')
+        // Блоки кода
+        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+        // Ссылки
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+        // Изображения
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">')
+        // Списки
+        .replace(/^\* (.*$)/gim, '<li>$1</li>')
+        .replace(/^- (.*$)/gim, '<li>$1</li>')
+        .replace(/^(\d+)\. (.*$)/gim, '<li>$2</li>')
+        // Цитаты
+        .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
+        // Горизонтальные линии
+        .replace(/^---$/gim, '<hr>')
+        .replace(/^\*\*\*$/gim, '<hr>')
+        // Переносы строк
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>')
+        // Оборачиваем в параграфы
+        .replace(/^(.*)$/gim, '<p>$1</p>')
+        // Очищаем пустые параграфы
+        .replace(/<p><\/p>/g, '')
+        .replace(/<p><br><\/p>/g, '');
+}
+
+// Функция для показа результата импорта
+function showImportResult(importedCount, errorCount, totalFiles) {
+    if (importedCount > 0 && errorCount === 0) {
+        showCustomAlert(
+            t("success"),
+            `${t("imported")}: ${importedCount} ${t("of")} ${totalFiles}`,
+            "success"
+        );
+        loadNotes();
+    } else if (importedCount > 0 && errorCount > 0) {
+        showCustomAlert(
+            t("warning"),
+            `${t("imported")}: ${importedCount} ${t("of")} ${totalFiles}<br>${t("errors")}: ${errorCount}`,
+            "warning"
+        );
+        loadNotes();
+    } else if (importedCount === 0 && errorCount > 0) {
+        showCustomAlert(
+            t("error"),
+            `${t("errors")}: ${errorCount} ${t("of")} ${totalFiles}`,
+            "error"
+        );
+    }
+}
+
+// Функция для определения зашифрованных файлов
+function isEncryptedFile(content) {
+    // Проверяем признаки зашифрованного файла
+    const encryptedPatterns = [
+        // Базовый зашифрованный контент (обычно содержит base64 и специальные символы)
+        /^[A-Za-z0-9+/=]{100,}$/, // Длинные base64 строки
+        // JSON формат с метаданными (новый формат)
+        /^\s*\{.*"metadata".*"content".*\}\s*$/s,
+        // Обфусцированный контент
+        /^\s*[A-Za-z0-9+/=]{50,}\s*$/,
+        // Зашифрованный контент с префиксами
+        /^(encrypted|enc|secure):/i
+    ];
+    
+    // Проверяем, не является ли это обычным HTML
+    const htmlPatterns = [
+        /^\s*<!DOCTYPE\s+html/i,
+        /^\s*<html/i,
+        /^\s*<head/i,
+        /^\s*<body/i,
+        /^\s*<div/i,
+        /^\s*<p/i,
+        /^\s*<h[1-6]/i
+    ];
+    
+    // Если это явно HTML, то не зашифрованный
+    if (htmlPatterns.some(pattern => pattern.test(content))) {
+        return false;
+    }
+    
+    // Если это короткий текст, скорее всего не зашифрованный
+    if (content.length < 50) {
+        return false;
+    }
+    
+    // Проверяем паттерны зашифрованного контента
+    return encryptedPatterns.some(pattern => pattern.test(content));
+}
+
 // Улучшенная функция импорта с поддержкой разных форматов
 async function importNotesWithFormat(event) {
     const files = event.target.files;
@@ -4940,6 +5371,16 @@ async function importNotesWithFormat(event) {
                     <span class="export-text">HTML</span>
                     <span class="export-desc">${t("htmlFiles")}</span>
                 </button>
+                <button class="export-option" data-format="markdown">
+                    <span class="export-icon">📝</span>
+                    <span class="export-text">Markdown</span>
+                    <span class="export-desc">${t("markdownFiles")}</span>
+                </button>
+                <button class="export-option" data-format="pdf">
+                    <span class="export-icon">📄</span>
+                    <span class="export-text">PDF</span>
+                    <span class="export-desc">${t("pdfFiles")}</span>
+                </button>
             </div>
             <button class="export-close">${t("cancel")}</button>
         </div>
@@ -4957,6 +5398,10 @@ async function importNotesWithFormat(event) {
                 importNotesWithFiles(filesArray);
             } else if (format === 'html') {
                 importNotesHTML(filesArray);
+            } else if (format === 'markdown') {
+                importNotesMarkdown(filesArray);
+            } else if (format === 'pdf') {
+                importNotesPDF(filesArray);
             }
         });
     });
@@ -5889,29 +6334,74 @@ class NotesDatabase {
         });
     }
 
-    // Поиск заметок
-    async searchNotes(query) {
-        if (!this.db) await this.init();
-        
-        return new Promise((resolve, reject) => {
-            const transaction = this.db.transaction(['notes'], 'readonly');
-            const store = transaction.objectStore('notes');
-            const request = store.getAll();
+    // Поиск заметок с поддержкой транслитерации
+        async searchNotes(query) {
+            if (!this.db) await this.init();
+            
+            return new Promise((resolve, reject) => {
+                const transaction = this.db.transaction(['notes'], 'readonly');
+                const store = transaction.objectStore('notes');
+                const request = store.getAll();
 
-            request.onsuccess = () => {
-                const notes = request.result;
-                const filteredNotes = notes.filter(note => {
-                    const content = note.content.toLowerCase();
-                    const title = (note.title || '').toLowerCase();
-                    const searchQuery = query.toLowerCase();
+                request.onsuccess = () => {
+                    const notes = request.result;
+                    const searchQuery = query.toLowerCase().trim();
+                    const transliteratedQuery = transliterate(searchQuery);
                     
-                    return content.includes(searchQuery) || title.includes(searchQuery);
-                });
-                resolve(filteredNotes);
-            };
-            request.onerror = () => reject(request.error);
-        });
-    }
+                    const filteredNotes = notes.filter(note => {
+                        const content = note.content.toLowerCase();
+                        const title = (note.title || '').toLowerCase();
+                        
+                        // Объединяем весь текст для поиска
+                        const allText = (content + " " + title).toLowerCase();
+                        const allTransliterated = transliterate(allText);
+                        
+                        // 1. Точное совпадение в оригинальном тексте
+                        if (allText.includes(searchQuery)) {
+                            return true;
+                        }
+                        
+                        // 2. Точное совпадение в транслитерированном тексте
+                        if (allTransliterated.includes(transliteratedQuery)) {
+                            return true;
+                        }
+                        
+                        // 3. Поиск по словам (каждое слово должно быть найдено)
+                        const searchWords = searchQuery.split(/\s+/).filter(word => word.length > 0);
+                        if (searchWords.length > 1) {
+                            const allWordsFound = searchWords.every(searchWord => {
+                                const transliteratedWord = transliterate(searchWord);
+                                return allText.includes(searchWord) || allTransliterated.includes(transliteratedWord);
+                            });
+                            if (allWordsFound) return true;
+                        }
+                        
+                        // 4. Поиск по первым буквам слов
+                        const words = allText.split(/\s+/);
+                        const transliteratedWords = allTransliterated.split(/\s+/);
+                        
+                        if (words.some(word => word.startsWith(searchQuery)) || 
+                            transliteratedWords.some(word => word.startsWith(transliteratedQuery))) {
+                            return true;
+                        }
+                        
+                        // 5. Нечеткий поиск (опускаем последнюю букву для слов длиннее 2 символов)
+                        if (searchQuery.length > 2) {
+                            const fuzzyQuery = searchQuery.substring(0, searchQuery.length - 1);
+                            const transliteratedFuzzy = transliterate(fuzzyQuery);
+                            
+                            if (allText.includes(fuzzyQuery) || allTransliterated.includes(transliteratedFuzzy)) {
+                                return true;
+                            }
+                        }
+                        
+                        return false;
+                    });
+                    resolve(filteredNotes);
+                };
+                request.onerror = () => reject(request.error);
+            });
+        }
 
     // Сохранение настроек
     async saveSetting(key, value) {
@@ -5969,7 +6459,6 @@ class NotesDatabase {
                 }
             }
 
-            console.log(`Migrated ${localStorageKeys.length} notes to IndexedDB`);
         } catch (error) {
             console.error('Migration error:', error);
         }
@@ -6384,7 +6873,6 @@ function updateFooterTexts() {
             allRightsReserved.textContent = t('allRightsReserved');
         }
         
-        console.log('Footer texts updated successfully');
         
         // Обновляем переводы в приветственном сообщении, если оно отображается
         if (typeof updateWelcomeTranslations === 'function') {

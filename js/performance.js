@@ -26,7 +26,6 @@ class PerformanceMonitor {
                 const entries = list.getEntries();
                 const lastEntry = entries[entries.length - 1];
                 this.metrics.lcp = lastEntry.startTime;
-                console.log('LCP:', lastEntry.startTime);
             });
             observer.observe({ entryTypes: ['largest-contentful-paint'] });
         }
@@ -39,7 +38,6 @@ class PerformanceMonitor {
                 const entries = list.getEntries();
                 entries.forEach((entry) => {
                     this.metrics.fid = entry.processingStart - entry.startTime;
-                    console.log('FID:', entry.processingStart - entry.startTime);
                 });
             });
             observer.observe({ entryTypes: ['first-input'] });
@@ -58,7 +56,6 @@ class PerformanceMonitor {
                     }
                 });
                 this.metrics.cls = clsValue;
-                console.log('CLS:', clsValue);
             });
             observer.observe({ entryTypes: ['layout-shift'] });
         }

@@ -8,7 +8,6 @@ class ThemeManager {
 
     // Инициализация системы тем
     init() {
-        console.log('ThemeManager: Initializing with theme:', this.currentTheme);
         this.applyTheme(this.currentTheme);
         // this.createThemeToggle(); // Убираем фиксированную кнопку смены темы
         this.createThemeModal();
@@ -30,7 +29,6 @@ class ThemeManager {
 
     // Применение темы
     applyTheme(theme) {
-        console.log('ThemeManager: Applying theme:', theme);
         this.currentTheme = theme;
         localStorage.setItem('theme', theme);
         
@@ -38,11 +36,9 @@ class ThemeManager {
         let actualTheme = theme;
         if (theme === 'auto') {
             actualTheme = this.getSystemTheme();
-            console.log('ThemeManager: Auto theme resolved to:', actualTheme);
         }
         
         document.documentElement.setAttribute('data-theme', actualTheme);
-        console.log('ThemeManager: Set data-theme to:', actualTheme);
         
         // Обновление иконки переключателя
         this.updateThemeIcon();
@@ -80,7 +76,6 @@ class ThemeManager {
     createThemeToggle() {
         // Проверяем, не существует ли уже кнопка
         if (document.getElementById('themeToggle')) {
-            console.log('Theme toggle button already exists, skipping creation');
             return;
         }
         

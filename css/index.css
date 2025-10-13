@@ -318,6 +318,28 @@ body.modal-open {
         outline: none !important;
     }
     
+    /* Стили для подсветки найденного текста */
+    .search-highlight {
+        background-color: rgba(174, 252, 110, 0.3) !important;
+        color: var(--text-color) !important;
+        padding: 1px 2px !important;
+        border-radius: 2px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+        animation: highlightPulse 0.3s ease-in-out !important;
+    }
+    
+    @keyframes highlightPulse {
+        0% { background-color: rgba(174, 252, 110, 0.1) !important; }
+        50% { background-color: rgba(174, 252, 110, 0.5) !important; }
+        100% { background-color: rgba(174, 252, 110, 0.3) !important; }
+    }
+    
+    /* Стили для скрытых заметок */
+    .note.hidden {
+        display: none !important;
+    }
+    
     #searchInput::placeholder {
         font-size: 16px !important;
         font-weight: 500 !important;

@@ -19,7 +19,6 @@ class SecurityManager {
         if (!metaCSP) {
             console.warn('CSP not found - security risk');
         } else {
-            console.log('CSP configured:', metaCSP.content);
         }
     }
 
@@ -66,7 +65,6 @@ class SecurityManager {
         ];
 
         // Log missing headers (for development)
-        console.log('Secure headers should be configured server-side');
     }
 
     // Monitor security events
@@ -220,7 +218,6 @@ document.addEventListener('DOMContentLoaded', function() {
     securityManager = new SecurityManager();
     
     // Log security report
-    console.log('Security Report:', securityManager.getSecurityReport());
 });
 
 // Export for use in other modules

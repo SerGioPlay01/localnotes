@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="bg">
 
 <head>
@@ -15,13 +15,13 @@
                     function gtag() { dataLayer.push(arguments); }
                     gtag('js', new Date());
                     gtag('config', 'G-HR9HLBQFCR');
-                    console.log('Google Analytics loaded successfully');
+                    
                 } catch (error) {
-                    console.warn('Google Analytics initialization failed:', error);
+                    
                 }
             };
             script.onerror = function() {
-                console.warn('Google Analytics script failed to load - continuing without analytics');
+                
             };
             document.head.appendChild(script);
         }
@@ -72,26 +72,26 @@
     <meta name="googlebot" content="index, follow">
 
     <!-- Critical CSS loaded first -->
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/preloader.css">
     
     <!-- Non-critical CSS loaded asynchronously -->
-    <link rel="preload" href="/css/img.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="/css/highlight.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="/css/tinymce-custom.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="../css/img.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="../css/highlight.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="../css/tinymce-custom.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     
     <!-- Fallback for browsers that don't support preload -->
     <noscript>
-        <link rel="stylesheet" href="/css/img.css">
-        <link rel="stylesheet" href="/css/highlight.css">
-        <link rel="stylesheet" href="/css/tinymce-custom.css">
+        <link rel="stylesheet" href="../css/img.css">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link rel="stylesheet" href="../css/tinymce-custom.css">
     </noscript>
     
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/favicon/site.webmanifest">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+    <link rel="manifest" href="../favicon/site.webmanifest">
+    <link rel="manifest" href="../manifest.json">
 
     <!-- Hreflang tags for SEO -->
     <link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/">
@@ -111,7 +111,7 @@
     <title>Локални бележки</title>
 </head>
 
-<body>
+<body style="display: none;">
 
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MVKPW88F" height="0" width="0"
@@ -198,24 +198,208 @@
         </footer>
     </section>
 
-
+            <!-- Language Detection and Redirect -->
     <script>
-        // Set language for this page
-        window.currentLang = 'bg';
+        // Language mapping for automatic redirection
+        const languageMap = {
+            'ru': '/ru/',
+            'ua': '/ua/',
+            'pl': '/pl/',
+            'cs': '/cs/',
+            'sk': '/sk/',
+            'bg': '/bg/',
+            'hr': '/hr/',
+            'sr': '/sr/',
+            'bs': '/bs/',
+            'mk': '/mk/',
+            'sl': '/sl/'
+        };
+
+        // Get user's preferred language
+        function getUserLanguage() {
+            // Check URL parameter first
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            if (langParam && languageMap[langParam]) {
+                
+                return langParam;
+            }
+
+            // Check localStorage
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && languageMap[savedLang]) {
+                
+                return savedLang;
+            }
+
+            // Check all browser languages (more comprehensive)
+            const browserLanguages = navigator.languages || [navigator.language || navigator.userLanguage];
+
+            for (let browserLang of browserLanguages) {
+                const langCode = browserLang.split('-')[0].toLowerCase();
+
+                if (languageMap[langCode]) {
+                    
+                    return langCode;
+                }
+                
+                // Check for specific country codes
+                const countryCode = browserLang.split('-')[1]?.toLowerCase();
+                if (countryCode) {
+                    
+                    // Special cases for countries
+                    if (countryCode === 'ua') {
+                        
+                        return 'ua';
+                    }
+                    if (countryCode === 'by') {
+                        
+                        return 'ru';
+                    }
+                    if (countryCode === 'kz') {
+                        
+                        return 'ru';
+                    }
+                    if (countryCode === 'md') {
+                        
+                        return 'ru';
+                    }
+                    if (countryCode === 'ru') {
+                        
+                        return 'ru';
+                    }
+                }
+            }
+
+            // Check system language via Intl API
+            try {
+                const systemLang = Intl.DateTimeFormat().resolvedOptions().locale;
+                const systemLangCode = systemLang.split('-')[0].toLowerCase();
+
+                if (languageMap[systemLangCode]) {
+                    
+                    return systemLangCode;
+                }
+            } catch (e) {
+                
+            }
+
+            // Check timezone for additional hints
+            try {
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+                // Russian timezones
+                if (timezone.includes('Moscow') || timezone.includes('Europe/Moscow') || 
+                    timezone.includes('Asia/Yekaterinburg') || timezone.includes('Asia/Novosibirsk') ||
+                    timezone.includes('Asia/Krasnoyarsk') || timezone.includes('Asia/Irkutsk') ||
+                    timezone.includes('Asia/Yakutsk') || timezone.includes('Asia/Vladivostok')) {
+                    
+                    return 'ru';
+                }
+                
+                // Ukrainian timezone
+                if (timezone.includes('Kiev') || timezone.includes('Europe/Kiev')) {
+                    
+                    return 'ua';
+                }
+            } catch (e) {
+                
+            }
+
+            // Check for Russian/Ukrainian characters in user agent or other hints
+            try {
+                const userAgent = navigator.userAgent;
+
+                // Check if user agent contains Cyrillic or Russian-specific strings
+                if (userAgent.includes('ru-RU') || userAgent.includes('ru_ru') || 
+                    userAgent.includes('Russian') || userAgent.includes('Р СѓСЃСЃРєРёР№')) {
+                    
+                    return 'ru';
+                }
+                
+                if (userAgent.includes('uk-UA') || userAgent.includes('uk_ua') || 
+                    userAgent.includes('Ukrainian') || userAgent.includes('РЈРєСЂР°С—РЅСЃСЊРєР°')) {
+                    
+                    return 'ua';
+                }
+            } catch (e) {
+                
+            }
+
+            // Default to bg for this page
+            
+            return 'bg';
+        }
+
+        // Redirect to appropriate language version
+        function redirectToLanguage() {
+            const userLang = getUserLanguage();
+
+            console.log('Available languages:', Object.keys(languageMap));
+            
+            if (userLang !== 'bg' && languageMap[userLang]) {
+                
+                // Save language preference
+                localStorage.setItem('preferredLanguage', userLang);
+                
+                // Redirect to language-specific version
+                window.location.replace(languageMap[userLang]);
+                return;
+            }
+
+            // If bg or no specific language, show the main page
+            showMainPage();
+        }
+
+        // Show main page content
+        function showMainPage() {
+            // Set bg as default language
+            window.currentLang = 'bg';
+
+            // Show project information in console
+            console.log('%cрџ“ќ Local Notes - Р›РѕРєР°Р»СЊРЅС‹Рµ Р—Р°РјРµС‚РєРё', 'color: #4CAF50; font-size: 20px; font-weight: bold;');
+            console.log('%cрџ”’ Secure вЂў рџЊЌ Multi-language вЂў рџ“± PWA вЂў вљЎ Fast', 'color: #2196F3; font-size: 14px;');
+            console.log('%cVersion: 1.0.2 | Author: SerGio Play', 'color: #FF9800; font-size: 12px;');
+            console.log('%cрџЊђ Website: https://localnotes-web.netlify.app/', 'color: #9C27B0; font-size: 12px;');
+            console.log('%cрџ“љ GitHub: https://github.com/SerGioPlay01/localnotes', 'color: #607D8B; font-size: 12px;');
+            console.log('%cрџЋЇ Features: AES-256 Encryption вЂў 12 Languages вЂў Offline Support вЂў TinyMCE Editor', 'color: #795548; font-size: 11px;');
+            console.log('%cрџ’Ў Tip: Use search with transliteration support (Cyrillic в†” Latin)', 'color: #E91E63; font-size: 11px;');
+
+            // Show project information in console
+
+            console.log('%cрџ’Ў Tip: Use search with transliteration support (Cyrillic в†” Latin)', 'color: #E91E63; font-size: 11px;');
+            document.body.style.display = 'block';
+            // Update button texts after page load
+            if (typeof updateButtonTexts === 'function') {
+                setTimeout(updateButtonTexts, 200);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            redirectToLanguage();
+        });
+
+        // Fallback: show page after 1 second if no redirect happened
+        setTimeout(function() {
+            if (document.body.style.display === 'none') {
+                showMainPage();
+            }
+        }, 1000);
     </script>
     
     <!-- Critical JavaScript loaded first -->
-    <script src="/js/utils.js"></script>
-    <script src="/js/selectors.js"></script>
-    <script src="/js/translate.js"></script>
-    <script src="/js/themes.js"></script>
-    <script src="/js/performance.js"></script>
-    <script src="/js/security.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/selectors.js"></script>
+    <script src="../js/translate.js"></script>
+    <script src="../js/themes.js"></script>
+    <script src="../js/performance.js"></script>
+    <script src="../js/security.js"></script>
     <script src="../lottiesnimstion/lottie.min.js"></script>
     <script src="../js/preloader.js"></script>
     
     <!-- TinyMCE loaded with defer for better performance -->
-    <script src="/editor_news/tinymce.min.js" defer></script>
+    <script src="../editor_news/tinymce.min.js" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
     <script>
@@ -248,8 +432,7 @@
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/sw.js')
                     .then(function(registration) {
-                        console.log('Service Worker registered successfully:', registration.scope);
-                        
+
                         // Проверка обновлений
                         registration.addEventListener('updatefound', function() {
                             const newWorker = registration.installing;
@@ -264,7 +447,7 @@
                         });
                     })
                     .catch(function(error) {
-                        console.log('Service Worker registration failed:', error);
+                        
                     });
             });
         }
@@ -273,3 +456,5 @@
 </body>
 
 </html>
+
+

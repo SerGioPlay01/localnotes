@@ -2,23 +2,30 @@
 
 class ModernPreloader {
     constructor() {
-        console.log('Preloader: Constructor called');
         this.preloader = null;
         this.particles = [];
         // Инициализируем сразу без задержки
-        console.log('Preloader: Starting initialization');
         this.init();
     }
 
     init() {
-        console.log('Preloader: init() called');
         this.createPreloaderHTML();
         this.startLoading();
     }
 
     createPreloaderHTML() {
-        console.log('Preloader: createPreloaderHTML() called');
         const preloaderHTML = `
+            <style>
+                @keyframes progressComplete {
+                    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+                    50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(76, 175, 80, 0.3); }
+                    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+                }
+                @keyframes progressPulse {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.8; }
+                }
+            </style>
             <div class="preloader" id="modernPreloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #0a0a0a; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.3s ease;">
                 <div class="preloader-content" style="text-align: center; color: #ffffff;">
                     <div class="lottie-container" id="lottieContainer" style="width: 120px; height: 120px; margin: 0 auto 20px;">
@@ -27,8 +34,11 @@ class ModernPreloader {
                     <div class="loading-text" style="font-size: 18px; margin-bottom: 20px;">
                         <span id="preloaderText">Loading<span class="loading-dots">...</span></span>
                     </div>
-                    <div class="progress-container" style="width: 200px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 0 auto; overflow: hidden;">
-                        <div class="progress-bar" style="height: 100%; background: #4CAF50; width: 0%; transition: width 0.1s ease;"></div>
+                    <div class="progress-container" style="width: 200px; height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; margin: 0 auto; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);">
+                        <div class="progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #4CAF50, #66bb6a, #81c784); border-radius: 3px; transition: width 0.3s ease; animation: progressPulse 2s ease-in-out infinite; box-shadow: 0 1px 3px rgba(76, 175, 80, 0.3); display: block; visibility: visible; opacity: 1;"></div>
+                    </div>
+                    <div class="progress-percentage" style="font-size: 14px; margin-top: 8px; font-weight: 500; color: #66bb6a; text-align: center; transition: transform 0.1s ease;">
+                        <span id="progressText">0%</span>
                     </div>
                 </div>
             </div>
@@ -37,7 +47,6 @@ class ModernPreloader {
         document.body.insertAdjacentHTML('afterbegin', preloaderHTML);
         this.preloader = document.getElementById('modernPreloader');
         
-        console.log('Preloader: HTML created, preloader element:', this.preloader);
         
         // Загружаем Lottie анимацию
         this.loadLottieAnimation();
@@ -47,7 +56,6 @@ class ModernPreloader {
     }
 
     loadLottieAnimation() {
-        console.log('Preloader: Loading Lottie animation');
         
         // Проверяем, доступна ли библиотека Lottie
         if (typeof lottie === 'undefined') {
@@ -66,7 +74,6 @@ class ModernPreloader {
         const isLanguagePage = window.location.pathname.match(/^\/([a-z]{2})\//);
         const animationPath = isLanguagePage ? '../lottiesnimstion/password_security.json' : '/lottiesnimstion/password_security.json';
         
-        console.log('Preloader: Loading animation from:', animationPath);
         
         try {
             // Загружаем и запускаем анимацию
@@ -80,11 +87,9 @@ class ModernPreloader {
             
             // Обработчики событий анимации
             this.lottieAnimation.addEventListener('complete', () => {
-                console.log('Preloader: Lottie animation completed');
             });
             
             this.lottieAnimation.addEventListener('loopComplete', () => {
-                console.log('Preloader: Lottie animation loop completed');
             });
             
             this.lottieAnimation.addEventListener('error', (error) => {
@@ -92,7 +97,6 @@ class ModernPreloader {
                 this.showFallbackAnimation();
             });
             
-            console.log('Preloader: Lottie animation loaded successfully');
         } catch (error) {
             console.warn('Preloader: Failed to load Lottie animation:', error);
             this.showFallbackAnimation();
@@ -133,7 +137,6 @@ class ModernPreloader {
             // Получаем перевод из системы переводов
             if (window.t && typeof window.t === 'function' && window.translations) {
                 text = window.t('preloaderText') || 'Loading';
-                console.log('Preloader: Using t() for main text:', text);
             } else {
                 // Fallback для случаев, когда система переводов еще не загружена
                 const translations = {
@@ -151,7 +154,6 @@ class ModernPreloader {
                     'sl': 'Nalaganje'
                 };
                 text = translations[currentLang] || 'Loading';
-                console.log('Preloader: Using fallback for main text:', text, 'for language:', currentLang);
             }
             
             preloaderText.innerHTML = `${text}<span class="loading-dots">...</span>`;
@@ -167,7 +169,6 @@ class ModernPreloader {
             currentLang = langMatch ? langMatch[1] : 'en';
         }
         
-        console.log('Preloader: Current language:', currentLang);
         
         // Получаем переводы из системы переводов
         if (window.t && typeof window.t === 'function' && window.translations) {
@@ -178,7 +179,6 @@ class ModernPreloader {
                 window.t('preloaderInterface') || 'Preparing interface...',
                 window.t('preloaderComplete') || 'Loading complete...'
             ];
-            console.log('Preloader: Using t() function, texts:', texts);
             return texts;
         } else {
             // Fallback переводы для каждого языка
@@ -270,7 +270,6 @@ class ModernPreloader {
             };
             
             const result = translations[currentLang] || translations['en'];
-            console.log('Preloader: Using fallback translations for', currentLang, ':', result);
             return result;
         }
     }
@@ -279,18 +278,28 @@ class ModernPreloader {
     startLoading() {
         // Оптимизированное время показа анимации
         let progress = 0;
-        const totalDuration = 2500; // 2.5 секунды (уменьшено для лучшего UX)
+        const totalDuration = 3000; // 3 секунды для более плавной анимации
         const updateInterval = 16; // обновляем каждые 16мс (60fps)
-        const progressStep = (100 / totalDuration) * updateInterval;
+        
+        // Используем easing функцию для более реалистичного прогресса
+        const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+        
+        const startTime = Date.now();
         
         const loadingInterval = setInterval(() => {
-            progress += progressStep;
+            const elapsed = Date.now() - startTime;
+            const normalizedTime = Math.min(elapsed / totalDuration, 1);
             
-            if (progress >= 100) {
+            // Применяем easing для более реалистичного прогресса
+            progress = easeOutQuart(normalizedTime) * 100;
+            
+            if (normalizedTime >= 1) {
                 progress = 100;
                 clearInterval(loadingInterval);
-                // Скрываем прелойдер сразу без задержки
-                this.hidePreloader();
+                // Небольшая задержка перед скрытием для завершения анимации
+                setTimeout(() => {
+                    this.hidePreloader();
+                }, 200);
             }
             
             this.updateProgress(progress);
@@ -313,20 +322,41 @@ class ModernPreloader {
 
     updateProgress(progress) {
         const progressBar = document.querySelector('.progress-bar');
+        const progressText = document.getElementById('progressText');
+        
         if (progressBar) {
+            // Плавное обновление ширины с анимацией
             progressBar.style.width = `${progress}%`;
+            
+            // Принудительно применяем стили для гарантии отображения
+            progressBar.style.display = 'block';
+            progressBar.style.visibility = 'visible';
+            progressBar.style.opacity = '1';
+            
+            // Добавляем пульсацию при достижении 100%
+            if (progress >= 100) {
+                progressBar.style.animation = 'progressComplete 0.5s ease-in-out';
+                progressBar.style.boxShadow = '0 0 10px rgba(76, 175, 80, 0.5)';
+            }
+        }
+        
+        if (progressText) {
+            // Обновляем текст процентов
+            progressText.textContent = `${Math.round(progress)}%`;
+            
+            // Добавляем анимацию для процентов
+            progressText.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                progressText.style.transform = 'scale(1)';
+            }, 100);
         }
     }
 
     updateLoadingText(text) {
         const loadingText = document.querySelector('.loading-text');
         if (loadingText) {
-            loadingText.style.opacity = '0';
-            // Убираем задержку, обновляем сразу
-            setTimeout(() => {
-                loadingText.innerHTML = `${text}<span class="loading-dots">...</span>`;
-                loadingText.style.opacity = '1';
-            }, 50);
+            // Убираем анимацию opacity, обновляем текст сразу
+            loadingText.innerHTML = `${text}<span class="loading-dots">...</span>`;
         }
     }
 
@@ -357,33 +387,25 @@ class ModernPreloader {
 
 // Инициализация прелоадера
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Preloader: DOMContentLoaded event fired');
     
     // Проверяем, нужно ли показывать прелоадер
     const shouldShowPreloader = !sessionStorage.getItem('preloaderShown');
     
-    console.log('Preloader: shouldShowPreloader =', shouldShowPreloader);
-    console.log('Preloader: sessionStorage preloaderShown =', sessionStorage.getItem('preloaderShown'));
     
     if (shouldShowPreloader) {
-        console.log('Preloader: Creating new ModernPreloader instance');
         new ModernPreloader();
         sessionStorage.setItem('preloaderShown', 'true');
     } else {
-        console.log('Preloader: Skipping preloader (already shown in this session)');
     }
 });
 
 // Функция для принудительного сброса прелойдера (для тестирования)
 window.resetPreloader = function() {
-    console.log('Preloader: Resetting preloader');
     sessionStorage.removeItem('preloaderShown');
-    console.log('Preloader: sessionStorage cleared, preloader will show on next page load');
 };
 
 // Функция для принудительного показа прелойдера
 window.showPreloader = function() {
-    console.log('Preloader: Manually showing preloader');
     new ModernPreloader();
 };
 

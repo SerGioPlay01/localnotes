@@ -15,7 +15,6 @@
                     function gtag() { dataLayer.push(arguments); }
                     gtag('js', new Date());
                     gtag('config', 'G-HR9HLBQFCR');
-                    console.log('Google Analytics loaded successfully');
                 } catch (error) {
                     console.warn('Google Analytics initialization failed:', error);
                 }
@@ -103,22 +102,86 @@
                 return savedLang;
             }
 
-            // Check browser language
-            const browserLang = navigator.language || navigator.userLanguage;
-            const langCode = browserLang.split('-')[0].toLowerCase();
+            // Check all browser languages (more comprehensive)
+            const browserLanguages = navigator.languages || [navigator.language || navigator.userLanguage];
             
-            if (languageMap[langCode]) {
-                return langCode;
+            for (let browserLang of browserLanguages) {
+                const langCode = browserLang.split('-')[0].toLowerCase();
+                
+                if (languageMap[langCode]) {
+                    return langCode;
+                }
+                
+                // Check for specific country codes
+                const countryCode = browserLang.split('-')[1]?.toLowerCase();
+                if (countryCode) {
+                    // Special cases for countries
+                    if (countryCode === 'ua') {
+                        return 'ua';
+                    }
+                    if (countryCode === 'by') {
+                        return 'ru';
+                    }
+                    if (countryCode === 'kz') {
+                        return 'ru';
+                    }
+                    if (countryCode === 'md') {
+                        return 'ru';
+                    }
+                    if (countryCode === 'ru') {
+                        return 'ru';
+                    }
+                }
             }
 
-            // Check for specific country codes
-            const countryCode = browserLang.split('-')[1]?.toLowerCase();
-            if (countryCode) {
-                // Special cases for countries
-                if (countryCode === 'ua') return 'ua'; // Ukraine -> Ukrainian
-                if (countryCode === 'by') return 'ru'; // Belarus -> Russian
-                if (countryCode === 'kz') return 'ru'; // Kazakhstan -> Russian
-                if (countryCode === 'md') return 'ru'; // Moldova -> Russian
+            // Check system language via Intl API
+            try {
+                const systemLang = Intl.DateTimeFormat().resolvedOptions().locale;
+                const systemLangCode = systemLang.split('-')[0].toLowerCase();
+                
+                if (languageMap[systemLangCode]) {
+                    return systemLangCode;
+                }
+            } catch (e) {
+                // Ignore errors
+            }
+
+            // Check timezone for additional hints
+            try {
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                
+                // Russian timezones
+                if (timezone.includes('Moscow') || timezone.includes('Europe/Moscow') || 
+                    timezone.includes('Asia/Yekaterinburg') || timezone.includes('Asia/Novosibirsk') ||
+                    timezone.includes('Asia/Krasnoyarsk') || timezone.includes('Asia/Irkutsk') ||
+                    timezone.includes('Asia/Yakutsk') || timezone.includes('Asia/Vladivostok')) {
+                    return 'ru';
+                }
+                
+                // Ukrainian timezone
+                if (timezone.includes('Kiev') || timezone.includes('Europe/Kiev')) {
+                    return 'ua';
+                }
+            } catch (e) {
+                // Ignore errors
+            }
+
+            // Check for Russian/Ukrainian characters in user agent or other hints
+            try {
+                const userAgent = navigator.userAgent;
+                
+                // Check if user agent contains Cyrillic or Russian-specific strings
+                if (userAgent.includes('ru-RU') || userAgent.includes('ru_ru') || 
+                    userAgent.includes('Russian') || userAgent.includes('Русский')) {
+                    return 'ru';
+                }
+                
+                if (userAgent.includes('uk-UA') || userAgent.includes('uk_ua') || 
+                    userAgent.includes('Ukrainian') || userAgent.includes('Українська')) {
+                    return 'ua';
+                }
+            } catch (e) {
+                // Ignore errors
             }
 
             // Default to English
@@ -147,6 +210,16 @@
             // Set English as default language
             window.currentLang = 'en';
             document.body.style.display = 'block';
+            
+            // Show project information in console
+            console.log('%c📝 Local Notes - Локальные Заметки', 'color: #4CAF50; font-size: 20px; font-weight: bold;');
+            console.log('%c🔒 Secure • 🌍 Multi-language • 📱 PWA • ⚡ Fast', 'color: #2196F3; font-size: 14px;');
+            console.log('%cVersion: 1.0.2 | Author: SerGio Play', 'color: #FF9800; font-size: 12px;');
+            console.log('%c🌐 Website: https://localnotes-web.netlify.app/', 'color: #9C27B0; font-size: 12px;');
+            console.log('%c📚 GitHub: https://github.com/SerGioPlay01/localnotes', 'color: #607D8B; font-size: 12px;');
+            console.log('%c🎯 Features: AES-256 Encryption • 12 Languages • Offline Support • TinyMCE Editor', 'color: #795548; font-size: 11px;');
+            console.log('%c💡 Tip: Use search with transliteration support (Cyrillic ↔ Latin)', 'color: #E91E63; font-size: 11px;');
+            
             // Обновляем текст кнопок после загрузки страницы
             if (typeof updateButtonTexts === 'function') {
                 setTimeout(updateButtonTexts, 200);
@@ -164,6 +237,7 @@
                 showMainPage();
             }
         }, 1000);
+
     </script>
 
     <!-- Critical CSS loaded first -->
@@ -338,7 +412,6 @@
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/sw.js')
                     .then(function(registration) {
-                        console.log('Service Worker registered successfully:', registration.scope);
                         
                         // Проверка обновлений
                         registration.addEventListener('updatefound', function() {
@@ -354,7 +427,6 @@
                         });
                     })
                     .catch(function(error) {
-                        console.log('Service Worker registration failed:', error);
                     });
             });
         }

@@ -133,6 +133,47 @@ body.modal-open {
         opacity: 0.8;
         font-weight: 500;
     }
+    
+    /* Модальное окно редактора на полный экран для мобильных устройств */
+    .modal-content {
+        margin: 0 !important;
+        height: 100% !important;
+        width: 100% !important;
+        top: 0 !important;
+        left: 0 !important;
+        border-radius: 0 !important;
+        position: fixed !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    /* Убеждаемся что TinyMCE занимает всю доступную высоту */
+    .tinymce {
+        flex: 1 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .tox-tinymce {
+        flex: 1 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .tox .tox-edit-area {
+        flex: 1 !important;
+        min-height: 0 !important;
+        height: auto !important;
+    }
+    
+    .tox .tox-edit-area iframe {
+        height: 100% !important;
+        min-height: 200px !important;
+    }
 }
 
 /* CSS переменные для темной темы (по умолчанию) */
@@ -2053,7 +2094,7 @@ input {
 
 }
 
-@media (max-width: 1350px) {
+@media (min-width: 768px) and (max-width: 1350px) {
     .noNotes {
         width: 100%;
     }

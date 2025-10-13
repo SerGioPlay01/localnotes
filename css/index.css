@@ -3852,11 +3852,7 @@ input {
     color: #aa44aa;
 }
 
-/* Фон текста */
-.note [style*="background-color"] {
-    padding: 2px 4px;
-    border-radius: 3px;
-}
+/* Фон текста - убран для чистого отображения */
 
 /* Стили для выделения */
 .note mark {

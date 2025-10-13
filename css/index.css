@@ -174,6 +174,134 @@ body.modal-open {
         height: 100% !important;
         min-height: 200px !important;
     }
+    
+    /* Улучшенный хедер для мобильных устройств */
+    .info-app {
+        flex-direction: column !important;
+        gap: 8px !important;
+        height: auto !important;
+        padding: 20px 15px !important;
+        text-align: center !important;
+    }
+    
+    .logo {
+        width: 60px !important;
+        height: 60px !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .name-app {
+        font-size: 1.8em !important;
+        margin: 0 !important;
+        line-height: 1.2 !important;
+    }
+    
+    /* Улучшенная навигация для мобильных устройств */
+    .center_nav {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .sticky {
+        flex-direction: column !important;
+        gap: 15px !important;
+        padding: 15px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Кнопки в горизонтальном ряду */
+    .block_btn {
+        display: flex !important;
+        gap: 8px !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        padding-bottom: 5px !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: var(--primary-color) transparent !important;
+    }
+    
+    .block_btn::-webkit-scrollbar {
+        height: 4px !important;
+    }
+    
+    .block_btn::-webkit-scrollbar-track {
+        background: transparent !important;
+    }
+    
+    .block_btn::-webkit-scrollbar-thumb {
+        background: var(--primary-color) !important;
+        border-radius: 2px !important;
+    }
+    
+    /* Улучшенные кнопки */
+    .block_btn button {
+        flex-shrink: 0 !important;
+        min-width: 120px !important;
+        height: 48px !important;
+        padding: 12px 16px !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+        border: 1px solid var(--button-border) !important;
+        background: var(--button-bg) !important;
+        color: var(--button-text) !important;
+        transition: all 0.2s ease !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        white-space: nowrap !important;
+    }
+    
+    .block_btn button:hover {
+        background: var(--button-hover) !important;
+        border-color: var(--primary-color) !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    .block_btn button:active {
+        transform: translateY(0) !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    .block_btn button i {
+        font-size: 16px !important;
+    }
+    
+    /* Строка поиска на новой строке во всю ширину */
+    #searchInput {
+        width: 100% !important;
+        height: 50px !important;
+        border-radius: 8px !important;
+        border: 1px solid var(--button-border) !important;
+        background: var(--input-bg) !important;
+        color: var(--input-text) !important;
+        font-size: 16px !important;
+        padding: 0 20px !important;
+        text-indent: 0 !important;
+        box-sizing: border-box !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    #searchInput:hover {
+        background: var(--button-hover) !important;
+        border-color: var(--primary-color) !important;
+    }
+    
+    #searchInput:focus {
+        border-color: var(--primary-color) !important;
+        background: var(--button-hover) !important;
+        box-shadow: 0 0 0 3px rgba(174, 252, 110, 0.1) !important;
+        outline: none !important;
+    }
+    
+    #searchInput::placeholder {
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        color: var(--text-muted) !important;
+    }
 }
 
 /* CSS переменные для темной темы (по умолчанию) */
@@ -2910,6 +3038,48 @@ input {
         width: 100%;
         max-width: 100%;
         box-sizing: border-box;
+    }
+    
+    /* Дополнительные улучшения хедера для очень маленьких экранов */
+    .info-app {
+        padding: 15px 10px !important;
+        gap: 6px !important;
+    }
+    
+    .logo {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+    .name-app {
+        font-size: 1.5em !important;
+    }
+    
+    /* Улучшения навигации для очень маленьких экранов */
+    .sticky {
+        padding: 10px !important;
+        gap: 12px !important;
+    }
+    
+    .block_btn {
+        gap: 6px !important;
+    }
+    
+    .block_btn button {
+        min-width: 100px !important;
+        height: 44px !important;
+        padding: 10px 12px !important;
+        font-size: 13px !important;
+    }
+    
+    .block_btn button i {
+        font-size: 14px !important;
+    }
+    
+    #searchInput {
+        height: 44px !important;
+        font-size: 15px !important;
+        padding: 0 15px !important;
     }
     
     /* Заголовок */

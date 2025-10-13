@@ -2137,36 +2137,27 @@ function updateColorPickerStyles(theme) {
 
 // Preload TinyMCE plugins to improve performance
 function preloadTinyMCEPlugins() {
-    const pluginUrls = [
-        '/editor_news/plugins/searchreplace/plugin.min.js',
-        '/editor_news/plugins/anchor/plugin.min.js',
-        '/editor_news/plugins/visualblocks/plugin.min.js',
-        '/editor_news/plugins/code/plugin.min.js',
-        '/editor_news/plugins/media/plugin.min.js',
-        '/editor_news/plugins/insertdatetime/plugin.min.js',
-        '/editor_news/plugins/table/plugin.min.js',
-        '/editor_news/plugins/help/plugin.min.js',
-        '/editor_news/plugins/wordcount/plugin.min.js',
-        '/editor_news/plugins/emoticons/plugin.min.js',
-        '/editor_news/plugins/codesample/plugin.min.js',
-        '/editor_news/plugins/pagebreak/plugin.min.js',
-        '/editor_news/plugins/nonbreaking/plugin.min.js',
-        '/editor_news/plugins/quickbars/plugin.min.js',
+    // Загружаем только критически важные плагины
+    const criticalPluginUrls = [
         '/editor_news/plugins/autosave/plugin.min.js',
-        '/editor_news/plugins/visualchars/plugin.min.js',
-        '/editor_news/plugins/directionality/plugin.min.js',
-        '/editor_news/plugins/accordion/plugin.min.js'
+        '/editor_news/plugins/table/plugin.min.js',
+        '/editor_news/plugins/code/plugin.min.js',
+        '/editor_news/plugins/help/plugin.min.js'
     ];
     
-    // Preload plugins with low priority
-    pluginUrls.forEach(url => {
+    // Preload только критических плагинов с низким приоритетом
+    criticalPluginUrls.forEach(url => {
         const link = document.createElement('link');
         link.rel = 'preload';
         link.href = url;
         link.as = 'script';
         link.crossOrigin = 'anonymous';
+        link.setAttribute('fetchpriority', 'low');
         document.head.appendChild(link);
     });
+    
+    // Остальные плагины загружаем по требованию
+    console.log('TinyMCE critical plugins preloaded, others will load on demand');
 }
 
 // Инициализация редактора TinyMCE с улучшенной обработкой ошибок
@@ -6612,10 +6603,17 @@ function isValidBase64Image(base64String) {
             return false;
         }
         
+        // Проверяем, что base64 строка не слишком длинная (ограничение браузера)
+        if (base64Part.length > 10000000) { // 10MB лимит
+            console.warn('Base64 image too large, replacing with placeholder');
+            return false;
+        }
+        
         // Проверяем, что base64 строка содержит только допустимые символы
         const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
         return base64Regex.test(base64Part);
     } catch (error) {
+        console.warn('Error validating base64 image:', error);
         return false;
     }
 }
@@ -6777,10 +6775,12 @@ class AdvancedEncryption {
             // Используем ту же логику, что и в основной функции decrypt
             try {
                 // Сначала пробуем новый алгоритм
-                // Декодируем из base64
-                const obfuscated = new Uint8Array(
-                    atob(encryptedText).split('').map(char => char.charCodeAt(0))
-                );
+                // Декодируем из base64 (исправлено для больших массивов)
+                const binaryString = atob(encryptedText);
+                const obfuscated = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    obfuscated[i] = binaryString.charCodeAt(i);
+                }
                 
                 // Деобфускация
                 const combined = this.deobfuscateData(obfuscated);
@@ -6986,8 +6986,8 @@ class AdvancedEncryption {
             // Сброс попыток при успешном шифровании
             this.resetAttempts(identifier);
             
-            // Кодируем в base64
-            return btoa(String.fromCharCode(...obfuscated));
+            // Кодируем в base64 (исправлено для больших массивов)
+            return btoa(String.fromCharCode.apply(null, obfuscated));
         } catch (error) {
             throw new Error('Encryption failed: ' + error.message);
         }
@@ -7004,10 +7004,12 @@ class AdvancedEncryption {
 
             // Сначала пробуем новый алгоритм
             try {
-                // Декодируем из base64
-                const obfuscated = new Uint8Array(
-                    atob(encryptedData).split('').map(char => char.charCodeAt(0))
-                );
+                // Декодируем из base64 (исправлено для больших массивов)
+                const binaryString = atob(encryptedData);
+                const obfuscated = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    obfuscated[i] = binaryString.charCodeAt(i);
+                }
                 
                 // Деобфускация
                 const combined = this.deobfuscateData(obfuscated);
@@ -7054,10 +7056,12 @@ class AdvancedEncryption {
             // Проверяем, является ли данные строкой или ArrayBuffer
             let encryptedBuffer;
             if (typeof encryptedData === 'string') {
-                // Если это строка, декодируем из base64
-                encryptedBuffer = new Uint8Array(
-                    atob(encryptedData).split('').map(char => char.charCodeAt(0))
-                );
+                // Если это строка, декодируем из base64 (исправлено для больших массивов)
+                const binaryString = atob(encryptedData);
+                encryptedBuffer = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    encryptedBuffer[i] = binaryString.charCodeAt(i);
+                }
             } else {
                 // Если это ArrayBuffer, используем как есть
                 encryptedBuffer = new Uint8Array(encryptedData);
@@ -7266,7 +7270,7 @@ class AdvancedEncryption {
             // Обфускация для медиа файлов (более агрессивная)
             const obfuscated = this.obfuscateMediaData(combined);
             
-            return btoa(String.fromCharCode(...obfuscated));
+            return btoa(String.fromCharCode.apply(null, obfuscated));
         } catch (error) {
             throw new Error('Media encryption failed: ' + error.message);
         }
@@ -7281,10 +7285,12 @@ class AdvancedEncryption {
                 throw new Error(`Too many failed attempts. Try again in ${remainingTime} seconds.`);
             }
 
-            // Декодируем из base64
-            const obfuscated = new Uint8Array(
-                atob(encryptedData).split('').map(char => char.charCodeAt(0))
-            );
+            // Декодируем из base64 (исправлено для больших массивов)
+            const binaryString = atob(encryptedData);
+            const obfuscated = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                obfuscated[i] = binaryString.charCodeAt(i);
+            }
             
             // Деобфускация
             const combined = this.deobfuscateMediaData(obfuscated);

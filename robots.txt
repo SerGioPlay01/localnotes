@@ -70,8 +70,8 @@ User-agent: DotBot
 Disallow: /
 
 # Site information
-Host: https://localnotes-web.netlify.app/
-Sitemap: https://localnotes-web.netlify.app/sitemap.xml
+Host: https://localnotes-three.vercel.app/
+Sitemap: https://localnotes-three.vercel.app/sitemap.xml
 
 # Additional sitemaps for different languages
-Sitemap: https://localnotes-web.netlify.app/sitemap.xml
+Sitemap: https://localnotes-three.vercel.app/sitemap.xml

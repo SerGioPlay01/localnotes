@@ -10,24 +10,24 @@
 
 ### 🌍 Choose Language / Choose Language
 
-[![EN](https://img.shields.io/badge/🇺🇸_English-blue)](https://localnotes-web.netlify.app/)
-[![RU](https://img.shields.io/badge/🇷🇺_Русский-red)](https://localnotes-web.netlify.app/ru/)
-[![UA](https://img.shields.io/badge/🇺🇦_Українська-yellow)](https://localnotes-web.netlify.app/ua/)
-[![PL](https://img.shields.io/badge/🇵🇱_Polski-green)](https://localnotes-web.netlify.app/pl/)
-[![CS](https://img.shields.io/badge/🇨🇿_Čeština-orange)](https://localnotes-web.netlify.app/cs/)
-[![BG](https://img.shields.io/badge/🇧🇬_Български-purple)](https://localnotes-web.netlify.app/bg/)
-[![HR](https://img.shields.io/badge/🇭🇷_Hrvatski-lightblue)](https://localnotes-web.netlify.app/hr/)
-[![SR](https://img.shields.io/badge/🇷🇸_Српски-darkred)](https://localnotes-web.netlify.app/sr/)
-[![BS](https://img.shields.io/badge/🇧🇦_Bosanski-teal)](https://localnotes-web.netlify.app/bs/)
-[![MK](https://img.shields.io/badge/🇲🇰_Македонски-gold)](https://localnotes-web.netlify.app/mk/)
-[![SL](https://img.shields.io/badge/🇸🇮_Slovenščina-lime)](https://localnotes-web.netlify.app/sl/)
-[![SK](https://img.shields.io/badge/🇸🇰_Slovenčina-pink)](https://localnotes-web.netlify.app/sk/)
+[![EN](https://img.shields.io/badge/🇺🇸_English-blue)](https://localnotes-three.vercel.app/)
+[![RU](https://img.shields.io/badge/🇷🇺_Русский-red)](https://localnotes-three.vercel.app/ru/)
+[![UA](https://img.shields.io/badge/🇺🇦_Українська-yellow)](https://localnotes-three.vercel.app/ua/)
+[![PL](https://img.shields.io/badge/🇵🇱_Polski-green)](https://localnotes-three.vercel.app/pl/)
+[![CS](https://img.shields.io/badge/🇨🇿_Čeština-orange)](https://localnotes-three.vercel.app/cs/)
+[![BG](https://img.shields.io/badge/🇧🇬_Български-purple)](https://localnotes-three.vercel.app/bg/)
+[![HR](https://img.shields.io/badge/🇭🇷_Hrvatski-lightblue)](https://localnotes-three.vercel.app/hr/)
+[![SR](https://img.shields.io/badge/🇷🇸_Српски-darkred)](https://localnotes-three.vercel.app/sr/)
+[![BS](https://img.shields.io/badge/🇧🇦_Bosanski-teal)](https://localnotes-three.vercel.app/bs/)
+[![MK](https://img.shields.io/badge/🇲🇰_Македонски-gold)](https://localnotes-three.vercel.app/mk/)
+[![SL](https://img.shields.io/badge/🇸🇮_Slovenščina-lime)](https://localnotes-three.vercel.app/sl/)
+[![SK](https://img.shields.io/badge/🇸🇰_Slovenčina-pink)](https://localnotes-three.vercel.app/sk/)
 
 ### 📖 README Languages / Языки README
 [![README EN](https://img.shields.io/badge/📖_README_English-blue)](README_EN.md)
 [![README RU](https://img.shields.io/badge/📖_README_Русский-red)](README.md)
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-brightgreen)](https://localnotes-web.netlify.app/)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-brightgreen)](https://localnotes-three.vercel.app/)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-black)](https://github.com/SerGioPlay01/localnotes)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
@@ -299,7 +299,7 @@ localnotes-web/
 ## 🚀 Quick Start
 
 ### 🌐 Online Usage
-1. **Visit the site**: [localnotes-web.netlify.app](https://localnotes-web.netlify.app/)
+1. **Visit the site**: [localnotes-web.netlify.app](https://localnotes-three.vercel.app/)
 2. **Choose language**: Automatic detection or manual selection
 3. **Start creating notes**: Click "Add Note"
 4. **Install as PWA**: Click "Install" in browser
@@ -571,6 +571,6 @@ This project is distributed under the **MIT** license. Details in [LICENSE](LICE
 [![GitHub stars](https://img.shields.io/github/stars/SerGioPlay01/localnotes?style=social)](https://github.com/SerGioPlay01/localnotes)
 [![GitHub forks](https://img.shields.io/github/forks/SerGioPlay01/localnotes?style=social)](https://github.com/SerGioPlay01/localnotes)
 
-**🌐 [Try Local Notes right now!](https://localnotes-web.netlify.app/)**
+**🌐 [Try Local Notes right now!](https://localnotes-three.vercel.app/)**
 
 </div>

@@ -5,25 +5,25 @@
     
     <!-- Main English page -->
     <url>
-        <loc>https://localnotes-web.netlify.app/</loc>
+        <loc>https://localnotes-three.vercel.app/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
         <image:image>
-            <image:loc>https://localnotes-web.netlify.app/resources/obl_web.jpg</image:loc>
+            <image:loc>https://localnotes-three.vercel.app/resources/obl_web.jpg</image:loc>
             <image:title>Local Notes - Secure Note Taking App</image:title>
             <image:caption>Secure note-taking application with AES-256 encryption and multi-language support</image:caption>
         </image:image>
@@ -31,25 +31,25 @@
     
     <!-- Russian version -->
     <url>
-        <loc>https://localnotes-web.netlify.app/ru/</loc>
+        <loc>https://localnotes-three.vercel.app/ru/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.95</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
         <image:image>
-            <image:loc>https://localnotes-web.netlify.app/resources/obl_web.jpg</image:loc>
+            <image:loc>https://localnotes-three.vercel.app/resources/obl_web.jpg</image:loc>
             <image:title>Локальные заметки - Безопасное приложение для заметок</image:title>
             <image:caption>Безопасное приложение для заметок с шифрованием AES-256 и поддержкой многоязычности</image:caption>
         </image:image>
@@ -57,379 +57,379 @@
     
     <!-- Ukrainian version -->
     <url>
-        <loc>https://localnotes-web.netlify.app/ua/</loc>
+        <loc>https://localnotes-three.vercel.app/ua/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
     </url>
     
     <!-- Polish version -->
     <url>
-        <loc>https://localnotes-web.netlify.app/pl/</loc>
+        <loc>https://localnotes-three.vercel.app/pl/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
     </url>
     
     <!-- Czech version -->
     <url>
-        <loc>https://localnotes-web.netlify.app/cs/</loc>
+        <loc>https://localnotes-three.vercel.app/cs/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
     </url>
     
     <!-- Slovak version -->
     <url>
-        <loc>https://localnotes-web.netlify.app/sk/</loc>
+        <loc>https://localnotes-three.vercel.app/sk/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
     </url>
     
     <!-- Bulgarian version -->
     <url>
-        <loc>https://localnotes-web.netlify.app/bg/</loc>
+        <loc>https://localnotes-three.vercel.app/bg/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
     </url>
     
     <!-- Croatian version -->
     <url>
-        <loc>https://localnotes-web.netlify.app/hr/</loc>
+        <loc>https://localnotes-three.vercel.app/hr/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
     </url>
     
     <!-- Serbian version -->
     <url>
-        <loc>https://localnotes-web.netlify.app/sr/</loc>
+        <loc>https://localnotes-three.vercel.app/sr/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
     </url>
     
     <!-- Bosnian version -->
     <url>
-        <loc>https://localnotes-web.netlify.app/bs/</loc>
+        <loc>https://localnotes-three.vercel.app/bs/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
     </url>
     
     <!-- Macedonian version -->
     <url>
-        <loc>https://localnotes-web.netlify.app/mk/</loc>
+        <loc>https://localnotes-three.vercel.app/mk/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
     </url>
     
     <!-- Slovenian version -->
     <url>
-        <loc>https://localnotes-web.netlify.app/sl/</loc>
+        <loc>https://localnotes-three.vercel.app/sl/</loc>
         <lastmod>2025-01-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/"/>
-        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-web.netlify.app/ua/"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/"/>
-        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-web.netlify.app/sk/"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/"/>
-        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-web.netlify.app/hr/"/>
-        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-web.netlify.app/sr/"/>
-        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-web.netlify.app/bs/"/>
-        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-web.netlify.app/mk/"/>
-        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-web.netlify.app/sl/"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-web.netlify.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
     </url>
     
     <!-- Cookie Policy pages -->
     <url>
-        <loc>https://localnotes-web.netlify.app/cookie.html</loc>
+        <loc>https://localnotes-three.vercel.app/cookie.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/cookie.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/cookie_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/cookie_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/cookie.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/cookie_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/cookie_policy.html"/>
     </url>
     
     <url>
-        <loc>https://localnotes-web.netlify.app/ru/cookie_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/ru/cookie_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/cookie.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/cookie_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/cookie_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/cookie.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/cookie_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/cookie_policy.html"/>
     </url>
     
     <url>
-        <loc>https://localnotes-web.netlify.app/ua/cookie_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/ua/cookie_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/cookie.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/cookie_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/cookie_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/cookie.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/cookie_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/cookie_policy.html"/>
     </url>
     
     <!-- Privacy Policy pages -->
     <url>
-        <loc>https://localnotes-web.netlify.app/privacy_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/privacy_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/privacy_policy.html"/>
     </url>
     
     <url>
-        <loc>https://localnotes-web.netlify.app/ru/privacy_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/ru/privacy_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/privacy_policy.html"/>
     </url>
     
     <url>
-        <loc>https://localnotes-web.netlify.app/ua/privacy_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/ua/privacy_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/privacy_policy.html"/>
     </url>
     
     <url>
-        <loc>https://localnotes-web.netlify.app/pl/privacy_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/pl/privacy_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/privacy_policy.html"/>
     </url>
     
     <url>
-        <loc>https://localnotes-web.netlify.app/cs/privacy_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/cs/privacy_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/privacy_policy.html"/>
     </url>
     
     <url>
-        <loc>https://localnotes-web.netlify.app/bg/privacy_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/bg/privacy_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-web.netlify.app/cs/privacy_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-web.netlify.app/bg/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/privacy_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/privacy_policy.html"/>
     </url>
     
     <!-- Usage Policy pages -->
     <url>
-        <loc>https://localnotes-web.netlify.app/usage_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/usage_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/usage_policy.html"/>
     </url>
     
     <url>
-        <loc>https://localnotes-web.netlify.app/ru/usage_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/ru/usage_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/usage_policy.html"/>
     </url>
     
     <url>
-        <loc>https://localnotes-web.netlify.app/ua/usage_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/ua/usage_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/usage_policy.html"/>
     </url>
     
     <url>
-        <loc>https://localnotes-web.netlify.app/pl/usage_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/pl/usage_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/usage_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/usage_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/usage_policy.html"/>
     </url>
     
     <!-- Cookie Policy pages for additional languages -->
     <url>
-        <loc>https://localnotes-web.netlify.app/pl/cookie_policy.html</loc>
+        <loc>https://localnotes-three.vercel.app/pl/cookie_policy.html</loc>
         <lastmod>2025-01-22</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-web.netlify.app/cookie.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-web.netlify.app/ru/cookie_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-web.netlify.app/ua/cookie_policy.html"/>
-        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-web.netlify.app/pl/cookie_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/cookie.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/cookie_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/cookie_policy.html"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/cookie_policy.html"/>
     </url>
     
 </urlset>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Notes - SEO Indexing Boost</title>
+    <meta name="description" content="SEO indexing boost page for Local Notes - Secure note-taking app with AES-256 encryption">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Instant indexing scripts -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Local Notes",
+        "url": "https://localnotes-three.vercel.app/",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://localnotes-three.vercel.app/?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+        },
+        "sameAs": [
+            "https://localnotes-three.vercel.app/ru/",
+            "https://localnotes-three.vercel.app/ua/",
+            "https://localnotes-three.vercel.app/pl/",
+            "https://localnotes-three.vercel.app/cs/",
+            "https://localnotes-three.vercel.app/sk/",
+            "https://localnotes-three.vercel.app/bg/",
+            "https://localnotes-three.vercel.app/hr/",
+            "https://localnotes-three.vercel.app/sr/",
+            "https://localnotes-three.vercel.app/bs/",
+            "https://localnotes-three.vercel.app/mk/",
+            "https://localnotes-three.vercel.app/sl/"
+        ]
+    }
+    </script>
+    
+    <!-- IndexNow submission script -->
+    <script>
+        // Auto-submit to IndexNow for instant indexing
+        const indexNowUrls = [
+            'https://localnotes-three.vercel.app/',
+            'https://localnotes-three.vercel.app/ru/',
+            'https://localnotes-three.vercel.app/ua/',
+            'https://localnotes-three.vercel.app/pl/',
+            'https://localnotes-three.vercel.app/cs/',
+            'https://localnotes-three.vercel.app/sk/',
+            'https://localnotes-three.vercel.app/bg/',
+            'https://localnotes-three.vercel.app/hr/',
+            'https://localnotes-three.vercel.app/sr/',
+            'https://localnotes-three.vercel.app/bs/',
+            'https://localnotes-three.vercel.app/mk/',
+            'https://localnotes-three.vercel.app/sl/'
+        ];
+        
+        // Submit to Bing IndexNow
+        function submitToIndexNow() {
+            const indexNowEndpoint = 'https://api.indexnow.org/indexnow';
+            const keyLocation = 'https://localnotes-three.vercel.app/indexnow.txt';
+            
+            indexNowUrls.forEach(url => {
+                fetch(indexNowEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        host: 'localnotes-three.vercel.app',
+                        key: 'your-indexnow-key',
+                        keyLocation: keyLocation,
+                        urlList: [url]
+                    })
+                }).catch(e => console.log('IndexNow submission:', e));
+            });
+        }
+        
+        // Submit after page load
+        window.addEventListener('load', () => {
+            setTimeout(submitToIndexNow, 1000);
+        });
+    </script>
+</head>
+<body>
+    <h1>Local Notes - Multi-Language Secure Note Taking App</h1>
+    <p>Available in 12 languages with AES-256 encryption:</p>
+    <ul>
+        <li><a href="/">English - Local Notes</a></li>
+        <li><a href="/ru/">Русский - Локальные заметки</a></li>
+        <li><a href="/ua/">Українська - Локальні Нотатки</a></li>
+        <li><a href="/pl/">Polski - Lokalne Notatki</a></li>
+        <li><a href="/cs/">Čeština - Místní poznámky</a></li>
+        <li><a href="/sk/">Slovenčina - Miestne poznámky</a></li>
+        <li><a href="/bg/">Български - Локални бележки</a></li>
+        <li><a href="/hr/">Hrvatski - Lokalne bilješke</a></li>
+        <li><a href="/sr/">Српски - Локалне белешке</a></li>
+        <li><a href="/bs/">Bosanski - Lokalne bilješke</a></li>
+        <li><a href="/mk/">Македонски - Локални белешки</a></li>
+        <li><a href="/sl/">Slovenščina - Lokalni zapiski</a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,65 @@
+# IndexNow URLs for immediate indexing by search engines
+# Updated: 2025-01-22
+# This file helps search engines discover new and updated content instantly
+
+# Main application pages - Highest priority
+https://localnotes-three.vercel.app/
+https://localnotes-three.vercel.app/ru/
+https://localnotes-three.vercel.app/ua/
+https://localnotes-three.vercel.app/pl/
+https://localnotes-three.vercel.app/cs/
+https://localnotes-three.vercel.app/sk/
+https://localnotes-three.vercel.app/bg/
+https://localnotes-three.vercel.app/hr/
+https://localnotes-three.vercel.app/sr/
+https://localnotes-three.vercel.app/bs/
+https://localnotes-three.vercel.app/mk/
+https://localnotes-three.vercel.app/sl/
+
+# Privacy policies - Legal compliance pages
+https://localnotes-three.vercel.app/privacy_policy.html
+https://localnotes-three.vercel.app/ru/privacy_policy.html
+https://localnotes-three.vercel.app/ua/privacy_policy.html
+https://localnotes-three.vercel.app/pl/privacy_policy.html
+https://localnotes-three.vercel.app/cs/privacy_policy.html
+https://localnotes-three.vercel.app/sk/privacy_policy.html
+https://localnotes-three.vercel.app/bg/privacy_policy.html
+https://localnotes-three.vercel.app/hr/privacy_policy.html
+https://localnotes-three.vercel.app/sr/privacy_policy.html
+https://localnotes-three.vercel.app/bs/privacy_policy.html
+https://localnotes-three.vercel.app/mk/privacy_policy.html
+https://localnotes-three.vercel.app/sl/privacy_policy.html
+
+# Usage policies - Terms of service
+https://localnotes-three.vercel.app/usage_policy.html
+https://localnotes-three.vercel.app/ru/usage_policy.html
+https://localnotes-three.vercel.app/ua/usage_policy.html
+https://localnotes-three.vercel.app/pl/usage_policy.html
+https://localnotes-three.vercel.app/cs/usage_policy.html
+https://localnotes-three.vercel.app/sk/usage_policy.html
+https://localnotes-three.vercel.app/bg/usage_policy.html
+https://localnotes-three.vercel.app/hr/usage_policy.html
+https://localnotes-three.vercel.app/sr/usage_policy.html
+https://localnotes-three.vercel.app/bs/usage_policy.html
+https://localnotes-three.vercel.app/mk/usage_policy.html
+https://localnotes-three.vercel.app/sl/usage_policy.html
+
+# Cookie policies - GDPR compliance
+https://localnotes-three.vercel.app/cookie.html
+https://localnotes-three.vercel.app/ru/cookie_policy.html
+https://localnotes-three.vercel.app/ua/cookie_policy.html
+https://localnotes-three.vercel.app/pl/cookie_policy.html
+https://localnotes-three.vercel.app/cs/cookie_policy.html
+https://localnotes-three.vercel.app/sk/cookie_policy.html
+https://localnotes-three.vercel.app/bg/cookie_policy.html
+https://localnotes-three.vercel.app/hr/cookie_policy.html
+https://localnotes-three.vercel.app/sr/cookie_policy.html
+https://localnotes-three.vercel.app/bs/cookie_policy.html
+https://localnotes-three.vercel.app/mk/cookie_policy.html
+https://localnotes-three.vercel.app/sl/cookie_policy.html
+
+# PWA and technical files
+https://localnotes-three.vercel.app/manifest.json
+https://localnotes-three.vercel.app/sw.js
+https://localnotes-three.vercel.app/sitemap.xml
+https://localnotes-three.vercel.app/robots.txt

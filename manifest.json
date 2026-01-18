@@ -1,7 +1,7 @@
 {
-    "name": "Local Notes - Secure Note Taking App v1.0.2",
+    "name": "Local Notes - Secure Note Taking App v1.0.3",
     "short_name": "Local Notes",
-    "description": "Secure local note-taking application with AES-256 encryption, multi-language support (12 languages), offline functionality, and performance optimizations. Create, store, and export notes directly in your browser.",
+    "description": "Professional secure local note-taking application with military-grade AES-256 encryption, multi-language support (12 languages), offline functionality, and performance optimizations. Create, store, and export notes directly in your browser with zero data collection.",
     "theme_color": "#060116",
     "background_color": "#060116",
     "display": "standalone",
@@ -10,33 +10,44 @@
     "start_url": "/",
     "lang": "en",
     "dir": "ltr",
-    "categories": ["productivity", "utilities", "business", "education", "lifestyle"],
-    "keywords": ["notes", "secure", "encryption", "AES-256", "offline", "PWA", "productivity", "privacy", "local storage", "multi-language"],
+    "categories": ["productivity", "utilities", "business", "education", "lifestyle", "security", "privacy"],
+    "keywords": ["notes", "secure", "encryption", "AES-256", "offline", "PWA", "productivity", "privacy", "local storage", "multi-language", "GDPR", "zero-data", "military-grade", "cross-platform"],
     "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
     "screenshots": [
         {
             "src": "/resources/screenshot-desktop.png",
             "sizes": "1280x720",
             "type": "image/png",
-            "form_factor": "wide"
+            "form_factor": "wide",
+            "label": "Desktop view of Local Notes application"
         },
         {
             "src": "/resources/screenshot-mobile.png",
             "sizes": "390x844",
             "type": "image/png",
-            "form_factor": "narrow"
+            "form_factor": "narrow",
+            "label": "Mobile view of Local Notes application"
+        },
+        {
+            "src": "/resources/obl_web.jpg",
+            "sizes": "1200x630",
+            "type": "image/jpeg",
+            "form_factor": "wide",
+            "label": "Local Notes - Secure note-taking with AES-256 encryption"
         }
     ],
     "icons": [
         {
             "src": "/favicon/favicon-16x16.png",
             "sizes": "16x16",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any"
         },
         {
             "src": "/favicon/favicon-32x32.png",
             "sizes": "32x32",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any"
         },
         {
             "src": "/favicon/android-chrome-192x192.png",
@@ -53,19 +64,47 @@
         {
             "src": "/favicon/apple-touch-icon.png",
             "sizes": "180x180",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any"
         }
     ],
     "shortcuts": [
         {
             "name": "Add New Note",
             "short_name": "New Note",
-            "description": "Create a new note quickly",
+            "description": "Create a new secure note quickly",
             "url": "/?action=new",
             "icons": [
                 {
                     "src": "/favicon/android-chrome-192x192.png",
-                    "sizes": "192x192"
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Search Notes",
+            "short_name": "Search",
+            "description": "Search through your encrypted notes",
+            "url": "/?action=search",
+            "icons": [
+                {
+                    "src": "/favicon/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Import Notes",
+            "short_name": "Import",
+            "description": "Import notes from file",
+            "url": "/?action=import",
+            "icons": [
+                {
+                    "src": "/favicon/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
                 }
             ]
         }
@@ -77,5 +116,31 @@
     },
     "launch_handler": {
         "client_mode": "navigate-existing"
-    }
+    },
+    "file_handlers": [
+        {
+            "action": "/",
+            "accept": {
+                "text/plain": [".note", ".txt", ".md"],
+                "text/html": [".html", ".htm"]
+            }
+        }
+    ],
+    "protocol_handlers": [
+        {
+            "protocol": "web+localnotes",
+            "url": "/?protocol=%s"
+        }
+    ],
+    "share_target": {
+        "action": "/",
+        "method": "GET",
+        "params": {
+            "title": "title",
+            "text": "text",
+            "url": "url"
+        }
+    },
+    "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+    "handle_links": "preferred"
 }

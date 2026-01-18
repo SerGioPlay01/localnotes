@@ -3380,35 +3380,69 @@ async function loadNotes() {
 // Функция для обработки медиа-контента перед экспортом
 async function processMediaContent(content) {
     try {
+        // Защита от бесконечных циклов - ограничиваем количество итераций
+        const maxIterations = 1000;
+        let iterationCount = 0;
+        
         // Находим все изображения в контенте
         const imgRegex = /<img[^>]+src="([^"]+)"[^>]*>/gi;
         const images = [];
         let match;
         
-        while ((match = imgRegex.exec(content)) !== null) {
+        while ((match = imgRegex.exec(content)) !== null && iterationCount < maxIterations) {
             images.push(match[1]);
+            iterationCount++;
         }
+        
+        if (iterationCount >= maxIterations) {
+            console.warn('Maximum iterations reached while processing images');
+        }
+        
+        // Сбрасываем счетчик для видео
+        iterationCount = 0;
         
         // Находим все видео в контенте
         const videoRegex = /<video[^>]+src="([^"]+)"[^>]*>/gi;
         const videos = [];
         
-        while ((match = videoRegex.exec(content)) !== null) {
+        while ((match = videoRegex.exec(content)) !== null && iterationCount < maxIterations) {
             videos.push(match[1]);
+            iterationCount++;
         }
+        
+        if (iterationCount >= maxIterations) {
+            console.warn('Maximum iterations reached while processing videos');
+        }
+        
+        // Сбрасываем счетчик для аудио
+        iterationCount = 0;
         
         // Находим все аудио в контенте
         const audioRegex = /<audio[^>]+src="([^"]+)"[^>]*>/gi;
         const audios = [];
         
-        while ((match = audioRegex.exec(content)) !== null) {
+        while ((match = audioRegex.exec(content)) !== null && iterationCount < maxIterations) {
             audios.push(match[1]);
+            iterationCount++;
+        }
+        
+        if (iterationCount >= maxIterations) {
+            console.warn('Maximum iterations reached while processing audio');
         }
         
         let processedContent = content;
         
-        // Обрабатываем изображения
+        // Обрабатываем изображения с защитой от циклических ссылок
+        const processedUrls = new Set();
+        
         for (const imgSrc of images) {
+            // Защита от циклических ссылок
+            if (processedUrls.has(imgSrc)) {
+                console.warn('Circular reference detected for:', imgSrc);
+                continue;
+            }
+            processedUrls.add(imgSrc);
+            
             if (imgSrc.startsWith('data:')) {
                 // Изображение уже в base64, проверяем его валидность
                 if (!isValidBase64Image(imgSrc)) {
@@ -3506,6 +3540,13 @@ function blobToBase64(blob) {
     return new Promise((resolve, reject) => {
         if (!blob || blob.size === 0) {
             reject(new Error('Empty or invalid blob'));
+            return;
+        }
+        
+        // Проверяем размер файла (максимум 50MB)
+        const maxSize = 50 * 1024 * 1024; // 50MB
+        if (blob.size > maxSize) {
+            reject(new Error(`File too large: ${(blob.size / 1024 / 1024).toFixed(2)}MB. Maximum allowed: ${maxSize / 1024 / 1024}MB`));
             return;
         }
         
@@ -3638,6 +3679,40 @@ async function convertBlobUrlsToBase64InElement(element) {
         } catch (error) {
             console.warn('Failed to convert audio blob to base64:', error);
         }
+    }
+}
+
+// Функция для проверки валидности base64 изображения
+function isValidBase64Image(dataUrl) {
+    try {
+        // Проверяем формат data URL
+        if (!dataUrl.startsWith('data:image/')) {
+            return false;
+        }
+        
+        // Извлекаем base64 часть
+        const base64Part = dataUrl.split(',')[1];
+        if (!base64Part) {
+            return false;
+        }
+        
+        // Проверяем, что это валидный base64
+        try {
+            atob(base64Part);
+        } catch (e) {
+            return false;
+        }
+        
+        // Проверяем размер (не должен быть слишком маленьким или слишком большим)
+        const sizeInBytes = (base64Part.length * 3) / 4;
+        if (sizeInBytes < 100 || sizeInBytes > 50 * 1024 * 1024) { // 100 bytes - 50MB
+            return false;
+        }
+        
+        return true;
+    } catch (error) {
+        console.warn('Error validating base64 image:', error);
+        return false;
     }
 }
 
@@ -3842,19 +3917,59 @@ function decompressImportData(compressedString) {
 }
 
 async function exportNote(noteContent, password) {
+    let progressCallback = null;
+    
     try {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const uniqueTag = `<!-- Exported on ${timestamp} -->\n`;
+        // Показываем прогресс
+        if (typeof showProgress === 'function') {
+            progressCallback = showProgress('Подготовка экспорта...', 0);
+        }
         
-        // Обрабатываем медиа-контент перед экспортом
-        const processedContent = await processMediaContent(noteContent);
+        const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+        const uniqueTag = `<!-- Exported on ${timestamp} -->\n`;
+        
+        // Проверяем размер контента
+        if (noteContent.length > 100 * 1024 * 1024) { // 100MB
+            throw new Error('Заметка слишком большая для экспорта. Максимальный размер: 100MB');
+        }
+        
+        if (progressCallback) progressCallback('Обработка изображений...', 20);
+        
+        // Обрабатываем медиа-контент перед экспортом с улучшенной обработкой ошибок
+        let processedContent;
+        try {
+            processedContent = await processMediaContent(noteContent);
+        } catch (mediaError) {
+            console.warn('Ошибка обработки медиа-контента:', mediaError);
+            // Используем оригинальный контент, если обработка медиа не удалась
+            processedContent = noteContent;
+        }
+        
         const contentWithTag = uniqueTag + processedContent;
 
-        // Дополнительная обфускация файла
-        const obfuscatedContent = advancedEncryption.obfuscateFile(contentWithTag);
+        if (progressCallback) progressCallback('Обфускация данных...', 40);
         
-        // Улучшенное шифрование с обфускацией
-        const encrypted = await advancedEncryption.encrypt(obfuscatedContent, password);
+        // Дополнительная обфускация файла с защитой от ошибок
+        let obfuscatedContent;
+        try {
+            obfuscatedContent = advancedEncryption.obfuscateFile(contentWithTag);
+        } catch (obfuscationError) {
+            console.warn('Ошибка обфускации:', obfuscationError);
+            obfuscatedContent = contentWithTag; // Используем необфусцированный контент
+        }
+        
+        if (progressCallback) progressCallback('Шифрование...', 60);
+        
+        // Улучшенное шифрование с обфускацией и обработкой ошибок
+        let encrypted;
+        try {
+            encrypted = await advancedEncryption.encrypt(obfuscatedContent, password);
+        } catch (encryptionError) {
+            console.error('Ошибка шифрования:', encryptionError);
+            throw new Error(`Ошибка шифрования: ${encryptionError.message}`);
+        }
+        
+        if (progressCallback) progressCallback('Создание метаданных...', 80);
         
         // Создаем метаданные для экспорта
         const exportMetadata = {
@@ -3862,7 +3977,7 @@ async function exportNote(noteContent, password) {
             timestamp: timestamp,
             hasMedia: processedContent !== noteContent,
             encryption: "AES-GCM-256",
-            compression: "gzip",
+            compression: "none",
             mediaCount: {
                 images: (processedContent.match(/<img[^>]+>/gi) || []).length,
                 videos: (processedContent.match(/<video[^>]+>/gi) || []).length,
@@ -3880,18 +3995,22 @@ async function exportNote(noteContent, password) {
         
         // Сжимаем данные если они большие
         let finalData;
-        if (JSON.stringify(exportData).length > 1024 * 1024) { // Больше 1MB
+        const dataString = JSON.stringify(exportData);
+        if (dataString.length > 1024 * 1024) { // Больше 1MB
             try {
+                if (progressCallback) progressCallback('Сжатие данных...', 90);
                 // Используем простую компрессию через замену повторяющихся строк
                 finalData = compressExportData(exportData);
                 exportData.metadata.compression = "custom";
             } catch (compressionError) {
-                console.warn('Compression failed, using uncompressed data:', compressionError);
-                finalData = JSON.stringify(exportData);
+                console.warn('Сжатие не удалось, используем несжатые данные:', compressionError);
+                finalData = dataString;
             }
         } else {
-            finalData = JSON.stringify(exportData);
+            finalData = dataString;
         }
+        
+        if (progressCallback) progressCallback('Сохранение файла...', 95);
         
         // Всегда используем расширение .note для зашифрованных файлов
         const filename = `encrypted_note_${timestamp}.note`;
@@ -3903,18 +4022,55 @@ async function exportNote(noteContent, password) {
         const blob = new Blob([finalData], { type: mimeType });
         downloadFile(blob, filename, mimeType);
         
-        // Показываем уведомление об успехе
-        showCustomAlert(
-            t("success"),
-            t("noteExported"),
-            "success"
-        );
+        if (progressCallback) progressCallback('Экспорт завершен!', 100);
+        
+        // Показываем успешное сообщение
+        if (typeof showNotification === 'function') {
+            showNotification('Заметка успешно экспортирована!', 'success');
+        }
+        
+        console.log('Экспорт завершен успешно:', {
+            filename,
+            originalSize: noteContent.length,
+            processedSize: processedContent.length,
+            encryptedSize: encrypted.length,
+            finalSize: finalData.length,
+            hasMedia: exportMetadata.hasMedia,
+            mediaCount: exportMetadata.mediaCount
+        });
+        
     } catch (error) {
-        showCustomAlert(
-            t("error"),
-            t("errorEncryption", { message: error.message }),
-            "error"
-        );
+        console.error('Ошибка экспорта заметки:', error);
+        
+        if (progressCallback) {
+            progressCallback('Ошибка экспорта', 0);
+        }
+        
+        // Показываем пользователю понятное сообщение об ошибке
+        let userMessage = 'Произошла ошибка при экспорте заметки.';
+        
+        if (error.message.includes('Maximum call stack size exceeded')) {
+            userMessage = 'Заметка слишком большая или содержит слишком много изображений. Попробуйте уменьшить размер изображений или разделить заметку на части.';
+        } else if (error.message.includes('Encryption failed')) {
+            userMessage = 'Ошибка шифрования. Проверьте пароль и попробуйте снова.';
+        } else if (error.message.includes('File too large')) {
+            userMessage = 'Один или несколько файлов слишком большие. Максимальный размер файла: 50MB.';
+        } else if (error.message.includes('quota')) {
+            userMessage = 'Недостаточно места для сохранения файла.';
+        }
+        
+        if (typeof showNotification === 'function') {
+            showNotification(userMessage, 'error');
+        } else {
+            alert(userMessage);
+        }
+        
+        throw error;
+    } finally {
+        // Скрываем прогресс
+        if (progressCallback && typeof hideProgress === 'function') {
+            setTimeout(() => hideProgress(), 1000);
+        }
     }
 }
 
@@ -6899,6 +7055,32 @@ class AdvancedEncryption {
         return array;
     }
 
+    // Безопасная конвертация ArrayBuffer в base64 (избегает переполнения стека)
+    arrayBufferToBase64(buffer) {
+        const bytes = new Uint8Array(buffer);
+        const chunkSize = 8192; // Обрабатываем по 8KB за раз
+        let binary = '';
+        
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+            const chunk = bytes.slice(i, i + chunkSize);
+            binary += String.fromCharCode.apply(null, chunk);
+        }
+        
+        return btoa(binary);
+    }
+
+    // Безопасная конвертация base64 в ArrayBuffer (избегает переполнения стека)
+    base64ToArrayBuffer(base64) {
+        const binaryString = atob(base64);
+        const bytes = new Uint8Array(binaryString.length);
+        
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        
+        return bytes;
+    }
+
     // Проверка блокировки
     isLocked(identifier) {
         const attempt = this.attempts.get(identifier);
@@ -7146,7 +7328,7 @@ class AdvancedEncryption {
             this.resetAttempts(identifier);
             
             // Кодируем в base64 (исправлено для больших массивов)
-            return btoa(String.fromCharCode.apply(null, obfuscated));
+            return this.arrayBufferToBase64(obfuscated);
         } catch (error) {
             throw new Error('Encryption failed: ' + error.message);
         }
@@ -7164,11 +7346,7 @@ class AdvancedEncryption {
             // Сначала пробуем новый алгоритм
             try {
                 // Декодируем из base64 (исправлено для больших массивов)
-                const binaryString = atob(encryptedData);
-                const obfuscated = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    obfuscated[i] = binaryString.charCodeAt(i);
-                }
+                const obfuscated = this.base64ToArrayBuffer(encryptedData);
                 
                 // Деобфускация
                 const combined = this.deobfuscateData(obfuscated);
@@ -7216,11 +7394,7 @@ class AdvancedEncryption {
             let encryptedBuffer;
             if (typeof encryptedData === 'string') {
                 // Если это строка, декодируем из base64 (исправлено для больших массивов)
-                const binaryString = atob(encryptedData);
-                encryptedBuffer = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    encryptedBuffer[i] = binaryString.charCodeAt(i);
-                }
+                encryptedBuffer = this.base64ToArrayBuffer(encryptedData);
             } else {
                 // Если это ArrayBuffer, используем как есть
                 encryptedBuffer = new Uint8Array(encryptedData);
@@ -7298,44 +7472,79 @@ class AdvancedEncryption {
 
     // Удаление обфускации файла
     deobfuscateFile(obfuscatedContent) {
-        // Улучшенное удаление ложных данных
-        const lines = obfuscatedContent.split('\n');
-        const realContent = [];
-        let inRealContent = false;
-        let foundStartTag = false;
-        
-        // Список фраз Lorem ipsum для фильтрации
-        const loremPhrases = [
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            'Ut enim ad minim veniam, quis nostrud exercitation ullamco.',
-            'Duis aute irure dolor in reprehenderit in voluptate velit esse.',
-            'Excepteur sint occaecat cupidatat non proident, sunt in culpa.'
-        ];
-        
-        for (const line of lines) {
-            // Проверяем, является ли строка Lorem ipsum
-            const isLoremIpsum = loremPhrases.some(phrase => line.trim() === phrase);
-            
-            // Проверяем, является ли строка fake заголовком
-            const isFakeHeader = line.includes('<!-- This is a fake') || 
-                                line.includes('# This is a fake') || 
-                                line.includes('/* Fake license header */') ||
-                                line.includes('<!-- Fake XML declaration -->');
-            
-            // Находим начало реального контента
-            if (line.includes('<!-- Exported on') || line.includes('<!DOCTYPE html>') || line.includes('<html')) {
-                inRealContent = true;
-                foundStartTag = true;
+        // Улучшенное удаление ложных данных с защитой от больших файлов
+        try {
+            // Проверяем размер контента
+            if (obfuscatedContent.length > 100 * 1024 * 1024) { // 100MB
+                console.warn('Content too large for deobfuscation, processing in chunks');
+                return this.deobfuscateFileChunked(obfuscatedContent);
             }
             
-            // Добавляем строку только если это реальный контент и не Lorem ipsum
-            if (inRealContent && !isLoremIpsum && !isFakeHeader && !line.includes('fake')) {
-                realContent.push(line);
+            const lines = obfuscatedContent.split('\n');
+            const realContent = [];
+            let inRealContent = false;
+            let foundStartTag = false;
+            
+            // Список фраз Lorem ipsum для фильтрации
+            const loremPhrases = [
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                'Ut enim ad minim veniam, quis nostrud exercitation ullamco.',
+                'Duis aute irure dolor in reprehenderit in voluptate velit esse.',
+                'Excepteur sint occaecat cupidatat non proident, sunt in culpa.'
+            ];
+            
+            for (const line of lines) {
+                // Проверяем, является ли строка Lorem ipsum
+                const isLoremIpsum = loremPhrases.some(phrase => line.trim() === phrase);
+                
+                // Проверяем, является ли строка fake заголовком
+                const isFakeHeader = line.includes('<!-- This is a fake') || 
+                                    line.includes('# This is a fake') || 
+                                    line.includes('/* Fake license header */') ||
+                                    line.includes('<!-- Fake XML declaration -->');
+                
+                // Находим начало реального контента
+                if (line.includes('<!-- Exported on') || line.includes('<!DOCTYPE html>') || line.includes('<html')) {
+                    inRealContent = true;
+                    foundStartTag = true;
+                }
+                
+                // Добавляем строку только если это реальный контент и не Lorem ipsum
+                if (inRealContent && !isLoremIpsum && !isFakeHeader && !line.includes('fake')) {
+                    realContent.push(line);
+                }
             }
+            
+            return realContent.join('\n');
+        } catch (error) {
+            console.error('Error in deobfuscateFile:', error);
+            return obfuscatedContent; // Возвращаем оригинальный контент при ошибке
+        }
+    }
+
+    // Деобфускация больших файлов по частям
+    deobfuscateFileChunked(obfuscatedContent) {
+        const chunkSize = 1024 * 1024; // 1MB chunks
+        const chunks = [];
+        
+        for (let i = 0; i < obfuscatedContent.length; i += chunkSize) {
+            const chunk = obfuscatedContent.slice(i, i + chunkSize);
+            chunks.push(chunk);
         }
         
-        return realContent.join('\n');
+        let result = '';
+        for (const chunk of chunks) {
+            // Простая фильтрация для больших файлов
+            const filtered = chunk
+                .replace(/Lorem ipsum dolor sit amet, consectetur adipiscing elit\./g, '')
+                .replace(/Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua\./g, '')
+                .replace(/<!-- This is a fake[^>]*-->/g, '')
+                .replace(/\/\* Fake license header \*\//g, '');
+            result += filtered;
+        }
+        
+        return result;
     }
 
     // Проверка типа медиа файла

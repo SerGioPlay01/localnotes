@@ -1,7 +1,8 @@
 # Robots.txt for Local Notes - Secure Note Taking App
-# Optimized for all major search engines
+# Optimized for instant indexing by all major search engines
+# Updated: 2025-01-22
 
-# Global rules for all bots
+# Global rules for all bots - Maximum crawling efficiency
 User-agent: *
 Allow: /
 Allow: /ru/
@@ -18,48 +19,57 @@ Allow: /sl/
 Allow: /cookie.html
 Allow: /privacy_policy.html
 Allow: /usage_policy.html
-Allow: /resources/obl_web.jpg
-Allow: /favicon/favicon.ico
-Allow: /favicon/apple-touch-icon.png
-Allow: /favicon/android-chrome-192x192.png
-Allow: /favicon/android-chrome-512x512.png
+Allow: /resources/obl_web*.jpg
+Allow: /favicon/
+Allow: /manifest.json
+Allow: /sw.js
+Crawl-delay: 0
 
-# Disallow technical directories
+# Disallow technical directories to focus crawl budget
 Disallow: /css/
 Disallow: /fonts/
 Disallow: /js/
 Disallow: /editor_news/
 Disallow: /lottiesnimstion/
 Disallow: /json/
-Disallow: /yandex_0c0ab9bc96dcb723.html
-Disallow: /google498025cb8703b0b0.html
-Disallow: /sccc.png
+Disallow: /.vscode/
+Disallow: /cookies_banner_universal/
 
-# Allow manifest files for PWA
-Allow: /manifest.json
-Allow: /sw.js
+# Allow verification files
+Allow: /yandex_0b28e38b8ad365b2.html
+Allow: /google498025cb8703b0b0.html
+Allow: /indexnow.txt
 
-# Specific rules for Google
+# Specific rules for Google - Highest priority
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 1
+Crawl-delay: 0
+Request-rate: 10/1m
 
-# Specific rules for Bing
+# Specific rules for Bing - High priority
 User-agent: Bingbot
 Allow: /
-Crawl-delay: 1
+Crawl-delay: 0
+Request-rate: 8/1m
 
-# Specific rules for Yandex
+# Specific rules for Yandex - High priority for Russian content
 User-agent: YandexBot
 Allow: /
-Crawl-delay: 2
+Crawl-delay: 0
+Request-rate: 8/1m
 
-# Specific rules for Baidu
+# Specific rules for Baidu - For Chinese market
 User-agent: Baiduspider
 Allow: /
-Crawl-delay: 2
+Crawl-delay: 1
+Request-rate: 5/1m
 
-# Block bad bots
+# Specific rules for DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 0
+
+# Block resource-heavy bots to preserve server resources
 User-agent: AhrefsBot
 Disallow: /
 
@@ -69,9 +79,16 @@ Disallow: /
 User-agent: DotBot
 Disallow: /
 
-# Site information
-Host: https://localnotes-three.vercel.app/
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MegaIndex
+Disallow: /
+
+# Site information for search engines
+Host: https://localnotes-three.vercel.app
 Sitemap: https://localnotes-three.vercel.app/sitemap.xml
 
-# Additional sitemaps for different languages
-Sitemap: https://localnotes-three.vercel.app/sitemap.xml
+# IndexNow for instant indexing
+# Microsoft Bing IndexNow
+# https://www.bing.com/indexnow?url=https://localnotes-three.vercel.app/&key=your-key

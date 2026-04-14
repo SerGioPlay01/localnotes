@@ -13,7 +13,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 
 /* ===== CSS ПЕРЕМЕННЫЕ ===== */
 :root {
-    --primary-color: #aefc6e;
+    --primary-color: #28a745;
     --secondary-color: #f9f8fd;
     --accent-color: #007bff;
     --text-color: #ffffff;
@@ -33,7 +33,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     --button-text: #ffffff;
     --button-hover: #272727;
     --modal-bg: #1a1a1a;
-    --modal-text: #ffffff;
+    --primary-color: #ffffff;
     --modal-border: #272727;
     --header-bg: #080808;
     --footer-bg: #0f0f0f;
@@ -56,7 +56,8 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 
 /* Темная тема */
 [data-theme="dark"] {
-    --primary-color: #aefc6e;
+    --note-text: #ffffff;
+    --primary-color: #28a745;
     --primary-hover: #8dd85a;
     --text-color: #ffffff;
     --text-secondary: #b3b3b3;
@@ -76,6 +77,9 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 
 /* Светлая тема */
 [data-theme="light"] {
+    --button-text: #111111;
+    --header-bg: #fff;
+    --note-text: #1a1a1a;
     --primary-color: #28a745;
     --primary-hover: #218838;
     --text-color: #212529;
@@ -99,8 +103,8 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 /* ===== СКРОЛЛБАРЫ ===== */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 10px; border: 2px solid #252525; }
-* { scrollbar-width: thin; scrollbar-color: #cfcfcf #252525; }
+::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 10px; border: 2px solid var(--primary-color); }
+* { scrollbar-width: thin; scrollbar-color: #cfcfcf var(--primary-color); }
 
 /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
 * { margin: 0; padding: 0; -webkit-tap-highlight-color: #0000; }
@@ -176,9 +180,9 @@ body {
 }
 #notesContainer.full-width-view { display: flex; flex-direction: column; gap: 20px; }
 .note {
-    background: var(--note-bg);
-    border: 1px solid var(--note-border);
-    border-radius: 8px;
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 0px;
     height: 450px;
     display: flex;
     flex-direction: column;
@@ -662,6 +666,33 @@ body {
 }
 
 /* ===== СВЕТЛАЯ ТЕМА ===== */
+[data-theme="light"] .info-app {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-color: #dee2e6;
+}
+
+[data-theme="light"] .noteContent, .btn {
+    background: #fcfcfc;
+    border-color: #dee2e6;
+    color: var(--note-text);
+}
+
+[data-theme="dark"] .noteContent {
+    background: #1a1a1a;
+    border-color: #dee2e6;
+    color: var(--note-text);
+}
+
+[data-theme="light"] #importButton {
+    color: var(--button-text);
+    border-color: var(--primary-color);
+}
+
+[data-theme="light"] #importButton:hover {
+    color: var(--button-hover);
+}
+
+
 [data-theme="light"] .welcome-message {
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border-color: #dee2e6;
@@ -1130,12 +1161,16 @@ footer a:hover { color: var(--primary-color); }
 
 [data-theme="light"] #addNoteButton {
     background: #28a745 !important;
+    border-color: var(--primary-color);
     color: #fff !important;
 }
 
 [data-theme="light"] #clearAllButton {
-    background: rgba(220, 53, 69, 0.1) !important;
+    background: rgba(220, 53, 69, 0.15) !important;
+       border-color: #ff0000;
+        color: #dc3545 !important;
 }
+
 
 /* ===== ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ ===== */
 
@@ -1315,7 +1350,7 @@ footer a:hover { color: var(--primary-color); }
     border-radius: 20px 20px 0 0;
 }
 .modal-content-inner { padding: 28px 30px; }
-.modal-content-inner h3 { margin: 0 0 16px; font-size: 1.5rem; color: var(--modal-text); }
+.modal-content-inner h3 { margin: 0 0 16px; font-size: 1.5rem; color: var(--primary-color); }
 .modal-buttons {
     display: flex;
     gap: 12px;
@@ -1358,7 +1393,7 @@ footer a:hover { color: var(--primary-color); }
     transition: all 0.2s;
 }
 .modal-buttons-container button:hover { background: var(--button-hover); transform: translateY(-1px); }
-.modal-buttons-container button.save { background: var(--primary-color); color: #000; border-color: var(--primary-color); }
+.modal-buttons-container button.save { background: var(--primary-color); color: #ffffff; border-color: var(--primary-color); }
 .modal-buttons-container button.cancel { background: #dc3545; color: white; border-color: #dc3545; }
 
 /* ===== ЭКСПОРТ МОДАЛЬНОЕ ОКНО ===== */
@@ -1385,7 +1420,7 @@ footer a:hover { color: var(--primary-color); }
     text-align: center;
 }
 .export-modal-content h3 {
-    color: var(--modal-text);
+    color: var(--primary-color);
     margin-bottom: 25px;
     font-size: 1.5em;
     font-family: 'Intro', sans-serif;
@@ -1414,7 +1449,7 @@ footer a:hover { color: var(--primary-color); }
     transform: translateY(-2px);
 }
 .export-icon { font-size: 28px; width: 40px; text-align: center; }
-.export-text { font-weight: 600; font-size: 16px; flex: 1; color: var(--modal-text); }
+.export-text { font-weight: 600; font-size: 16px; flex: 1; color: var(--primary-color); }
 .export-desc { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
 .export-close {
     width: 100%;
@@ -1475,7 +1510,7 @@ footer a:hover { color: var(--primary-color); }
     box-shadow: 0 8px 32px var(--shadow-color);
 }
 .theme-modal-content h3 {
-    color: var(--modal-text);
+    color: var(--primary-color);
     margin-bottom: 20px;
     font-size: 1.3rem;
 }
@@ -1503,7 +1538,7 @@ footer a:hover { color: var(--primary-color); }
 .theme-option.active .theme-name,
 .theme-option.active .theme-description { color: #000; }
 .theme-option .theme-icon { font-size: 24px; width: 36px; text-align: center; }
-.theme-option .theme-name { font-weight: 600; flex: 1; text-align: left; color: var(--modal-text); }
+.theme-option .theme-name { font-weight: 600; flex: 1; text-align: left; color: var(--primary-color); }
 .theme-option .theme-description { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
 
 /* ===== ПРОГРЕСС-БАР ===== */
@@ -1551,7 +1586,7 @@ footer a:hover { color: var(--primary-color); }
     line-height: 1.7 !important;
     padding: 20px !important;
     background: var(--modal-bg) !important;
-    color: var(--modal-text) !important;
+    color: var(--primary-color) !important;
 }
 .tox .tox-edit-area iframe body h1,
 .tox .tox-edit-area iframe body h2,
@@ -2301,7 +2336,7 @@ footer a:hover { color: var(--primary-color); }
 }
 
 .import-modal-content h3 {
-    color: var(--modal-text);
+    color: var(--primary-color);
     margin-bottom: 20px;
     font-size: 1.5em;
     font-family: 'Intro', sans-serif;
@@ -2343,7 +2378,7 @@ footer a:hover { color: var(--primary-color); }
     font-weight: 600;
     font-size: 16px;
     flex: 1;
-    color: var(--modal-text);
+    color: var(--primary-color);
 }
 
 .import-desc {
@@ -2643,7 +2678,7 @@ footer a:hover { color: var(--primary-color); }
     margin: 0 0 16px 0;
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--modal-text);
+    color: var(--primary-color);
     font-family: 'Intro', sans-serif;
     display: flex;
     align-items: center;
@@ -2659,7 +2694,7 @@ footer a:hover { color: var(--primary-color); }
 .modal-content-error p {
     margin: 0 0 20px 0;
     line-height: 1.6;
-    color: var(--modal-text);
+    color: var(--primary-color);
     font-size: 14px;
 }
 
@@ -3093,7 +3128,7 @@ footer a:hover { color: var(--primary-color); }
     margin: 0 0 16px 0;
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--modal-text);
+    color: var(--primary-color);
     font-family: 'Intro', sans-serif;
     display: flex;
     align-items: center;
@@ -3109,7 +3144,7 @@ footer a:hover { color: var(--primary-color); }
 .modal-content-error p {
     margin: 0 0 20px 0;
     line-height: 1.6;
-    color: var(--modal-text);
+    color: var(--primary-color);
     font-size: 14px;
 }
 

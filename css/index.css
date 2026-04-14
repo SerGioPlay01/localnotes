@@ -290,6 +290,12 @@ body {
 }
 #toggleViewButton:hover::before { left: 100%; }
 
+@media (max-width: 700px) {
+    .btn_view_div {
+        display: none;
+    }
+}
+
 /* ===== СТИЛИ ДЛЯ ПРИВЕТСТВЕННОГО СООБЩЕНИЯ (WELCOME MESSAGE) ===== */
 
 .welcome-message {

@@ -756,6 +756,7 @@ footer {
     gap: 10px;
     color: var(--footer-text);
     border-radius: 20px;
+    margin-bottom: 8%;
 }
 footer a {
     text-decoration: none;

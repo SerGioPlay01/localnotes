@@ -287,6 +287,465 @@ body {
 }
 #toggleViewButton:hover::before { left: 100%; }
 
+/* ===== СТИЛИ ДЛЯ ПРИВЕТСТВЕННОГО СООБЩЕНИЯ (WELCOME MESSAGE) ===== */
+
+.welcome-message {
+    max-width: 900px;
+    margin: 30px auto;
+    background: var(--gradient-card);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-medium);
+    color: var(--note-text);
+    font-family: 'Golos Text', sans-serif;
+    animation: welcomeFadeIn 0.6s ease-out;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Декоративная полоска слева */
+.welcome-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--gradient-primary);
+    transition: width 0.3s ease;
+}
+
+.welcome-message:hover::before {
+    width: 6px;
+}
+
+/* Анимация появления */
+@keyframes welcomeFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Контент */
+.welcome-content {
+    position: relative;
+    z-index: 1;
+    padding: 40px 35px;
+}
+
+/* ===== ХЕДЕР ПРИВЕТСТВИЯ ===== */
+.welcome-header {
+    text-align: center;
+    margin-bottom: 35px;
+    animation: welcomeTextFadeIn 0.8s ease-out 0.2s both;
+}
+
+@keyframes welcomeTextFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.welcome-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: -0.02em;
+}
+
+.welcome-subtitle {
+    font-size: 1.2rem;
+    margin: 0;
+    opacity: 0.85;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+/* ===== СЕКЦИИ ===== */
+.welcome-section {
+    margin-bottom: 28px;
+    background: var(--bg-secondary);
+    padding: 22px 25px;
+    border-radius: var(--border-radius-medium);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    animation: welcomeTextFadeIn 0.8s ease-out both;
+}
+
+.welcome-section:nth-child(2) { animation-delay: 0.3s; }
+.welcome-section:nth-child(3) { animation-delay: 0.5s; }
+.welcome-section:nth-child(4) { animation-delay: 0.7s; }
+.welcome-section:nth-child(5) { animation-delay: 0.9s; }
+.welcome-section:nth-child(6) { animation-delay: 1.1s; }
+.welcome-section:nth-child(7) { animation-delay: 1.3s; }
+
+.welcome-section:hover {
+    border-color: var(--primary-color);
+    transform: translateX(5px);
+    box-shadow: var(--shadow-soft);
+}
+
+.welcome-section-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.welcome-section-title::before {
+    content: '✦';
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+/* ===== ТЕКСТ В СЕКЦИЯХ ===== */
+.welcome-description,
+.welcome-developer-info,
+.welcome-get-started {
+    font-size: 1rem;
+    line-height: 1.65;
+    margin: 0;
+    color: var(--text-color);
+}
+
+/* ===== СПИСКИ ===== */
+.welcome-features,
+.welcome-goals {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 8px;
+}
+
+.welcome-features li,
+.welcome-goals li {
+    padding: 8px 0 8px 28px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    position: relative;
+    transition: transform 0.2s ease;
+}
+
+.welcome-features li:hover,
+.welcome-goals li:hover {
+    transform: translateX(3px);
+}
+
+.welcome-features li::before,
+.welcome-goals li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* ===== КНОПКА ДЕЙСТВИЯ ===== */
+.welcome-actions {
+    text-align: center;
+    margin-top: 35px;
+    animation: welcomeTextFadeIn 0.8s ease-out 1.5s both;
+}
+
+.welcome-dismiss-btn {
+    background: var(--gradient-primary);
+    color: #000;
+    border: none;
+    padding: 14px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Golos Text', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-dismiss-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.welcome-dismiss-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.welcome-dismiss-btn:hover::before {
+    left: 100%;
+}
+
+.welcome-dismiss-btn:active {
+    transform: translateY(0);
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 1024px) {
+    .welcome-message {
+        max-width: 95%;
+        margin: 20px auto;
+    }
+    
+    .welcome-content {
+        padding: 30px 25px;
+    }
+    
+    .welcome-title {
+        font-size: 2.2rem;
+    }
+    
+    .welcome-features,
+    .welcome-goals {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .welcome-message {
+        margin: 15px;
+        border-radius: var(--border-radius-medium);
+    }
+    
+    .welcome-content {
+        padding: 25px 20px;
+    }
+    
+    .welcome-title {
+        font-size: 1.8rem;
+    }
+    
+    .welcome-subtitle {
+        font-size: 1rem;
+    }
+    
+    .welcome-section {
+        padding: 18px 20px;
+        margin-bottom: 20px;
+    }
+    
+    .welcome-section-title {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+    
+    .welcome-section-title::before {
+        font-size: 1rem;
+    }
+    
+    .welcome-description,
+    .welcome-developer-info,
+    .welcome-get-started {
+        font-size: 0.9rem;
+        line-height: 1.55;
+    }
+    
+    .welcome-features li,
+    .welcome-goals li {
+        font-size: 0.85rem;
+        padding: 6px 0 6px 24px;
+    }
+    
+    .welcome-features li::before,
+    .welcome-goals li::before {
+        font-size: 0.9rem;
+    }
+    
+    .welcome-dismiss-btn {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-message {
+        margin: 10px;
+        border-radius: var(--border-radius-small);
+    }
+    
+    .welcome-content {
+        padding: 20px 15px;
+    }
+    
+    .welcome-title {
+        font-size: 1.5rem;
+    }
+    
+    .welcome-subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .welcome-section {
+        padding: 14px 16px;
+        margin-bottom: 16px;
+    }
+    
+    .welcome-section-title {
+        font-size: 1.1rem;
+    }
+    
+    .welcome-description,
+    .welcome-developer-info,
+    .welcome-get-started {
+        font-size: 0.85rem;
+    }
+    
+    .welcome-features li,
+    .welcome-goals li {
+        font-size: 0.8rem;
+        padding: 5px 0 5px 22px;
+    }
+    
+    .welcome-dismiss-btn {
+        padding: 10px 20px;
+        font-size: 0.85rem;
+        width: 100%;
+    }
+}
+
+/* ===== ТЕМНАЯ ТЕМА ===== */
+[data-theme="dark"] .welcome-message {
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+    border-color: #272727;
+}
+
+[data-theme="dark"] .welcome-section {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: #2a2a2a;
+}
+
+[data-theme="dark"] .welcome-section:hover {
+    border-color: #aefc6e;
+}
+
+/* ===== СВЕТЛАЯ ТЕМА ===== */
+[data-theme="light"] .welcome-message {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-color: #dee2e6;
+}
+
+[data-theme="light"] .welcome-section {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: #e9ecef;
+}
+
+[data-theme="light"] .welcome-section:hover {
+    border-color: #28a745;
+}
+
+/* ===== АНИМАЦИЯ ПРИ ЗАКРЫТИИ ===== */
+.welcome-message.closing {
+    animation: welcomeFadeOut 0.4s ease forwards;
+}
+
+@keyframes welcomeFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-30px);
+        visibility: hidden;
+    }
+}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЕ ЭФФЕКТЫ ===== */
+
+/* Эффект градиента для заголовка */
+.welcome-title {
+    background-size: 200% auto;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Иконки для секций (опционально) */
+.welcome-section[data-icon] .welcome-section-title::before {
+    content: attr(data-icon);
+}
+
+/* Стиль для ссылок внутри приветствия */
+.welcome-content a {
+    color: var(--primary-color);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.welcome-content a:hover {
+    border-bottom-color: var(--primary-color);
+}
+
+/* Подсветка важных элементов */
+.welcome-features li:first-child,
+.welcome-goals li:first-child {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+/* Стиль для выделения текста */
+.welcome-content ::selection {
+    background: var(--primary-color);
+    color: #000;
+}
+
+/* Для reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .welcome-message,
+    .welcome-header,
+    .welcome-section,
+    .welcome-dismiss-btn {
+        animation: none;
+    }
+    
+    .welcome-message:hover::before {
+        width: 4px;
+    }
+    
+    .welcome-section:hover {
+        transform: none;
+    }
+}
+
 /* ===== ФУТЕР ===== */
 footer {
     background-color: var(--header-bg);

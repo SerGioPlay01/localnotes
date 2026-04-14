@@ -1348,7 +1348,7 @@ footer a:hover { color: var(--primary-color); }
     background: var(--gradient-primary);
     border-radius: 20px 20px 0 0;
 }
-.modal-content-inner { padding: 28px 30px; }
+.modal-content-inner { padding: 28px 30px; color: var(--primary-color); }
 .modal-content-inner h3 { margin: 0 0 16px; font-size: 1.5rem; color: var(--primary-color); }
 .modal-buttons {
     display: flex;

@@ -3,93 +3,92 @@
 class ModernPreloader {
     constructor() {
         this.preloader = null;
-        this.particles = [];
-        // Инициализируем сразу без задержки
+        this.lottieAnimation = null;
+        this.progressInterval = null;
+        this.textInterval = null;
+        this.isHidden = false;
         this.init();
     }
 
     init() {
         this.createPreloaderHTML();
         this.startLoading();
+        this.createParticles();
     }
 
     createPreloaderHTML() {
+        if (document.getElementById('modernPreloader')) {
+            console.warn('Preloader already exists');
+            return;
+        }
+
         const preloaderHTML = `
-            <style>
-                @keyframes progressComplete {
-                    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-                    50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(76, 175, 80, 0.3); }
-                    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-                }
-                @keyframes progressPulse {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0.8; }
-                }
-            </style>
-            <div class="preloader" id="modernPreloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background: #0a0a0a; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.3s ease;">
-                <div class="preloader-content" style="text-align: center; color: #ffffff;">
-                    <div class="lottie-container" id="lottieContainer" style="width: 120px; height: 120px; margin: 0 auto 20px;">
-                        <!-- Lottie animation will be loaded here -->
-                    </div>
-                    <div class="loading-text" style="font-size: 18px; margin-bottom: 20px;">
+            <div class="preloader" id="modernPreloader">
+                <div class="preloader-content">
+                    <div class="lottie-container" id="lottieContainer"></div>
+                    <div class="loading-text">
                         <span id="preloaderText">Loading<span class="loading-dots">...</span></span>
                     </div>
-                    <div class="progress-container" style="width: 200px; height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; margin: 0 auto; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);">
-                        <div class="progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #4CAF50, #66bb6a, #81c784); border-radius: 3px; transition: width 0.3s ease; animation: progressPulse 2s ease-in-out infinite; box-shadow: 0 1px 3px rgba(76, 175, 80, 0.3); display: block; visibility: visible; opacity: 1;"></div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="preloaderProgressBar"></div>
                     </div>
-                    <div class="progress-percentage" style="font-size: 14px; margin-top: 8px; font-weight: 500; color: #66bb6a; text-align: center; transition: transform 0.1s ease;">
+                    <div class="progress-percentage">
                         <span id="progressText">0%</span>
                     </div>
+                    <div class="loading-status" id="loadingStatus">
+                        <span>Initializing...</span>
+                    </div>
                 </div>
+                <div class="preloader-particles" id="preloaderParticles"></div>
             </div>
         `;
 
         document.body.insertAdjacentHTML('afterbegin', preloaderHTML);
         this.preloader = document.getElementById('modernPreloader');
         
-        
-        // Загружаем Lottie анимацию
         this.loadLottieAnimation();
-        
-        // Обновляем текст прелоадера в зависимости от языка
         this.updatePreloaderText();
     }
 
-    loadLottieAnimation() {
+    createParticles() {
+        const particlesContainer = document.getElementById('preloaderParticles');
+        if (!particlesContainer) return;
         
-        // Проверяем, доступна ли библиотека Lottie
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 4 + 's';
+            particle.style.animationDuration = 2 + Math.random() * 3 + 's';
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    loadLottieAnimation() {
+        const lottieContainer = document.getElementById('lottieContainer');
+        if (!lottieContainer) return;
+        
+        // Уменьшаем размер контейнера Lottie
+        lottieContainer.style.width = '180px';
+        lottieContainer.style.height = '180px';
+        
         if (typeof lottie === 'undefined') {
             console.warn('Preloader: Lottie library not loaded, using fallback');
             this.showFallbackAnimation();
             return;
         }
         
-        const lottieContainer = document.getElementById('lottieContainer');
-        if (!lottieContainer) {
-            console.error('Preloader: Lottie container not found');
-            return;
-        }
-        
-        // Определяем путь к анимации в зависимости от текущей страницы
         const isLanguagePage = window.location.pathname.match(/^\/([a-z]{2})\//);
         const animationPath = isLanguagePage ? '../lottiesnimstion/password_security.json' : '/lottiesnimstion/password_security.json';
         
-        
         try {
-            // Загружаем и запускаем анимацию
             this.lottieAnimation = lottie.loadAnimation({
                 container: lottieContainer,
                 renderer: 'svg',
                 loop: true,
                 autoplay: true,
                 path: animationPath
-            });
-            
-            // Обработчики событий анимации
-            this.lottieAnimation.addEventListener('complete', () => {
-            });
-            
-            this.lottieAnimation.addEventListener('loopComplete', () => {
             });
             
             this.lottieAnimation.addEventListener('error', (error) => {
@@ -106,62 +105,25 @@ class ModernPreloader {
     showFallbackAnimation() {
         const lottieContainer = document.getElementById('lottieContainer');
         if (lottieContainer) {
-            // Создаем простую CSS анимацию как fallback
             lottieContainer.innerHTML = `
-                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                    <div style="width: 60px; height: 60px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #4CAF50; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <div class="fallback-animation">
+                    <svg width="80" height="80" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="var(--primary-color)" stroke-width="3" stroke-dasharray="200" stroke-dashoffset="0">
+                            <animate attributeName="stroke-dashoffset" from="200" to="0" dur="2s" repeatCount="indefinite" />
+                        </circle>
+                        <path d="M50 30 L50 50 L65 60" stroke="var(--primary-color)" stroke-width="3" fill="none" stroke-linecap="round">
+                            <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+                        </path>
+                    </svg>
                 </div>
-                <style>
-                    @keyframes spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
-                </style>
             `;
         }
     }
 
     updatePreloaderText() {
         const preloaderText = document.getElementById('preloaderText');
-        if (preloaderText) {
-            // Определяем язык из URL или глобальной переменной
-            let currentLang = window.currentLang;
-            if (!currentLang) {
-                const path = window.location.pathname;
-                const langMatch = path.match(/\/([a-z]{2})\//);
-                currentLang = langMatch ? langMatch[1] : 'en';
-            }
-            
-            let text = 'Loading';
-            
-            // Получаем перевод из системы переводов
-            if (window.t && typeof window.t === 'function' && window.translations) {
-                text = window.t('preloaderText') || 'Loading';
-            } else {
-                // Fallback для случаев, когда система переводов еще не загружена
-                const translations = {
-                    'en': 'Loading',
-                    'ru': 'Загрузка',
-                    'ua': 'Завантаження',
-                    'pl': 'Ładowanie',
-                    'cs': 'Načítání',
-                    'sk': 'Načítanie',
-                    'bg': 'Зареждане',
-                    'hr': 'Učitavanje',
-                    'sr': 'Учитавање',
-                    'bs': 'Učitavanje',
-                    'mk': 'Вчитување',
-                    'sl': 'Nalaganje'
-                };
-                text = translations[currentLang] || 'Loading';
-            }
-            
-            preloaderText.innerHTML = `${text}<span class="loading-dots">...</span>`;
-        }
-    }
-
-    getLoadingTexts() {
-        // Определяем язык из URL или глобальной переменной
+        if (!preloaderText) return;
+        
         let currentLang = window.currentLang;
         if (!currentLang) {
             const path = window.location.pathname;
@@ -169,253 +131,181 @@ class ModernPreloader {
             currentLang = langMatch ? langMatch[1] : 'en';
         }
         
+        let text = 'Loading';
         
-        // Получаем переводы из системы переводов
-        if (window.t && typeof window.t === 'function' && window.translations) {
-            const texts = [
-                window.t('preloaderInit') || 'Initializing encryption...',
-                window.t('preloaderModules') || 'Loading modules...',
-                window.t('preloaderSecurity') || 'Security check...',
-                window.t('preloaderInterface') || 'Preparing interface...',
-                window.t('preloaderComplete') || 'Loading complete...'
-            ];
-            return texts;
+        if (window.t && typeof window.t === 'function') {
+            text = window.t('preloaderText') || 'Loading';
         } else {
-            // Fallback переводы для каждого языка
             const translations = {
-                'en': [
-                    'Initializing encryption...',
-                    'Loading modules...',
-                    'Security check...',
-                    'Preparing interface...',
-                    'Loading complete...'
-                ],
-                'ru': [
-                    'Инициализация шифрования...',
-                    'Загрузка модулей...',
-                    'Проверка безопасности...',
-                    'Подготовка интерфейса...',
-                    'Завершение загрузки...'
-                ],
-                'ua': [
-                    'Ініціалізація шифрування...',
-                    'Завантаження модулів...',
-                    'Перевірка безпеки...',
-                    'Підготовка інтерфейсу...',
-                    'Завершення завантаження...'
-                ],
-                'pl': [
-                    'Inicjalizacja szyfrowania...',
-                    'Ładowanie modułów...',
-                    'Sprawdzanie bezpieczeństwa...',
-                    'Przygotowywanie interfejsu...',
-                    'Kończenie ładowania...'
-                ],
-                'cs': [
-                    'Inicializace šifrování...',
-                    'Načítání modulů...',
-                    'Kontrola bezpečnosti...',
-                    'Příprava rozhraní...',
-                    'Dokončování načítání...'
-                ],
-                'sk': [
-                    'Inicializácia šifrovania...',
-                    'Načítavanie modulov...',
-                    'Kontrola bezpečnosti...',
-                    'Príprava rozhrania...',
-                    'Dokončovanie načítavania...'
-                ],
-                'bg': [
-                    'Инициализиране на криптирането...',
-                    'Зареждане на модули...',
-                    'Проверка на сигурността...',
-                    'Подготовка на интерфейса...',
-                    'Завършване на зареждането...'
-                ],
-                'hr': [
-                    'Inicijalizacija šifriranja...',
-                    'Učitavanje modula...',
-                    'Provjera sigurnosti...',
-                    'Priprema sučelja...',
-                    'Završavanje učitavanja...'
-                ],
-                'sr': [
-                    'Иницијализација шифровања...',
-                    'Учитавање модула...',
-                    'Провера безбедности...',
-                    'Припрема интерфејса...',
-                    'Завршавање учитавања...'
-                ],
-                'bs': [
-                    'Inicijalizacija šifriranja...',
-                    'Učitavanje modula...',
-                    'Provjera sigurnosti...',
-                    'Priprema sučelja...',
-                    'Završavanje učitavanja...'
-                ],
-                'mk': [
-                    'Иницијализација на шифрирање...',
-                    'Вчитување модули...',
-                    'Проверка на безбедност...',
-                    'Подготовка на интерфејс...',
-                    'Завршување на вчитување...'
-                ],
-                'sl': [
-                    'Inicializacija šifriranja...',
-                    'Nalaganje modulov...',
-                    'Preverjanje varnosti...',
-                    'Priprava vmesnika...',
-                    'Zaključevanje nalaganja...'
-                ]
+                'en': 'Loading', 'ru': 'Загрузка', 'ua': 'Завантаження',
+                'pl': 'Ładowanie', 'cs': 'Načítání', 'sk': 'Načítanie',
+                'bg': 'Зареждане', 'hr': 'Učitavanje', 'sr': 'Учитавање',
+                'bs': 'Učitavanje', 'mk': 'Вчитување', 'sl': 'Nalaganje'
             };
-            
-            const result = translations[currentLang] || translations['en'];
-            return result;
+            text = translations[currentLang] || 'Loading';
         }
+        
+        preloaderText.innerHTML = `${text}<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>`;
     }
 
+    getLoadingTexts() {
+        let currentLang = window.currentLang;
+        if (!currentLang) {
+            const path = window.location.pathname;
+            const langMatch = path.match(/\/([a-z]{2})\//);
+            currentLang = langMatch ? langMatch[1] : 'en';
+        }
+        
+        const translations = {
+            'en': ['Initializing...', 'Loading modules...', 'Security check...', 'Preparing interface...', 'Almost ready...'],
+            'ru': ['Инициализация...', 'Загрузка модулей...', 'Проверка безопасности...', 'Подготовка интерфейса...', 'Почти готово...'],
+            'ua': ['Ініціалізація...', 'Завантаження модулів...', 'Перевірка безпеки...', 'Підготовка інтерфейсу...', 'Майже готово...'],
+            'pl': ['Inicjalizacja...', 'Ładowanie modułów...', 'Sprawdzanie bezpieczeństwa...', 'Przygotowanie interfejsu...', 'Prawie gotowe...'],
+            'cs': ['Inicializace...', 'Načítání modulů...', 'Kontrola zabezpečení...', 'Příprava rozhraní...', 'Téměř hotovo...'],
+            'sk': ['Inicializácia...', 'Načítavanie modulov...', 'Kontrola zabezpečenia...', 'Príprava rozhrania...', 'Takmer hotovo...'],
+            'bg': ['Инициализация...', 'Зареждане на модули...', 'Проверка за сигурност...', 'Подготовка на интерфейс...', 'Почти готово...'],
+            'hr': ['Inicijalizacija...', 'Učitavanje modula...', 'Sigurnosna provjera...', 'Priprema sučelja...', 'Gotovo spremno...'],
+            'sr': ['Иницијализација...', 'Учитавање модула...', 'Безбедносна провера...', 'Припрема интерфејса...', 'Скоро готово...'],
+            'bs': ['Inicijalizacija...', 'Učitavanje modula...', 'Sigurnosna provjera...', 'Priprema sučelja...', 'Gotovo spremno...'],
+            'mk': ['Иницијализација...', 'Вчитување модули...', 'Безбедносна проверка...', 'Подготовка на интерфејс...', 'Речиси готово...'],
+            'sl': ['Inicializacija...', 'Nalaganje modulov...', 'Varnostno preverjanje...', 'Priprava vmesnika...', 'Skoraj pripravljeno...']
+        };
+        
+        return translations[currentLang] || translations['en'];
+    }
 
     startLoading() {
-        // Оптимизированное время показа анимации
         let progress = 0;
-        const totalDuration = 3000; // 3 секунды для более плавной анимации
-        const updateInterval = 16; // обновляем каждые 16мс (60fps)
+        const totalDuration = 2500;
+        const updateInterval = 16;
         
-        // Используем easing функцию для более реалистичного прогресса
         const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
-        
         const startTime = Date.now();
         
-        const loadingInterval = setInterval(() => {
+        if (this.progressInterval) clearInterval(this.progressInterval);
+        if (this.textInterval) clearInterval(this.textInterval);
+        
+        this.progressInterval = setInterval(() => {
+            if (this.isHidden) return;
+            
             const elapsed = Date.now() - startTime;
             const normalizedTime = Math.min(elapsed / totalDuration, 1);
-            
-            // Применяем easing для более реалистичного прогресса
             progress = easeOutQuart(normalizedTime) * 100;
             
             if (normalizedTime >= 1) {
                 progress = 100;
-                clearInterval(loadingInterval);
-                // Небольшая задержка перед скрытием для завершения анимации
+                clearInterval(this.progressInterval);
+                this.progressInterval = null;
+                
                 setTimeout(() => {
                     this.hidePreloader();
-                }, 200);
+                }, 300);
             }
             
             this.updateProgress(progress);
         }, updateInterval);
 
-        // Обновление текста загрузки
         const loadingTexts = this.getLoadingTexts();
         const textUpdateInterval = totalDuration / loadingTexts.length;
 
         let textIndex = 0;
-        const textInterval = setInterval(() => {
+        this.textInterval = setInterval(() => {
+            if (this.isHidden) {
+                clearInterval(this.textInterval);
+                return;
+            }
+            
             if (textIndex < loadingTexts.length) {
-                this.updateLoadingText(loadingTexts[textIndex]);
+                this.updateStatusText(loadingTexts[textIndex]);
                 textIndex++;
             } else {
-                clearInterval(textInterval);
+                clearInterval(this.textInterval);
+                this.textInterval = null;
             }
         }, textUpdateInterval);
     }
 
     updateProgress(progress) {
-        const progressBar = document.querySelector('.progress-bar');
+        const progressBar = document.getElementById('preloaderProgressBar');
         const progressText = document.getElementById('progressText');
         
-        if (progressBar) {
-            // Плавное обновление ширины с анимацией
+        if (progressBar && !this.isHidden) {
             progressBar.style.width = `${progress}%`;
-            
-            // Принудительно применяем стили для гарантии отображения
-            progressBar.style.display = 'block';
-            progressBar.style.visibility = 'visible';
-            progressBar.style.opacity = '1';
-            
-            // Добавляем пульсацию при достижении 100%
-            if (progress >= 100) {
-                progressBar.style.animation = 'progressComplete 0.5s ease-in-out';
-                progressBar.style.boxShadow = '0 0 10px rgba(76, 175, 80, 0.5)';
-            }
         }
         
-        if (progressText) {
-            // Обновляем текст процентов
+        if (progressText && !this.isHidden) {
             progressText.textContent = `${Math.round(progress)}%`;
-            
-            // Добавляем анимацию для процентов
-            progressText.style.transform = 'scale(1.1)';
-            setTimeout(() => {
-                progressText.style.transform = 'scale(1)';
-            }, 100);
         }
     }
 
-    updateLoadingText(text) {
-        const loadingText = document.querySelector('.loading-text');
-        if (loadingText) {
-            // Убираем анимацию opacity, обновляем текст сразу
-            loadingText.innerHTML = `${text}<span class="loading-dots">...</span>`;
+    updateStatusText(text) {
+        const statusElement = document.getElementById('loadingStatus');
+        if (statusElement && !this.isHidden) {
+            statusElement.innerHTML = `<span>${text}</span>`;
         }
     }
 
     hidePreloader() {
-        if (this.preloader) {
-            // Останавливаем Lottie анимацию
-            if (this.lottieAnimation) {
-                this.lottieAnimation.destroy();
-                this.lottieAnimation = null;
-            }
-            
-            this.preloader.classList.add('fade-out');
-            
-            // Убираем задержку, скрываем сразу
-            setTimeout(() => {
-                this.preloader.remove();
-                this.onComplete();
-            }, 200);
+        if (this.isHidden || !this.preloader) return;
+        
+        this.isHidden = true;
+        
+        if (this.progressInterval) {
+            clearInterval(this.progressInterval);
+            this.progressInterval = null;
         }
+        if (this.textInterval) {
+            clearInterval(this.textInterval);
+            this.textInterval = null;
+        }
+        
+        if (this.lottieAnimation) {
+            this.lottieAnimation.destroy();
+            this.lottieAnimation = null;
+        }
+        
+        this.preloader.classList.add('fade-out');
+        
+        setTimeout(() => {
+            if (this.preloader && this.preloader.remove) {
+                this.preloader.remove();
+            }
+            this.onComplete();
+        }, 400);
     }
 
     onComplete() {
-        // Событие завершения загрузки
         const event = new CustomEvent('preloaderComplete');
         document.dispatchEvent(event);
     }
 }
 
-// Инициализация прелоадера
+// Инициализация
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // Проверяем, нужно ли показывать прелоадер
-    // Показываем прелоадер если:
-    // 1. Это первая загрузка в сессии ИЛИ
-    // 2. Прошло больше 5 минут с последнего показа ИЛИ
-    // 3. Это обновление страницы (Ctrl+F5 или hard refresh)
     const lastShown = sessionStorage.getItem('preloaderLastShown');
     const now = Date.now();
     const fiveMinutes = 5 * 60 * 1000;
     
-    const shouldShowPreloader = !lastShown || 
-                               (now - parseInt(lastShown)) > fiveMinutes ||
-                               performance.navigation.type === 1; // TYPE_RELOAD
+    const shouldShowPreloader = !lastShown || (now - parseInt(lastShown)) > fiveMinutes;
     
     if (shouldShowPreloader) {
-        new ModernPreloader();
+        window.modernPreloader = new ModernPreloader();
         sessionStorage.setItem('preloaderLastShown', now.toString());
     }
 });
 
-// Функция для принудительного сброса прелойдера (для тестирования)
 window.resetPreloader = function() {
     sessionStorage.removeItem('preloaderLastShown');
+    if (window.modernPreloader && window.modernPreloader.preloader) {
+        window.modernPreloader.hidePreloader();
+    }
 };
 
-// Функция для принудительного показа прелойдера
 window.showPreloader = function() {
-    new ModernPreloader();
+    if (window.modernPreloader && window.modernPreloader.preloader) {
+        window.modernPreloader.hidePreloader();
+    }
+    window.modernPreloader = new ModernPreloader();
 };
 
-// Экспорт для использования в других модулях
 window.ModernPreloader = ModernPreloader;

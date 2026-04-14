@@ -1889,6 +1889,8 @@ footer a:hover { color: var(--primary-color); }
     font-size: 16px !important;
     line-height: 1.7 !important;
     color: var(--note-text) !important;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 /* Заголовки в заметках */

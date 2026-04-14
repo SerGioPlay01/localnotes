@@ -148,7 +148,6 @@ body {
     gap: 15px;
     padding: 20px;
     background: var(--card-bg);
-    border-radius: 8px;
     border: 1px solid var(--border-color);
 }
 .app-notes { width: 95%; }

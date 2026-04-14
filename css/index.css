@@ -2,6 +2,310 @@
 @import url(/fonts/intro/intro.css);
 @import url(/fonts/lekton-nerd-font-mono/lekton-nerd-font-mono.css);
 
+
+/* ===== ПРИНУДИТЕЛЬНЫЕ СТИЛИ ДЛЯ TINYMCE ТУЛБАРА (переопределение инлайн-стилей) ===== */
+
+/* Переопределяем все инлайн-стили тулбара */
+.tox-toolbar-overlord,
+.tox-toolbar,
+.tox-toolbar__group,
+.tox-tbtn,
+.tox-split-button,
+.tox-tbtn__icon-wrap,
+.tox-tbtn__select-chevron,
+.tox-tbtn svg {
+    background: var(--editor-toolbar-bg, #2d2d2d) !important;
+    background-color: var(--editor-toolbar-bg, #2d2d2d) !important;
+    border-color: var(--editor-toolbar-border, #404040) !important;
+    box-shadow: none !important;
+}
+
+/* Фон тулбара */
+.tox-toolbar-overlord {
+    background: var(--editor-toolbar-bg, #2d2d2d) !important;
+    border-bottom: 1px solid var(--editor-toolbar-border, #404040) !important;
+    border-radius: 8px 8px 0 0 !important;
+    padding: 4px 0 !important;
+}
+
+/* Группы кнопок */
+.tox-toolbar__group {
+    border-right: 1px solid var(--editor-toolbar-border, #404040) !important;
+    margin: 0 4px !important;
+    padding: 0 4px !important;
+}
+
+.tox-toolbar__group:last-child {
+    border-right: none !important;
+}
+
+/* Кнопки тулбара */
+.tox-tbtn,
+.tox-split-button {
+    background: transparent !important;
+    border-radius: 6px !important;
+    margin: 0 2px !important;
+    transition: all 0.2s ease !important;
+}
+
+.tox-tbtn:hover,
+.tox-split-button:hover {
+    background: var(--button-hover, #404040) !important;
+    transform: translateY(-1px);
+}
+
+/* Активные кнопки */
+.tox-tbtn--enabled,
+.tox-tbtn.tox-tbtn--enabled {
+    background: var(--primary-color) !important;
+    color: #000 !important;
+}
+
+.tox-tbtn--enabled svg,
+.tox-tbtn.tox-tbtn--enabled svg {
+    fill: #000 !important;
+}
+
+/* Иконки кнопок */
+.tox-tbtn svg,
+.tox-split-button svg {
+    fill: var(--editor-text, #ffffff) !important;
+    stroke: none !important;
+}
+
+/* Выпадающие списки (select) */
+.tox-tbtn--select {
+    background: var(--button-bg, #2d2d2d) !important;
+    border: 1px solid var(--border-color, #404040) !important;
+    border-radius: 6px !important;
+    padding: 4px 8px !important;
+}
+
+.tox-tbtn__select-label {
+    color: var(--editor-text, #ffffff) !important;
+    font-size: 13px !important;
+}
+
+.tox-tbtn__select-chevron svg {
+    fill: var(--editor-text, #ffffff) !important;
+}
+
+/* Разделители */
+.tox-toolbar__group::before {
+    display: none !important;
+}
+
+/* Disabled кнопки */
+.tox-tbtn--disabled,
+.tox-tbtn.tox-tbtn--disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}
+
+.tox-tbtn--disabled:hover {
+    background: transparent !important;
+    transform: none !important;
+}
+
+/* ===== СТИЛИ ДЛЯ ВЫПАДАЮЩИХ МЕНЮ ===== */
+.tox-menu {
+    background: var(--modal-bg, #1a1a1a) !important;
+    border: 1px solid var(--border-color, #404040) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.tox-menu .tox-collection__item {
+    color: var(--editor-text, #ffffff) !important;
+    padding: 8px 12px !important;
+}
+
+.tox-menu .tox-collection__item--active {
+    background: var(--primary-color) !important;
+    color: #000 !important;
+}
+
+/* ===== СТИЛИ ДЛЯ ОБЛАСТИ РЕДАКТИРОВАНИЯ ===== */
+.tox-edit-area {
+    background: var(--editor-bg, #1a1a1a) !important;
+}
+
+.tox-edit-area iframe {
+    background: var(--editor-bg, #1a1a1a) !important;
+}
+
+/* ===== СТИЛИ ДЛЯ ТЕКСТА В РЕДАКТОРЕ (ВАЖНО!) ===== */
+.tox-edit-area iframe body {
+    font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+    color: var(--editor-text, #ffffff) !important;
+    background: var(--editor-bg, #1a1a1a) !important;
+    padding: 20px !important;
+}
+
+/* Заголовки в редакторе */
+.tox-edit-area iframe body h1 {
+    font-size: 2em !important;
+    font-weight: 700 !important;
+    margin: 24px 0 16px !important;
+    border-bottom: 2px solid var(--primary-color) !important;
+    color: var(--editor-text, #ffffff) !important;
+}
+
+.tox-edit-area iframe body h2 {
+    font-size: 1.6em !important;
+    font-weight: 600 !important;
+    margin: 20px 0 12px !important;
+    border-bottom: 1px solid var(--primary-color) !important;
+    color: var(--editor-text, #ffffff) !important;
+}
+
+.tox-edit-area iframe body h3 {
+    font-size: 1.4em !important;
+    font-weight: 600 !important;
+    margin: 18px 0 10px !important;
+    color: var(--editor-text, #ffffff) !important;
+}
+
+/* Параграфы */
+.tox-edit-area iframe body p {
+    margin-bottom: 16px !important;
+    line-height: 1.7 !important;
+    color: var(--editor-text, #ffffff) !important;
+}
+
+/* Списки */
+.tox-edit-area iframe body ul,
+.tox-edit-area iframe body ol {
+    margin: 12px 0 16px 24px !important;
+}
+
+.tox-edit-area iframe body li {
+    margin: 8px 0 !important;
+    line-height: 1.6 !important;
+    color: var(--editor-text, #ffffff) !important;
+}
+
+/* Ссылки */
+.tox-edit-area iframe body a {
+    color: var(--primary-color) !important;
+    text-decoration: underline !important;
+}
+
+/* Жирный, курсив */
+.tox-edit-area iframe body strong,
+.tox-edit-area iframe body b {
+    font-weight: 700 !important;
+    color: var(--editor-text, #ffffff) !important;
+}
+
+.tox-edit-area iframe body em,
+.tox-edit-area iframe body i {
+    font-style: italic !important;
+    color: var(--editor-text, #ffffff) !important;
+}
+
+/* Код */
+.tox-edit-area iframe body code {
+    font-family: 'Consolas', 'Monaco', monospace !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    color: #ff6b6b !important;
+}
+
+/* Цитаты */
+.tox-edit-area iframe body blockquote {
+    border-left: 4px solid var(--primary-color) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    padding: 12px 20px !important;
+    margin: 16px 0 !important;
+    border-radius: 0 8px 8px 0 !important;
+    font-style: italic !important;
+}
+
+/* Таблицы */
+.tox-edit-area iframe body table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    margin: 16px 0 !important;
+}
+
+.tox-edit-area iframe body th,
+.tox-edit-area iframe body td {
+    border: 1px solid #5a5a5a !important;
+    padding: 10px 14px !important;
+    color: var(--editor-text, #ffffff) !important;
+}
+
+.tox-edit-area iframe body th {
+    background: var(--primary-color) !important;
+    color: #000 !important;
+}
+
+/* ===== СВЕТЛАЯ ТЕМА ДЛЯ РЕДАКТОРА ===== */
+[data-theme="light"] .tox-toolbar-overlord,
+[data-theme="light"] .tox-toolbar {
+    background: #f8f9fa !important;
+    border-bottom-color: #dee2e6 !important;
+}
+
+[data-theme="light"] .tox-tbtn svg {
+    fill: #212529 !important;
+}
+
+[data-theme="light"] .tox-tbtn:hover {
+    background: #e9ecef !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body {
+    background: #ffffff !important;
+    color: #212529 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body code {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #dc3545 !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body th {
+    background: #28a745 !important;
+    color: #fff !important;
+}
+
+[data-theme="light"] .tox-edit-area iframe body td {
+    border-color: #dee2e6 !important;
+    color: #212529 !important;
+}
+
+/* ===== ФИКСЫ ДЛЯ МОБИЛЬНЫХ ===== */
+@media (max-width: 768px) {
+    .tox-toolbar {
+        flex-wrap: wrap !important;
+        padding: 4px !important;
+    }
+    
+    .tox-toolbar__group {
+        margin: 2px !important;
+    }
+    
+    .tox-tbtn,
+    .tox-split-button {
+        min-width: 32px !important;
+        height: 32px !important;
+    }
+    
+    .tox-tbtn svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+    
+    .tox-tbtn__select-label {
+        font-size: 11px !important;
+    }
+}
+
 /* ===== БАЗОВЫЕ СТИЛИ ===== */
 * { box-sizing: border-box; }
 html, body { overflow-x: hidden; width: 100%; max-width: 100%; }

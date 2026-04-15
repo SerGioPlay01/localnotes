@@ -1727,5 +1727,44 @@ body#tinymce.mce-content-body {
 }
 
 
+/* ============================================
+   ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ СОХРАНЕНИЯ ФОРМАТИРОВАНИЯ
+   ============================================ */
 
+/* Сохраняем inline стили при смене заголовков */
+.mce-content-body h1,
+.mce-content-body h2,
+.mce-content-body h3,
+.mce-content-body h4,
+.mce-content-body h5,
+.mce-content-body h6 {
+    transition: none !important;
+}
+
+/* Запрещаем сброс стилей при пустых элементах */
+.mce-content-body p:empty,
+.mce-content-body h1:empty,
+.mce-content-body h2:empty,
+.mce-content-body h3:empty,
+.mce-content-body h4:empty,
+.mce-content-body h5:empty,
+.mce-content-body h6:empty {
+    min-height: 25px !important;
+}
+
+/* Сохраняем цвет и фон */
+.mce-content-body [style*="color"],
+.mce-content-body [style*="background-color"] {
+    transition: none !important;
+}
+
+/* Запрещаем автоматическую очистку стилей */
+.mce-content-body .mce-content-body * {
+    all: revert;
+}
+
+/* Сохраняем форматирование при вставке */
+.mce-content-body .mce-paste-object {
+    display: inline !important;
+}
 

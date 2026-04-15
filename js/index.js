@@ -2906,6 +2906,297 @@ async function initTinyMCE() {
                         insertIframe();
                     }
                 });
+
+            /* ============================================
+   ИСПРАВЛЕНИЕ: СОХРАНЕНИЕ ФОРМАТИРОВАНИЯ ПРИ ПЕРЕНОСЕ СТРОК
+   ============================================ */
+
+(function() {
+    // Ждём загрузки редактора
+    setTimeout(function initEditorFix() {
+        const iframe = document.querySelector('.tox-edit-area iframe');
+        if (!iframe) {
+            setTimeout(initEditorFix, 500);
+            return;
+        }
+        
+        const editorDoc = iframe.contentDocument;
+        const editorBody = editorDoc?.body;
+        
+        if (!editorBody) {
+            setTimeout(initEditorFix, 500);
+            return;
+        }
+        
+        // 1. Запоминаем текущее форматирование
+        let currentFormat = {
+            isBold: false,
+            isItalic: false,
+            isUnderline: false,
+            isStrikethrough: false,
+            fontFamily: null,
+            fontSize: null,
+            textColor: null,
+            backgroundColor: null
+        };
+        
+        // 2. Получаем текущее форматирование из выделения
+        function getCurrentFormat() {
+            const selection = editorDoc.getSelection();
+            if (!selection.rangeCount) return currentFormat;
+            
+            const range = selection.getRangeAt(0);
+            let container = range.startContainer;
+            
+            if (container.nodeType === Node.TEXT_NODE) {
+                container = container.parentElement;
+            }
+            
+            // Проверяем inline стили
+            const styles = window.getComputedStyle(container);
+            
+            return {
+                isBold: styles.fontWeight === 'bold' || parseInt(styles.fontWeight) >= 600,
+                isItalic: styles.fontStyle === 'italic',
+                isUnderline: styles.textDecoration.includes('underline'),
+                isStrikethrough: styles.textDecoration.includes('line-through'),
+                fontFamily: styles.fontFamily,
+                fontSize: styles.fontSize,
+                textColor: styles.color,
+                backgroundColor: styles.backgroundColor
+            };
+        }
+        
+        // 3. Применяем форматирование к новому элементу
+        function applyFormatToElement(element, format) {
+            if (format.isBold) {
+                const strong = editorDoc.createElement('strong');
+                element.parentNode?.insertBefore(strong, element);
+                strong.appendChild(element);
+                element = strong;
+            }
+            
+            if (format.isItalic) {
+                const em = editorDoc.createElement('em');
+                element.parentNode?.insertBefore(em, element);
+                em.appendChild(element);
+                element = em;
+            }
+            
+            if (format.isUnderline) {
+                const u = editorDoc.createElement('u');
+                element.parentNode?.insertBefore(u, element);
+                u.appendChild(element);
+                element = u;
+            }
+            
+            if (format.isStrikethrough) {
+                const strike = editorDoc.createElement('strike');
+                element.parentNode?.insertBefore(strike, element);
+                strike.appendChild(element);
+                element = strike;
+            }
+            
+            if (format.fontFamily && format.fontFamily !== 'inherit') {
+                element.style.fontFamily = format.fontFamily;
+            }
+            
+            if (format.fontSize && format.fontSize !== '16px') {
+                element.style.fontSize = format.fontSize;
+            }
+            
+            if (format.textColor && format.textColor !== 'rgb(0, 0, 0)') {
+                element.style.color = format.textColor;
+            }
+            
+            if (format.backgroundColor && format.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+                element.style.backgroundColor = format.backgroundColor;
+            }
+            
+            return element;
+        }
+        
+        // 4. Обработка нажатия Enter
+        editorBody.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                // Сохраняем форматирование перед созданием новой строки
+                currentFormat = getCurrentFormat();
+                
+                // Сохраняем текущий элемент
+                const selection = editorDoc.getSelection();
+                if (selection.rangeCount) {
+                    const range = selection.getRangeAt(0);
+                    let currentNode = range.startContainer;
+                    
+                    if (currentNode.nodeType === Node.TEXT_NODE) {
+                        currentNode = currentNode.parentElement;
+                    }
+                    
+                    // Находим ближайший блок
+                    while (currentNode && !['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI'].includes(currentNode.tagName)) {
+                        currentNode = currentNode.parentElement;
+                    }
+                    
+                    if (currentNode && currentNode.tagName !== 'P') {
+                        // Если не параграф, создаём новый параграф с форматированием
+                        setTimeout(() => {
+                            const newSelection = editorDoc.getSelection();
+                            if (newSelection.rangeCount) {
+                                const newRange = newSelection.getRangeAt(0);
+                                let newElement = newRange.startContainer;
+                                
+                                if (newElement.nodeType === Node.TEXT_NODE) {
+                                    newElement = newElement.parentElement;
+                                }
+                                
+                                if (newElement && newElement.tagName === 'P') {
+                                    applyFormatToElement(newElement, currentFormat);
+                                }
+                            }
+                        }, 10);
+                    }
+                }
+            }
+        });
+        
+        // 5. Обработка применения стилей к заголовкам
+        let isApplyingHeader = false;
+        
+        // Отслеживаем изменения в DOM
+        const observer = new MutationObserver(function(mutations) {
+            if (isApplyingHeader) return;
+            
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList' && mutation.addedNodes.length) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === Node.ELEMENT_NODE) {
+                            // Проверяем, не является ли новый элемент заголовком
+                            if (['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(node.tagName)) {
+                                // Применяем сохранённое форматирование к заголовку
+                                if (currentFormat.fontSize || currentFormat.fontFamily || currentFormat.textColor) {
+                                    if (currentFormat.fontFamily && currentFormat.fontFamily !== 'inherit') {
+                                        node.style.fontFamily = currentFormat.fontFamily;
+                                    }
+                                    if (currentFormat.textColor && currentFormat.textColor !== 'rgb(0, 0, 0)') {
+                                        node.style.color = currentFormat.textColor;
+                                    }
+                                }
+                            }
+                            
+                            // Для параграфов
+                            if (node.tagName === 'P') {
+                                const hasContent = node.textContent.trim().length > 0;
+                                const isEmpty = node.innerHTML === '<br>' || node.innerHTML === '';
+                                
+                                if (hasContent && !isEmpty) {
+                                    applyFormatToElement(node, currentFormat);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        
+        observer.observe(editorBody, {
+            childList: true,
+            subtree: true
+        });
+        
+        // 6. Перехватываем применение стилей через тулбар
+        const toolbar = document.querySelector('.tox-toolbar');
+        if (toolbar) {
+            toolbar.addEventListener('click', function() {
+                // Обновляем текущее форматирование после клика по тулбару
+                setTimeout(() => {
+                    currentFormat = getCurrentFormat();
+                }, 50);
+            });
+        }
+        
+        // 7. Сохраняем форматирование при выделении
+        editorBody.addEventListener('mouseup', function() {
+            setTimeout(() => {
+                currentFormat = getCurrentFormat();
+            }, 10);
+        });
+        
+        editorBody.addEventListener('keyup', function(e) {
+            if (e.key !== 'Enter') {
+                setTimeout(() => {
+                    currentFormat = getCurrentFormat();
+                }, 10);
+            }
+        });
+        
+        // 8. Фикс для заголовков: сохраняем формат при смене типа
+        const headerButtons = document.querySelectorAll('.tox-tbtn[aria-label*="Heading"], .tox-tbtn[aria-label*="Заголовок"], .tox-tbtn[aria-label*="Format"]');
+        headerButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                setTimeout(() => {
+                    const selection = editorDoc.getSelection();
+                    if (selection.rangeCount) {
+                        const range = selection.getRangeAt(0);
+                        let container = range.startContainer;
+                        
+                        if (container.nodeType === Node.TEXT_NODE) {
+                            container = container.parentElement;
+                        }
+                        
+                        // Находим заголовок
+                        while (container && !['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(container.tagName)) {
+                            container = container.parentElement;
+                        }
+                        
+                        if (container && currentFormat) {
+                            // Применяем inline форматирование к заголовку
+                            if (currentFormat.isBold) {
+                                // Заголовки и так жирные, пропускаем
+                            }
+                            if (currentFormat.isItalic) {
+                                const em = editorDoc.createElement('em');
+                                container.parentNode?.insertBefore(em, container);
+                                em.appendChild(container);
+                            }
+                            if (currentFormat.isUnderline) {
+                                container.style.textDecoration = 'underline';
+                            }
+                        }
+                    }
+                }, 50);
+            });
+        });
+        
+        // 9. Предотвращаем сброс при использовании Backspace
+        editorBody.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace') {
+                const selection = editorDoc.getSelection();
+                if (selection.rangeCount) {
+                    const range = selection.getRangeAt(0);
+                    let container = range.startContainer;
+                    
+                    if (container.nodeType === Node.TEXT_NODE && container.textContent === '') {
+                        container = container.parentElement;
+                    }
+                    
+                    if (container && container.tagName === 'P' && container.textContent === '') {
+                        // Сохраняем форматирование для пустого параграфа
+                        setTimeout(() => {
+                            currentFormat = getCurrentFormat();
+                        }, 10);
+                    }
+                }
+            }
+        });
+        
+        // 10. Сохраняем форматирование при потере фокуса
+        editorBody.addEventListener('blur', function() {
+            currentFormat = getCurrentFormat();
+        });
+        
+        
+    }, 1000);
+})();
                 
                 // Обработка ошибок инициализации
             editor.on('init', function() {

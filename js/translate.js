@@ -177,13 +177,13 @@ function updateButtonTexts() {
     const okButton = document.getElementById("ok");
     
     if (addNoteButton) {
-        addNoteButton.innerHTML = `<i class="fas fa-plus"></i> ${addNoteButton.textContent}`;
+        addNoteButton.innerHTML = addNoteButton.textContent;
     }
     if (importButton) {
-        importButton.innerHTML = `<i class="fas fa-upload"></i> ${importButton.textContent}`;
+        importButton.innerHTML = importButton.textContent;
     }
     if (clearAllButton) {
-        clearAllButton.innerHTML = `<i class="fas fa-trash-alt"></i> ${clearAllButton.textContent}`;
+        clearAllButton.innerHTML = clearAllButton.textContent;
     }
     if (toggleViewButton) {
         // Обновляем кнопку переключения вида с правильными переводами
@@ -191,9 +191,9 @@ function updateButtonTexts() {
         const isFullWidth = notesContainer && notesContainer.classList.contains("full-width-view");
         
         if (isFullWidth) {
-            toggleViewButton.innerHTML = `<i class="fas fa-th"></i> ${toggleViewButton.textContent}`;
+            toggleViewButton.innerHTML = toggleViewButton.textContent;
         } else {
-            toggleViewButton.innerHTML = `<i class="fas fa-list"></i> ${toggleViewButton.textContent}`;
+            toggleViewButton.innerHTML = toggleViewButton.textContent;
         }
         
         // Принудительно обновляем кнопку через AppUtils, если он доступен

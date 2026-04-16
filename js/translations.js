@@ -165,7 +165,16 @@ const translations = {
         welcomeInstructions: "To create your first note, click the 'Add Note' button in the top panel. You can then write your content and save it securely.",
         welcomeInstructionsTitle: "How to get started",
         viewModeGrid: "Grid",
-        viewModeList: "List"
+        viewModeList: "List",
+        checklistDone: "done",
+        checklistButton: "☑ Checklist",
+        quickEditOn: "Quick Edit",
+        quickEditOff: "Quick Edit: ON",
+        quickEditOnTitle: "Enable quick edit mode",
+        quickEditOffTitle: "Disable quick edit mode",
+        quickEditHint: "Quick edit",
+        quickEditSaved: "Note saved",
+        quickEditCancelled: "Changes cancelled"
     },
     
     ru: {
@@ -340,7 +349,16 @@ const translations = {
         welcomeInstructions: "Чтобы создать первую заметку, нажмите кнопку 'Добавить заметку' в верхней панели. Затем вы сможете написать содержимое и сохранить его безопасно.",
         welcomeInstructionsTitle: "Как начать работу",
         viewModeGrid: "Сетка",
-        viewModeList: "Список"
+        viewModeList: "Список",
+        checklistDone: "выполнено",
+        checklistButton: "☑ Список",
+        quickEditOn: "Быстрое редактирование",
+        quickEditOff: "Быстрое ред.: ВКЛ",
+        quickEditOnTitle: "Включить режим быстрого редактирования",
+        quickEditOffTitle: "Выключить режим быстрого редактирования",
+        quickEditHint: "Быстрое редактирование",
+        quickEditSaved: "Заметка сохранена",
+        quickEditCancelled: "Изменения отменены"
     },
     
     ua: {
@@ -492,6 +510,15 @@ const translations = {
         welcomeInstructionsTitle: "Як почати роботу",
         viewModeGrid: "Сітка",
         viewModeList: "Список",
+        checklistDone: "виконано",
+        checklistButton: "☑ Список",
+        quickEditOn: "Швидке редагування",
+        quickEditOff: "Швидке ред.: УВІМКн",
+        quickEditOnTitle: "Увімкнути режим швидкого редагування",
+        quickEditOffTitle: "Вимкнути режим швидкого редагування",
+        quickEditHint: "Швидке редагування",
+        quickEditSaved: "Нотатку збережено",
+        quickEditCancelled: "Зміни скасовано",
         enterPasswordForFile: "Введіть пароль для файлу",
         importingFiles: "Імпорт файлів",
         processingFile: "Обробка файлу",
@@ -656,6 +683,15 @@ const translations = {
         welcomeInstructionsTitle: "Jak zacząć",
         viewModeGrid: "Siatka",
         viewModeList: "Lista",
+        checklistDone: "wykonano",
+        checklistButton: "☑ Lista",
+        quickEditOn: "Szybka edycja",
+        quickEditOff: "Szybka edycja: WŁ",
+        quickEditOnTitle: "Włącz tryb szybkiej edycji",
+        quickEditOffTitle: "Wyłącz tryb szybkiej edycji",
+        quickEditHint: "Szybka edycja",
+        quickEditSaved: "Notatka zapisana",
+        quickEditCancelled: "Zmiany anulowane",
         enterPasswordForFile: "Wprowadź hasło dla pliku",
         importingFiles: "Importowanie plików",
         processingFile: "Przetwarzanie pliku",
@@ -820,6 +856,15 @@ const translations = {
         welcomeInstructionsTitle: "Jak začít",
         viewModeGrid: "Mřížka",
         viewModeList: "Seznam",
+        checklistDone: "hotovo",
+        checklistButton: "☑ Seznam",
+        quickEditOn: "Rychlá úprava",
+        quickEditOff: "Rychlá úprava: ZAP",
+        quickEditOnTitle: "Zapnout režim rychlé úpravy",
+        quickEditOffTitle: "Vypnout režim rychlé úpravy",
+        quickEditHint: "Rychlá úprava",
+        quickEditSaved: "Poznámka uložena",
+        quickEditCancelled: "Změny zrušeny",
         enterPasswordForFile: "Zadejte heslo pro soubor",
         importingFiles: "Importování souborů",
         processingFile: "Zpracování souboru",
@@ -982,6 +1027,15 @@ const translations = {
         welcomeInstructionsTitle: "Ako začať",
         viewModeGrid: "Mriežka",
         viewModeList: "Zoznam",
+        checklistDone: "hotovo",
+        checklistButton: "☑ Zoznam",
+        quickEditOn: "Rýchla úprava",
+        quickEditOff: "Rýchla úprava: ZAP",
+        quickEditOnTitle: "Zapnúť režim rýchlej úpravy",
+        quickEditOffTitle: "Vypnúť režim rýchlej úpravy",
+        quickEditHint: "Rýchla úprava",
+        quickEditSaved: "Poznámka uložená",
+        quickEditCancelled: "Zmeny zrušené",
         enterPasswordForFile: "Zadajte heslo pre súbor",
         importingFiles: "Importovanie súborov",
         processingFile: "Spracovanie súboru",
@@ -1142,6 +1196,15 @@ const translations = {
         welcomeInstructionsTitle: "Как да започнете",
         viewModeGrid: "Мрежа",
         viewModeList: "Списък",
+        checklistDone: "изпълнено",
+        checklistButton: "☑ Списък",
+        quickEditOn: "Бързо редактиране",
+        quickEditOff: "Бързо ред.: ВКЛ",
+        quickEditOnTitle: "Включи режим на бързо редактиране",
+        quickEditOffTitle: "Изключи режим на бързо редактиране",
+        quickEditHint: "Бързо редактиране",
+        quickEditSaved: "Бележката е запазена",
+        quickEditCancelled: "Промените са отменени",
         enterPasswordForFile: "Въведете парола за файл",
         importingFiles: "Импортиране на файлове",
         processingFile: "Обработка на файл",
@@ -1296,6 +1359,15 @@ const translations = {
         welcomeInstructionsTitle: "Kako početi",
         viewModeGrid: "Mreža",
         viewModeList: "Lista",
+        checklistDone: "završeno",
+        checklistButton: "☑ Lista",
+        quickEditOn: "Brza izmjena",
+        quickEditOff: "Brza izmjena: UKL",
+        quickEditOnTitle: "Uključi brzi način uređivanja",
+        quickEditOffTitle: "Isključi brzi način uređivanja",
+        quickEditHint: "Brza izmjena",
+        quickEditSaved: "Bilješka je spremljena",
+        quickEditCancelled: "Promjene su otkazane",
         enterPasswordForFile: "Unesite lozinku za datoteku",
         importingFiles: "Uvoz datoteka",
         processingFile: "Obrada datoteke",
@@ -1447,8 +1519,16 @@ const translations = {
         welcomeInstructionsTitle: "Како почети",
         viewModeGrid: "Мрежа",
         viewModeList: "Листа",
+        checklistDone: "извршено",
+        checklistButton: "☑ Листа",
+        quickEditOn: "Брзо уређивање",
+        quickEditOff: "Брзо ур.: УКЉ",
+        quickEditOnTitle: "Укључи режим брзог уређивања",
+        quickEditOffTitle: "Искључи режим брзог уређивања",
+        quickEditHint: "Брзо уређивање",
+        quickEditSaved: "Белешка је сачувана",
+        quickEditCancelled: "Промене су отказане",
         enterPasswordForFile: "Унесите лозинку за фајл",
-        importingFiles: "Увоз фајлова",
         processingFile: "Обрада фајла",
         of: "од",
         imported: "Увезено",
@@ -1601,6 +1681,15 @@ const translations = {
         welcomeInstructionsTitle: "Kako početi",
         viewModeGrid: "Mreža",
         viewModeList: "Lista",
+        checklistDone: "završeno",
+        checklistButton: "☑ Lista",
+        quickEditOn: "Brza izmjena",
+        quickEditOff: "Brza izmjena: UKL",
+        quickEditOnTitle: "Uključi brzi način uređivanja",
+        quickEditOffTitle: "Isključi brzi način uređivanja",
+        quickEditHint: "Brza izmjena",
+        quickEditSaved: "Bilješka je sačuvana",
+        quickEditCancelled: "Promjene su otkazane",
         enterPasswordForFile: "Unesite lozinku za datoteku",
         importingFiles: "Uvoz datoteka",
         processingFile: "Obrada datoteke",
@@ -1762,6 +1851,13 @@ const translations = {
         welcomeInstructionsTitle: "Како да започнете",
         viewModeGrid: "Мрежа",
         viewModeList: "Листа",
+        checklistDone: "завршено",
+        checklistButton: "☑ Листа",
+        quickEditOn: "Брзо уредување",
+        quickEditOff: "Брзо ур.: ВКЛ",
+        quickEditOnTitle: "Вклучи режим на брзо уредување",
+        quickEditOffTitle: "Исклучи режим на брзо уредување",
+        quickEditHint: "Брзо уредување",
         enterPasswordForFile: "Внесете лозинка за датотека",
         importingFiles: "Увоз на датотеки",
         processingFile: "Обработка на датотека",
@@ -1913,6 +2009,13 @@ const translations = {
         welcomeInstructionsTitle: "Kako začeti",
         viewModeGrid: "Mreža",
         viewModeList: "Seznam",
+        checklistDone: "opravljeno",
+        checklistButton: "☑ Seznam",
+        quickEditOn: "Hitro urejanje",
+        quickEditOff: "Hitro ur.: VKL",
+        quickEditOnTitle: "Vklopi način hitrega urejanja",
+        quickEditOffTitle: "Izklopi način hitrega urejanja",
+        quickEditHint: "Hitro urejanje",
         enterPasswordForFile: "Vnesite geslo za datoteko",
         importingFiles: "Uvoz datotek",
         processingFile: "Obdelava datoteke",
@@ -1960,13 +2063,13 @@ function updateButtonTexts() {
     const okButton = document.getElementById("ok");
     
     if (addNoteButton) {
-        addNoteButton.innerHTML = `<i class="fas fa-plus"></i> ${t("addNote")}`;
+        addNoteButton.innerHTML = t("addNote");
     }
     if (importButton) {
-        importButton.innerHTML = `<i class="fas fa-upload"></i> ${t("importNotes")}`;
+        importButton.innerHTML = t("importNotes");
     }
     if (clearAllButton) {
-        clearAllButton.innerHTML = `<i class="fas fa-trash-alt"></i> ${t("clearAllNotes")}`;
+        clearAllButton.innerHTML = t("clearAllNotes");
     }
     if (toggleViewButton) {
         // Обновляем кнопку переключения вида с правильными переводами
@@ -1974,9 +2077,9 @@ function updateButtonTexts() {
         const isFullWidth = notesContainer && notesContainer.classList.contains("full-width-view");
         
         if (isFullWidth) {
-            toggleViewButton.innerHTML = `<i class="fas fa-th"></i> ${t("viewModeGrid")}`;
+            toggleViewButton.innerHTML = t("viewModeGrid");
         } else {
-            toggleViewButton.innerHTML = `<i class="fas fa-list"></i> ${t("viewModeList")}`;
+            toggleViewButton.innerHTML = t("viewModeList");
         }
         
         // Принудительно обновляем кнопку через AppUtils, если он доступен

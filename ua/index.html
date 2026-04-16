@@ -48,9 +48,10 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Локальні Нотатки">
+    <meta name="apple-mobile-web-app-title" content="������� �������">
     <meta name="msapplication-TileColor" content="#0a0a0a">
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <meta name="msapplication-navbutton-color" content="#0a0a0a">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -375,6 +376,7 @@
             <div class="block_btn">
                 <button id="addNoteButton">Додати нотатку</button>
                 <button id="importButton">Імпортувати нотатки</button>
+                <button id="quickEditToggle">Quick Edit</button>
                 <button id="clearAllButton">Очистити всі нотатки</button>
                 <input multiple type="file" id="importInput" accept=".note,.html,.md">
             </div>

@@ -87,7 +87,9 @@ class ResponsiveManager {
                 setTimeout(async () => {
                     await initTinyMCE();
                     if (tinymceEditor && currentContent) {
-                        tinymceEditor.setContent(currentContent);
+                        // Исправляем структуру чеклистов перед загрузкой
+                        const fixedContent = fixChecklistStructure(currentContent);
+                        tinymceEditor.setContent(fixedContent);
                     }
                 }, 100);
             } catch (error) {
@@ -243,11 +245,16 @@ class ResponsiveManager {
                 const currentY = e.touches[0].clientY;
                 const diffY = startY - currentY;
                 
-                // Предотвращаем pull-to-refresh на планшетах
-                if (diffY < 0 && window.scrollY === 0) {
-                    e.preventDefault();
+                // Предотвращаем pull-to-refresh только в самом верху страницы
+                if (diffY < 0 && window.scrollY === 0 && document.documentElement.scrollTop === 0) {
+                    // Проверяем, что мы не внутри скроллируемого контейнера
+                    const target = e.target;
+                    const scrollableParent = target.closest('[style*="overflow"], .tox-edit-area, #notesContainer, .modal-content');
+                    if (!scrollableParent) {
+                        e.preventDefault();
+                    }
                 }
-            }, { passive: false, cancelable: true });
+            }, { passive: false });
         }
     }
     
@@ -458,6 +465,12 @@ function initializeEventListeners() {
         clearAllButton.addEventListener("click", () => {
             showClearAllConfirmationModal();
         });
+    }
+
+    // Обработчик для кнопки быстрого редактирования
+    const quickEditToggleBtn = document.getElementById("quickEditToggle");
+    if (quickEditToggleBtn) {
+        quickEditToggleBtn.addEventListener("click", toggleQuickEditMode);
     }
     
 }
@@ -914,6 +927,24 @@ function setupPopupCloseHandlers(editor) {
         if (!isClickOnTable && !isClickOnToolbar && !isClickOnPopup) {
             hideAllPopups();
         }
+        
+        // Обработка клика в чеклисте - перемещаем курсор в текстовый span
+        const checklistWrapper = target.closest('.checklist-item-wrapper');
+        if (checklistWrapper && !target.classList.contains('checklist-checkbox-ios')) {
+            const textSpan = checklistWrapper.querySelector('.checklist-text-content');
+            if (textSpan) {
+                // Устанавливаем курсор в конец текста
+                setTimeout(() => {
+                    const range = editor.dom.createRng();
+                    const textNode = textSpan.firstChild || textSpan;
+                    const offset = textNode.nodeType === 3 ? textNode.length : 0;
+                    range.setStart(textNode, offset);
+                    range.setEnd(textNode, offset);
+                    editor.selection.setRng(range);
+                    editor.focus();
+                }, 0);
+            }
+        }
     });
     
     // Обработчик нажатия клавиш
@@ -994,6 +1025,49 @@ function setupTableToolbarHandlers(editor) {
                 popup.classList.remove('tox-pop__dialog--active');
                 popup.classList.add('tox-pop__dialog--hidden');
             });
+        }
+        
+        // Обработка Enter в чеклистах
+        if (e.key === 'Enter' && !e.shiftKey) {
+            const selection = editor.selection;
+            const node = selection.getNode();
+            const checklistWrapper = node.closest('.checklist-item-wrapper');
+            
+            if (checklistWrapper) {
+                e.preventDefault();
+                
+                // Создаём новый элемент чеклиста
+                const body = editor.getBody();
+                const newChecklistDiv = body.ownerDocument.createElement('div');
+                newChecklistDiv.className = 'checklist-item-wrapper';
+                
+                // Создаём чекбокс
+                const checkbox = body.ownerDocument.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'checklist-checkbox-ios';
+                checkbox.setAttribute('data-checked', 'false');
+                
+                // Создаём span для текста
+                const textSpan = body.ownerDocument.createElement('span');
+                textSpan.className = 'checklist-text-content';
+                textSpan.textContent = '';
+                
+                // Собираем структуру
+                newChecklistDiv.appendChild(checkbox);
+                newChecklistDiv.appendChild(textSpan);
+                
+                // Вставляем после текущего элемента
+                checklistWrapper.parentNode.insertBefore(newChecklistDiv, checklistWrapper.nextSibling);
+                
+                // Ставим курсор в новый span
+                setTimeout(() => {
+                    const range = editor.dom.createRng();
+                    range.setStart(textSpan, 0);
+                    range.setEnd(textSpan, 0);
+                    editor.selection.setRng(range);
+                    editor.focus();
+                }, 0);
+            }
         }
     });
     
@@ -2188,7 +2262,7 @@ async function initTinyMCE() {
             'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
             'anchor', 'searchreplace', 'visualblocks', 'code',
             'insertdatetime', 'media', 'table', 'help', 'wordcount', 'emoticons',
-            'codesample', 'pagebreak', 'nonbreaking', 'quickbars', 'accordion',
+            'codesample', 'pagebreak', 'nonbreaking', 'accordion',
             'autosave', 'directionality', 'visualchars'
         ],
         // Optimize plugin loading
@@ -2208,7 +2282,7 @@ async function initTinyMCE() {
         toolbar: [
             'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough superscript subscript | ' +
             'alignleft aligncenter alignright alignjustify | outdent indent | ' +
-            'numlist bullist | forecolor backcolor removeformat | ' +
+            'numlist bullist checklist | forecolor backcolor removeformat | ' +
             'link customimage media iframe | table | charmap emoticons | ' +
             'code | preview | insertfile anchor codesample | ' +
             'ltr rtl | pagebreak | visualblocks visualchars | searchreplace | wordcount | help'
@@ -2309,6 +2383,13 @@ async function initTinyMCE() {
             }
         },
         
+        // Настройки для inline форматирования
+        inline_boundaries: true,
+        inline_boundaries_selector: 'a[href],code,span,strong,em,b,i,u,strike,sub,sup',
+        
+        // Применять форматирование только к выделенному тексту или слову под курсором
+        formats_merge: false,
+        
         
         // Дополнительные настройки для обработки размеров
         font_size_legacy_values: '8pt,9pt,10pt,11pt,12pt,14pt,16pt,18pt,20pt,22pt,24pt,26pt,28pt,30pt,32pt,34pt,36pt,38pt,40pt,42pt,44pt,46pt,48pt,50pt,52pt,54pt,56pt,58pt,60pt,72pt,84pt,96pt',
@@ -2321,13 +2402,13 @@ async function initTinyMCE() {
         branding: false,
         promotion: false,
         tooltip: true,
-        quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable customimage',
+        quickbars_selection_toolbar: false,
             resize: false,
             height: '100%',
             min_height: responsiveManager.isTabletDevice ? 450 : 400,
             elementpath: responsiveManager.isDesktop,
         statusbar: false,
-            quickbars_insert_toolbar: 'quickimage quicktable customimage',
+            quickbars_insert_toolbar: false,
             contextmenu: (responsiveManager.isTouch || pointerManager.isTouch()) ? 'link image imagetools table' : 'link image imagetools table',
             mobile: responsiveManager.isMobile,
             touch: responsiveManager.isTouch || pointerManager.isTouch(),
@@ -2379,6 +2460,77 @@ async function initTinyMCE() {
                 margin: 16px 0 !important; 
                 border-radius: 8px !important;
             }
+            .checklist-item-wrapper {
+                display: flex !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
+                gap: 12px !important;
+                margin: 8px 0 !important;
+                padding: 10px 12px !important;
+                background: rgba(174, 252, 110, 0.05) !important;
+                border-radius: 10px !important;
+                border: 1px solid rgba(174, 252, 110, 0.15) !important;
+                transition: all 0.2s ease !important;
+                line-height: 1.5 !important;
+            }
+            .checklist-item-wrapper:hover {
+                background: rgba(174, 252, 110, 0.08) !important;
+                border-color: rgba(174, 252, 110, 0.25) !important;
+            }
+            .checklist-checkbox-ios {
+                width: 20px !important;
+                height: 20px !important;
+                min-width: 20px !important;
+                max-width: 20px !important;
+                cursor: pointer !important;
+                appearance: none !important;
+                -webkit-appearance: none !important;
+                -moz-appearance: none !important;
+                background: #ffffff !important;
+                border: 2px solid #aefc6e !important;
+                border-radius: 6px !important;
+                transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+                position: relative !important;
+                flex-shrink: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .checklist-checkbox-ios:hover {
+                transform: scale(1.1) !important;
+                box-shadow: 0 0 8px rgba(174, 252, 110, 0.3) !important;
+            }
+            .checklist-checkbox-ios:active {
+                transform: scale(0.95) !important;
+            }
+            .checklist-checkbox-ios:checked {
+                background: #aefc6e !important;
+                border-color: #aefc6e !important;
+            }
+            .checklist-checkbox-ios:checked::after {
+                content: '✓' !important;
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                color: #000 !important;
+                font-weight: bold !important;
+                font-size: 12px !important;
+                line-height: 1 !important;
+            }
+            .checklist-text-ios {
+                flex: 1 !important;
+                line-height: 1.5 !important;
+                color: inherit !important;
+                transition: all 0.2s ease !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                word-break: break-word !important;
+            }
+            .checklist-checkbox-ios:checked ~ .checklist-text-ios {
+                text-decoration: line-through !important;
+                opacity: 0.6 !important;
+                color: #999 !important;
+            }
         ` : `
             body { 
                 line-height: 1.6; 
@@ -2421,6 +2573,77 @@ async function initTinyMCE() {
             th {
                 background: var(--bg-secondary);
                 font-weight: 600;
+            }
+            .checklist-item-wrapper {
+                display: flex !important;
+                justify-content: flex-start !important;
+                align-items: center !important;
+                gap: 12px !important;
+                margin: 8px 0 !important;
+                padding: 10px 12px !important;
+                background: rgba(174, 252, 110, 0.05) !important;
+                border-radius: 10px !important;
+                border: 1px solid rgba(174, 252, 110, 0.15) !important;
+                transition: all 0.2s ease !important;
+                line-height: 1.5 !important;
+            }
+            .checklist-item-wrapper:hover {
+                background: rgba(174, 252, 110, 0.08) !important;
+                border-color: rgba(174, 252, 110, 0.25) !important;
+            }
+            .checklist-checkbox-ios {
+                width: 20px !important;
+                height: 20px !important;
+                min-width: 20px !important;
+                max-width: 20px !important;
+                cursor: pointer !important;
+                appearance: none !important;
+                -webkit-appearance: none !important;
+                -moz-appearance: none !important;
+                background: #ffffff !important;
+                border: 2px solid #aefc6e !important;
+                border-radius: 6px !important;
+                transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+                position: relative !important;
+                flex-shrink: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .checklist-checkbox-ios:hover {
+                transform: scale(1.1) !important;
+                box-shadow: 0 0 8px rgba(174, 252, 110, 0.3) !important;
+            }
+            .checklist-checkbox-ios:active {
+                transform: scale(0.95) !important;
+            }
+            .checklist-checkbox-ios:checked {
+                background: #aefc6e !important;
+                border-color: #aefc6e !important;
+            }
+            .checklist-checkbox-ios:checked::after {
+                content: '✓' !important;
+                position: absolute !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                color: #000 !important;
+                font-weight: bold !important;
+                font-size: 12px !important;
+                line-height: 1 !important;
+            }
+            .checklist-text-ios {
+                flex: 1 !important;
+                line-height: 1.5 !important;
+                color: inherit !important;
+                transition: all 0.2s ease !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                word-break: break-word !important;
+            }
+            .checklist-checkbox-ios:checked ~ .checklist-text-ios {
+                text-decoration: line-through !important;
+                opacity: 0.6 !important;
+                color: #999 !important;
             }
         `,
             // Настройки для таблиц
@@ -2489,6 +2712,11 @@ async function initTinyMCE() {
             forced_root_block_attrs: {
                 'style': 'text-align: left;'
             },
+            
+            // Разрешаем input[checkbox] и data-checked для чеклистов
+            extended_valid_elements: 'input[type|checked|data-checked|class|style],span[class|style],p[class|style]',
+            custom_elements: '~input',
+            verify_html: false,
             
             // Настройки для пасты (базовые)
             paste_data_images: true,
@@ -2583,11 +2811,42 @@ async function initTinyMCE() {
             content_style: `
                 body {
                     background: transparent !important;
+                    font-size: 16px !important;
                     line-height: 1.6 !important;
                     margin: 0 !important;
                     padding: 16px !important;
                     min-height: 300px !important;
                     text-align: left !important;
+                    direction: ltr !important;
+                }
+                
+                /* Стили для чеклиста */
+                .checklist-item-wrapper {
+                    display: flex !important;
+                    justify-content: flex-start !important;
+                    align-items: center !important;
+                    gap: 12px !important;
+                    margin: 8px 0 !important;
+                    padding: 10px 12px !important;
+                    background: rgba(174, 252, 110, 0.05) !important;
+                    border-radius: 10px !important;
+                    border: 1px solid rgba(174, 252, 110, 0.15) !important;
+                    direction: ltr !important;
+                    text-align: left !important;
+                }
+                
+                .checklist-text-content {
+                    flex: 0 1 auto !important;
+                    direction: ltr !important;
+                    text-align: left !important;
+                    unicode-bidi: normal !important;
+                    writing-mode: horizontal-tb !important;
+                }
+                
+                .checklist-checkbox-ios {
+                    flex-shrink: 0 !important;
+                    width: 20px !important;
+                    height: 20px !important;
                 }
                 
                 /* Выравнивание по умолчанию для элементов без явного выравнивания */
@@ -2736,10 +2995,83 @@ async function initTinyMCE() {
                     background: rgba(0, 0, 0, 0.1) !important;
                     color: #212529 !important;
                 }
+                
+                /* Чеклист */
+                body .checklist-item-wrapper {
+                    display: flex !important;
+                    justify-content: flex-start !important;
+                    align-items: center !important;
+                    gap: 12px !important;
+                    margin: 8px 0 !important;
+                    padding: 10px 12px !important;
+                    background: rgba(174, 252, 110, 0.05) !important;
+                    border-radius: 10px !important;
+                    border: 1px solid rgba(174, 252, 110, 0.15) !important;
+                    transition: all 0.2s ease !important;
+                    line-height: 1.5 !important;
+                }
+                body .checklist-item-wrapper:hover {
+                    background: rgba(174, 252, 110, 0.08) !important;
+                    border-color: rgba(174, 252, 110, 0.25) !important;
+                }
+                body .checklist-checkbox-ios {
+                    width: 20px !important;
+                    height: 20px !important;
+                    min-width: 20px !important;
+                    max-width: 20px !important;
+                    cursor: pointer !important;
+                    appearance: none !important;
+                    -webkit-appearance: none !important;
+                    -moz-appearance: none !important;
+                    background: #ffffff !important;
+                    border: 2px solid #aefc6e !important;
+                    border-radius: 6px !important;
+                    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+                    position: relative !important;
+                    flex-shrink: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                }
+                body .checklist-checkbox-ios:hover {
+                    transform: scale(1.1) !important;
+                    box-shadow: 0 0 8px rgba(174, 252, 110, 0.3) !important;
+                }
+                body .checklist-checkbox-ios:active {
+                    transform: scale(0.95) !important;
+                }
+                body .checklist-checkbox-ios:checked {
+                    background: #aefc6e !important;
+                    border-color: #aefc6e !important;
+                }
+                body .checklist-checkbox-ios:checked::after {
+                    content: '✓' !important;
+                    position: absolute !important;
+                    top: 50% !important;
+                    left: 50% !important;
+                    transform: translate(-50%, -50%) !important;
+                    color: #000 !important;
+                    font-weight: bold !important;
+                    font-size: 12px !important;
+                    line-height: 1 !important;
+                }
+                body .checklist-text-ios {
+                    flex: 1 !important;
+                    line-height: 1.5 !important;
+                    color: inherit !important;
+                    transition: all 0.2s ease !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    word-break: break-word !important;
+                }
+                body .checklist-checkbox-ios:checked ~ .checklist-text-ios {
+                    text-decoration: line-through !important;
+                    opacity: 0.6 !important;
             `,
             
             // Добавляем обработку ошибок
             init_instance_callback: function (editor) {
+                // Assign the editor to the global variable
+                tinymceEditor = editor;
                 
                 // Принудительно применяем стили темы
                 setTimeout(() => {
@@ -2766,6 +3098,157 @@ async function initTinyMCE() {
                     
                     // Отключаем все всплывающие подсказки
                     // disableAllTooltips(editor); // Закомментировано для восстановления подсказок
+                    
+                    // Синхронизируем data-checked при клике на чекбоксы внутри редактора
+                    const editorBody = editor.getBody();
+                    if (editorBody) {
+                        editorBody.addEventListener('change', function(e) {
+                            if (e.target && (e.target.classList.contains('checklist-checkbox-ios') || e.target.classList.contains('checklist-checkbox') || e.target.type === 'checkbox')) {
+                                e.target.setAttribute('data-checked', e.target.checked ? 'true' : 'false');
+                                const textSpan = e.target.closest('.checklist-item-wrapper')?.querySelector('.checklist-text-content') || e.target.closest('.checklist-item')?.querySelector('.checklist-text');
+                                if (textSpan) textSpan.classList.toggle('checklist-done', e.target.checked);
+                            }
+                        });
+                        
+                        // Обработчик для клика - устанавливаем курсор в textSpan
+                        editorBody.addEventListener('mousedown', function(e) {
+                            const target = e.target;
+                            const checklistWrapper = target.closest('.checklist-item-wrapper');
+                            
+                            // Не вмешиваемся, если пользователь выделяет текст (shift+click или drag)
+                            if (e.shiftKey) {
+                                return;
+                            }
+                            
+                            if (checklistWrapper && !target.classList.contains('checklist-checkbox-ios')) {
+                                const textSpan = checklistWrapper.querySelector('.checklist-text-content');
+                                if (textSpan && target !== textSpan && !textSpan.contains(target)) {
+                                    e.preventDefault();
+                                    setTimeout(() => {
+                                        const range = editor.dom.createRng();
+                                        if (textSpan.firstChild) {
+                                            const textNode = textSpan.firstChild;
+                                            const offset = textNode.nodeType === 3 ? textNode.length : 0;
+                                            range.setStart(textNode, offset);
+                                            range.setEnd(textNode, offset);
+                                        } else {
+                                            range.setStart(textSpan, 0);
+                                            range.setEnd(textSpan, 0);
+                                        }
+                                        editor.selection.setRng(range);
+                                        editor.focus();
+                                    }, 0);
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Обработчик для автоматического перемещения курсора в чеклистах
+                    editor.on('NodeChange', function(e) {
+                        const selection = editor.selection;
+                        const node = selection.getNode();
+                        const checklistWrapper = node.closest('.checklist-item-wrapper');
+                        
+                        if (checklistWrapper) {
+                            // Проверяем, есть ли активное выделение текста
+                            const rng = selection.getRng();
+                            const hasSelection = rng && !rng.collapsed;
+                            
+                            // Если есть выделение, не трогаем курсор - пользователь форматирует текст
+                            if (hasSelection) {
+                                return;
+                            }
+                            
+                            const textSpan = checklistWrapper.querySelector('.checklist-text-content');
+                            const checkbox = checklistWrapper.querySelector('.checklist-checkbox-ios');
+                            
+                            // Если курсор находится в wrapper или в чекбоксе, но не в textSpan, перемещаем его
+                            if (textSpan && node !== textSpan && !textSpan.contains(node)) {
+                                // Проверяем, не находится ли курсор в чекбоксе
+                                if (node !== checkbox && !checkbox.contains(node)) {
+                                    const range = editor.dom.createRng();
+                                    // Если в textSpan есть текст, ставим курсор в конец
+                                    if (textSpan.firstChild) {
+                                        const textNode = textSpan.firstChild;
+                                        const offset = textNode.nodeType === 3 ? textNode.length : 0;
+                                        range.setStart(textNode, offset);
+                                        range.setEnd(textNode, offset);
+                                    } else {
+                                        // Если textSpan пустой, ставим курсор в начало
+                                        range.setStart(textSpan, 0);
+                                        range.setEnd(textSpan, 0);
+                                    }
+                                    editor.selection.setRng(range);
+                                }
+                            }
+                        }
+                    });
+                    
+                    // Дополнительный обработчик для перемещения текста из неправильных мест
+                    editor.on('input', function(e) {
+                        setTimeout(() => {
+                            const body = editor.getBody();
+                            const wrappers = body.querySelectorAll('.checklist-item-wrapper');
+                            
+                            wrappers.forEach(wrapper => {
+                                const textSpan = wrapper.querySelector('.checklist-text-content');
+                                const checkbox = wrapper.querySelector('.checklist-checkbox-ios');
+                                
+                                if (textSpan && checkbox) {
+                                    // Проверяем, есть ли текст вне textSpan
+                                    const childNodes = Array.from(wrapper.childNodes);
+                                    let textBeforeCheckbox = '';
+                                    let textAfterCheckbox = '';
+                                    let nodesToRemove = [];
+                                    let foundCheckbox = false;
+                                    
+                                    childNodes.forEach(node => {
+                                        if (node === checkbox) {
+                                            foundCheckbox = true;
+                                        } else if (node !== textSpan) {
+                                            if (node.nodeType === 3 && node.textContent) {
+                                                // Текстовый узел вне textSpan
+                                                if (!foundCheckbox) {
+                                                    textBeforeCheckbox += node.textContent;
+                                                } else {
+                                                    textAfterCheckbox += node.textContent;
+                                                }
+                                                nodesToRemove.push(node);
+                                            }
+                                        }
+                                    });
+                                    
+                                    // Если нашли текст вне textSpan, перемещаем его
+                                    if (textBeforeCheckbox || textAfterCheckbox) {
+                                        // Получаем текущий текст из textSpan
+                                        const currentText = textSpan.textContent || '';
+                                        
+                                        // Объединяем: текст до чекбокса + текущий текст + текст после чекбокса
+                                        const newText = textBeforeCheckbox + currentText + textAfterCheckbox;
+                                        
+                                        // Устанавливаем новый текст
+                                        textSpan.textContent = newText;
+                                        
+                                        // Удаляем старые текстовые узлы
+                                        nodesToRemove.forEach(node => node.remove());
+                                        
+                                        // Устанавливаем курсор в конец textSpan
+                                        const range = editor.dom.createRng();
+                                        if (textSpan.firstChild) {
+                                            const textNode = textSpan.firstChild;
+                                            const offset = textNode.nodeType === 3 ? textNode.length : 0;
+                                            range.setStart(textNode, offset);
+                                            range.setEnd(textNode, offset);
+                                        } else {
+                                            range.setStart(textSpan, 0);
+                                            range.setEnd(textSpan, 0);
+                                        }
+                                        editor.selection.setRng(range);
+                                    }
+                                }
+                            });
+                        }, 0);
+                    });
                 }, 100);
                 
                 // Добавляем обработчики для диалогов
@@ -2907,6 +3390,23 @@ async function initTinyMCE() {
                     }
                 });
 
+                // Регистрируем текстовую кнопку для чеклиста
+                editor.ui.registry.addButton('checklist', {
+                    text: t('checklistButton') || (currentLang.startsWith("ru") ? '☑ Список' : '☑ Checklist'),
+                    tooltip: currentLang.startsWith("ru") ? 'Добавить пункт чеклиста' : 'Insert checklist item',
+                    onAction: function() {
+                        insertChecklistItem(editor);
+                    }
+                });
+            }
+        });
+        return true;
+    } catch (error) {
+        console.error('Error initializing TinyMCE:', error);
+        return false;
+    }
+}
+
             /* ============================================
    ИСПРАВЛЕНИЕ: СОХРАНЕНИЕ ФОРМАТИРОВАНИЯ ПРИ ПЕРЕНОСЕ СТРОК
    ============================================ */
@@ -2942,59 +3442,58 @@ async function initTinyMCE() {
         
         // 2. Получаем текущее форматирование из выделения
         function getCurrentFormat() {
-            const selection = editorDoc.getSelection();
-            if (!selection.rangeCount) return currentFormat;
+            if (!tinymceEditor) return currentFormat;
             
-            const range = selection.getRangeAt(0);
-            let container = range.startContainer;
+            // Используем TinyMCE API для получения форматирования
+            const queryCommandState = (cmd) => {
+                try {
+                    return tinymceEditor.queryCommandState(cmd);
+                } catch (e) {
+                    return false;
+                }
+            };
             
-            if (container.nodeType === Node.TEXT_NODE) {
-                container = container.parentElement;
-            }
-            
-            // Проверяем inline стили
-            const styles = window.getComputedStyle(container);
+            const queryCommandValue = (cmd) => {
+                try {
+                    return tinymceEditor.queryCommandValue(cmd);
+                } catch (e) {
+                    return null;
+                }
+            };
             
             return {
-                isBold: styles.fontWeight === 'bold' || parseInt(styles.fontWeight) >= 600,
-                isItalic: styles.fontStyle === 'italic',
-                isUnderline: styles.textDecoration.includes('underline'),
-                isStrikethrough: styles.textDecoration.includes('line-through'),
-                fontFamily: styles.fontFamily,
-                fontSize: styles.fontSize,
-                textColor: styles.color,
-                backgroundColor: styles.backgroundColor
+                isBold: queryCommandState('bold'),
+                isItalic: queryCommandState('italic'),
+                isUnderline: queryCommandState('underline'),
+                isStrikethrough: queryCommandState('strikethrough'),
+                fontFamily: queryCommandValue('fontname') || 'inherit',
+                fontSize: queryCommandValue('fontsize') || '16px',
+                textColor: queryCommandValue('forecolor') || 'rgb(0, 0, 0)',
+                backgroundColor: queryCommandValue('backcolor') || 'rgba(0, 0, 0, 0)'
             };
         }
         
-        // 3. Применяем форматирование к новому элементу
+        // 3. Применяем форматирование к новому элементу через CSS стили
         function applyFormatToElement(element, format) {
+            if (!element) return;
+            
+            // Применяем форматирование напрямую через стили
+            // Для bold и italic используем CSS, а не HTML теги
             if (format.isBold) {
-                const strong = editorDoc.createElement('strong');
-                element.parentNode?.insertBefore(strong, element);
-                strong.appendChild(element);
-                element = strong;
+                element.style.fontWeight = 'bold';
             }
             
             if (format.isItalic) {
-                const em = editorDoc.createElement('em');
-                element.parentNode?.insertBefore(em, element);
-                em.appendChild(element);
-                element = em;
+                element.style.fontStyle = 'italic';
             }
             
             if (format.isUnderline) {
-                const u = editorDoc.createElement('u');
-                element.parentNode?.insertBefore(u, element);
-                u.appendChild(element);
-                element = u;
+                element.style.textDecoration = 'underline';
             }
             
             if (format.isStrikethrough) {
-                const strike = editorDoc.createElement('strike');
-                element.parentNode?.insertBefore(strike, element);
-                strike.appendChild(element);
-                element = strike;
+                const currentDecoration = element.style.textDecoration || 'none';
+                element.style.textDecoration = currentDecoration === 'none' ? 'line-through' : currentDecoration + ' line-through';
             }
             
             if (format.fontFamily && format.fontFamily !== 'inherit') {
@@ -3012,17 +3511,17 @@ async function initTinyMCE() {
             if (format.backgroundColor && format.backgroundColor !== 'rgba(0, 0, 0, 0)') {
                 element.style.backgroundColor = format.backgroundColor;
             }
-            
-            return element;
         }
         
-        // 4. Обработка нажатия Enter
+        // 4. Обработка нажатия Enter в чеклисте
         editorBody.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
-                // Сохраняем форматирование перед созданием новой строки
+                // Проверяем, инициализирован ли редактор
+                if (!tinymceEditor || tinymceEditor.destroyed) return;
+                
+                // Сохраняем форматирование ДО всех операций
                 currentFormat = getCurrentFormat();
                 
-                // Сохраняем текущий элемент
                 const selection = editorDoc.getSelection();
                 if (selection.rangeCount) {
                     const range = selection.getRangeAt(0);
@@ -3032,30 +3531,74 @@ async function initTinyMCE() {
                         currentNode = currentNode.parentElement;
                     }
                     
-                    // Находим ближайший блок
-                    while (currentNode && !['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI'].includes(currentNode.tagName)) {
-                        currentNode = currentNode.parentElement;
-                    }
-                    
-                    if (currentNode && currentNode.tagName !== 'P') {
-                        // Если не параграф, создаём новый параграф с форматированием
+                    // Проверяем, находимся ли мы в чеклисте
+                    const checklistWrapper = currentNode.closest('.checklist-item-wrapper');
+                    if (checklistWrapper) {
+                        const textSpan = checklistWrapper.querySelector('.checklist-text-content');
+                        const textContent = textSpan ? textSpan.textContent.trim() : '';
+                        
+                        // Если пункт пуст (только пробелы/переносы), удаляем его и выходим из режима чеклиста
+                        // Но ТОЛЬКО если курсор в начале span (startOffset === 0)
+                        // Если пункт пуст, удаляем его и выходим из режима чеклиста
+                        if (textContent === '' && range.startOffset === 0 && range.startContainer === textSpan) {
+                            e.preventDefault();
+                            
+                            const parentNode = checklistWrapper.parentNode;
+                            const nextSibling = checklistWrapper.nextSibling;
+                            
+                            // Удаляем весь wrapper
+                            checklistWrapper.remove();
+                            
+                            // Теперь вставляем новый параграф ПОСЛЕ удаления на место удалённого элемента
+                            const newP = editorDoc.createElement('p');
+                            newP.innerHTML = '<br>';
+                            parentNode.insertBefore(newP, nextSibling);
+                            
+                            // Применяем сохранённое форматирование к новому параграфу
+                            applyFormatToElement(newP, currentFormat);
+                            
+                            // Устанавливаем курсор в новый параграф
+                            setTimeout(() => {
+                                const newRange = editorDoc.createRange();
+                                newRange.setStart(newP, 0);
+                                newRange.setEnd(newP, 0);
+                                selection.removeAllRanges();
+                                selection.addRange(newRange);
+                                tinymceEditor.focus();
+                            }, 10);
+                            return;
+                        }
+                        
+                        // Если текст не пуст, создаём новый пункт чеклиста
+                        e.preventDefault();
+                        
+                        const newChecklistHTML = '<div class="checklist-item-wrapper"><input type="checkbox" class="checklist-checkbox-ios" data-checked="false"><span class="checklist-text-content"></span></div>';
+                        const newDiv = editorDoc.createElement('div');
+                        newDiv.innerHTML = newChecklistHTML;
+                        const newChecklistElement = newDiv.firstChild;
+                        
+                        checklistWrapper.parentNode.insertBefore(newChecklistElement, checklistWrapper.nextSibling);
+                        
                         setTimeout(() => {
-                            const newSelection = editorDoc.getSelection();
-                            if (newSelection.rangeCount) {
-                                const newRange = newSelection.getRangeAt(0);
-                                let newElement = newRange.startContainer;
+                            const newSpan = newChecklistElement.querySelector('.checklist-text-content');
+                            if (newSpan) {
+                                // Применяем форматирование к новому пункту чеклиста
+                                applyFormatToElement(newSpan, currentFormat);
                                 
-                                if (newElement.nodeType === Node.TEXT_NODE) {
-                                    newElement = newElement.parentElement;
-                                }
-                                
-                                if (newElement && newElement.tagName === 'P') {
-                                    applyFormatToElement(newElement, currentFormat);
-                                }
+                                const newRange = editorDoc.createRange();
+                                newRange.setStart(newSpan, 0);
+                                newRange.setEnd(newSpan, 0);
+                                selection.removeAllRanges();
+                                selection.addRange(newRange);
+                                tinymceEditor.focus();
                             }
                         }, 10);
+                        return;
                     }
                 }
+                
+                // Для обычных параграфов - TinyMCE сам обработает Enter
+                // Но мы сохраняем форматирование для применения после
             }
         });
         
@@ -3064,13 +3607,25 @@ async function initTinyMCE() {
         
         // Отслеживаем изменения в DOM
         const observer = new MutationObserver(function(mutations) {
-            if (isApplyingHeader) return;
+            if (isApplyingHeader || !tinymceEditor || tinymceEditor.destroyed) return;
             
             mutations.forEach(function(mutation) {
                 if (mutation.type === 'childList' && mutation.addedNodes.length) {
                     mutation.addedNodes.forEach(function(node) {
                         if (node.nodeType === Node.ELEMENT_NODE) {
+                            // Удаляем пустые параграфы, которые создаёт TinyMCE после Enter в чеклисте
+                            // Удаляем пустые параграфы после Enter в чеклисте
+                            if (node.tagName === 'P' && (node.innerHTML === '<br>' || node.innerHTML === '' || node.textContent.trim() === '')) {
+                                const prevNode = node.previousElementSibling;
+                                if (prevNode && prevNode.classList.contains('checklist-item-wrapper')) {
+                                    // Удаляем пустой параграф после чеклиста
+                                    node.remove();
+                                    return;
+                                }
+                            }
+                            
                             // Проверяем, не является ли новый элемент заголовком
+                            // Применяем форматирование к заголовкам
                             if (['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(node.tagName)) {
                                 // Применяем сохранённое форматирование к заголовку
                                 if (currentFormat.fontSize || currentFormat.fontFamily || currentFormat.textColor) {
@@ -3107,6 +3662,7 @@ async function initTinyMCE() {
         const toolbar = document.querySelector('.tox-toolbar');
         if (toolbar) {
             toolbar.addEventListener('click', function() {
+                if (!tinymceEditor || tinymceEditor.destroyed) return;
                 // Обновляем текущее форматирование после клика по тулбару
                 setTimeout(() => {
                     currentFormat = getCurrentFormat();
@@ -3116,13 +3672,20 @@ async function initTinyMCE() {
         
         // 7. Сохраняем форматирование при выделении
         editorBody.addEventListener('mouseup', function() {
+            if (!tinymceEditor || tinymceEditor.destroyed) return;
             setTimeout(() => {
                 currentFormat = getCurrentFormat();
             }, 10);
         });
         
         editorBody.addEventListener('keyup', function(e) {
-            if (e.key !== 'Enter') {
+            if (!tinymceEditor || tinymceEditor.destroyed) return;
+            if (e.key === 'Enter') {
+                // После Enter обновляем форматирование для следующей строки
+                setTimeout(() => {
+                    currentFormat = getCurrentFormat();
+                }, 50);
+            } else {
                 setTimeout(() => {
                     currentFormat = getCurrentFormat();
                 }, 10);
@@ -3133,6 +3696,7 @@ async function initTinyMCE() {
         const headerButtons = document.querySelectorAll('.tox-tbtn[aria-label*="Heading"], .tox-tbtn[aria-label*="Заголовок"], .tox-tbtn[aria-label*="Format"]');
         headerButtons.forEach(btn => {
             btn.addEventListener('click', function() {
+                if (!tinymceEditor || tinymceEditor.destroyed) return;
                 setTimeout(() => {
                     const selection = editorDoc.getSelection();
                     if (selection.rangeCount) {
@@ -3170,13 +3734,56 @@ async function initTinyMCE() {
         // 9. Предотвращаем сброс при использовании Backspace
         editorBody.addEventListener('keydown', function(e) {
             if (e.key === 'Backspace') {
+                // Проверяем, инициализирован ли редактор
+                if (!tinymceEditor || tinymceEditor.destroyed) return;
+                
                 const selection = editorDoc.getSelection();
                 if (selection.rangeCount) {
                     const range = selection.getRangeAt(0);
                     let container = range.startContainer;
                     
-                    if (container.nodeType === Node.TEXT_NODE && container.textContent === '') {
+                    if (container.nodeType === Node.TEXT_NODE) {
                         container = container.parentElement;
+                    }
+                    
+                    // Проверяем, находимся ли мы в чеклисте
+                    const checklistWrapper = container.closest('.checklist-item-wrapper');
+                    if (checklistWrapper) {
+                        const textSpan = checklistWrapper.querySelector('.checklist-text-content');
+                        
+                        // Если текст пуст и курсор в начале, удаляем пункт чеклиста
+                        if (textSpan && textSpan.textContent.trim() === '' && range.startOffset === 0) {
+                            e.preventDefault();
+                            
+                            // Сохраняем следующий элемент перед удалением
+                            const nextSibling = checklistWrapper.nextElementSibling;
+                            
+                            // Удаляем пункт чеклиста
+                            checklistWrapper.remove();
+                            
+                            // Если есть следующий элемент, устанавливаем курсор в него
+                            if (nextSibling) {
+                                if (nextSibling.classList.contains('checklist-item-wrapper')) {
+                                    // Если это чеклист, ставим курсор в его текст
+                                    const nextSpan = nextSibling.querySelector('.checklist-text-content');
+                                    if (nextSpan) {
+                                        const newRange = editorDoc.createRange();
+                                        newRange.setStart(nextSpan, 0);
+                                        newRange.setEnd(nextSpan, 0);
+                                        selection.removeAllRanges();
+                                        selection.addRange(newRange);
+                                    }
+                                } else {
+                                    // Если это обычный параграф, ставим курсор в начало
+                                    const newRange = editorDoc.createRange();
+                                    newRange.setStart(nextSibling, 0);
+                                    newRange.setEnd(nextSibling, 0);
+                                    selection.removeAllRanges();
+                                    selection.addRange(newRange);
+                                }
+                            }
+                            return;
+                        }
                     }
                     
                     if (container && container.tagName === 'P' && container.textContent === '') {
@@ -3191,77 +3798,13 @@ async function initTinyMCE() {
         
         // 10. Сохраняем форматирование при потере фокуса
         editorBody.addEventListener('blur', function() {
+            if (!tinymceEditor || tinymceEditor.destroyed) return;
             currentFormat = getCurrentFormat();
         });
         
-        
+
     }, 1000);
 })();
-                
-                // Обработка ошибок инициализации
-            editor.on('init', function() {
-                    
-                    // Проверяем доступность редактора
-                    if (!editor.getContainer()) {
-                        return;
-                    }
-                    
-                
-                
-                
-                // Исправляем z-index для всех плавающих элементов
-                const observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.type === 'childList') {
-                            mutation.addedNodes.forEach(function(node) {
-                                if (node.nodeType === 1) { // Element node
-                                    if (node.classList && node.classList.contains('tox-pop')) {
-                                        node.style.zIndex = '10000';
-                                    }
-                                    // Проверяем дочерние элементы
-                                    const floatingElements = node.querySelectorAll('.tox-pop, .tox-collection, .tox-dialog');
-                                    floatingElements.forEach(el => {
-                                        el.style.zIndex = '10000';
-                                    });
-                                }
-                            });
-                        }
-                    });
-                });
-                
-                    observer.observe(document.body, {
-                        childList: true,
-                        subtree: true
-                    });
-                    
-                    // Применяем адаптивные стили меню после инициализации
-                    setTimeout(() => {
-                    }, 300);
-                    
-                    // Добавляем обработчик для изменения системной темы
-                    if (window.matchMedia) {
-                        const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
-                        mediaQuery.addEventListener('change', function(e) {
-                            // Reapply theme when system theme changes
-                            if (document.documentElement.getAttribute('data-theme') === 'auto') {
-                                applyThemeToTinyMCE();
-                            }
-                        });
-                    }
-                });
-                
-                
-                // Сохраняем ссылку на редактор
-                tinymceEditor = editor;
-            }
-        });
-    
-    return true;
-    } catch (error) {
-        console.error('Error initializing TinyMCE:', error);
-        return false;
-    }
-}
 
 function openModal(noteId, noteContent, noteCreationTime) {
     const modal = document.getElementById("editModal");
@@ -3302,8 +3845,8 @@ function openModal(noteId, noteContent, noteCreationTime) {
     
     tryInitTinyMCE().then(result => {
         if (!result) {
-        return;
-    }
+            return;
+        }
     });
 
     // Ждем полной инициализации редактора
@@ -3345,7 +3888,9 @@ function openModal(noteId, noteContent, noteCreationTime) {
             try {
                 if (noteId && noteContent) {
         // Валидируем и исправляем изображения перед загрузкой в редактор
-        const validatedContent = validateAndFixImages(noteContent);
+        let validatedContent = validateAndFixImages(noteContent);
+        // Исправляем структуру чеклистов
+        validatedContent = fixChecklistStructure(validatedContent);
         tinymceEditor.setContent(validatedContent);
         currentNoteId = noteId;
         
@@ -3481,6 +4026,20 @@ function showConfirmModal(message, onConfirm) {
     };
 }
 
+// Функция для подсчёта прогресса чеклиста в HTML-контенте
+function getChecklistProgress(htmlContent) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, 'text/html');
+    const checkboxes = doc.querySelectorAll('.checklist-checkbox, input[type="checkbox"]');
+    if (checkboxes.length === 0) return null;
+    let checked = 0;
+    checkboxes.forEach(cb => {
+        // Полагаемся только на data-checked — это единственный надёжный источник после сериализации HTML
+        if (cb.getAttribute('data-checked') === 'true') checked++;
+    });
+    return { total: checkboxes.length, checked };
+}
+
 async function loadNotes() {
     const viewer = document.querySelector(".btn_view_div");
     const notesContainer = document.getElementById("notesContainer");
@@ -3510,6 +4069,9 @@ async function loadNotes() {
         notes.forEach((note) => {
             const noteElement = document.createElement("div");
             noteElement.classList.add("note");
+            // Сохраняем id и время создания для быстрого редактирования
+            noteElement.dataset.noteId = note.id;
+            noteElement.dataset.noteCreationTime = note.creationTime;
 
             // Создаем хедер заметки
             const footer = document.createElement("div");
@@ -3567,6 +4129,82 @@ async function loadNotes() {
         notePreview.classList.add("noteContent");
             notePreview.innerHTML = note.content;
             
+            // Добавляем прогресс-бар чеклиста если есть пункты
+            const progress = getChecklistProgress(note.content);
+            if (progress) {
+                const progressContainer = document.createElement("div");
+                progressContainer.classList.add("checklist-progress");
+                const pct = progress.total > 0 ? Math.round((progress.checked / progress.total) * 100) : 0;
+                const actualLangProg = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : currentLang;
+                const doneLabel = window.langData?.[actualLangProg]?.checklistDone || window.translations?.[actualLangProg]?.checklistDone || 'done';
+                progressContainer.innerHTML = `
+                    <div class="checklist-progress-header">
+                        <span class="checklist-progress-label">☑ ${progress.checked}/${progress.total} ${doneLabel}</span>
+                        <span class="checklist-progress-pct">${pct}%</span>
+                    </div>
+                    <div class="checklist-progress-bar-track">
+                        <div class="checklist-progress-bar-fill" style="width:${pct}%"></div>
+                    </div>
+                `;
+                // Вставляем прогресс-бар сразу после note-footer
+                const noteFooterEl = noteElement.querySelector('.note-footer');
+                if (noteFooterEl && noteFooterEl.nextSibling) {
+                    noteElement.insertBefore(progressContainer, noteFooterEl.nextSibling);
+                } else {
+                    noteElement.appendChild(progressContainer);
+                }
+            }
+            
+            // Делаем чекбоксы интерактивными в карточке
+            notePreview.querySelectorAll('.checklist-checkbox, input[type="checkbox"]').forEach(cb => {
+                // Восстанавливаем состояние из data-checked при загрузке
+                if (cb.getAttribute('data-checked') === 'true') {
+                    cb.checked = true;
+                    // Зачёркиваем текст сразу
+                    const textSpan = cb.closest('.checklist-item')?.querySelector('.checklist-text');
+                    if (textSpan) textSpan.classList.add('checklist-done');
+                }
+
+                cb.addEventListener('change', async function() {
+                    const isChecked = cb.checked;
+                    // 1. Обновляем data-checked в DOM
+                    cb.setAttribute('data-checked', isChecked ? 'true' : 'false');
+
+                    // 2. Зачёркиваем/снимаем зачёркивание текста
+                    const textSpan = cb.closest('.checklist-item')?.querySelector('.checklist-text');
+                    if (textSpan) textSpan.classList.toggle('checklist-done', isChecked);
+
+                    // 3. Сохраняем обновлённый HTML в IndexedDB
+                    const updatedContent = notePreview.innerHTML;
+                    const timestamp = Date.now();
+                    try {
+                        await notesDB.saveNote({
+                            id: note.id,
+                            content: updatedContent,
+                            creationTime: note.creationTime,
+                            lastModified: timestamp,
+                            title: notesDB.extractTitle(updatedContent)
+                        });
+
+                        // 4. Обновляем прогресс-бар без перезагрузки всех заметок
+                        const newProgress = getChecklistProgress(updatedContent);
+                        if (newProgress) {
+                            const pctNew = newProgress.total > 0 ? Math.round((newProgress.checked / newProgress.total) * 100) : 0;
+                            const fill = noteElement.querySelector('.checklist-progress-bar-fill');
+                            const pctEl = noteElement.querySelector('.checklist-progress-pct');
+                            const labelEl = noteElement.querySelector('.checklist-progress-label');
+                            const actualLangUpd = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : currentLang;
+                            const doneLabelUpd = window.translations?.[actualLangUpd]?.checklistDone || 'done';
+                            if (fill) fill.style.width = pctNew + '%';
+                            if (pctEl) pctEl.textContent = pctNew + '%';
+                            if (labelEl) labelEl.textContent = `☑ ${newProgress.checked}/${newProgress.total} ${doneLabelUpd}`;
+                        }
+                    } catch (err) {
+                        console.error('Error saving checklist state:', err);
+                    }
+                });
+            });
+            
             // Обрабатываем таблицы для адаптивности
             setTimeout(() => {
                 processTablesForResponsiveness(notePreview);
@@ -3617,15 +4255,15 @@ async function loadNotes() {
             const buttonsContainer = document.createElement("div");
             buttonsContainer.classList.add("note-buttons");
 
-            // Создаем кнопки
+        // Создаем кнопки
         const editButton = document.createElement("button");
-        editButton.innerHTML = `<i class="fas fa-edit"></i> ${t("edit")}`;
+        editButton.innerHTML = t("edit");
         editButton.classList.add("editBtn");
             editButton.onclick = () => openModal(note.id, note.content, note.creationTime);
 
         const deleteButton = document.createElement("button");
         deleteButton.classList.add("deleteBtn");
-        deleteButton.innerHTML = `<i class="fas fa-trash"></i> ${t("delete")}`;
+        deleteButton.innerHTML = t("delete");
             deleteButton.onclick = async () => {
                 noteElement.classList.add("removing");
                 setTimeout(async () => {
@@ -3645,7 +4283,7 @@ async function loadNotes() {
 
         const exportButton = document.createElement("button");
         exportButton.classList.add("exportBtn");
-        exportButton.innerHTML = `<i class="fas fa-download"></i> ${t("export")}`;
+        exportButton.innerHTML = t("export");
             exportButton.onclick = () => showExportOptions(note.content);
 
             // Добавляем кнопки в контейнер
@@ -3655,6 +4293,12 @@ async function loadNotes() {
 
             // Добавляем контейнер кнопок в заметку
             noteElement.appendChild(buttonsContainer);
+
+            // Если активен режим быстрого редактирования — включаем его на заметке
+            if (quickEditActive) {
+                enableQuickEditOnNote(noteElement);
+            }
+
             notesContainer.appendChild(noteElement);
         viewer.style.display = "";
     });
@@ -7281,6 +7925,97 @@ function insertCode() {
     }
 }
 
+// Функция для исправления структуры чеклистов после загрузки
+function fixChecklistStructure(content) {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = content;
+    
+    // Находим все чеклисты
+    const checklists = tempDiv.querySelectorAll('.checklist-item-wrapper');
+    checklists.forEach(wrapper => {
+        let checkbox = wrapper.querySelector('.checklist-checkbox-ios');
+        let textSpan = wrapper.querySelector('.checklist-text-content');
+        
+        // Собираем весь текст из wrapper, кроме checkbox и span
+        let textContent = '';
+        wrapper.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                textContent += node.textContent;
+            } else if (node !== checkbox && node !== textSpan) {
+                // Если есть другие элементы, берём их текст
+                if (node.textContent && !node.classList.contains('checklist-checkbox-ios') && !node.classList.contains('checklist-text-content')) {
+                    textContent += node.textContent;
+                }
+            }
+        });
+        
+        // Создаём недостающие элементы
+        if (!checkbox) {
+            checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'checklist-checkbox-ios';
+            checkbox.setAttribute('data-checked', 'false');
+        }
+        
+        if (!textSpan) {
+            textSpan = document.createElement('span');
+            textSpan.className = 'checklist-text-content';
+        }
+        
+        // Устанавливаем текст в span
+        if (textContent.trim()) {
+            textSpan.textContent = textContent.trim();
+        } else if (!textSpan.textContent) {
+            textSpan.textContent = '';
+        }
+        
+        // Очищаем wrapper и переупорядочиваем: чекбокс → текст
+        wrapper.innerHTML = '';
+        wrapper.appendChild(checkbox);
+        wrapper.appendChild(textSpan);
+    });
+    
+    return tempDiv.innerHTML;
+}
+function insertChecklistItem(editor) {
+    const ed = editor || tinymceEditor;
+    if (!ed) return;
+    
+    // Получаем body редактора
+    const body = ed.getBody();
+    
+    // Создаём новый div для чеклиста
+    const checklistDiv = body.ownerDocument.createElement('div');
+    checklistDiv.className = 'checklist-item-wrapper';
+    
+    // Создаём чекбокс (ПЕРВЫМ)
+    const checkbox = body.ownerDocument.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'checklist-checkbox-ios';
+    checkbox.setAttribute('data-checked', 'false');
+    
+    // Создаём span для текста (ВТОРЫМ)
+    const textSpan = body.ownerDocument.createElement('span');
+    textSpan.className = 'checklist-text-content';
+    textSpan.textContent = '';
+    
+    // Собираем структуру: чекбокс → текст
+    checklistDiv.appendChild(checkbox);
+    checklistDiv.appendChild(textSpan);
+    
+    // Вставляем в конец body
+    body.appendChild(checklistDiv);
+    
+    // Ставим курсор в span
+    setTimeout(() => {
+        const range = ed.dom.createRng();
+        range.setStart(textSpan, 0);
+        range.setEnd(textSpan, 0);
+        ed.selection.setRng(range);
+        ed.focus();
+    }, 50);
+}
+
 
 // Функция для тестирования модальных окон
 function testModals() {
@@ -9103,6 +9838,232 @@ function optimizeTableForMobile(table) {
 
 // ===== ОБРАБОТЧИКИ ДЛЯ ПЕРЕКЛЮЧЕНИЯ РЕЖИМОВ ОТОБРАЖЕНИЯ =====
 
+// ===== РЕЖИМ БЫСТРОГО РЕДАКТИРОВАНИЯ =====
+
+let quickEditActive = false;
+
+/**
+ * Включает/выключает режим быстрого редактирования для всех заметок
+ */
+function toggleQuickEditMode() {
+    quickEditActive = !quickEditActive;
+    localStorage.setItem('quickEditMode', quickEditActive ? '1' : '0');
+    applyQuickEditMode();
+}
+
+/**
+ * Применяет текущее состояние режима быстрого редактирования к UI
+ */
+function applyQuickEditMode() {
+    const btn = document.getElementById('quickEditToggle');
+    const notesContainer = document.getElementById('notesContainer');
+
+    if (quickEditActive) {
+        document.body.classList.add('quick-edit-active');
+        if (btn) {
+            btn.classList.add('active');
+            btn.innerHTML = `${t('quickEditOff') || 'Quick Edit: ON'}`;
+            btn.title = t('quickEditOffTitle') || 'Disable quick edit mode';
+        }
+        // Активируем редактирование на всех видимых заметках
+        notesContainer?.querySelectorAll('.note').forEach(noteEl => enableQuickEditOnNote(noteEl));
+    } else {
+        document.body.classList.remove('quick-edit-active');
+        if (btn) {
+            btn.classList.remove('active');
+            btn.innerHTML = `${t('quickEditOn') || 'Quick Edit'}`;
+            btn.title = t('quickEditOnTitle') || 'Enable quick edit mode';
+        }
+        // Деактивируем редактирование на всех заметках
+        notesContainer?.querySelectorAll('.note').forEach(noteEl => disableQuickEditOnNote(noteEl));
+    }
+}
+
+/**
+ * Включает быстрое редактирование на конкретной заметке
+ */
+function enableQuickEditOnNote(noteEl) {
+    const content = noteEl.querySelector('.noteContent');
+    if (!content || content.getAttribute('contenteditable') === 'true') return;
+
+    content.setAttribute('contenteditable', 'true');
+    content.setAttribute('spellcheck', 'true');
+    noteEl.classList.add('quick-edit-note');
+
+    // Показываем мини-тулбар если его ещё нет
+    if (!noteEl.querySelector('.quick-edit-bar')) {
+        const bar = document.createElement('div');
+        bar.className = 'quick-edit-bar';
+        bar.innerHTML = `
+            <span class="quick-edit-hint">${t('quickEditHint') || 'Quick edit'}</span>
+            <div class="quick-edit-actions">
+                <button class="quick-edit-save" title="${t('save') || 'Save'}">${t('save') || 'Save'}</button>
+                <button class="quick-edit-cancel" title="${t('cancel') || 'Cancel'}">${t('cancel') || 'Cancel'}</button>
+            </div>
+        `;
+        noteEl.appendChild(bar);
+
+        // Получаем id и creationTime из замыкания через data-атрибут
+        const noteId = noteEl.dataset.noteId;
+        const noteCreationTime = parseInt(noteEl.dataset.noteCreationTime, 10);
+        let originalContent = content.innerHTML;
+
+        // Сохранить
+        bar.querySelector('.quick-edit-save').addEventListener('click', async (e) => {
+            e.stopPropagation();
+            await saveQuickEdit(noteEl, content, noteId, noteCreationTime);
+            originalContent = content.innerHTML;
+            noteEl.classList.remove('quick-edit-dirty');
+        });
+
+        // Отмена
+        bar.querySelector('.quick-edit-cancel').addEventListener('click', (e) => {
+            e.stopPropagation();
+            content.innerHTML = originalContent;
+            noteEl.classList.remove('quick-edit-dirty');
+            
+            // Выходим из режима редактирования для этой заметки
+            disableQuickEditOnNote(noteEl);
+            
+            // Проверяем, остались ли еще заметки в режиме быстрого редактирования
+            const notesContainer = document.getElementById('notesContainer');
+            const activeQuickEditNotes = notesContainer?.querySelectorAll('.note.quick-edit-note');
+            
+            // Если больше нет активных заметок в режиме быстрого редактирования, сбрасываем кнопку
+            if (!activeQuickEditNotes || activeQuickEditNotes.length === 0) {
+                quickEditActive = false;
+                localStorage.setItem('quickEditMode', '0');
+                applyQuickEditMode();
+            }
+            
+            // Показываем уведомление об отмене
+            showQuickEditNotification(t('quickEditCancelled') || 'Изменения отменены', 'info');
+        });
+
+        // Отслеживаем изменения
+        content.addEventListener('input', () => {
+            noteEl.classList.add('quick-edit-dirty');
+        });
+
+        // Автосохранение при потере фокуса (debounced)
+        let blurTimer;
+        content.addEventListener('blur', () => {
+            blurTimer = setTimeout(async () => {
+                if (noteEl.classList.contains('quick-edit-dirty')) {
+                    await saveQuickEdit(noteEl, content, noteId, noteCreationTime);
+                    originalContent = content.innerHTML;
+                    noteEl.classList.remove('quick-edit-dirty');
+                }
+            }, 400);
+        });
+        content.addEventListener('focus', () => clearTimeout(blurTimer));
+    }
+}
+
+/**
+ * Сохраняет изменения из быстрого редактирования в IndexedDB
+ */
+async function saveQuickEdit(noteEl, content, noteId, noteCreationTime) {
+    const updatedContent = content.innerHTML;
+    const timestamp = Date.now();
+    try {
+        await notesDB.saveNote({
+            id: noteId,
+            content: updatedContent,
+            creationTime: noteCreationTime || timestamp,
+            lastModified: timestamp,
+            title: notesDB.extractTitle(updatedContent)
+        });
+        
+        // Визуальная обратная связь
+        noteEl.classList.add('quick-edit-saved');
+        setTimeout(() => noteEl.classList.remove('quick-edit-saved'), 1200);
+
+        // Показываем уведомление о сохранении
+        showQuickEditNotification(t('quickEditSaved') || 'Заметка сохранена', 'success');
+
+        // Обновляем прогресс-бар чеклиста если есть
+        const newProgress = getChecklistProgress(updatedContent);
+        if (newProgress) {
+            const pct = newProgress.total > 0 ? Math.round((newProgress.checked / newProgress.total) * 100) : 0;
+            const fill = noteEl.querySelector('.checklist-progress-bar-fill');
+            const pctEl = noteEl.querySelector('.checklist-progress-pct');
+            const labelEl = noteEl.querySelector('.checklist-progress-label');
+            const lang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : currentLang;
+            const doneLabel = window.translations?.[lang]?.checklistDone || 'done';
+            if (fill) fill.style.width = pct + '%';
+            if (pctEl) pctEl.textContent = pct + '%';
+            if (labelEl) labelEl.textContent = `☑ ${newProgress.checked}/${newProgress.total} ${doneLabel}`;
+        }
+    } catch (err) {
+        console.error('Quick edit save error:', err);
+        showQuickEditNotification(t('errorSavingNote') || 'Ошибка сохранения', 'error');
+    }
+}
+
+/**
+ * Выключает быстрое редактирование на конкретной заметке
+ */
+function disableQuickEditOnNote(noteEl) {
+    const content = noteEl.querySelector('.noteContent');
+    if (content) {
+        content.removeAttribute('contenteditable');
+        content.removeAttribute('spellcheck');
+    }
+    noteEl.classList.remove('quick-edit-note', 'quick-edit-dirty', 'quick-edit-saved');
+    const bar = noteEl.querySelector('.quick-edit-bar');
+    if (bar) bar.remove();
+}
+
+/**
+ * Показывает компактное уведомление для быстрого редактирования
+ */
+function showQuickEditNotification(message, type = 'success') {
+    // Удаляем предыдущее уведомление если есть
+    const existingNotification = document.querySelector('.quick-edit-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+
+    // Создаем новое уведомление
+    const notification = document.createElement('div');
+    notification.className = `quick-edit-notification quick-edit-notification-${type}`;
+    notification.innerHTML = `
+        <div class="quick-edit-notification-content">
+            <span class="quick-edit-notification-icon">${type === 'success' ? '✓' : '✗'}</span>
+            <span class="quick-edit-notification-text">${message}</span>
+        </div>
+    `;
+
+    // Добавляем в DOM
+    document.body.appendChild(notification);
+
+    // Показываем с анимацией
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+
+    // Автоматически скрываем через 2 секунды
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 300);
+    }, 2000);
+}
+
+/**
+ * Восстанавливает режим быстрого редактирования из localStorage
+ */
+function restoreQuickEditMode() {
+    quickEditActive = localStorage.getItem('quickEditMode') === '1';
+    applyQuickEditMode();
+}
+
+// ===== ОБРАБОТЧИКИ ДЛЯ ПЕРЕКЛЮЧЕНИЯ РЕЖИМОВ ОТОБРАЖЕНИЯ =====
+
 // Инициализация обработчиков после загрузки DOM
 document.addEventListener('DOMContentLoaded', function() {
     // Обработчик для кнопки переключения режимов
@@ -9110,6 +10071,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (toggleViewButton) {
         toggleViewButton.addEventListener('click', toggleViewMode);
     }
+    // Восстанавливаем режим быстрого редактирования
+    restoreQuickEditMode();
 });
 
 /**
@@ -9121,33 +10084,44 @@ function toggleViewMode() {
     
     if (!notesContainer || !toggleButton) return;
     
-    // Переключаем классы
-    if (notesContainer.classList.contains('default-view')) {
-        // Переключаемся на режим списка
-        notesContainer.classList.remove('default-view');
-        notesContainer.classList.add('full-width-view');
-        
-        // Обновляем иконку и текст кнопки
-        toggleButton.innerHTML = '<i class="fas fa-th"></i> Grid View';
-        toggleButton.title = 'Переключить на сеточный вид';
-        
-        // Сохраняем предпочтение пользователя
-        localStorage.setItem('notesViewMode', 'list');
-    } else {
-        // Переключаемся на режим сетки
-        notesContainer.classList.remove('full-width-view');
-        notesContainer.classList.add('default-view');
-        
-        // Обновляем иконку и текст кнопки
-        toggleButton.innerHTML = '<i class="fas fa-list"></i> List View';
-        toggleButton.title = 'Переключить на список';
-        
-        // Сохраняем предпочтение пользователя
-        localStorage.setItem('notesViewMode', 'grid');
-    }
+    // Добавляем класс для анимации переключения
+    notesContainer.style.opacity = '0.7';
+    notesContainer.style.transform = 'scale(0.98)';
     
-    // Перезагружаем заметки для применения новых стилей
-    loadNotes();
+    // Небольшая задержка для плавности анимации
+    setTimeout(() => {
+        // Переключаем классы
+        if (notesContainer.classList.contains('default-view')) {
+            // Переключаемся на режим списка
+            notesContainer.classList.remove('default-view');
+            notesContainer.classList.add('full-width-view');
+            
+            // Обновляем текст кнопки (без иконки)
+            toggleButton.innerHTML = 'Сетка';
+            toggleButton.title = 'Переключить на сеточный вид';
+            
+            // Сохраняем предпочтение пользователя
+            localStorage.setItem('notesViewMode', 'list');
+        } else {
+            // Переключаемся на режим сетки
+            notesContainer.classList.remove('full-width-view');
+            notesContainer.classList.add('default-view');
+            
+            // Обновляем текст кнопки (без иконки)
+            toggleButton.innerHTML = 'Список';
+            toggleButton.title = 'Переключить на список';
+            
+            // Сохраняем предпочтение пользователя
+            localStorage.setItem('notesViewMode', 'grid');
+        }
+        
+        // Возвращаем нормальное состояние с анимацией
+        setTimeout(() => {
+            notesContainer.style.opacity = '1';
+            notesContainer.style.transform = 'scale(1)';
+        }, 50);
+        
+    }, 150);
 }
 
 /**
@@ -9164,13 +10138,13 @@ function restoreViewMode() {
         // Устанавливаем режим списка
         notesContainer.classList.remove('default-view');
         notesContainer.classList.add('full-width-view');
-        toggleButton.innerHTML = '<i class="fas fa-th"></i> Grid View';
+        toggleButton.innerHTML = 'Сетка';
         toggleButton.title = 'Переключить на сеточный вид';
     } else {
         // Устанавливаем режим сетки (по умолчанию)
         notesContainer.classList.remove('full-width-view');
         notesContainer.classList.add('default-view');
-        toggleButton.innerHTML = '<i class="fas fa-list"></i> List View';
+        toggleButton.innerHTML = 'Список';
         toggleButton.title = 'Переключить на список';
     }
 }
@@ -9179,3 +10153,146 @@ function restoreViewMode() {
 document.addEventListener('DOMContentLoaded', restoreViewMode);
 
 
+
+// ============================================================
+// iOS PWA — ОПРЕДЕЛЕНИЕ РЕЖИМА И БАННЕР "ДОБАВИТЬ НА ЭКРАН"
+// ============================================================
+
+/**
+ * Определяет, запущено ли приложение в standalone-режиме (добавлено на домашний экран)
+ */
+function isRunningStandalone() {
+    return (
+        window.navigator.standalone === true ||                          // iOS Safari
+        window.matchMedia('(display-mode: standalone)').matches ||       // Chrome/Android
+        window.matchMedia('(display-mode: fullscreen)').matches ||
+        document.referrer.includes('android-app://')
+    );
+}
+
+/**
+ * Определяет iOS Safari (не Chrome/Firefox на iOS)
+ */
+function isIosSafari() {
+    const ua = window.navigator.userAgent;
+    const isIos = /iphone|ipad|ipod/i.test(ua);
+    // Chrome на iOS содержит 'CriOS', Firefox — 'FxiOS'
+    const isNativeSafari = !/CriOS|FxiOS|OPiOS|mercury/i.test(ua);
+    return isIos && isNativeSafari;
+}
+
+/**
+ * Добавляет класс на <html> для CSS-таргетинга
+ */
+function applyIosClasses() {
+    const html = document.documentElement;
+
+    if (isRunningStandalone()) {
+        html.classList.add('pwa-standalone');
+        // Сообщаем body о standalone-режиме для дополнительных стилей
+        document.body?.classList.add('pwa-standalone');
+    }
+
+    if (isIosSafari()) {
+        html.classList.add('ios-safari');
+    }
+
+    const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    if (isIos) {
+        html.classList.add('ios-device');
+        // Определяем наличие notch / Dynamic Island
+        const hasNotch = window.screen.height >= 812 || window.screen.width >= 812;
+        if (hasNotch) html.classList.add('ios-notch');
+    }
+}
+
+/**
+ * Показывает баннер "Добавить на домашний экран" для iOS Safari
+ * Показывается один раз, потом скрывается на 30 дней
+ */
+function initIosInstallBanner() {
+    // Показываем только в iOS Safari и только если НЕ в standalone
+    if (!isIosSafari() || isRunningStandalone()) return;
+
+    const banner = document.getElementById('ios-install-banner');
+    if (!banner) return;
+
+    // Проверяем, не закрывал ли пользователь баннер недавно
+    const dismissed = localStorage.getItem('iosInstallBannerDismissed');
+    if (dismissed) {
+        const dismissedAt = parseInt(dismissed, 10);
+        const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+        if (Date.now() - dismissedAt < thirtyDays) return;
+    }
+
+    // Показываем баннер через 3 секунды после загрузки
+    setTimeout(() => {
+        banner.removeAttribute('hidden');
+    }, 3000);
+
+    // Кнопка закрытия
+    const closeBtn = document.getElementById('ios-install-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            banner.setAttribute('hidden', '');
+            localStorage.setItem('iosInstallBannerDismissed', Date.now().toString());
+        });
+    }
+}
+
+/**
+ * Фикс для iOS: предотвращает резиновый скролл на body
+ * но разрешает скролл внутри скроллируемых контейнеров
+ */
+function fixIosRubberBandScroll() {
+    if (!/iphone|ipad|ipod/i.test(navigator.userAgent)) return;
+
+    let startY = 0;
+
+    document.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e) => {
+        const el = e.target;
+        // Ищем ближайший скроллируемый предок
+        let scrollable = el;
+        while (scrollable && scrollable !== document.body) {
+            const style = window.getComputedStyle(scrollable);
+            const overflow = style.overflow + style.overflowY;
+            if (/auto|scroll/.test(overflow) && scrollable.scrollHeight > scrollable.clientHeight) {
+                return; // Разрешаем скролл внутри контейнера
+            }
+            scrollable = scrollable.parentElement;
+        }
+        // Блокируем скролл body только если мы точно в самом верху и тянем вниз
+        if (document.body.scrollTop === 0 && document.documentElement.scrollTop === 0 && e.touches[0].clientY > startY) {
+            // Дополнительная проверка - не блокируем скролл внутри редактора или модалок
+            if (!el.closest('.tox-edit-area, .modal-content, #notesContainer')) {
+                e.preventDefault(); // Блокируем pull-to-refresh
+            }
+        }
+    }, { passive: false });
+}
+
+/**
+ * Фикс для iOS: обновляем CSS-переменную --vh при изменении размера
+ * (Safari неправильно считает 100vh когда показывается/скрывается адресная строка)
+ */
+function fixIosViewportHeight() {
+    function setVh() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    setVh();
+    window.addEventListener('resize', setVh);
+    window.addEventListener('orientationchange', () => setTimeout(setVh, 100));
+}
+
+// ── Инициализация при загрузке ──
+document.addEventListener('DOMContentLoaded', () => {
+    applyIosClasses();
+    initIosInstallBanner();
+    fixIosViewportHeight();
+    fixIosRubberBandScroll();
+});

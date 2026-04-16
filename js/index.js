@@ -3497,6 +3497,7 @@ async function initTinyMCE() {
         }
         
         // 4. Обработка нажатия Enter в чеклисте
+        // capture: true — срабатывает раньше TinyMCE, чтобы e.preventDefault() блокировал его
         editorBody.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 // Проверяем, инициализирован ли редактор
@@ -3583,7 +3584,7 @@ async function initTinyMCE() {
                 // Для обычных параграфов - TinyMCE сам обработает Enter
                 // Но мы сохраняем форматирование для применения после
             }
-        });
+        }, true); // capture: true — перехватываем до TinyMCE
         
         // 5. Обработка применения стилей к заголовкам
         let isApplyingHeader = false;
@@ -3596,12 +3597,17 @@ async function initTinyMCE() {
                 if (mutation.type === 'childList' && mutation.addedNodes.length) {
                     mutation.addedNodes.forEach(function(node) {
                         if (node.nodeType === Node.ELEMENT_NODE) {
-                            // Удаляем пустые параграфы, которые создаёт TinyMCE после Enter в чеклисте
-                            // Удаляем пустые параграфы после Enter в чеклисте
-                            if (node.tagName === 'P' && (node.innerHTML === '<br>' || node.innerHTML === '' || node.textContent.trim() === '')) {
+                            // Удаляем пустые элементы, которые TinyMCE создаёт при Enter в чеклисте
+                            if ((node.tagName === 'P' || node.tagName === 'DIV') &&
+                                (node.innerHTML === '<br>' || node.innerHTML === '' || node.textContent.trim() === '') &&
+                                !node.classList.contains('checklist-item-wrapper')) {
                                 const prevNode = node.previousElementSibling;
-                                if (prevNode && prevNode.classList.contains('checklist-item-wrapper')) {
-                                    // Удаляем пустой параграф после чеклиста
+                                const nextNode = node.nextElementSibling;
+                                // Удаляем если рядом есть элемент чеклиста (до или после)
+                                if (
+                                    (prevNode && prevNode.classList.contains('checklist-item-wrapper')) ||
+                                    (nextNode && nextNode.classList.contains('checklist-item-wrapper'))
+                                ) {
                                     node.remove();
                                     return;
                                 }

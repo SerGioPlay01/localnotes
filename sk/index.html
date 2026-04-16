@@ -183,21 +183,21 @@
     <!-- iPad Pro 12.9" — 1024×1366 @2x -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/resources/splash/splash-2048x2732.png">
 
-    <link rel="stylesheet" href="../css/index.css?v=1.0.3">
-    <link rel="stylesheet" href="../css/img.css?v=1.0.3">
-    <link rel="stylesheet" href="../css/preloader.css?v=1.0.3">
-    <link rel="stylesheet" href="../css/highlight.css?v=1.0.3">
-    <link rel="stylesheet" href="../css/tinymce-custom.css?v=1.0.3">
-    <link rel="stylesheet" href="../fonts/local-fonts.css?v=1.0.3">
+    <link rel="stylesheet" href="../css/index.css?v=1.0.4">
+    <link rel="stylesheet" href="../css/img.css?v=1.0.4">
+    <link rel="stylesheet" href="../css/preloader.css?v=1.0.4">
+    <link rel="stylesheet" href="../css/highlight.css?v=1.0.4">
+    <link rel="stylesheet" href="../css/tinymce-custom.css?v=1.0.4">
+    <link rel="stylesheet" href="../fonts/local-fonts.css?v=1.0.4">
     
     <!-- Non-critical CSS loaded asynchronously -->
-    <link rel="preload" href="../css/page.css?v=1.0.3" as="style" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="../css/print.css?v=1.0.3" as="style" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="../css/page.css?v=1.0.4" as="style" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="../css/print.css?v=1.0.4" as="style" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'">
     
     <!-- Fallback for browsers that don't support preload -->
     <noscript>
-        <link rel="stylesheet" href="../css/page.css?v=1.0.3">
-        <link rel="stylesheet" href="../css/print.css?v=1.0.3">
+        <link rel="stylesheet" href="../css/page.css?v=1.0.4">
+        <link rel="stylesheet" href="../css/print.css?v=1.0.4">
     </noscript>
     
     <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
@@ -285,9 +285,9 @@
             "url": "https://sergioplay-dev.vercel.app/"
         },
         "datePublished": "2024-01-01",
-        "dateModified": "2025-01-12",
-        "version": "1.0.3",
-        "softwareVersion": "1.0.3",
+        "dateModified": "2026-04-16",
+        "version": "1.0.4",
+        "softwareVersion": "1.0.4",
         "browserRequirements": "Vyžaduje JavaScript. Vyžaduje HTML5.",
         "memoryRequirements": "Minimálne",
         "storageRequirements": "Lokálne úložisko prehliadača",
@@ -625,17 +625,17 @@
     </script>
     
     <!-- Critical JavaScript loaded first -->
-    <script src="../js/utils.js?v=1.0.3"></script>
-    <script src="../js/selectors.js?v=1.0.3"></script>
-    <script src="../js/translate.js?v=1.0.3"></script>
-    <script src="../js/themes.js?v=1.0.3"></script>
-    <script src="../js/performance.js?v=1.0.3"></script>
-    <script src="../js/security.js?v=1.0.3"></script>
-    <script src="../lottiesnimstion/lottie.min.js?v=1.0.3"></script>
-    <script src="../js/preloader.js?v=1.0.3"></script>
+    <script src="../js/utils.js?v=1.0.4"></script>
+    <script src="../js/selectors.js?v=1.0.4"></script>
+    <script src="../js/translate.js?v=1.0.4"></script>
+    <script src="../js/themes.js?v=1.0.4"></script>
+    <script src="../js/performance.js?v=1.0.4"></script>
+    <script src="../js/security.js?v=1.0.4"></script>
+    <script src="../lottiesnimstion/lottie.min.js?v=1.0.4"></script>
+    <script src="../js/preloader.js?v=1.0.4"></script>
     
     <!-- TinyMCE loaded with defer for better performance -->
-    <script src="../editor_news/tinymce.min.js?v=1.0.3" defer></script>
+    <script src="../editor_news/tinymce.min.js?v=1.0.4" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
     <script>
@@ -650,15 +650,15 @@
         
         // Load scripts after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            loadScript('../js/magicurl.js?v=1.0.3');
-            loadScript('../js/highlight.min.js?v=1.0.3');
-            loadScript('../js/translations.js?v=1.0.3');
-            loadScript('../js/tinymce-translations.js?v=1.0.3');
-            loadScript('../js/img.js?v=1.0.3');
-            loadScript('../js/date-utils.js?v=1.0.3');
+            loadScript('../js/magicurl.js?v=1.0.4');
+            loadScript('../js/highlight.min.js?v=1.0.4');
+            loadScript('../js/translations.js?v=1.0.4');
+            loadScript('../js/tinymce-translations.js?v=1.0.4');
+            loadScript('../js/img.js?v=1.0.4');
+            loadScript('../js/date-utils.js?v=1.0.4');
             
             // Load main script last
-            loadScript('../js/index.js?v=1.0.3');
+            loadScript('../js/index.js?v=1.0.4');
         });
     </script>
     
@@ -666,7 +666,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('../sw.js?v=1.0.3')
+                navigator.serviceWorker.register('../sw.js?v=1.0.4')
                     .then(function(registration) {
 
                         // Kontrola aktualizácií

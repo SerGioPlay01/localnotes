@@ -1027,46 +1027,18 @@ function setupTableToolbarHandlers(editor) {
             });
         }
         
-        // Обработка Enter в чеклистах
+        // Обработка Enter в чеклистах — основной обработчик находится в initEditorFix
+        // Здесь только блокируем стандартное поведение TinyMCE, чтобы не создавался лишний элемент
         if (e.key === 'Enter' && !e.shiftKey) {
             const selection = editor.selection;
             const node = selection.getNode();
-            const checklistWrapper = node.closest('.checklist-item-wrapper');
+            const checklistWrapper = node.closest
+                ? node.closest('.checklist-item-wrapper')
+                : null;
             
             if (checklistWrapper) {
                 e.preventDefault();
-                
-                // Создаём новый элемент чеклиста
-                const body = editor.getBody();
-                const newChecklistDiv = body.ownerDocument.createElement('div');
-                newChecklistDiv.className = 'checklist-item-wrapper';
-                
-                // Создаём чекбокс
-                const checkbox = body.ownerDocument.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.className = 'checklist-checkbox-ios';
-                checkbox.setAttribute('data-checked', 'false');
-                
-                // Создаём span для текста
-                const textSpan = body.ownerDocument.createElement('span');
-                textSpan.className = 'checklist-text-content';
-                textSpan.textContent = '';
-                
-                // Собираем структуру
-                newChecklistDiv.appendChild(checkbox);
-                newChecklistDiv.appendChild(textSpan);
-                
-                // Вставляем после текущего элемента
-                checklistWrapper.parentNode.insertBefore(newChecklistDiv, checklistWrapper.nextSibling);
-                
-                // Ставим курсор в новый span
-                setTimeout(() => {
-                    const range = editor.dom.createRng();
-                    range.setStart(textSpan, 0);
-                    range.setEnd(textSpan, 0);
-                    editor.selection.setRng(range);
-                    editor.focus();
-                }, 0);
+                return false;
             }
         }
     });
@@ -2841,6 +2813,17 @@ async function initTinyMCE() {
                     text-align: left !important;
                     unicode-bidi: normal !important;
                     writing-mode: horizontal-tb !important;
+                    color: inherit !important;
+                    background: transparent !important;
+                    -webkit-text-fill-color: unset !important;
+                }
+                
+                /* Явный цвет текста чеклиста — перебивает inline-стили */
+                .checklist-item-wrapper .checklist-text-content,
+                .checklist-item-wrapper .checklist-text-ios {
+                    color: inherit !important;
+                    -webkit-text-fill-color: unset !important;
+                    background: transparent !important;
                 }
                 
                 .checklist-checkbox-ios {
@@ -3572,7 +3555,7 @@ async function initTinyMCE() {
                         // Если текст не пуст, создаём новый пункт чеклиста
                         e.preventDefault();
                         
-                        const newChecklistHTML = '<div class="checklist-item-wrapper"><input type="checkbox" class="checklist-checkbox-ios" data-checked="false"><span class="checklist-text-content"></span></div>';
+                        const newChecklistHTML = '<div class="checklist-item-wrapper"><input type="checkbox" class="checklist-checkbox-ios" data-checked="false"><span class="checklist-text-content checklist-text-ios"></span></div>';
                         const newDiv = editorDoc.createElement('div');
                         newDiv.innerHTML = newChecklistHTML;
                         const newChecklistElement = newDiv.firstChild;
@@ -7959,7 +7942,7 @@ function fixChecklistStructure(content) {
         
         if (!textSpan) {
             textSpan = document.createElement('span');
-            textSpan.className = 'checklist-text-content';
+            textSpan.className = 'checklist-text-content checklist-text-ios';
         }
         
         // Устанавливаем текст в span
@@ -7996,7 +7979,8 @@ function insertChecklistItem(editor) {
     
     // Создаём span для текста (ВТОРЫМ)
     const textSpan = body.ownerDocument.createElement('span');
-    textSpan.className = 'checklist-text-content';
+    textSpan.className = 'checklist-text-content checklist-text-ios';
+    textSpan.setAttribute('contenteditable', 'true');
     textSpan.textContent = '';
     
     // Собираем структуру: чекбокс → текст

@@ -1,0 +1,344 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Local Notes — Безпечні нотатки. Без сервера. Без стеження.</title>
+  <meta name="description" content="Local Notes — безкоштовний PWA-застосунок для створення та зберігання нотаток прямо у браузері. Шифрування AES-256, 12 мов, офлайн-режим. Без реєстрації." />
+  <meta name="keywords" content="локальні нотатки, зашифровані нотатки, приватні нотатки, PWA нотатки, офлайн нотатки, AES-256, безпечні нотатки" />
+  <link rel="canonical" href="https://localnotes-three.vercel.app/landing/ua/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://localnotes-three.vercel.app/landing/ua/" />
+  <meta property="og:title" content="Local Notes — Безпечні нотатки. Без сервера. Без стеження." />
+  <meta property="og:description" content="Сучасний PWA для створення та зберігання нотаток прямо у браузері. Шифрування AES-256. Безкоштовно, без реєстрації." />
+  <meta property="og:image" content="https://localnotes-three.vercel.app/favicon/android-chrome-512x512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Local Notes — Безпечні нотатки. Без сервера. Без стеження." />
+  <meta name="twitter:description" content="Сучасний PWA для створення та зберігання нотаток прямо у браузері. Шифрування AES-256. Безкоштовно, без реєстрації." />
+  <meta name="twitter:image" content="https://localnotes-three.vercel.app/favicon/android-chrome-512x512.png" />
+  <link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/landing/" />
+  <link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/landing/ru/" />
+  <link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/landing/ua/" />
+  <link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/landing/pl/" />
+  <link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/landing/cs/" />
+  <link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/landing/sk/" />
+  <link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/landing/bg/" />
+  <link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/landing/hr/" />
+  <link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/landing/sr/" />
+  <link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/landing/bs/" />
+  <link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/landing/mk/" />
+  <link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/landing/sl/" />
+  <link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/landing/" />
+  <link rel="icon" href="../favicon.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/landing.css" />
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="../" class="nav-logo"><img src="../logo.png" alt="Local Notes" class="nav-logo-img"> Local Notes</a>
+  <ul class="nav-links">
+    <li><a href="#features">Функції</a>
+  <a href="#story">Історія</a></li>
+    <li><a href="#story">Історія</a></li>
+    <li><a href="#how">Як працює</a></li>
+    <li><a href="#usecases">Сценарії</a></li>
+    <li><a href="#security">Безпека</a></li>
+    <li><a href="#languages">Мови</a></li>
+    <li><a href="../" class="lang-switcher" style="border-color:rgba(174,252,110,0.3);">🇺🇦 UA</a></li>
+    <li><a href="https://localnotes-three.vercel.app/ua/" class="nav-cta" target="_blank" rel="noopener">Відкрити</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="navMobile">
+  <a href="#features">Функції</a>
+  <a href="#story">Історія</a>
+  <a href="#how">Як працює</a>
+  <a href="#usecases">Сценарії</a>
+  <a href="#security">Безпека</a>
+  <a href="#languages">Мови</a>
+  <a href="../">🌐 Змінити мову</a>
+  <a href="https://localnotes-three.vercel.app/ua/" target="_blank" rel="noopener" style="color:#aefc6e;font-weight:700;">Відкрити застосунок →</a>
+</div>
+
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-eyebrow animate-in">Безкоштовно · Без реєстрації</div>
+        <h1 class="hero-title animate-in delay-1">
+          Ваші нотатки.<br>
+          <span class="accent blur-reveal"><span class="blur-text">Приватно. Зашифровано.</span><span class="blur-hint">натисніть</span></span><br>
+          Ваші.
+        </h1>
+        <p class="hero-sub animate-in delay-2">
+          Local Notes зберігає все прямо у вашому браузері з шифруванням AES-256.
+          Жодного сервера, жодного стеження, жодного облікового запису — лише ваші нотатки.
+        </p>
+        <div class="hero-actions animate-in delay-3">
+          <a href="https://localnotes-three.vercel.app/ua/" class="btn-primary" target="_blank" rel="noopener">
+            <i class="bi bi-box-arrow-up-right"></i> Відкрити застосунок
+          </a>
+          <a href="#features" class="btn-secondary"><i class="bi bi-chevron-down"></i> Дізнатися більше</a>
+        </div>
+      </div>
+      <div class="hero-visual animate-in delay-2">
+        <div class="mock-app">
+          <div class="mock-lock-badge">🔒</div>
+          <div class="mock-header"><span class="mock-header-title"><img src="../favicon.png" alt="" style="width:14px;height:14px;border-radius:3px;display:inline-block;vertical-align:middle;margin-right:5px;"> Мої нотатки</span><span style="font-size:0.7rem;color:#b3b3b3;">3 нотатки</span></div>
+          <div class="mock-search"><i class="bi bi-search" style="font-size:0.75rem;"></i> Пошук нотаток…</div>
+          <div class="mock-notes mock-notes-blur-wrap" id="mockNotes">
+            <div class="mock-note"><div class="mock-note-title">Зустріч</div><div class="mock-note-preview">Планування Q4 — ключові рішення…</div><span class="mock-note-tag tag-blue">робота</span></div>
+            <div class="mock-note"><div class="mock-note-title">Список покупок</div><div class="mock-note-preview">Молоко, хліб, кава, яблука…</div><span class="mock-note-tag tag-green">особисте</span></div>
+            <div class="mock-note"><div class="mock-note-title">Ідеї 💡</div><div class="mock-note-preview">Нова концепція проекту…</div><span class="mock-note-tag tag-purple">ідеї</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Story ─────────────────────────────────────────────────── -->
+<section class="story" id="story">
+  <div class="container">
+    <div class="story-header">
+      <div class="section-label animate-in">Історія створення</div>
+      <h2 class="section-title animate-in delay-1">Чому з'явився Local Notes</h2>
+      <p class="section-subtitle animate-in delay-2">Все почалося з простого розчарування — знайти застосунок для нотаток, який справді приватний, швидкий і безкоштовний.</p>
+    </div>
+    <div class="story-layout">
+      <div>
+        <div class="story-problem-title animate-in">Проблеми існуючих застосунків</div>
+        <div class="story-problem">
+          <div class="problem-card animate-in delay-1"><div class="problem-card-icon">☁️</div><div class="problem-card-text"><strong>Все синхронізується з сервером.</strong> Notion, Evernote, Google Keep — ваші нотатки зберігаються на чужому комп'ютері. Один витік — і дані розкриті.</div></div>
+          <div class="problem-card animate-in delay-2"><div class="problem-card-icon">💳</div><div class="problem-card-text"><strong>Шифрування коштує грошей.</strong> Більшість застосунків ховають справжнє шифрування за платною підпискою. Приватність не повинна бути преміум-функцією.</div></div>
+          <div class="problem-card animate-in delay-3"><div class="problem-card-icon">📋</div><div class="problem-card-text"><strong>Скрізь потрібна реєстрація.</strong> Щоб написати нотатку, потрібен email, пароль і згода з політикою, що дозволяє використовувати ваші дані.</div></div>
+          <div class="problem-card animate-in delay-4"><div class="problem-card-icon">🌐</div><div class="problem-card-text"><strong>Немає офлайн-підтримки.</strong> Більшість веб-застосунків марні без інтернету. Ваші нотатки мають бути доступні завжди і скрізь.</div></div>
+        </div>
+      </div>
+      <div class="story-timeline">
+        <div class="timeline-item animate-in"><div class="timeline-dot"></div><div class="timeline-date">Початок пошуку</div><div class="timeline-title">Пошук приватного застосунку для нотаток</div><div class="timeline-desc">Перепробувано десятки застосунків. Кожен вимагав акаунт, синхронізувався з хмарою або брав гроші за базові функції. Ніщо не здавалося справді приватним.</div></div>
+        <div class="timeline-item animate-in delay-1"><div class="timeline-dot"></div><div class="timeline-date">Усвідомлення</div><div class="timeline-title">Браузер вже має все необхідне</div><div class="timeline-desc">Сучасні браузери мають IndexedDB для локального зберігання, Web Crypto API для шифрування AES-256 і Service Workers для офлайн-роботи. Сервер не потрібен.</div></div>
+        <div class="timeline-item animate-in delay-2"><div class="timeline-dot"></div><div class="timeline-date">Перший прототип</div><div class="timeline-title">Створено мінімальний робочий варіант</div><div class="timeline-desc">Простий редактор, локальне сховище, базове шифрування. Жодних фреймворків, жодних залежностей. Тільки HTML, CSS і чистий JavaScript.</div></div>
+        <div class="timeline-item animate-in delay-3"><div class="timeline-dot"></div><div class="timeline-date">Розвиток ідеї</div><div class="timeline-title">Теги, календар, 12 мов, PWA</div><div class="timeline-desc">Додано форматований текст, кольорові теги, вбудований календар, пошук з транслітерацією та повна локалізація на 12 мов. Упаковано як PWA для нативного встановлення.</div></div>
+        <div class="timeline-item animate-in delay-4"><div class="timeline-dot"></div><div class="timeline-date">Сьогодні — v1.1.0</div><div class="timeline-title">Відкритий код і безкоштовно для всіх</div><div class="timeline-desc">Local Notes поширюється під ліцензією MIT і буде безкоштовним завжди. Мета проста: дати кожному безпечне приватне місце для записів.</div></div>
+      </div>
+      <div class="story-solution animate-in">
+        <div class="story-solution-icon">🔒</div>
+        <div class="story-solution-text"><div class="story-solution-title">Відповідь: зберігати все в браузері</div><div class="story-solution-desc">Local Notes використовує ваш браузер як захищене сховище. Шифрування AES-256, IndexedDB, Service Worker — все вбудовано в сучасні браузери. Без сервера, без акаунту, без компромісів.</div></div>
+        <a href="https://localnotes-three.vercel.app/ua/" class="btn-primary" target="_blank" rel="noopener" style="flex-shrink:0;"><i class="bi bi-box-arrow-up-right"></i> Спробувати</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <div class="features-header">
+      <div class="section-label animate-in">Функції</div>
+      <h2 class="section-title animate-in delay-1">Все необхідне, нічого зайвого</h2>
+      <p class="section-subtitle animate-in delay-2">Створено для тих, хто цінує приватність і хоче швидкий красивий застосунок для нотаток.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card glass animate-in"><div class="feature-icon">🔒</div><div class="feature-title">Шифрування AES-256</div><div class="feature-desc">Військовий рівень шифрування захищає кожну нотатку. Дані шифруються до збереження — лише ви маєте ключ.</div></div>
+      <div class="feature-card glass animate-in delay-1"><div class="feature-icon">📱</div><div class="feature-title">Працює офлайн (PWA)</div><div class="feature-desc">Встановіть як Progressive Web App і використовуйте будь-де — без інтернету. Ваші нотатки завжди доступні.</div></div>
+      <div class="feature-card glass animate-in delay-2"><div class="feature-icon">🌍</div><div class="feature-title">12 мов</div><div class="feature-desc">Повний інтерфейс українською, російською, польською, чеською, словацькою, болгарською та іншими мовами.</div></div>
+      <div class="feature-card glass animate-in delay-1"><div class="feature-icon">📅</div><div class="feature-title">Вбудований календар</div><div class="feature-desc">Переглядайте нотатки за датою в режимі місяця, тижня або порядку денного.</div></div>
+      <div class="feature-card glass animate-in delay-2"><div class="feature-icon">🏷️</div><div class="feature-title">Теги та кольори</div><div class="feature-desc">Організовуйте нотатки за допомогою тегів і кольорових міток. Знаходьте потрібне за секунди.</div></div>
+      <div class="feature-card glass animate-in delay-3"><div class="feature-icon">📤</div><div class="feature-title">Експорт</div><div class="feature-desc">Експортуйте нотатки у форматах .note, HTML або Markdown. Ваші дані завжди переносимі.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="container">
+    <div class="how-header">
+      <div class="section-label animate-in">Як це працює</div>
+      <h2 class="section-title animate-in delay-1">Просто як 1-2-3</h2>
+      <p class="section-subtitle animate-in delay-2">Жодного налаштування, жодного облікового запису. Відкрийте застосунок і починайте писати.</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step glass animate-in"><div class="how-step-num">1</div><div class="how-step-title">Створіть</div><div class="how-step-desc">Відкрийте застосунок у браузері або встановіть як PWA. Починайте писати одразу — без реєстрації.</div></div>
+      <div class="how-step glass animate-in delay-2"><div class="how-step-num">2</div><div class="how-step-title">Організуйте</div><div class="how-step-desc">Додавайте теги, кольори та дати. Використовуйте пошук з транслітерацією та переглядайте календар.</div></div>
+      <div class="how-step glass animate-in delay-4"><div class="how-step-num">3</div><div class="how-step-title">Експортуйте</div><div class="how-step-desc">Експортуйте нотатки у .note, HTML або Markdown будь-коли. Ваші дані завжди з вами.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="usecases" id="usecases">
+  <div class="container">
+    <div class="usecases-header">
+      <div class="section-label animate-in">Сценарії</div>
+      <h2 class="section-title animate-in delay-1">Хто використовує Local Notes?</h2>
+      <p class="section-subtitle animate-in delay-2">Від журналістів до студентів — усі, хто цінує приватність.</p>
+    </div>
+    <div class="usecases-grid">
+      <div class="usecase-card glass animate-in">
+        <div class="usecase-persona"><div class="usecase-avatar">👩‍💻</div><div><div class="usecase-name">Розробник</div><div class="usecase-role">Інженер-програміст</div></div></div>
+        <p class="usecase-scenario">Зберігає сніпети коду, API-ключі та нотатки по проектах у зашифрованому вигляді. Використовує експорт у Markdown для документації. Працює офлайн у літаку.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Markdown</span><span class="usecase-tag">Офлайн</span><span class="usecase-tag">Експорт</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-1">
+        <div class="usecase-persona"><div class="usecase-avatar">📰</div><div><div class="usecase-name">Журналіст</div><div class="usecase-role">Розслідувальна журналістика</div></div></div>
+        <p class="usecase-scenario">Зберігає конфіденційні нотатки про джерела з шифруванням AES-256. Жодної синхронізації з хмарою — жодних витоків. Теги для організації за темами.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Шифрування</span><span class="usecase-tag">Теги</span><span class="usecase-tag">Приватність</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-2">
+        <div class="usecase-persona"><div class="usecase-avatar">🎓</div><div><div class="usecase-name">Студент</div><div class="usecase-role">Університет</div></div></div>
+        <p class="usecase-scenario">Веде конспекти з форматуванням, чеклістами та зображеннями. Використовує календар для дедлайнів. Встановлено як PWA на телефоні.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Форматування</span><span class="usecase-tag">Календар</span><span class="usecase-tag">PWA</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-1">
+        <div class="usecase-persona"><div class="usecase-avatar">🏥</div><div><div class="usecase-name">Лікар</div><div class="usecase-role">Медичний працівник</div></div></div>
+        <p class="usecase-scenario">Веде нотатки про спостереження локально — жодних проблем з конфіденційністю, дані не залишають пристрій. Експорт у HTML для звітів.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Локально</span><span class="usecase-tag">Без сервера</span><span class="usecase-tag">HTML</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-2">
+        <div class="usecase-persona"><div class="usecase-avatar">✍️</div><div><div class="usecase-name">Письменник</div><div class="usecase-role">Романіст / Блогер</div></div></div>
+        <p class="usecase-scenario">Пише розділи та пости у повноекранному редакторі. Кольорові теги для різних проектів. Експорт у Markdown для публікації.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Повний екран</span><span class="usecase-tag">Кольори</span><span class="usecase-tag">Markdown</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-3">
+        <div class="usecase-persona"><div class="usecase-avatar">🌍</div><div><div class="usecase-name">Мандрівник</div><div class="usecase-role">Цифровий кочівник</div></div></div>
+        <p class="usecase-scenario">Використовує Local Notes на 12 мовах у різних країнах. Працює повністю офлайн у літаках та віддалених місцях.</p>
+        <div class="usecase-tags"><span class="usecase-tag">12 мов</span><span class="usecase-tag">Офлайн</span><span class="usecase-tag">PWA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="comparison" id="comparison">
+  <div class="container">
+    <div class="comparison-header">
+      <div class="section-label animate-in">Порівняння</div>
+      <h2 class="section-title animate-in delay-1">Як ми порівнюємось</h2>
+      <p class="section-subtitle animate-in delay-2">Чому Local Notes — найкращий вибір для тих, хто цінує приватність.</p>
+    </div>
+    <div class="animate-in delay-1">
+      <table class="comparison-table">
+        <thead><tr><th>Функція</th><th class="highlight">Local Notes</th><th>Notion</th><th>Evernote</th><th>Google Keep</th></tr></thead>
+        <tbody>
+          <tr><td>Безкоштовно</td><td class="highlight"><span class="check">✓</span></td><td><span class="partial">Обмежено</span></td><td><span class="partial">Обмежено</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Без реєстрації</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Шифрування AES-256</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="partial">Платно</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Без сервера / локально</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Офлайн (PWA)</td><td class="highlight"><span class="check">✓</span></td><td><span class="partial">Частково</span></td><td><span class="partial">Частково</span></td><td><span class="partial">Частково</span></td></tr>
+          <tr><td>Без стеження</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>12 мов інтерфейсу</td><td class="highlight"><span class="check">✓</span></td><td><span class="partial">Мало</span></td><td><span class="partial">Мало</span></td><td><span class="partial">Мало</span></td></tr>
+          <tr><td>Експорт Markdown / HTML</td><td class="highlight"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="partial">Платно</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Відкритий вихідний код</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+        </tbody>
+      </table>
+      <p class="comparison-note">* На основі публічно доступної інформації на 2026 рік.</p>
+    </div>
+  </div>
+</section>
+
+<section class="security" id="security">
+  <div class="container">
+    <div class="security-inner">
+      <div>
+        <div class="section-label animate-in">Безпека</div>
+        <h2 class="section-title animate-in delay-1">Приватність за замовчуванням</h2>
+        <p class="section-subtitle animate-in delay-2">Local Notes створено з турботою про вашу приватність. Жодного сервера, жодної хмарної синхронізації, жодної аналітики.</p>
+      </div>
+      <div class="security-badges">
+        <div class="security-badge glass animate-in"><div class="security-badge-icon">🛡️</div><div><div class="security-badge-title">Без сервера та хмари</div><div class="security-badge-desc">Усі нотатки зберігаються локально в IndexedDB вашого браузера. Нічого не залишає ваш пристрій.</div></div></div>
+        <div class="security-badge glass animate-in delay-1"><div class="security-badge-icon">👁️</div><div><div class="security-badge-title">Нульове стеження</div><div class="security-badge-desc">Жодної аналітики, жодних куків, жодного відстеження. Ми буквально не можемо бачити ваші дані.</div></div></div>
+        <div class="security-badge glass animate-in delay-2"><div class="security-badge-icon">🔑</div><div><div class="security-badge-title">Без реєстрації</div><div class="security-badge-desc">Відкрийте застосунок і починайте писати. Жодного email, жодного пароля, жодного облікового запису.</div></div></div>
+        <div class="security-badge glass animate-in delay-3"><div class="security-badge-icon">🔐</div><div><div class="security-badge-title">Шифрування AES-256</div><div class="security-badge-desc">Галузевий стандарт шифрування захищає ваші нотатки. Лише ви можете їх розшифрувати.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="languages" id="languages">
+  <div class="container">
+    <div class="languages-header">
+      <div class="section-label animate-in">Мови</div>
+      <h2 class="section-title animate-in delay-1">Доступно 12 мовами</h2>
+      <p class="section-subtitle animate-in delay-2">Local Notes говорить вашою мовою. Оберіть бажаний інтерфейс.</p>
+    </div>
+    <div class="lang-grid">
+      <a href="../" class="lang-item animate-in"><span class="lang-flag">🇬🇧</span><div><div class="lang-name">English</div><div class="lang-native">English</div></div></a>
+      <a href="../ru/" class="lang-item animate-in delay-1"><span class="lang-flag">🇷🇺</span><div><div class="lang-name">Русский</div><div class="lang-native">Russian</div></div></a>
+      <a href="../ua/" class="lang-item active animate-in delay-2"><span class="lang-flag">🇺🇦</span><div><div class="lang-name">Українська</div><div class="lang-native">Ukrainian</div></div></a>
+      <a href="../pl/" class="lang-item animate-in delay-3"><span class="lang-flag">🇵🇱</span><div><div class="lang-name">Polski</div><div class="lang-native">Polish</div></div></a>
+      <a href="../cs/" class="lang-item animate-in"><span class="lang-flag">🇨🇿</span><div><div class="lang-name">Čeština</div><div class="lang-native">Czech</div></div></a>
+      <a href="../sk/" class="lang-item animate-in delay-1"><span class="lang-flag">🇸🇰</span><div><div class="lang-name">Slovenčina</div><div class="lang-native">Slovak</div></div></a>
+      <a href="../bg/" class="lang-item animate-in delay-2"><span class="lang-flag">🇧🇬</span><div><div class="lang-name">Български</div><div class="lang-native">Bulgarian</div></div></a>
+      <a href="../hr/" class="lang-item animate-in delay-3"><span class="lang-flag">🇭🇷</span><div><div class="lang-name">Hrvatski</div><div class="lang-native">Croatian</div></div></a>
+      <a href="../sr/" class="lang-item animate-in"><span class="lang-flag">🇷🇸</span><div><div class="lang-name">Српски</div><div class="lang-native">Serbian</div></div></a>
+      <a href="../bs/" class="lang-item animate-in delay-1"><span class="lang-flag">🇧🇦</span><div><div class="lang-name">Bosanski</div><div class="lang-native">Bosnian</div></div></a>
+      <a href="../mk/" class="lang-item animate-in delay-2"><span class="lang-flag">🇲🇰</span><div><div class="lang-name">Македонски</div><div class="lang-native">Macedonian</div></div></a>
+      <a href="../sl/" class="lang-item animate-in delay-3"><span class="lang-flag">🇸🇮</span><div><div class="lang-name">Slovenščina</div><div class="lang-native">Slovenian</div></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box">
+      <h2 class="cta-title animate-in">Починайте безкоштовно —<br><span style="background:linear-gradient(135deg,#aefc6e,#9ee85d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">без облікового запису</span></h2>
+      <p class="cta-sub animate-in delay-1">Відкрийте застосунок прямо зараз і починайте писати. Ваші нотатки залишаються на вашому пристрої, зашифровані та приватні.</p>
+      <div class="cta-actions animate-in delay-2">
+        <a href="https://localnotes-three.vercel.app/ua/" class="btn-primary" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Відкрити застосунок</a>
+        <a href="#features" class="btn-secondary"><i class="bi bi-info-circle"></i> Дізнатися більше</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo"><img src="../logo.png" alt="Local Notes" class="footer-logo-img"> Local Notes</div>
+      <div class="footer-links">
+        <a href="https://localnotes-three.vercel.app/ua/" target="_blank" rel="noopener">Відкрити застосунок</a>
+        <a href="https://github.com/SerGioPlay01/localnotes" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://localnotes-three.vercel.app/privacy_policy.html" target="_blank" rel="noopener">Політика конфіденційності</a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 Local Notes · Безкоштовно та з відкритим кодом · Без стеження, без сервера.</div>
+  </div>
+</footer>
+
+<script src="../js/landing.js"></script>
+
+<!-- ── Google Analytics (loads only after cookie consent) ───── -->
+<script>
+  window._gaId = 'G-HR9HLBQFCR';
+  function loadGA() {
+    if (window._gaLoaded) return; window._gaLoaded = true;
+    var s = document.createElement('script'); s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window._gaId;
+    s.onload = function() {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); } window.gtag = gtag;
+      gtag('js', new Date()); gtag('config', window._gaId);
+    }; document.head.appendChild(s);
+  }
+  if (localStorage.getItem('ln_cookie_consent') === 'accepted') loadGA();
+</script>
+
+<!-- ── Cookie Banner ────────────────────────────────────────── -->
+<div class="cookie-banner" id="cookieBanner" role="dialog">
+  <div class="cookie-inner">
+    <div class="cookie-icon-wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div class="cookie-body">
+      <div class="cookie-title">Аналітичні куки<span class="cookie-title-badge">Google Analytics</span></div>
+      <div class="cookie-desc">Ми використовуємо Google Analytics для аналізу відвідуваності. Особисті дані не зберігаються. Ваші нотатки залишаються локально. <a href="https://localnotes-three.vercel.app/cookie_policy.html" target="_blank" rel="noopener">Політика куки</a></div>
+    </div>
+    <div class="cookie-actions">
+      <button class="cookie-btn-accept" id="cookieAccept"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Прийняти</button>
+      <button class="cookie-btn-decline" id="cookieDecline">Відхилити</button>
+    </div>
+  </div>
+<script>
+(function(){var c=localStorage.getItem('ln_cookie_consent');if(c==='accepted'||c==='declined'){var b=document.getElementById('cookieBanner');if(b)b.style.display='none';}})();
+</script></div>
+</body>
+</html>
+

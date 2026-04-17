@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Local Notes — Bezpečné poznámky. Bez servera. Bez sledovania.</title>
+  <meta name="description" content="Local Notes je bezplatná PWA aplikácia na vytváranie a ukladanie poznámok priamo v prehliadači. Šifrovanie AES-256, 12 jazykov, offline režim. Bez registrácie." />
+  <meta name="keywords" content="lokálne poznámky, šifrované poznámky, súkromné poznámky, PWA poznámky, offline poznámky, AES-256, bezpečné poznámky" />
+  <link rel="canonical" href="https://localnotes-three.vercel.app/landing/sk/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://localnotes-three.vercel.app/landing/sk/" />
+  <meta property="og:title" content="Local Notes — Bezpečné poznámky. Bez servera. Bez sledovania." />
+  <meta property="og:description" content="Moderná PWA na vytváranie a ukladanie poznámok priamo v prehliadači. Šifrovanie AES-256. Zadarmo, bez registrácie." />
+  <meta property="og:image" content="https://localnotes-three.vercel.app/favicon/android-chrome-512x512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Local Notes — Bezpečné poznámky. Bez servera. Bez sledovania." />
+  <meta name="twitter:description" content="Moderná PWA na vytváranie a ukladanie poznámok priamo v prehliadači. Šifrovanie AES-256. Zadarmo, bez registrácie." />
+  <meta name="twitter:image" content="https://localnotes-three.vercel.app/favicon/android-chrome-512x512.png" />
+  <link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/landing/" />
+  <link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/landing/ru/" />
+  <link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/landing/ua/" />
+  <link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/landing/pl/" />
+  <link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/landing/cs/" />
+  <link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/landing/sk/" />
+  <link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/landing/bg/" />
+  <link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/landing/hr/" />
+  <link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/landing/sr/" />
+  <link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/landing/bs/" />
+  <link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/landing/mk/" />
+  <link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/landing/sl/" />
+  <link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/landing/" />
+  <link rel="icon" href="../favicon.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/landing.css" />
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="../" class="nav-logo"><img src="../logo.png" alt="Local Notes" class="nav-logo-img"> Local Notes</a>
+  <ul class="nav-links">
+    <li><a href="#features">Funkcie</a>
+  <a href="#story">Príbeh</a></li>
+    <li><a href="#story">Príbeh</a></li>
+    <li><a href="#how">Ako funguje</a></li>
+    <li><a href="#usecases">Použitie</a></li>
+    <li><a href="#security">Bezpečnosť</a></li>
+    <li><a href="#languages">Jazyky</a></li>
+    <li><a href="../" class="lang-switcher" style="border-color:rgba(174,252,110,0.3);">🇸🇰 SK</a></li>
+    <li><a href="https://localnotes-three.vercel.app/sk/" class="nav-cta" target="_blank" rel="noopener">Otvoriť</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="navMobile">
+  <a href="#features">Funkcie</a>
+  <a href="#story">Príbeh</a>
+  <a href="#how">Ako funguje</a>
+  <a href="#usecases">Použitie</a>
+  <a href="#security">Bezpečnosť</a>
+  <a href="#languages">Jazyky</a>
+  <a href="../">🌐 Zmeniť jazyk</a>
+  <a href="https://localnotes-three.vercel.app/sk/" target="_blank" rel="noopener" style="color:#aefc6e;font-weight:700;">Otvoriť aplikáciu →</a>
+</div>
+
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-eyebrow animate-in">Zadarmo · Bez registrácie</div>
+        <h1 class="hero-title animate-in delay-1">
+          Vaše poznámky.<br>
+          <span class="accent blur-reveal"><span class="blur-text">Súkromne. Šifrovane.</span><span class="blur-hint">kliknite</span></span><br>
+          Vaše.
+        </h1>
+        <p class="hero-sub animate-in delay-2">
+          Local Notes ukladá všetko priamo vo vašom prehliadači so šifrovaním AES-256.
+          Žiadny server, žiadne sledovanie, žiadny účet — len vaše poznámky.
+        </p>
+        <div class="hero-actions animate-in delay-3">
+          <a href="https://localnotes-three.vercel.app/sk/" class="btn-primary" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Otvoriť aplikáciu</a>
+          <a href="#features" class="btn-secondary"><i class="bi bi-chevron-down"></i> Zistiť viac</a>
+        </div>
+      </div>
+      <div class="hero-visual animate-in delay-2">
+        <div class="mock-app">
+          <div class="mock-lock-badge">🔒</div>
+          <div class="mock-header"><span class="mock-header-title"><img src="../favicon.png" alt="" style="width:14px;height:14px;border-radius:3px;display:inline-block;vertical-align:middle;margin-right:5px;"> Moje poznámky</span><span style="font-size:0.7rem;color:#b3b3b3;">3 poznámky</span></div>
+          <div class="mock-search"><i class="bi bi-search" style="font-size:0.75rem;"></i> Hľadať poznámky…</div>
+          <div class="mock-notes mock-notes-blur-wrap" id="mockNotes">
+            <div class="mock-note"><div class="mock-note-title">Stretnutie</div><div class="mock-note-preview">Plánovanie Q4 — kľúčové rozhodnutia…</div><span class="mock-note-tag tag-blue">práca</span></div>
+            <div class="mock-note"><div class="mock-note-title">Nákupný zoznam</div><div class="mock-note-preview">Mlieko, chlieb, káva, jablká…</div><span class="mock-note-tag tag-green">osobné</span></div>
+            <div class="mock-note"><div class="mock-note-title">Nápady 💡</div><div class="mock-note-preview">Nová koncepcia projektu…</div><span class="mock-note-tag tag-purple">nápady</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Story ─────────────────────────────────────────────────── -->
+<section class="story" id="story">
+  <div class="container">
+    <div class="story-header">
+      <div class="section-label animate-in">Príbeh vzniku</div>
+      <h2 class="section-title animate-in delay-1">Prečo vznikol Local Notes</h2>
+      <p class="section-subtitle animate-in delay-2">Všetko začalo jednoduchou frustráciou — nájsť aplikáciu na poznámky, ktorá je skutočne súkromná, rýchla a zadarmo.</p>
+    </div>
+    <div class="story-layout">
+      <div>
+        <div class="story-problem-title animate-in">Problémy existujúcich aplikácií</div>
+        <div class="story-problem">
+          <div class="problem-card animate-in delay-1"><div class="problem-card-icon">☁️</div><div class="problem-card-text"><strong>Všetko sa synchronizuje so serverom.</strong> Notion, Evernote, Google Keep — vaše poznámky žijú na cudzom počítači. Jeden únik a dáta sú odhalené.</div></div>
+          <div class="problem-card animate-in delay-2"><div class="problem-card-icon">💳</div><div class="problem-card-text"><strong>Šifrovanie stojí peniaze.</strong> Väčšina aplikácií skrýva skutočné šifrovanie za plateným plánom. Súkromie by nemalo byť prémiovou funkciou.</div></div>
+          <div class="problem-card animate-in delay-3"><div class="problem-card-icon">📋</div><div class="problem-card-text"><strong>Registrácia všade.</strong> Aby ste napísali poznámku, potrebujete email, heslo a súhlas so zásadami, ktoré umožňujú používať vaše dáta.</div></div>
+          <div class="problem-card animate-in delay-4"><div class="problem-card-icon">🌐</div><div class="problem-card-text"><strong>Žiadna podpora offline.</strong> Väčšina webových aplikácií je bez internetu zbytočná. Vaše poznámky by mali byť dostupné vždy a všade.</div></div>
+        </div>
+      </div>
+      <div class="story-timeline">
+        <div class="timeline-item animate-in"><div class="timeline-dot"></div><div class="timeline-date">Začiatok hľadania</div><div class="timeline-title">Hľadanie súkromnej aplikácie na poznámky</div><div class="timeline-desc">Vyskúšané desiatky aplikácií. Každá vyžadovala účet, synchronizovala sa s cloudom alebo účtovala za základné funkcie. Nič sa nezdalo skutočne súkromné.</div></div>
+        <div class="timeline-item animate-in delay-1"><div class="timeline-dot"></div><div class="timeline-date">Uvedomenie</div><div class="timeline-title">Prehliadač už má všetko potrebné</div><div class="timeline-desc">Moderné prehliadače majú IndexedDB pre lokálne úložisko, Web Crypto API pre šifrovanie AES-256 a Service Workers pre offline prevádzku. Server nie je potrebný.</div></div>
+        <div class="timeline-item animate-in delay-2"><div class="timeline-dot"></div><div class="timeline-date">Prvý prototyp</div><div class="timeline-title">Vytvorená minimálna funkčná verzia</div><div class="timeline-desc">Jednoduchý editor, lokálne úložisko, základné šifrovanie. Žiadne frameworky, žiadne závislosti. Len HTML, CSS a čistý JavaScript.</div></div>
+        <div class="timeline-item animate-in delay-3"><div class="timeline-dot"></div><div class="timeline-date">Rozvoj nápadu</div><div class="timeline-title">Štítky, kalendár, 12 jazykov, PWA</div><div class="timeline-desc">Pridané formátovanie textu, farebné štítky, vstavaný kalendár, vyhľadávanie s transliteráciou a plná lokalizácia do 12 jazykov. Zabalené ako PWA.</div></div>
+        <div class="timeline-item animate-in delay-4"><div class="timeline-dot"></div><div class="timeline-date">Dnes — v1.1.0</div><div class="timeline-title">Open source a zadarmo pre všetkých</div><div class="timeline-desc">Local Notes je pod licenciou MIT a bude zadarmo navždy. Cieľ je jednoduchý: dať každému bezpečné súkromné miesto na písanie.</div></div>
+      </div>
+      <div class="story-solution animate-in">
+        <div class="story-solution-icon">🔒</div>
+        <div class="story-solution-text"><div class="story-solution-title">Odpoveď: uchovávajte všetko v prehliadači</div><div class="story-solution-desc">Local Notes používa váš prehliadač ako bezpečný trezor. Šifrovanie AES-256, IndexedDB, Service Worker — všetko zabudované v moderných prehliadačoch. Bez servera, bez účtu.</div></div>
+        <a href="https://localnotes-three.vercel.app/sk/" class="btn-primary" target="_blank" rel="noopener" style="flex-shrink:0;"><i class="bi bi-box-arrow-up-right"></i> Vyskúšať</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <div class="features-header">
+      <div class="section-label animate-in">Funkcie</div>
+      <h2 class="section-title animate-in delay-1">Všetko potrebné, nič zbytočné</h2>
+      <p class="section-subtitle animate-in delay-2">Vytvorené pre ľudí, ktorí si cenia súkromie a chcú rýchlu a krásnu aplikáciu na poznámky.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card glass animate-in"><div class="feature-icon">🔒</div><div class="feature-title">Šifrovanie AES-256</div><div class="feature-desc">Vojenské šifrovanie chráni každú poznámku. Dáta sú šifrované pred uložením — len vy máte kľúč.</div></div>
+      <div class="feature-card glass animate-in delay-1"><div class="feature-icon">📱</div><div class="feature-title">Funguje offline (PWA)</div><div class="feature-desc">Nainštalujte ako Progressive Web App a používajte kdekoľvek — bez internetu. Vaše poznámky sú vždy dostupné.</div></div>
+      <div class="feature-card glass animate-in delay-2"><div class="feature-icon">🌍</div><div class="feature-title">12 jazykov</div><div class="feature-desc">Plné rozhranie v slovenčine, češtine, ruštine, poľštine, bulharčine, chorvátčine a ďalších jazykoch.</div></div>
+      <div class="feature-card glass animate-in delay-1"><div class="feature-icon">📅</div><div class="feature-title">Vstavaný kalendár</div><div class="feature-desc">Prehliadajte poznámky podľa dátumu v zobrazení mesiaca, týždňa alebo agendy.</div></div>
+      <div class="feature-card glass animate-in delay-2"><div class="feature-icon">🏷️</div><div class="feature-title">Štítky a farby</div><div class="feature-desc">Organizujte poznámky pomocou štítkov a farebných označení. Nájdite čo hľadáte za sekundy.</div></div>
+      <div class="feature-card glass animate-in delay-3"><div class="feature-icon">📤</div><div class="feature-title">Export</div><div class="feature-desc">Exportujte poznámky ako .note, HTML alebo Markdown. Vaše dáta sú vždy prenositeľné.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="container">
+    <div class="how-header">
+      <div class="section-label animate-in">Ako to funguje</div>
+      <h2 class="section-title animate-in delay-1">Jednoduché ako 1-2-3</h2>
+      <p class="section-subtitle animate-in delay-2">Žiadne nastavenie, žiadny účet. Otvorte aplikáciu a začnite písať.</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step glass animate-in"><div class="how-step-num">1</div><div class="how-step-title">Vytvorte</div><div class="how-step-desc">Otvorte aplikáciu v prehliadači alebo nainštalujte ako PWA. Začnite písať okamžite — bez registrácie.</div></div>
+      <div class="how-step glass animate-in delay-2"><div class="how-step-num">2</div><div class="how-step-title">Organizujte</div><div class="how-step-desc">Pridávajte štítky, farby a dátumy. Používajte vyhľadávanie s transliteráciou a prehliadajte kalendár.</div></div>
+      <div class="how-step glass animate-in delay-4"><div class="how-step-num">3</div><div class="how-step-title">Exportujte</div><div class="how-step-desc">Exportujte poznámky do .note, HTML alebo Markdown kedykoľvek. Vaše dáta sú vždy s vami.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="usecases" id="usecases">
+  <div class="container">
+    <div class="usecases-header">
+      <div class="section-label animate-in">Použitie</div>
+      <h2 class="section-title animate-in delay-1">Kto používa Local Notes?</h2>
+      <p class="section-subtitle animate-in delay-2">Od novinárov po študentov — všetci, ktorí si cenia súkromie a jednoduchosť.</p>
+    </div>
+    <div class="usecases-grid">
+      <div class="usecase-card glass animate-in">
+        <div class="usecase-persona"><div class="usecase-avatar">👩‍💻</div><div><div class="usecase-name">Vývojár</div><div class="usecase-role">Softvérový inžinier</div></div></div>
+        <p class="usecase-scenario">Ukladá snippety kódu, API kľúče a projektové poznámky v šifrovanej podobe. Používa export do Markdown pre dokumentáciu. Pracuje offline v lietadle.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Markdown</span><span class="usecase-tag">Offline</span><span class="usecase-tag">Export</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-1">
+        <div class="usecase-persona"><div class="usecase-avatar">📰</div><div><div class="usecase-name">Novinár</div><div class="usecase-role">Investigatívna žurnalistika</div></div></div>
+        <p class="usecase-scenario">Uchováva dôverné poznámky o zdrojoch so šifrovaním AES-256. Žiadna cloudová synchronizácia — žiadne úniky. Štítky pre organizáciu podľa tém.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Šifrovanie</span><span class="usecase-tag">Štítky</span><span class="usecase-tag">Súkromie</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-2">
+        <div class="usecase-persona"><div class="usecase-avatar">🎓</div><div><div class="usecase-name">Študent</div><div class="usecase-role">Univerzita</div></div></div>
+        <p class="usecase-scenario">Vedie poznámky s formátovaním, checklistami a obrázkami. Používa kalendár pre termíny. Nainštalované ako PWA na telefóne.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Formátovanie</span><span class="usecase-tag">Kalendár</span><span class="usecase-tag">PWA</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-1">
+        <div class="usecase-persona"><div class="usecase-avatar">🏥</div><div><div class="usecase-name">Lekár</div><div class="usecase-role">Zdravotnícky pracovník</div></div></div>
+        <p class="usecase-scenario">Vedie observačné poznámky lokálne — žiadne problémy s ochranou súkromia, dáta neopúšťajú zariadenie. Export do HTML pre správy.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Lokálne</span><span class="usecase-tag">Bez servera</span><span class="usecase-tag">HTML</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-2">
+        <div class="usecase-persona"><div class="usecase-avatar">✍️</div><div><div class="usecase-name">Spisovateľ</div><div class="usecase-role">Romanopisec / Bloger</div></div></div>
+        <p class="usecase-scenario">Píše kapitoly a príspevky v celoobrazovm editore. Farebné štítky pre rôzne projekty. Export do Markdown pre publikovanie.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Celá obrazovka</span><span class="usecase-tag">Farby</span><span class="usecase-tag">Markdown</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-3">
+        <div class="usecase-persona"><div class="usecase-avatar">🌍</div><div><div class="usecase-name">Cestovateľ</div><div class="usecase-role">Digitálny nomád</div></div></div>
+        <p class="usecase-scenario">Používa Local Notes v 12 jazykoch v rôznych krajinách. Funguje plne offline v lietadlách a odľahlých miestach.</p>
+        <div class="usecase-tags"><span class="usecase-tag">12 jazykov</span><span class="usecase-tag">Offline</span><span class="usecase-tag">PWA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="comparison" id="comparison">
+  <div class="container">
+    <div class="comparison-header">
+      <div class="section-label animate-in">Porovnanie</div>
+      <h2 class="section-title animate-in delay-1">Ako sa porovnávame</h2>
+      <p class="section-subtitle animate-in delay-2">Prečo je Local Notes najlepšou voľbou pre tých, ktorí si cenia súkromie.</p>
+    </div>
+    <div class="animate-in delay-1">
+      <table class="comparison-table">
+        <thead><tr><th>Funkcia</th><th class="highlight">Local Notes</th><th>Notion</th><th>Evernote</th><th>Google Keep</th></tr></thead>
+        <tbody>
+          <tr><td>Zadarmo</td><td class="highlight"><span class="check">✓</span></td><td><span class="partial">Obmedzené</span></td><td><span class="partial">Obmedzené</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Bez registrácie</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Šifrovanie AES-256</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="partial">Platené</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Bez servera / lokálne</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Offline (PWA)</td><td class="highlight"><span class="check">✓</span></td><td><span class="partial">Čiastočne</span></td><td><span class="partial">Čiastočne</span></td><td><span class="partial">Čiastočne</span></td></tr>
+          <tr><td>Bez sledovania</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>12 jazykov rozhrania</td><td class="highlight"><span class="check">✓</span></td><td><span class="partial">Málo</span></td><td><span class="partial">Málo</span></td><td><span class="partial">Málo</span></td></tr>
+          <tr><td>Export Markdown / HTML</td><td class="highlight"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="partial">Platené</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Otvorený zdrojový kód</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+        </tbody>
+      </table>
+      <p class="comparison-note">* Na základe verejne dostupných informácií k roku 2026.</p>
+    </div>
+  </div>
+</section>
+
+<section class="security" id="security">
+  <div class="container">
+    <div class="security-inner">
+      <div>
+        <div class="section-label animate-in">Bezpečnosť</div>
+        <h2 class="section-title animate-in delay-1">Súkromie ako základ</h2>
+        <p class="section-subtitle animate-in delay-2">Local Notes bol vytvorený s ohľadom na vaše súkromie. Žiadny server, žiadna cloudová synchronizácia, žiadna analytika.</p>
+      </div>
+      <div class="security-badges">
+        <div class="security-badge glass animate-in"><div class="security-badge-icon">🛡️</div><div><div class="security-badge-title">Bez servera a cloudu</div><div class="security-badge-desc">Všetky poznámky sú uložené lokálne v IndexedDB vášho prehliadača. Nič neopúšťa vaše zariadenie.</div></div></div>
+        <div class="security-badge glass animate-in delay-1"><div class="security-badge-icon">👁️</div><div><div class="security-badge-title">Minimálna analytika</div><div class="security-badge-desc">Žiadna analytika, žiadne cookies, žiadne sledovanie. Doslova nemôžeme vidieť vaše dáta.</div></div></div>
+        <div class="security-badge glass animate-in delay-2"><div class="security-badge-icon">🔑</div><div><div class="security-badge-title">Bez registrácie</div><div class="security-badge-desc">Otvorte aplikáciu a začnite písať. Žiadny email, žiadne heslo, žiadny účet.</div></div></div>
+        <div class="security-badge glass animate-in delay-3"><div class="security-badge-icon">🔐</div><div><div class="security-badge-title">Šifrovanie AES-256</div><div class="security-badge-desc">Priemyselný štandard šifrovania chráni vaše poznámky. Len vy ich môžete dešifrovať.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="languages" id="languages">
+  <div class="container">
+    <div class="languages-header">
+      <div class="section-label animate-in">Jazyky</div>
+      <h2 class="section-title animate-in delay-1">Dostupné v 12 jazykoch</h2>
+      <p class="section-subtitle animate-in delay-2">Local Notes hovorí vaším jazykom. Vyberte si preferované rozhranie.</p>
+    </div>
+    <div class="lang-grid">
+      <a href="../" class="lang-item animate-in"><span class="lang-flag">🇬🇧</span><div><div class="lang-name">English</div><div class="lang-native">English</div></div></a>
+      <a href="../ru/" class="lang-item animate-in delay-1"><span class="lang-flag">🇷🇺</span><div><div class="lang-name">Русский</div><div class="lang-native">Russian</div></div></a>
+      <a href="../ua/" class="lang-item animate-in delay-2"><span class="lang-flag">🇺🇦</span><div><div class="lang-name">Українська</div><div class="lang-native">Ukrainian</div></div></a>
+      <a href="../pl/" class="lang-item animate-in delay-3"><span class="lang-flag">🇵🇱</span><div><div class="lang-name">Polski</div><div class="lang-native">Polish</div></div></a>
+      <a href="../cs/" class="lang-item animate-in"><span class="lang-flag">🇨🇿</span><div><div class="lang-name">Čeština</div><div class="lang-native">Czech</div></div></a>
+      <a href="../sk/" class="lang-item active animate-in delay-1"><span class="lang-flag">🇸🇰</span><div><div class="lang-name">Slovenčina</div><div class="lang-native">Slovak</div></div></a>
+      <a href="../bg/" class="lang-item animate-in delay-2"><span class="lang-flag">🇧🇬</span><div><div class="lang-name">Български</div><div class="lang-native">Bulgarian</div></div></a>
+      <a href="../hr/" class="lang-item animate-in delay-3"><span class="lang-flag">🇭🇷</span><div><div class="lang-name">Hrvatski</div><div class="lang-native">Croatian</div></div></a>
+      <a href="../sr/" class="lang-item animate-in"><span class="lang-flag">🇷🇸</span><div><div class="lang-name">Српски</div><div class="lang-native">Serbian</div></div></a>
+      <a href="../bs/" class="lang-item animate-in delay-1"><span class="lang-flag">🇧🇦</span><div><div class="lang-name">Bosanski</div><div class="lang-native">Bosnian</div></div></a>
+      <a href="../mk/" class="lang-item animate-in delay-2"><span class="lang-flag">🇲🇰</span><div><div class="lang-name">Македонски</div><div class="lang-native">Macedonian</div></div></a>
+      <a href="../sl/" class="lang-item animate-in delay-3"><span class="lang-flag">🇸🇮</span><div><div class="lang-name">Slovenščina</div><div class="lang-native">Slovenian</div></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box">
+      <h2 class="cta-title animate-in">Začnite zadarmo —<br><span style="background:linear-gradient(135deg,#aefc6e,#9ee85d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">bez účtu</span></h2>
+      <p class="cta-sub animate-in delay-1">Otvorte aplikáciu hneď teraz a začnite písať. Vaše poznámky zostávajú na vašom zariadení, šifrované a súkromné.</p>
+      <div class="cta-actions animate-in delay-2">
+        <a href="https://localnotes-three.vercel.app/sk/" class="btn-primary" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Otvoriť aplikáciu</a>
+        <a href="#features" class="btn-secondary"><i class="bi bi-info-circle"></i> Zistiť viac</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo"><img src="../logo.png" alt="Local Notes" class="footer-logo-img"> Local Notes</div>
+      <div class="footer-links">
+        <a href="https://localnotes-three.vercel.app/sk/" target="_blank" rel="noopener">Otvoriť aplikáciu</a>
+        <a href="https://github.com/SerGioPlay01/localnotes" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://localnotes-three.vercel.app/privacy_policy.html" target="_blank" rel="noopener">Zásady ochrany súkromia</a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 Local Notes · Zadarmo a open source · Bez sledovania, bez servera.</div>
+  </div>
+</footer>
+
+<script src="../js/landing.js"></script>
+
+<!-- ── Google Analytics (loads only after cookie consent) ───── -->
+<script>
+  window._gaId = 'G-HR9HLBQFCR';
+  function loadGA() {
+    if (window._gaLoaded) return; window._gaLoaded = true;
+    var s = document.createElement('script'); s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window._gaId;
+    s.onload = function() {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); } window.gtag = gtag;
+      gtag('js', new Date()); gtag('config', window._gaId);
+    }; document.head.appendChild(s);
+  }
+  if (localStorage.getItem('ln_cookie_consent') === 'accepted') loadGA();
+</script>
+
+<!-- ── Cookie Banner ────────────────────────────────────────── -->
+<div class="cookie-banner" id="cookieBanner" role="dialog">
+  <div class="cookie-inner">
+    <div class="cookie-icon-wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div class="cookie-body">
+      <div class="cookie-title">Analytické cookies<span class="cookie-title-badge">Google Analytics</span></div>
+      <div class="cookie-desc">Používame Google Analytics na analýzu návštevnosti. Žiadne osobné údaje sa neukladajú. Vaše poznámky zostávajú lokálne. <a href="https://localnotes-three.vercel.app/cookie_policy.html" target="_blank" rel="noopener">Zásady cookies</a></div>
+    </div>
+    <div class="cookie-actions">
+      <button class="cookie-btn-accept" id="cookieAccept"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Prijať</button>
+      <button class="cookie-btn-decline" id="cookieDecline">Odmietnuť</button>
+    </div>
+  </div>
+<script>
+(function(){var c=localStorage.getItem('ln_cookie_consent');if(c==='accepted'||c==='declined'){var b=document.getElementById('cookieBanner');if(b)b.style.display='none';}})();
+</script></div>
+</body>
+</html>

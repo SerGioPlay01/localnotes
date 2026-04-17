@@ -1,0 +1,431 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Local Notes — Безопасные заметки. Без сервера. Без слежки.</title>
+  <meta name="description" content="Local Notes — бесплатное PWA-приложение для создания и хранения заметок прямо в браузере. Шифрование AES-256, 12 языков, офлайн-режим. Без регистрации." />
+  <meta name="keywords" content="локальные заметки, зашифрованные заметки, приватные заметки, PWA заметки, офлайн заметки, AES-256, безопасные заметки" />
+  <link rel="canonical" href="https://localnotes-three.vercel.app/landing/ru/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://localnotes-three.vercel.app/landing/ru/" />
+  <meta property="og:title" content="Local Notes — Безопасные заметки. Без сервера. Без слежки." />
+  <meta property="og:description" content="Современное PWA для создания и хранения заметок прямо в браузере. Шифрование AES-256. Бесплатно, без регистрации." />
+  <meta property="og:image" content="https://localnotes-three.vercel.app/favicon/android-chrome-512x512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Local Notes — Безопасные заметки. Без сервера. Без слежки." />
+  <meta name="twitter:description" content="Современное PWA для создания и хранения заметок прямо в браузере. Шифрование AES-256. Бесплатно, без регистрации." />
+  <meta name="twitter:image" content="https://localnotes-three.vercel.app/favicon/android-chrome-512x512.png" />
+  <link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/landing/" />
+  <link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/landing/ru/" />
+  <link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/landing/ua/" />
+  <link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/landing/pl/" />
+  <link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/landing/cs/" />
+  <link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/landing/sk/" />
+  <link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/landing/bg/" />
+  <link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/landing/hr/" />
+  <link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/landing/sr/" />
+  <link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/landing/bs/" />
+  <link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/landing/mk/" />
+  <link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/landing/sl/" />
+  <link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/landing/" />
+  <link rel="icon" href="../favicon.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="../css/landing.css" />
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Local Notes","url":"https://localnotes-three.vercel.app/ru/","description":"Современное PWA для создания и хранения заметок прямо в браузере. Шифрование AES-256. Бесплатно, без регистрации.","applicationCategory":"ProductivityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="../" class="nav-logo">
+    <img src="../logo.png" alt="Local Notes" class="nav-logo-img">
+    Local Notes
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Функции</a>
+  <a href="#story">История</a></li>
+    <li><a href="#story">История</a></li>
+    <li><a href="#how">Как работает</a></li>
+    <li><a href="#usecases">Сценарии</a></li>
+    <li><a href="#security">Безопасность</a></li>
+    <li><a href="#languages">Языки</a></li>
+    <li><a href="../" class="lang-switcher" style="border-color:rgba(174,252,110,0.3);">🇷🇺 RU</a></li>
+    <li><a href="https://localnotes-three.vercel.app/ru/" class="nav-cta" target="_blank" rel="noopener">Открыть</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile" id="navMobile">
+  <a href="#features">Функции</a>
+  <a href="#story">История</a>
+  <a href="#how">Как работает</a>
+  <a href="#usecases">Сценарии</a>
+  <a href="#security">Безопасность</a>
+  <a href="#languages">Языки</a>
+  <a href="../">🌐 Сменить язык</a>
+  <a href="https://localnotes-three.vercel.app/ru/" target="_blank" rel="noopener" style="color:#aefc6e;font-weight:700;">Открыть приложение →</a>
+</div>
+
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-eyebrow animate-in">Бесплатно · Без регистрации</div>
+        <h1 class="hero-title animate-in delay-1">
+          Ваши заметки.<br>
+          <span class="accent blur-reveal"><span class="blur-text">Приватно. Зашифровано.</span><span class="blur-hint">нажмите</span></span><br>
+          Ваши.
+        </h1>
+        <p class="hero-sub animate-in delay-2">
+          Local Notes хранит всё прямо в вашем браузере с шифрованием AES-256.
+          Никакого сервера, никакой слежки, никакого аккаунта — только ваши заметки.
+        </p>
+        <div class="hero-actions animate-in delay-3">
+          <a href="https://localnotes-three.vercel.app/ru/" class="btn-primary" target="_blank" rel="noopener">
+            <i class="bi bi-box-arrow-up-right"></i> Открыть приложение
+          </a>
+          <a href="#features" class="btn-secondary">
+            <i class="bi bi-chevron-down"></i> Узнать больше
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual animate-in delay-2">
+        <div class="mock-app">
+          <div class="mock-lock-badge">🔒</div>
+          <div class="mock-header">
+            <span class="mock-header-title"><img src="../favicon.png" alt="" style="width:14px;height:14px;border-radius:3px;display:inline-block;vertical-align:middle;margin-right:5px;"> Мои заметки</span>
+            <span style="font-size:0.7rem;color:#b3b3b3;">3 заметки</span>
+          </div>
+          <div class="mock-search"><i class="bi bi-search" style="font-size:0.75rem;"></i> Поиск заметок…</div>
+          <div class="mock-notes mock-notes-blur-wrap" id="mockNotes">
+            <div class="mock-note">
+              <div class="mock-note-title">Встреча</div>
+              <div class="mock-note-preview">Планирование Q4 — ключевые решения…</div>
+              <span class="mock-note-tag tag-blue">работа</span>
+            </div>
+            <div class="mock-note">
+              <div class="mock-note-title">Список покупок</div>
+              <div class="mock-note-preview">Молоко, хлеб, кофе, яблоки…</div>
+              <span class="mock-note-tag tag-green">личное</span>
+            </div>
+            <div class="mock-note">
+              <div class="mock-note-title">Идеи 💡</div>
+              <div class="mock-note-preview">Новая концепция проекта…</div>
+              <span class="mock-note-tag tag-purple">идеи</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Story ─────────────────────────────────────────────────── -->
+<section class="story" id="story">
+  <div class="container">
+    <div class="story-header">
+      <div class="section-label animate-in">История создания</div>
+      <h2 class="section-title animate-in delay-1">Почему появился Local Notes</h2>
+      <p class="section-subtitle animate-in delay-2">Всё началось с простого разочарования — найти приложение для заметок, которое действительно приватно, быстро и бесплатно.</p>
+    </div>
+    <div class="story-layout">
+      <div>
+        <div class="story-problem-title animate-in">Проблемы существующих приложений</div>
+        <div class="story-problem">
+          <div class="problem-card animate-in delay-1"><div class="problem-card-icon">☁️</div><div class="problem-card-text"><strong>Всё синхронизируется с сервером.</strong> Notion, Evernote, Google Keep — ваши заметки хранятся на чужом компьютере. Одна утечка — и данные раскрыты.</div></div>
+          <div class="problem-card animate-in delay-2"><div class="problem-card-icon">💳</div><div class="problem-card-text"><strong>Шифрование стоит денег.</strong> Большинство приложений прячут настоящее шифрование за платной подпиской. Приватность не должна быть премиум-функцией.</div></div>
+          <div class="problem-card animate-in delay-3"><div class="problem-card-icon">📋</div><div class="problem-card-text"><strong>Везде нужна регистрация.</strong> Чтобы написать заметку, нужен email, пароль и согласие с политикой, разрешающей использовать ваши данные.</div></div>
+          <div class="problem-card animate-in delay-4"><div class="problem-card-icon">🌐</div><div class="problem-card-text"><strong>Нет офлайн-поддержки.</strong> Большинство веб-приложений бесполезны без интернета. Ваши заметки должны быть доступны всегда и везде.</div></div>
+        </div>
+      </div>
+      <div class="story-timeline">
+        <div class="timeline-item animate-in"><div class="timeline-dot"></div><div class="timeline-date">Начало поиска</div><div class="timeline-title">Поиск приватного приложения для заметок</div><div class="timeline-desc">Перепробовано десятки приложений. Каждое требовало аккаунт, синхронизировалось с облаком, не имело шифрования или брало деньги за базовые функции. Ничто не казалось по-настоящему приватным.</div></div>
+        <div class="timeline-item animate-in delay-1"><div class="timeline-dot"></div><div class="timeline-date">Осознание</div><div class="timeline-title">Браузер уже имеет всё необходимое</div><div class="timeline-desc">Современные браузеры имеют IndexedDB для локального хранения, Web Crypto API для шифрования AES-256 и Service Workers для офлайн-работы. Сервер не нужен.</div></div>
+        <div class="timeline-item animate-in delay-2"><div class="timeline-dot"></div><div class="timeline-date">Первый прототип</div><div class="timeline-title">Создан минимальный рабочий вариант</div><div class="timeline-desc">Простой редактор, локальное хранилище, базовое шифрование. Никаких фреймворков, никаких зависимостей. Только HTML, CSS и чистый JavaScript. Работало — и было быстрым.</div></div>
+        <div class="timeline-item animate-in delay-3"><div class="timeline-dot"></div><div class="timeline-date">Развитие идеи</div><div class="timeline-title">Теги, календарь, 12 языков, PWA</div><div class="timeline-desc">Добавлен форматированный текст, цветные теги, встроенный календарь, поиск с транслитерацией и полная локализация на 12 языков. Упаковано как PWA для нативной установки.</div></div>
+        <div class="timeline-item animate-in delay-4"><div class="timeline-dot"></div><div class="timeline-date">Сегодня — v1.1.0</div><div class="timeline-title">Открытый исходный код и бесплатно для всех</div><div class="timeline-desc">Local Notes распространяется под лицензией MIT и будет бесплатным всегда. Цель проста: дать каждому безопасное приватное место для записей — ничего не требуя взамен.</div></div>
+      </div>
+      <div class="story-solution animate-in">
+        <div class="story-solution-icon">🔒</div>
+        <div class="story-solution-text"><div class="story-solution-title">Ответ: хранить всё в браузере</div><div class="story-solution-desc">Local Notes использует ваш браузер как защищённое хранилище. Шифрование AES-256, IndexedDB, Service Worker для офлайн — всё встроено в современные браузеры. Без сервера, без аккаунта, без компромиссов.</div></div>
+        <a href="https://localnotes-three.vercel.app/ru/" class="btn-primary" target="_blank" rel="noopener" style="flex-shrink:0;"><i class="bi bi-box-arrow-up-right"></i> Попробовать</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <div class="features-header">
+      <div class="section-label animate-in">Функции</div>
+      <h2 class="section-title animate-in delay-1">Всё необходимое, ничего лишнего</h2>
+      <p class="section-subtitle animate-in delay-2">Создано для тех, кто ценит приватность и хочет быстрое красивое приложение для заметок.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card glass animate-in">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Шифрование AES-256</div>
+        <div class="feature-desc">Военный уровень шифрования защищает каждую заметку. Данные шифруются до сохранения — только вы владеете ключом.</div>
+      </div>
+      <div class="feature-card glass animate-in delay-1">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">Работает офлайн (PWA)</div>
+        <div class="feature-desc">Установите как Progressive Web App и используйте везде — без интернета. Ваши заметки всегда доступны.</div>
+      </div>
+      <div class="feature-card glass animate-in delay-2">
+        <div class="feature-icon">🌍</div>
+        <div class="feature-title">12 языков</div>
+        <div class="feature-desc">Полный интерфейс на русском, украинском, польском, чешском, словацком, болгарском, хорватском, сербском и других языках.</div>
+      </div>
+      <div class="feature-card glass animate-in delay-1">
+        <div class="feature-icon">📅</div>
+        <div class="feature-title">Встроенный календарь</div>
+        <div class="feature-desc">Просматривайте заметки по дате в режиме месяца, недели или повестки дня.</div>
+      </div>
+      <div class="feature-card glass animate-in delay-2">
+        <div class="feature-icon">🏷️</div>
+        <div class="feature-title">Теги и цвета</div>
+        <div class="feature-desc">Организуйте заметки с помощью тегов и цветовых меток. Находите нужное за секунды.</div>
+      </div>
+      <div class="feature-card glass animate-in delay-3">
+        <div class="feature-icon">📤</div>
+        <div class="feature-title">Экспорт</div>
+        <div class="feature-desc">Экспортируйте заметки в форматах .note, HTML или Markdown. Ваши данные всегда переносимы.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="container">
+    <div class="how-header">
+      <div class="section-label animate-in">Как это работает</div>
+      <h2 class="section-title animate-in delay-1">Просто как 1-2-3</h2>
+      <p class="section-subtitle animate-in delay-2">Никакой настройки, никакого аккаунта. Откройте приложение и начните писать.</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step glass animate-in">
+        <div class="how-step-num">1</div>
+        <div class="how-step-title">Создайте</div>
+        <div class="how-step-desc">Откройте приложение в браузере или установите как PWA. Начните писать сразу — без регистрации.</div>
+      </div>
+      <div class="how-step glass animate-in delay-2">
+        <div class="how-step-num">2</div>
+        <div class="how-step-title">Организуйте</div>
+        <div class="how-step-desc">Добавляйте теги, цвета и даты. Используйте поиск с транслитерацией и просматривайте календарь.</div>
+      </div>
+      <div class="how-step glass animate-in delay-4">
+        <div class="how-step-num">3</div>
+        <div class="how-step-title">Экспортируйте</div>
+        <div class="how-step-desc">Экспортируйте заметки в .note, HTML или Markdown в любое время. Ваши данные всегда с вами.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="usecases" id="usecases">
+  <div class="container">
+    <div class="usecases-header">
+      <div class="section-label animate-in">Сценарии</div>
+      <h2 class="section-title animate-in delay-1">Кто использует Local Notes?</h2>
+      <p class="section-subtitle animate-in delay-2">От журналистов до студентов — все, кто ценит приватность и простоту.</p>
+    </div>
+    <div class="usecases-grid">
+      <div class="usecase-card glass animate-in">
+        <div class="usecase-persona"><div class="usecase-avatar">👩‍💻</div><div><div class="usecase-name">Разработчик</div><div class="usecase-role">Инженер-программист</div></div></div>
+        <p class="usecase-scenario">Хранит сниппеты кода, API-ключи и заметки по проектам в зашифрованном виде. Использует экспорт в Markdown для документации. Работает офлайн в самолёте.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Markdown</span><span class="usecase-tag">Офлайн</span><span class="usecase-tag">Экспорт</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-1">
+        <div class="usecase-persona"><div class="usecase-avatar">📰</div><div><div class="usecase-name">Журналист</div><div class="usecase-role">Расследовательская журналистика</div></div></div>
+        <p class="usecase-scenario">Хранит конфиденциальные заметки об источниках с шифрованием AES-256. Никакой синхронизации с облаком — никаких утечек. Теги для организации по темам.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Шифрование</span><span class="usecase-tag">Теги</span><span class="usecase-tag">Приватность</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-2">
+        <div class="usecase-persona"><div class="usecase-avatar">🎓</div><div><div class="usecase-name">Студент</div><div class="usecase-role">Университет</div></div></div>
+        <p class="usecase-scenario">Ведёт конспекты с форматированием, чеклистами и изображениями. Использует календарь для дедлайнов. Установлено как PWA на телефоне.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Форматирование</span><span class="usecase-tag">Календарь</span><span class="usecase-tag">PWA</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-1">
+        <div class="usecase-persona"><div class="usecase-avatar">🏥</div><div><div class="usecase-name">Врач</div><div class="usecase-role">Медицинский работник</div></div></div>
+        <p class="usecase-scenario">Ведёт заметки о наблюдениях локально — никаких проблем с конфиденциальностью, данные не покидают устройство. Экспорт в HTML для отчётов.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Локально</span><span class="usecase-tag">Без сервера</span><span class="usecase-tag">HTML</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-2">
+        <div class="usecase-persona"><div class="usecase-avatar">✍️</div><div><div class="usecase-name">Писатель</div><div class="usecase-role">Романист / Блогер</div></div></div>
+        <p class="usecase-scenario">Пишет главы и посты в полноэкранном редакторе. Цветные теги для разных проектов. Экспорт в Markdown для публикации.</p>
+        <div class="usecase-tags"><span class="usecase-tag">Полный экран</span><span class="usecase-tag">Цвета</span><span class="usecase-tag">Markdown</span></div>
+      </div>
+      <div class="usecase-card glass animate-in delay-3">
+        <div class="usecase-persona"><div class="usecase-avatar">🌍</div><div><div class="usecase-name">Путешественник</div><div class="usecase-role">Цифровой кочевник</div></div></div>
+        <p class="usecase-scenario">Использует Local Notes на 12 языках в разных странах. Работает полностью офлайн в самолётах и отдалённых местах.</p>
+        <div class="usecase-tags"><span class="usecase-tag">12 языков</span><span class="usecase-tag">Офлайн</span><span class="usecase-tag">PWA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="comparison" id="comparison">
+  <div class="container">
+    <div class="comparison-header">
+      <div class="section-label animate-in">Сравнение</div>
+      <h2 class="section-title animate-in delay-1">Как мы сравниваемся</h2>
+      <p class="section-subtitle animate-in delay-2">Почему Local Notes — лучший выбор для тех, кто ценит приватность.</p>
+    </div>
+    <div class="animate-in delay-1">
+      <table class="comparison-table">
+        <thead><tr><th>Функция</th><th class="highlight">Local Notes</th><th>Notion</th><th>Evernote</th><th>Google Keep</th></tr></thead>
+        <tbody>
+          <tr><td>Бесплатно</td><td class="highlight"><span class="check">✓</span></td><td><span class="partial">Ограничено</span></td><td><span class="partial">Ограничено</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td>Без регистрации</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Шифрование AES-256</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="partial">Платно</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Без сервера / локально</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Офлайн (PWA)</td><td class="highlight"><span class="check">✓</span></td><td><span class="partial">Частично</span></td><td><span class="partial">Частично</span></td><td><span class="partial">Частично</span></td></tr>
+          <tr><td>Без слежки</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>12 языков интерфейса</td><td class="highlight"><span class="check">✓</span></td><td><span class="partial">Мало</span></td><td><span class="partial">Мало</span></td><td><span class="partial">Мало</span></td></tr>
+          <tr><td>Экспорт Markdown / HTML</td><td class="highlight"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="partial">Платно</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Открытый исходный код</td><td class="highlight"><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+        </tbody>
+      </table>
+      <p class="comparison-note">* На основе публично доступной информации на 2026 год.</p>
+    </div>
+  </div>
+</section>
+
+<section class="security" id="security">
+  <div class="container">
+    <div class="security-inner">
+      <div>
+        <div class="section-label animate-in">Безопасность</div>
+        <h2 class="section-title animate-in delay-1">Приватность по умолчанию</h2>
+        <p class="section-subtitle animate-in delay-2">Local Notes создан с заботой о вашей приватности. Никакого сервера, никакой синхронизации с облаком, аналитика только с вашего согласия.</p>
+      </div>
+      <div class="security-badges">
+        <div class="security-badge glass animate-in">
+          <div class="security-badge-icon">🛡️</div>
+          <div>
+            <div class="security-badge-title">Без сервера и облака</div>
+            <div class="security-badge-desc">Все заметки хранятся локально в IndexedDB вашего браузера. Ничего не покидает ваше устройство.</div>
+          </div>
+        </div>
+        <div class="security-badge glass animate-in delay-1">
+          <div class="security-badge-icon">👁️</div>
+          <div>
+            <div class="security-badge-title">Минимальная аналитика</div>
+            <div class="security-badge-desc">Только анонимный Google Analytics с вашего согласия. Никаких личных данных, никакой рекламной слежки.</div>
+          </div>
+        </div>
+        <div class="security-badge glass animate-in delay-2">
+          <div class="security-badge-icon">🔑</div>
+          <div>
+            <div class="security-badge-title">Без регистрации</div>
+            <div class="security-badge-desc">Откройте приложение и начните писать. Никакого email, никакого пароля, никакого аккаунта.</div>
+          </div>
+        </div>
+        <div class="security-badge glass animate-in delay-3">
+          <div class="security-badge-icon">🔐</div>
+          <div>
+            <div class="security-badge-title">Шифрование AES-256</div>
+            <div class="security-badge-desc">Отраслевой стандарт шифрования защищает ваши заметки. Только вы можете их расшифровать.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="languages" id="languages">
+  <div class="container">
+    <div class="languages-header">
+      <div class="section-label animate-in">Языки</div>
+      <h2 class="section-title animate-in delay-1">Доступно на 12 языках</h2>
+      <p class="section-subtitle animate-in delay-2">Local Notes говорит на вашем языке. Выберите предпочтительный интерфейс.</p>
+    </div>
+    <div class="lang-grid">
+      <a href="../" class="lang-item animate-in"><span class="lang-flag">🇬🇧</span><div><div class="lang-name">English</div><div class="lang-native">English</div></div></a>
+      <a href="../ru/" class="lang-item active animate-in delay-1"><span class="lang-flag">🇷🇺</span><div><div class="lang-name">Русский</div><div class="lang-native">Russian</div></div></a>
+      <a href="../ua/" class="lang-item animate-in delay-2"><span class="lang-flag">🇺🇦</span><div><div class="lang-name">Українська</div><div class="lang-native">Ukrainian</div></div></a>
+      <a href="../pl/" class="lang-item animate-in delay-3"><span class="lang-flag">🇵🇱</span><div><div class="lang-name">Polski</div><div class="lang-native">Polish</div></div></a>
+      <a href="../cs/" class="lang-item animate-in"><span class="lang-flag">🇨🇿</span><div><div class="lang-name">Čeština</div><div class="lang-native">Czech</div></div></a>
+      <a href="../sk/" class="lang-item animate-in delay-1"><span class="lang-flag">🇸🇰</span><div><div class="lang-name">Slovenčina</div><div class="lang-native">Slovak</div></div></a>
+      <a href="../bg/" class="lang-item animate-in delay-2"><span class="lang-flag">🇧🇬</span><div><div class="lang-name">Български</div><div class="lang-native">Bulgarian</div></div></a>
+      <a href="../hr/" class="lang-item animate-in delay-3"><span class="lang-flag">🇭🇷</span><div><div class="lang-name">Hrvatski</div><div class="lang-native">Croatian</div></div></a>
+      <a href="../sr/" class="lang-item animate-in"><span class="lang-flag">🇷🇸</span><div><div class="lang-name">Српски</div><div class="lang-native">Serbian</div></div></a>
+      <a href="../bs/" class="lang-item animate-in delay-1"><span class="lang-flag">🇧🇦</span><div><div class="lang-name">Bosanski</div><div class="lang-native">Bosnian</div></div></a>
+      <a href="../mk/" class="lang-item animate-in delay-2"><span class="lang-flag">🇲🇰</span><div><div class="lang-name">Македонски</div><div class="lang-native">Macedonian</div></div></a>
+      <a href="../sl/" class="lang-item animate-in delay-3"><span class="lang-flag">🇸🇮</span><div><div class="lang-name">Slovenščina</div><div class="lang-native">Slovenian</div></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-box">
+      <h2 class="cta-title animate-in">Начните бесплатно —<br><span style="background:linear-gradient(135deg,#aefc6e,#9ee85d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">без аккаунта</span></h2>
+      <p class="cta-sub animate-in delay-1">Откройте приложение прямо сейчас и начните писать. Ваши заметки остаются на вашем устройстве, зашифрованными и приватными.</p>
+      <div class="cta-actions animate-in delay-2">
+        <a href="https://localnotes-three.vercel.app/ru/" class="btn-primary" target="_blank" rel="noopener">
+          <i class="bi bi-box-arrow-up-right"></i> Открыть приложение
+        </a>
+        <a href="#features" class="btn-secondary"><i class="bi bi-info-circle"></i> Узнать больше</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo"><img src="../logo.png" alt="Local Notes" class="footer-logo-img"> Local Notes</div>
+      <div class="footer-links">
+        <a href="https://localnotes-three.vercel.app/ru/" target="_blank" rel="noopener">Открыть приложение</a>
+        <a href="https://github.com/SerGioPlay01/localnotes" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://localnotes-three.vercel.app/privacy_policy.html" target="_blank" rel="noopener">Политика конфиденциальности</a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 Local Notes · Бесплатно и с открытым исходным кодом · Без слежки, без сервера.</div>
+  </div>
+</footer>
+
+<script src="../js/landing.js"></script>
+
+<!-- ── Google Analytics (loads only after cookie consent) ───── -->
+<script>
+  window._gaId = 'G-HR9HLBQFCR';
+  function loadGA() {
+    if (window._gaLoaded) return; window._gaLoaded = true;
+    var s = document.createElement('script'); s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + window._gaId;
+    s.onload = function() {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); } window.gtag = gtag;
+      gtag('js', new Date()); gtag('config', window._gaId);
+    }; document.head.appendChild(s);
+  }
+  if (localStorage.getItem('ln_cookie_consent') === 'accepted') loadGA();
+</script>
+
+<!-- ── Cookie Banner ────────────────────────────────────────── -->
+<div class="cookie-banner" id="cookieBanner" role="dialog">
+  <div class="cookie-inner">
+    <div class="cookie-icon-wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div class="cookie-body">
+      <div class="cookie-title">Аналитические куки<span class="cookie-title-badge">Google Analytics</span></div>
+      <div class="cookie-desc">Мы используем Google Analytics для анализа посещаемости. Личные данные не хранятся. Ваши заметки остаются локально. <a href="https://localnotes-three.vercel.app/cookie_policy.html" target="_blank" rel="noopener">Политика куки</a></div>
+    </div>
+    <div class="cookie-actions">
+      <button class="cookie-btn-accept" id="cookieAccept"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Принять</button>
+      <button class="cookie-btn-decline" id="cookieDecline">Отклонить</button>
+    </div>
+  </div>
+<script>
+(function(){var c=localStorage.getItem('ln_cookie_consent');if(c==='accepted'||c==='declined'){var b=document.getElementById('cookieBanner');if(b)b.style.display='none';}})();
+</script></div>
+</body>
+</html>
+

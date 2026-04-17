@@ -1574,7 +1574,10 @@ async function importNotesMarkdown(files) {
     for (const file of files) {
         try {
             const text = await file.text();
-            const html = text.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>').replace(/\n\n+/g,'</p><p>').replace(/^/,'<p>').replace(/$/, '</p>');
+            // Use advanced parser if available, fallback to basic regex
+            const html = (typeof LNMarkdown !== 'undefined')
+                ? LNMarkdown.parse(text)
+                : text.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>').replace(/\n\n+/g,'</p><p>').replace(/^/,'<p>').replace(/$/, '</p>');
             await notesDB.saveNote({ id: 'note_'+Date.now()+'_'+Math.random().toString(36).substr(2,9), content: html, creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(html) });
             imported++;
         } catch (e) { showCustomAlert(typeof t === 'function' ? t('error') : 'Error', file.name + ': ' + e.message, 'error'); }

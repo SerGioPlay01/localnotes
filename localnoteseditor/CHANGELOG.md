@@ -1,151 +1,56 @@
-# LocalNotesEditor - Changelog
+# LocalNotesEditor — Changelog
 
-## Version 1.0.0 (Initial Release)
+## v1.1.0 (current)
 
-### Features
-- ✅ Rich text formatting (bold, italic, underline, strikethrough)
-- ✅ Font size and font family selection
-- ✅ Ordered and unordered lists
-- ✅ Interactive checklists with checkboxes
-- ✅ Image insertion and drag-drop support
-- ✅ Video embedding (YouTube, Vimeo, direct URLs)
-- ✅ Hyperlink creation
-- ✅ Blockquotes and code blocks
-- ✅ Text alignment (left, center, right)
-- ✅ Full undo/redo support with keyboard shortcuts
-- ✅ Smart paste handling with style cleanup
-- ✅ Word and character count status bar
-- ✅ Responsive design for all devices
-- ✅ Dark mode support
-- ✅ Keyboard shortcuts (Ctrl+Z, Ctrl+Y, Ctrl+B, Ctrl+I, Ctrl+U)
+### New Features
+- **Text color sync** — toolbar color bar updates when cursor moves into colored text
+- **Highlight color sync** — same for background color
+- **Caret color sync** — `caret-color` updates to match current text color
+- **Paragraph styles i18n** — Paragraph, Heading 1–6, Preformatted, Blockquote translated via `window.t()`
+- **Font/size placeholder i18n** — Font and Size selects use translated placeholders
+- **Select auto-width** — selects use `min-width`/`max-width` instead of fixed width, fits translated labels
 
-### Architecture
-- Lightweight core (~15KB minified)
-- No external dependencies
-- Modular CSS with responsive breakpoints
-- Efficient undo/redo with configurable history
-- Clean, maintainable code structure
+### Fixes
+- **History on new note** — `setContent()` now resets undo/redo stack; statusbar shows 0 on open
+- **History removed from statusbar** — only Words and Characters shown
+- **Editor modal full height** — flex layout fills modal, no empty space at bottom
+- **Green border position** — `position: relative` on `.modal-content` fixes `::before` floating to page top
+- **`t()` array crash** — translation function returns arrays as-is (months, weekdays)
 
-### Browser Support
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-### Performance
-- Fast initialization (no library loading)
-- Minimal memory footprint
-- Optimized for mobile devices
-- Efficient DOM manipulation
-
-### Accessibility
-- Semantic HTML structure
-- ARIA labels for screen readers
-- Keyboard navigation support
-- Focus management
-
-### Integration
-- Compatibility layer for TinyMCE migration
-- Easy integration with existing applications
-- Simple API for programmatic control
-- Event-based architecture
-
-## Migration from TinyMCE
-
-### What's New
-- Significantly smaller file size (15KB vs 500KB+)
-- Faster initialization
-- Better mobile performance
-- Easier to customize and maintain
-- No external dependencies
-
-### What's Preserved
-- All essential editing features
-- Checklist functionality
-- Video insertion
-- Undo/redo system
-- Keyboard shortcuts
-- Responsive design
-
-### Breaking Changes
-- HTML structure changed (textarea → div)
-- API methods renamed for clarity
-- CSS class names prefixed with `lne-`
-- No plugin system (features are built-in)
-
-## Future Enhancements
-
-### Planned Features
-- [ ] Table editing
-- [ ] Markdown support
-- [ ] Collaborative editing
-- [ ] Comment system
-- [ ] Version history
-- [ ] Custom themes
-- [ ] Plugin system
-- [ ] Syntax highlighting for code blocks
-- [ ] Emoji picker
-- [ ] Mention system (@username)
-- [ ] Hashtag support
-
-### Performance Improvements
-- [ ] Virtual scrolling for large documents
-- [ ] Lazy loading for images
-- [ ] Content compression
-- [ ] Incremental saves
-
-### Developer Experience
-- [ ] TypeScript definitions
-- [ ] React component wrapper
-- [ ] Vue component wrapper
-- [ ] Angular component wrapper
-- [ ] Comprehensive API documentation
-- [ ] Video tutorials
-- [ ] Example projects
-
-## Known Limitations
-
-1. **No plugin system** - All features are built-in
-2. **Limited table support** - Basic table functionality only
-3. **No collaborative editing** - Single-user only
-4. **No spell checking** - Browser spell check only
-5. **No advanced formatting** - Focus on essential features
-
-## Support and Feedback
-
-For issues, feature requests, or feedback:
-- Check existing documentation
-- Review examples and migration guide
-- Test with latest browser versions
-- Report issues with reproduction steps
-
-## License
-
-MIT License - See LICENSE file for details
-
-## Credits
-
-LocalNotesEditor was created specifically for the Local Notes application to provide a lightweight, maintainable alternative to TinyMCE while preserving all essential functionality.
-
-### Key Design Principles
-1. **Simplicity** - Easy to understand and modify
-2. **Performance** - Minimal overhead and fast execution
-3. **Maintainability** - Clean, well-documented code
-4. **Extensibility** - Easy to add custom features
-5. **Accessibility** - Support for all users
-6. **Responsiveness** - Works on all devices
-
-## Version History
-
-### 1.0.0 (Current)
-- Initial release
-- Full feature parity with TinyMCE
-- Optimized for Local Notes application
-- Comprehensive documentation
+### Improvements
+- Toolbar color bars have smooth CSS transition
+- Highlight bar shows dashed border when no color set
+- `_colorBars()` correctly manages border on highlight bar
 
 ---
 
-For detailed information, see:
-- README.md - Feature overview
-- MIGRATION_GUIDE.md - Migration from TinyMCE
-- EXAMPLES.md - Usage examples
+## v1.0.0 (initial release)
+
+### Features
+- Rich text formatting (bold, italic, underline, strikethrough)
+- Font size and font family selection
+- Ordered and unordered lists
+- Interactive checklists with checkboxes
+- Image insertion and drag-drop
+- Video embedding (YouTube, Vimeo, direct URLs)
+- Hyperlink creation
+- Blockquotes and code blocks
+- Text alignment
+- Undo/redo with keyboard shortcuts
+- Smart paste handling
+- Word and character count statusbar
+- Responsive design
+- Dark mode support
+- Find & Replace
+- Emoji and special characters pickers
+- Tables with context toolbar
+- Floating selection toolbar
+- Fullscreen mode
+- i18n via `window.t(key)` with fallback
+
+### Architecture
+- Single class `LocalNotesEditor`
+- No external dependencies
+- Bootstrap Icons (bundled)
+- CSS custom properties for theming
+- Modular methods, easy to extend

@@ -1,5 +1,4 @@
 ﻿/* LocalNotesEditor — Professional Rich Text Editor Styles */
-@import url('/fonts/montserrat.css');
 @import url('/localnoteseditor/bootstrap-icons/font/bootstrap-icons.css');
 
 /* ═══════════════════════════ WRAPPER ══════════════════════════════════ */
@@ -49,7 +48,8 @@
 
 /* Color button */
 .lne-color-btn { flex-direction: column; gap: 1px; }
-.lne-cbar { display: block; width: 18px; height: 3px; border-radius: 2px; }
+.lne-cbar { display: block; width: 18px; height: 3px; border-radius: 2px; transition: background 0.15s, border 0.15s; }
+.lne-cbar-bg { background: transparent; border: 1px dashed var(--border-color, #444); box-sizing: border-box; }
 
 /* Selects */
 .lne-sel {
@@ -57,12 +57,13 @@
     border: 1px solid var(--border-color, #272727); border-radius: 4px;
     background: var(--bg-secondary, #111); color: var(--text-color, #e0e0e0);
     font-size: 12px; cursor: pointer; transition: border-color 0.12s;
+    width: auto; min-width: 0;
 }
 .lne-sel:hover, .lne-sel:focus { border-color: var(--primary-color, #28a745); outline: none; }
 .lne-sel option { background: var(--modal-bg, #1a1a1a); color: var(--text-color, #e0e0e0); }
-.lne-sel-heading  { max-width: 115px; }
-.lne-sel-font     { max-width: 120px; }
-.lne-sel-size     { max-width: 60px; }
+.lne-sel-heading  { min-width: 100px; max-width: 200px; }
+.lne-sel-font     { min-width: 100px; max-width: 160px; }
+.lne-sel-size     { min-width: 52px;  max-width: 72px; }
 
 /* ═══════════════════════════ EDITOR BODY ═══════════════════════════════ */
 .lne-body { flex: 1; overflow: auto; background: var(--modal-bg, #1a1a1a); }
@@ -327,7 +328,7 @@ textarea.lne-inp { resize: vertical; }
     .lne-btn { width: 28px; height: 28px; }
     .lne-btn i { font-size: 15px; }
     .lne-sel { font-size: 11px; height: 26px; }
-    .lne-sel-heading { max-width: 85px; } .lne-sel-font { max-width: 90px; } .lne-sel-size { max-width: 50px; }
+    .lne-sel-heading { min-width: 80px; max-width: 140px; } .lne-sel-font { min-width: 80px; max-width: 120px; } .lne-sel-size { min-width: 46px; max-width: 60px; }
     .lne-editor { padding: 12px 14px; font-size: 14px; }
     .lne-sep { display: none; }
     .lne-swgrid { grid-template-columns: repeat(6, 30px); }
@@ -552,6 +553,9 @@ textarea.lne-inp { resize: vertical; }
     .lne-sep { margin: 0 2px; }
     /* Bigger selects */
     .lne-sel { height: 32px; font-size: 12px; }
+    .lne-sel-heading { min-width: 110px; max-width: 200px; }
+    .lne-sel-font    { min-width: 110px; max-width: 160px; }
+    .lne-sel-size    { min-width: 52px;  max-width: 72px; }
     /* Editor padding */
     .lne-editor { padding: 12px 14px; }
     /* Modal bottom-sheet full height */

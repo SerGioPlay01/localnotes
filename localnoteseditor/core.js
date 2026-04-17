@@ -34,6 +34,8 @@ class LocalNotesEditor {
         this._buildDOM();
         this._buildToolbar();
         this._wireEditor();
+        // Start with clean history
+        this.undoStack = []; this.redoStack = []; this.lastSnap = null;
         this._saveSnap();
     }
 
@@ -75,15 +77,15 @@ class LocalNotesEditor {
         GS +
         '<select class="lne-sel lne-sel-heading" title="' + _('paragraphStyle','Style') + '">' +
         '<option value="">' + _('paragraphStyle','Style') + '</option>' +
-        '<option value="p">Paragraph</option>' +
-        '<option value="h1">Heading 1</option><option value="h2">Heading 2</option>' +
-        '<option value="h3">Heading 3</option><option value="h4">Heading 4</option>' +
-        '<option value="h5">Heading 5</option><option value="h6">Heading 6</option>' +
-        '<option value="pre">Preformatted</option><option value="blockquote">Blockquote</option>' +
+        '<option value="p">' + _('paragraph','Paragraph') + '</option>' +
+        '<option value="h1">' + _('heading1','Heading 1') + '</option><option value="h2">' + _('heading2','Heading 2') + '</option>' +
+        '<option value="h3">' + _('heading3','Heading 3') + '</option><option value="h4">' + _('heading4','Heading 4') + '</option>' +
+        '<option value="h5">' + _('heading5','Heading 5') + '</option><option value="h6">' + _('heading6','Heading 6') + '</option>' +
+        '<option value="pre">' + _('preformatted','Preformatted') + '</option><option value="blockquote">' + _('blockquote','Blockquote') + '</option>' +
         '<option value="div">Div</option>' +
         '</select>' +
         '<select class="lne-sel lne-sel-font" title="' + _('fontFamily','Font') + '">' +
-        '<option value="">Font</option>' +
+        '<option value="">' + _('fontFamily','Font') + '</option>' +
         '<option value="Montserrat,sans-serif">Montserrat</option>' +
         '<option value="Arial,sans-serif">Arial</option>' +
         '<option value="Times New Roman,serif">Times New Roman</option>' +
@@ -97,7 +99,7 @@ class LocalNotesEditor {
         '<option value="Impact,sans-serif">Impact</option>' +
         '</select>' +
         '<select class="lne-sel lne-sel-size" title="' + _('fontSize','Size') + '">' +
-        '<option value="">Size</option>' +
+        '<option value="">' + _('fontSize','Size') + '</option>' +
         '<option value="8">8</option><option value="9">9</option><option value="10">10</option>' +
         '<option value="11">11</option><option value="12">12</option><option value="13">13</option>' +
         '<option value="14">14</option><option value="16">16</option><option value="18">18</option>' +
@@ -116,7 +118,7 @@ class LocalNotesEditor {
         B('subscript','bi bi-subscript',_('subscript','Subscript')) +
         GE + SEP +
         GS +
-        '<button class="lne-btn lne-color-btn" data-cmd="foreColor" title="' + _('textColor','Text color') + '"><i class="bi bi-type-color"></i><span class="lne-cbar lne-cbar-fg"></span></button>' +
+        '<button class="lne-btn lne-color-btn" data-cmd="foreColor" title="' + _('textColor','Text color') + '"><i class="bi bi-fonts"></i><span class="lne-cbar lne-cbar-fg"></span></button>' +
         '<button class="lne-btn lne-color-btn" data-cmd="hiliteColor" title="' + _('highlightColor','Highlight') + '"><i class="bi bi-highlighter"></i><span class="lne-cbar lne-cbar-bg"></span></button>' +
         B('removeFormat','bi bi-eraser',_('clearFormat','Clear formatting')) +
         GE +
@@ -165,7 +167,12 @@ class LocalNotesEditor {
         var fg = this.toolbar ? this.toolbar.querySelector('.lne-cbar-fg') : null;
         var bg = this.toolbar ? this.toolbar.querySelector('.lne-cbar-bg') : null;
         if (fg) fg.style.background = this._foreColor;
-        if (bg) bg.style.background = this._hiliteColor;
+        if (bg) {
+            bg.style.background = this._hiliteColor;
+            bg.style.border = (this._hiliteColor && this._hiliteColor !== 'transparent' && this._hiliteColor !== 'rgba(0, 0, 0, 0)') ? '' : '1px dashed var(--border-color, #444)';
+        }
+        // Sync caret color with current text color
+        if (this.ed) this.ed.style.caretColor = this._foreColor;
     }
 
     _wireToolbar() {
@@ -264,6 +271,40 @@ class LocalNotesEditor {
                     if (!sMatched) sSel.value = '';
                 }
             }
+
+            // Sync color bars — always, regardless of node type
+            var fgBar = self.toolbar.querySelector('.lne-cbar-fg');
+            var bgBar = self.toolbar.querySelector('.lne-cbar-bg');
+            var colorNode = node;
+            var foundFg = null, foundBg = null;
+            while (colorNode && colorNode !== self.ed) {
+                if (colorNode.style) {
+                    if (colorNode.style.color && !foundFg) foundFg = colorNode.style.color;
+                    var bc = colorNode.style.backgroundColor;
+                    if (bc && bc !== 'rgba(0, 0, 0, 0)' && bc !== 'transparent' && !foundBg) foundBg = bc;
+                }
+                // <font color="..."> fallback (some browsers use this)
+                if (!foundFg && colorNode.tagName === 'FONT' && colorNode.getAttribute('color')) {
+                    foundFg = colorNode.getAttribute('color');
+                }
+                colorNode = colorNode.parentNode;
+            }
+            // If still no explicit color found, use getComputedStyle on the node
+            if (!foundFg && node && node.nodeType === 1) {
+                var cs2 = window.getComputedStyle(node);
+                var cc = cs2.color;
+                // Only use if it differs from the editor's default text color
+                var edCs = window.getComputedStyle(self.ed);
+                if (cc && cc !== edCs.color) foundFg = cc;
+            }
+            var defaultFg = getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim() || '#e0e0e0';
+            if (fgBar) fgBar.style.background = foundFg || defaultFg;
+            if (bgBar) {
+                bgBar.style.background = foundBg || 'transparent';
+                bgBar.style.border = foundBg ? '' : '1px dashed var(--border-color, #444)';
+            }
+            // Update caret color to match current text color
+            if (self.ed) self.ed.style.caretColor = foundFg || defaultFg;
         }
         this._updateStatusbar();
     }
@@ -918,7 +959,7 @@ class LocalNotesEditor {
                 : '<button class="lne-sw" data-c="' + c + '" style="background:' + c + '" title="' + c + '"></button>';
         }).join('');
         var title = cmd === 'foreColor' ? this._('textColor','Text color') : this._('highlightColor','Highlight color');
-        var icon  = cmd === 'foreColor' ? 'bi bi-type' : 'bi bi-highlighter';
+        var icon  = cmd === 'foreColor' ? 'bi bi-fonts' : 'bi bi-highlighter';
         var r = this._modal(title, icon,
             '<div class="lne-swgrid">' + swatches + '</div>' +
             '<div class="lne-row" style="margin-top:10px;align-items:center;gap:8px;">' +
@@ -1130,15 +1171,13 @@ class LocalNotesEditor {
 
     _updateStatusbar() {
         if (!this.statusbar) return;
-        // Remove zero-width spaces from empty paragraphs, trim whitespace
         var raw  = this.ed.innerText || '';
         var text = raw.replace(/\u200B/g, '').trim();
         var words = text.length ? text.split(/\s+/).filter(function(w){ return w.length > 0; }).length : 0;
         var chars = text.length;
         this.statusbar.innerHTML =
             '<span>' + this._('words','Words') + ': <b>' + words + '</b></span>' +
-            '<span>' + this._('characters','Chars') + ': <b>' + chars + '</b></span>' +
-            '<span>' + this._('undoLevels','History') + ': <b>' + this.undoStack.length + '</b></span>';
+            '<span>' + this._('characters','Chars') + ': <b>' + chars + '</b></span>';
     }
 
     // ── Make checklists interactive after setContent ──────────────────
@@ -1680,6 +1719,8 @@ class LocalNotesEditor {
     setContent(html) {
         this.ed.innerHTML = html || '';
         this._initAll();
+        // Reset history — loading new content is not undoable
+        this.undoStack = []; this.redoStack = []; this.lastSnap = null;
         this._saveSnap(); this._updateStatusbar();
         if (this.toolbar) this._syncState();
         // Remove inline styles hljs may have added to code blocks

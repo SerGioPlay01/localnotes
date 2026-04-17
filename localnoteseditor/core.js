@@ -399,8 +399,21 @@ class LocalNotesEditor {
 
     // ── Undo/Redo ────────────────────────────────────────────────────────
 
+    // Браузер теряет src у iframe при innerHTML сериализации — сохраняем в data-src
+    _snapEncode() {
+        this.ed.querySelectorAll('iframe').forEach(function(f) {
+            if (f.src && f.src !== 'about:blank') f.setAttribute('data-src', f.src);
+        });
+    }
+    _snapDecode(container) {
+        (container || this.ed).querySelectorAll('iframe[data-src]').forEach(function(f) {
+            f.src = f.getAttribute('data-src');
+        });
+    }
+
     _saveSnap() {
         if (this.isRec) return;
+        this._snapEncode();
         var s = { c: this.ed.innerHTML, t: Date.now() };
         if (this.lastSnap && this.lastSnap.c === s.c) return;
         this.undoStack.push(s);
@@ -411,10 +424,11 @@ class LocalNotesEditor {
     undo() {
         if (this.undoStack.length <= 1) return;
         this.isRec = true;
+        this._snapEncode();
         this.redoStack.push({ c: this.ed.innerHTML, t: Date.now() });
         this.undoStack.pop();
         var p = this.undoStack[this.undoStack.length - 1];
-        if (p) { this.ed.innerHTML = p.c; this.lastSnap = p; }
+        if (p) { this.ed.innerHTML = p.c; this._snapDecode(); this.lastSnap = p; }
         this.isRec = false; this._syncState();
     }
 
@@ -422,7 +436,7 @@ class LocalNotesEditor {
         if (!this.redoStack.length) return;
         this.isRec = true;
         var s = this.redoStack.pop();
-        this.undoStack.push(s); this.ed.innerHTML = s.c; this.lastSnap = s;
+        this.undoStack.push(s); this.ed.innerHTML = s.c; this._snapDecode(); this.lastSnap = s;
         this.isRec = false; this._syncState();
     }
 
@@ -1351,42 +1365,66 @@ class LocalNotesEditor {
         };
 
         // Show bar on hover, keep visible while hovering bar or element
+        var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
         var bindHoverCtx = function(el, showFn) {
             if (el.dataset.ctxBound) return;
             el.dataset.ctxBound = '1';
 
-            el.addEventListener('mouseenter', function() {
-                clearTimeout(hoverTimer);
-                hoverTimer = setTimeout(function() {
-                    removeCtx();
-                    activeBar = showFn(el);
-                    if (activeBar) {
-                        // Keep bar alive while hovering it
-                        activeBar.addEventListener('mouseenter', function() {
-                            clearTimeout(hoverTimer);
-                        });
-                        activeBar.addEventListener('mouseleave', function() {
-                            hoverTimer = setTimeout(removeCtx, 350);
-                        });
-                    }
-                }, 180);
-            });
+            if (!isTouchDevice) {
+                el.addEventListener('mouseenter', function() {
+                    clearTimeout(hoverTimer);
+                    hoverTimer = setTimeout(function() {
+                        removeCtx();
+                        activeBar = showFn(el);
+                        if (activeBar) {
+                            activeBar.addEventListener('mouseenter', function() {
+                                clearTimeout(hoverTimer);
+                            });
+                            activeBar.addEventListener('mouseleave', function() {
+                                hoverTimer = setTimeout(removeCtx, 350);
+                            });
+                        }
+                    }, 180);
+                });
 
-            el.addEventListener('mouseleave', function() {
-                hoverTimer = setTimeout(removeCtx, 350);
-            });
+                el.addEventListener('mouseleave', function() {
+                    hoverTimer = setTimeout(removeCtx, 350);
+                });
+            }
 
-            // Also show on click (touch devices)
+            // Click / tap — показываем тулбар
             el.addEventListener('click', function(e) {
                 e.stopPropagation();
                 clearTimeout(hoverTimer);
+                // Если тулбар уже показан для этого элемента — скрываем (toggle)
+                if (activeBar && activeBar._forEl === el) { removeCtx(); return; }
                 removeCtx();
                 activeBar = showFn(el);
                 if (activeBar) {
-                    activeBar.addEventListener('mouseenter', function() { clearTimeout(hoverTimer); });
-                    activeBar.addEventListener('mouseleave', function() { hoverTimer = setTimeout(removeCtx, 350); });
+                    activeBar._forEl = el;
+                    if (!isTouchDevice) {
+                        activeBar.addEventListener('mouseenter', function() { clearTimeout(hoverTimer); });
+                        activeBar.addEventListener('mouseleave', function() { hoverTimer = setTimeout(removeCtx, 350); });
+                    }
                 }
             });
+
+            // Тач: перехватываем touchend на враппере чтобы iframe не блокировал
+            if (isTouchDevice) {
+                el.addEventListener('touchend', function(e) {
+                    // Только если тап был на самом враппере или его не-iframe потомке
+                    var target = e.target;
+                    if (target.tagName === 'IFRAME' || target.tagName === 'VIDEO') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        clearTimeout(hoverTimer);
+                        if (activeBar && activeBar._forEl === el) { removeCtx(); return; }
+                        removeCtx();
+                        activeBar = showFn(el);
+                        if (activeBar) activeBar._forEl = el;
+                    }
+                }, { passive: false });
+            }
         };
 
         // IMAGE
@@ -1467,15 +1505,33 @@ class LocalNotesEditor {
     _positionCtx(bar, el) {
         document.body.appendChild(bar);
         var rect = el.getBoundingClientRect();
-        var scrollY = window.scrollY || document.documentElement.scrollTop;
-        var scrollX = window.scrollX || document.documentElement.scrollLeft;
-        bar.style.top  = (rect.top + scrollY - bar.offsetHeight - 6) + 'px';
-        bar.style.left = (rect.left + scrollX) + 'px';
-        // Keep inside viewport
-        var bw = bar.offsetWidth;
-        var vw = window.innerWidth;
-        if (rect.left + bw > vw) bar.style.left = (vw - bw - 8 + scrollX) + 'px';
-        if (rect.top - bar.offsetHeight < 0) bar.style.top = (rect.bottom + scrollY + 6) + 'px';
+        var isMobile = window.innerWidth <= 768;
+
+        if (isMobile) {
+            // На мобильных — fixed позиционирование относительно viewport
+            bar.style.position = 'fixed';
+            bar.style.zIndex = '99999';
+            var bh = bar.offsetHeight || 44;
+            var top = rect.top - bh - 6;
+            if (top < 4) top = rect.bottom + 6;
+            if (top + bh > window.innerHeight) top = Math.max(4, window.innerHeight - bh - 4);
+            bar.style.top = top + 'px';
+            var left = rect.left;
+            var bw = bar.offsetWidth || 80;
+            if (left + bw > window.innerWidth) left = window.innerWidth - bw - 8;
+            if (left < 4) left = 4;
+            bar.style.left = left + 'px';
+        } else {
+            var scrollY = window.scrollY || document.documentElement.scrollTop;
+            var scrollX = window.scrollX || document.documentElement.scrollLeft;
+            bar.style.position = 'absolute';
+            bar.style.top  = (rect.top + scrollY - (bar.offsetHeight || 0) - 6) + 'px';
+            bar.style.left = (rect.left + scrollX) + 'px';
+            var bw = bar.offsetWidth;
+            var vw = window.innerWidth;
+            if (rect.left + bw > vw) bar.style.left = (vw - bw - 8 + scrollX) + 'px';
+            if (rect.top - bar.offsetHeight < 0) bar.style.top = (rect.bottom + scrollY + 6) + 'px';
+        }
     }
 
     _showImageCtx(img) {
@@ -1799,11 +1855,15 @@ class LocalNotesEditor {
 
     // ── Public API ───────────────────────────────────────────────────────
 
-    getContent()  { return this.ed.innerHTML; }
+    getContent() {
+        this._snapEncode();
+        return this.ed.innerHTML;
+    }
     getText()     { return this.ed.innerText; }
 
     setContent(html) {
         this.ed.innerHTML = html || '';
+        this._snapDecode();
         this._initAll();
         // Reset history — loading new content is not undoable
         this.undoStack = []; this.redoStack = []; this.lastSnap = null;

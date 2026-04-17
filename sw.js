@@ -1,7 +1,7 @@
 // Service Worker для Local Notes
-const CACHE_NAME = 'local-notes-v1.0.9';
-const STATIC_CACHE = 'static-v1.0.9';
-const DYNAMIC_CACHE = 'dynamic-v1.0.9';
+const CACHE_NAME = 'local-notes-v1.1.0';
+const STATIC_CACHE = 'static-v1.1.0';
+const DYNAMIC_CACHE = 'dynamic-v1.1.0';
 const CACHE_LIMIT = 50; // Максимальное количество файлов в динамическом кэше
 
 // Файлы для кэширования
@@ -12,7 +12,10 @@ const STATIC_FILES = [
     '/css/img.css',
     '/css/preloader.css',
     '/css/highlight.css',
-    '/css/tinymce-custom.css',
+    '/css/editor-modal.css',
+    '/css/tags-calendar.css',
+    '/css/page.css',
+    '/css/print.css',
     '/js/index.js',
     '/js/magicurl.js',
     '/js/pwa.js',
@@ -22,7 +25,16 @@ const STATIC_FILES = [
     '/js/translations.js',
     '/js/translate.js',
     '/js/themes.js',
-    '/js/tinymce-translations.js',
+    '/js/tags-calendar.js',
+    '/js/utils.js',
+    '/js/selectors.js',
+    '/js/performance.js',
+    '/js/security.js',
+    '/js/date-utils.js',
+    '/js/editor-integration.js',
+    '/localnoteseditor/core.js',
+    '/localnoteseditor/styles.css',
+    '/json/lang.json',
     '/favicon/favicon-16x16.png',
     '/favicon/favicon-32x32.png',
     '/favicon/android-chrome-192x192.png',

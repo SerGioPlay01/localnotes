@@ -1,0 +1,23 @@
+/* Локальные шрифты */
+/* Подключаем все шрифты, которые есть в папке fonts */
+
+/* Golos Text (уже существующий) */
+@import url('./golos_web/golostext.css');
+
+/* Intro (уже существующий) */
+@import url('./intro/intro.css');
+
+/* Lekton Nerd Font Mono (уже существующий) */
+@import url('./lekton-nerd-font-mono/lekton-nerd-font-mono.css');
+
+/* Roboto */
+@import url('./Roboto/roboto.css');
+
+/* Open Sans */
+@import url('./Open_Sans/open_sans.css');
+
+/* Lato */
+@import url('./Lato/lato.css');
+
+/* Montserrat */
+@import url('./Montserrat/montserrat.css');

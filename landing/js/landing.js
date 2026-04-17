@@ -94,8 +94,11 @@
   // Banner is visible by default via CSS animation.
   // The inline script right after the banner already hid it if consent exists.
   // Here we just wire up the buttons.
-  var banner = document.getElementById('cookieBanner');
-  if (banner) {
+  // Use DOMContentLoaded because this script loads before the banner element in HTML.
+  document.addEventListener('DOMContentLoaded', function() {
+    var banner = document.getElementById('cookieBanner');
+    if (!banner) return;
+
     function dismissBanner() {
       banner.style.animation = 'none';
       banner.classList.add('hiding');
@@ -118,7 +121,7 @@
         dismissBanner();
       });
     }
-  }
+  });
 
   /* ── Language redirect ──────────────────────────────────── */
   var isRoot = !window.location.pathname.match(/\/(ru|ua|pl|cs|sk|bg|hr|sr|bs|mk|sl|en)\//);

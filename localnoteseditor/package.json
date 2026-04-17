@@ -1,0 +1,41 @@
+{
+  "name": "localnoteseditor",
+  "version": "1.0.0",
+  "description": "A lightweight, feature-rich rich text editor for the Local Notes application",
+  "main": "core.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "editor",
+    "rich-text",
+    "wysiwyg",
+    "contenteditable",
+    "notes",
+    "lightweight"
+  ],
+  "author": "Local Notes Project",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/local-notes"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/local-notes/issues"
+  },
+  "homepage": "https://github.com/yourusername/local-notes#readme",
+  "files": [
+    "core.js",
+    "styles.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "browser": "core.js",
+  "unpkg": "core.js",
+  "jsdelivr": "core.js",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}

@@ -95,9 +95,6 @@
         position: sticky;
         top: 0;
         z-index: 10;
-        /* Тулбар занимает полную ширину, с отступом под safe-area на iPhone */
-        padding-left: env(safe-area-inset-left, 0px);
-        padding-right: env(safe-area-inset-right, 0px);
     }
     #editModal .modal-content .lne-toolbar::-webkit-scrollbar { display: none; }
 

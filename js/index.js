@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Local Notes - Main Application
  * Based on original code, TinyMCE replaced with LocalNotesEditor
  */
@@ -1745,6 +1745,11 @@ function initializeEventListeners() {
 // ============================================================================
 // APP INIT
 // ============================================================================
+document.addEventListener('DOMContentLoaded', () => {
+    // Show welcome message immediately so user sees it without waiting
+    showWelcomeMessage();
+});
+
 window.onload = async () => {
     try {
         await notesDB.init();

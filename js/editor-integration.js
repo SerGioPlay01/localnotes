@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LocalNotesEditor Integration
  * Integrates LocalNotesEditor with the Local Notes application
  */
@@ -32,8 +32,6 @@ function initializeLocalNotesEditor() {
             toolbar: true,
             statusbar: true
         });
-
-        console.log('✅ LocalNotesEditor initialized successfully');
         return true;
     } catch (error) {
         console.error('❌ Error initializing LocalNotesEditor:', error);

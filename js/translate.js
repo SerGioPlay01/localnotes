@@ -1,8 +1,7 @@
-// Функция для инициализации языка при загрузке страницы
+﻿// Функция для инициализации языка при загрузке страницы
 function initializeLanguage() {
     // Если язык уже установлен (например, на языковых страницах)
     if (window.currentLang) {
-        console.log('Initializing language:', window.currentLang);
         changeLanguage(window.currentLang);
     }
 }
@@ -203,7 +202,6 @@ function updateButtonTexts() {
                 try {
                     window.appUtils.forceUpdateToggleButton();
                 } catch (error) {
-                    console.log("Error updating toggle button:", error);
                 }
             }, 50);
         }

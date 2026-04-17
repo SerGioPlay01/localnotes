@@ -1,4 +1,4 @@
-// Общие утилиты для приложения
+﻿// Общие утилиты для приложения
 class AppUtils {
     constructor() {
         this.currentLang = this.getCurrentLanguage();
@@ -42,7 +42,6 @@ class AppUtils {
                 langTranslations = window.translations[currentLang];
             }
         } catch (error) {
-            console.log("Error accessing translations:", error);
             langTranslations = null;
         }
         
@@ -59,7 +58,6 @@ class AppUtils {
                     btn.innerHTML = `<i class="fas fa-list"></i> ${listText}`;
                 }
             } catch (error) {
-                console.log("Error using t() function:", error);
                 // Fallback к старой логике
                 this.useFallbackText(btn, isFullWidth, currentLang);
             }
@@ -116,8 +114,6 @@ class AppUtils {
         
         // Обновляем текст кнопки сразу после переключения
         this.updateToggleViewButton();
-        
-        console.log("Toggle view clicked - switched from", isFullWidth ? "full-width" : "grid", "to", !isFullWidth ? "full-width" : "grid");
     }
     
     // Инициализация обработчиков событий

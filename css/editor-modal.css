@@ -9,17 +9,36 @@
     overflow: hidden;
 }
 
-/* Desktop: fixed max height */
+/* Desktop: modal is flex, editor fills remaining space */
+.modal-content {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
 .modal-content .lne-editor-wrapper {
-    min-height: 300px;
-    max-height: 65vh;
+    flex: 1;
+    min-height: 0;
+    max-height: none;
     margin-bottom: 0;
+    overflow: hidden;
 }
 
 .modal-content .lne-wrapper {
     height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 0;
+}
+
+.modal-content .lne-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.modal-content .modal-buttons-container {
+    flex-shrink: 0;
 }
 
 /* ─── Mobile: full height ─────────────────────────── */
@@ -103,8 +122,20 @@
 
 /* ─── Tablet ───────────────────────────────────────── */
 @media (min-width: 769px) and (max-width: 1024px) {
-    .modal-content .lne-editor-wrapper {
-        min-height: 350px;
-        max-height: 70vh;
+    .modal-content {
+        width: 98% !important;
+        margin: 2vh auto !important;
+        height: 94vh;
+        height: 94dvh;
+    }
+}
+
+/* ─── Large Tablet (1025–1366px) ──────────────────── */
+@media (min-width: 1025px) and (max-width: 1366px) {
+    .modal-content {
+        width: 96% !important;
+        margin: 2vh auto !important;
+        height: 92vh;
+        height: 92dvh;
     }
 }

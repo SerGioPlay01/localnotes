@@ -609,7 +609,7 @@ function openNoteSettings(noteId) {
 
         return `<div class="nsm-tags-row" id="nsm-tags-row">${pills}</div>
             <div class="nsm-tags-add">${opts}
-                <button class="nsm-new-tag-btn" id="nsm-new-tag"><i class="bi bi-plus-circle"></i> New tag</button>
+                <button class="nsm-new-tag-btn" id="nsm-new-tag"><i class="bi bi-plus-circle"></i> ${window.t ? window.t('newTag') : 'New tag'}</button>
             </div>`;
     };
 
@@ -627,34 +627,34 @@ function openNoteSettings(noteId) {
         ov.innerHTML = `
             <div class="nsm-panel">
                 <div class="nsm-header">
-                    <h3><i class="bi bi-sliders2"></i> Note Settings</h3>
+                    <h3><i class="bi bi-sliders2"></i> ${window.t ? window.t('noteSettings') : 'Note Settings'}</h3>
                     <button class="nsm-close" id="nsm-close"><i class="bi bi-x-lg"></i></button>
                 </div>
                 <div class="nsm-body">
                     <section class="nsm-section">
-                        <div class="nsm-section-title"><i class="bi bi-tags"></i> Tags</div>
+                        <div class="nsm-section-title"><i class="bi bi-tags"></i> ${window.t ? window.t('tags') : 'Tags'}</div>
                         ${buildTagsHTML(allTags)}
                     </section>
                     <section class="nsm-section">
-                        <div class="nsm-section-title"><i class="bi bi-calendar-event"></i> Due date</div>
+                        <div class="nsm-section-title"><i class="bi bi-calendar-event"></i> ${window.t ? window.t('dueDate') : 'Due date'}</div>
                         <input type="datetime-local" id="nsm-due" class="nsm-input" value="${dateVal}">
-                        ${meta.dueDate ? '<button class="nsm-clear-date" id="nsm-clear-date"><i class="bi bi-x"></i> Clear</button>' : ''}
+                        ${meta.dueDate ? `<button class="nsm-clear-date" id="nsm-clear-date"><i class="bi bi-x"></i> ${window.t ? window.t('clear') : 'Clear'}</button>` : ''}
                     </section>
                     <section class="nsm-section">
-                        <div class="nsm-section-title"><i class="bi bi-palette"></i> Color</div>
+                        <div class="nsm-section-title"><i class="bi bi-palette"></i> ${window.t ? window.t('color') : 'Color'}</div>
                         <div class="nsm-colors">${colorSwatches}</div>
                     </section>
                     <section class="nsm-section nsm-pin-section">
-                        <div class="nsm-section-title"><i class="bi bi-pin-angle"></i> Pin note</div>
+                        <div class="nsm-section-title"><i class="bi bi-pin-angle"></i> ${window.t ? window.t('pinNote') : 'Pin note'}</div>
                         <button class="nsm-pin-btn${meta.pinned ? ' active' : ''}" id="nsm-pin">
                             <i class="bi bi-pin-angle${meta.pinned ? '-fill' : ''}"></i>
-                            ${meta.pinned ? 'Pinned' : 'Pin'}
+                            ${meta.pinned ? (window.t ? window.t('pinned') : 'Pinned') : (window.t ? window.t('pin') : 'Pin')}
                         </button>
                     </section>
                 </div>
                 <div class="nsm-footer">
-                    <button class="nsm-btn nsm-btn-sec" id="nsm-cancel"><i class="bi bi-x-lg"></i> Cancel</button>
-                    <button class="nsm-btn nsm-btn-pri" id="nsm-apply"><i class="bi bi-check-lg"></i> Apply</button>
+                    <button class="nsm-btn nsm-btn-sec" id="nsm-cancel"><i class="bi bi-x-lg"></i> ${window.t ? window.t('cancel') : 'Cancel'}</button>
+                    <button class="nsm-btn nsm-btn-pri" id="nsm-apply"><i class="bi bi-check-lg"></i> ${window.t ? window.t('apply') : 'Apply'}</button>
                 </div>
             </div>`;
 
@@ -708,7 +708,7 @@ function openNoteSettings(noteId) {
             meta.pinned = !meta.pinned;
             const btn = ov.querySelector('#nsm-pin');
             btn.classList.toggle('active', meta.pinned);
-            btn.innerHTML = `<i class="bi bi-pin-angle${meta.pinned ? '-fill' : ''}"></i> ${meta.pinned ? 'Pinned' : 'Pin'}`;
+            btn.innerHTML = `<i class="bi bi-pin-angle${meta.pinned ? '-fill' : ''}"></i> ${meta.pinned ? (window.t ? window.t('pinned') : 'Pinned') : (window.t ? window.t('pin') : 'Pin')}`;
         });
 
         // Apply
@@ -938,7 +938,10 @@ async function loadNotes() {
                 }
                 const badge = document.createElement('span');
                 badge.className = `note-due-badge ${cls}`;
-                badge.innerHTML = `<i class="bi ${icon}"></i>${due.toLocaleDateString(undefined, {month:'short', day:'numeric'})}`;
+                const lang = window.currentLang || 'en';
+                const localeMap = { ru:'ru-RU', ua:'uk-UA', pl:'pl-PL', cs:'cs-CZ', sk:'sk-SK', bg:'bg-BG', hr:'hr-HR', sr:'sr-RS', bs:'bs-BA', mk:'mk-MK', sl:'sl-SI', en:'en-US' };
+                const locale = localeMap[lang] || lang;
+                badge.innerHTML = `<i class="bi ${icon}"></i>${due.toLocaleDateString(locale, {month:'short', day:'numeric'})}`;
                 footer.appendChild(badge);
             }
 
@@ -1460,6 +1463,21 @@ async function importNotesWithFormat(event) {
     const filesArray = Array.from(files);
     event.target.value = '';
 
+    // Show fullscreen loading overlay immediately
+    const loadingOv = document.createElement('div');
+    loadingOv.id = 'import-loading-ov';
+    loadingOv.innerHTML = '<div class="import-loading-spinner"><i class="bi bi-hourglass-split"></i></div>';
+    document.body.appendChild(loadingOv);
+
+    // Force browser to paint the overlay before continuing
+    await new Promise(resolve => {
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                setTimeout(resolve, 10); // Extra 10ms to ensure visibility
+            });
+        });
+    });
+
     const modal = document.createElement('div');
     modal.className = 'export-modal';
     modal.innerHTML = `<div class="export-modal-content">
@@ -1470,7 +1488,11 @@ async function importNotesWithFormat(event) {
             <button class="export-option" data-format="markdown"><span class="export-icon">📝</span><span class="export-text">Markdown</span><span class="export-desc">.md files</span></button>
         </div>
         <button class="export-close">${typeof t === 'function' ? t('cancel') : 'Cancel'}</button></div>`;
+
+    // Remove loading overlay, show format modal
+    if (loadingOv.parentNode) document.body.removeChild(loadingOv);
     document.body.appendChild(modal);
+
     const close = () => { if (modal.parentNode) document.body.removeChild(modal); };
     modal.querySelectorAll('.export-option').forEach(opt => {
         opt.addEventListener('click', () => {
@@ -1480,7 +1502,7 @@ async function importNotesWithFormat(event) {
             else importNotesMarkdown(filesArray);
         });
     });
-    modal.querySelector('.export-close').addEventListener('click', close);
+    modal.querySelector('.export-close').addEventListener('click', () => { close(); });
     modal.addEventListener('pointerdown', e => { if (e.target === modal) close(); });
     modal.addEventListener('click', e => { if (e.target === modal) close(); });
 }
@@ -1519,9 +1541,6 @@ async function importNotesMarkdown(files) {
 async function importNotesFiles(files) {
     let imported = 0, errors = 0, skipped = 0;
     const fileList = Array.from(files);
-
-    // Read all file texts upfront to avoid delays
-    const fileTexts = await Promise.all(fileList.map(f => f.text()));
 
     function showDecryptModal(file, fileText, index, total, onSubmit, onSkip) {
         const ov = document.createElement('div');
@@ -1640,7 +1659,7 @@ async function importNotesFiles(files) {
         }
 
         const file     = fileList[index];
-        const fileText = fileTexts[index];
+        const fileText = await file.text();
 
         showDecryptModal(file, fileText, index, fileList.length,
             async (content) => {
@@ -1736,7 +1755,6 @@ window.onload = async () => {
         initializeEventListeners();
         updateFooterTexts();
         updateButtonTexts();
-        console.log('✅ Local Notes initialized');
     } catch (e) {
         console.error('❌ Init error:', e);
         if (typeof showCustomAlert === 'function') showCustomAlert(typeof t === 'function' ? t('error') : 'Error', typeof t === 'function' ? t('errorInitializingApp') : 'Error initializing app!', 'error');

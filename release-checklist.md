@@ -1,125 +1,81 @@
-# Release Checklist - Local Notes v1.0.4
+# Release Checklist — Local Notes v1.1.0
 
-## ✅ Performance Optimizations
-- [x] Асинхронная загрузка CSS файлов
-- [x] Оптимизированная загрузка JavaScript
-- [x] Добавлен мониторинг производительности
-- [x] Оптимизирован Service Worker
-- [x] Добавлено ограничение размера кэша
-- [x] Исправлен дублирующийся слеш в CSS импортах
+## ✅ Editor
+- [x] Replaced TinyMCE with LocalNotesEditor (~15KB, no deps)
+- [x] Text color & highlight color sync with cursor position
+- [x] Caret color syncs with selected text color
+- [x] Paragraph styles, font, size selects — all translated
+- [x] Editor modal fills full height (flex layout, no empty space)
+- [x] History reset on setContent (shows 0 on new note)
+- [x] History counter removed from statusbar
 
-## ✅ Security Improvements
-- [x] Улучшена CSP политика
-- [x] Добавлена защита от XSS
-- [x] Добавлена защита от clickjacking
-- [x] Добавлен мониторинг безопасности
-- [x] Добавлена валидация файлов
-- [x] Добавлено безопасное хранение данных
+## ✅ i18n — All 12 Languages
+- [x] Calendar: Month, Week, Agenda, Today, No notes — translated
+- [x] Decrypt Note modal — all strings translated
+- [x] Note Settings modal — Tags, Due date, Color, Pin, New tag — translated
+- [x] Calendar button in header — translated and updated on language switch
+- [x] Due date badge in note footer — uses app locale for date formatting
+- [x] Editor selects: Paragraph, Heading 1–6, Preformatted, Font, Size — translated
+- [x] `t()` function handles arrays (months, weekdays) without crashing
 
-## ✅ Code Quality
-- [x] Проверены все файлы на ошибки линтера
-- [x] Исправлены найденные проблемы
-- [x] Добавлены комментарии для сложных участков кода
-- [x] Оптимизирована структура кода
+## ✅ Tags & Calendar
+- [x] Color tags with filtering
+- [x] Due date with overdue/today/soon indicators
+- [x] Calendar: month/week/agenda views
+- [x] Calendar uses translated month names and weekday abbreviations
+- [x] Note Settings modal fully translated
 
-## ✅ Resource Optimization
-- [x] Оптимизированы CSS файлы
-- [x] Добавлена ленивая загрузка изображений
-- [x] Оптимизированы шрифты
-- [x] Добавлена поддержка WebP изображений
-- [x] Оптимизирован Service Worker
+## ✅ Import UX
+- [x] Loading overlay shown immediately after file selection
+- [x] Overlay uses pure CSS spinner (no icon font dependency)
+- [x] Format selection modal has slide-up animation
+- [x] Encrypted files read lazily (one at a time, not all upfront)
 
-## 🔄 Pre-Release Tasks
-- [ ] Создать минифицированные версии CSS/JS файлов
-- [ ] Оптимизировать изображения (WebP конвертация)
-- [ ] Создать source maps для production
-- [ ] Обновить версию в manifest.json
-- [ ] Обновить версию в sw.js
-- [ ] Создать changelog.md
-- [ ] Протестировать на разных устройствах
-- [ ] Проверить работу PWA функций
+## ✅ Responsive
+- [x] Horizontal scroll for toolbar buttons on 769–1366px (tablets)
+- [x] Editor modal: 98% width on 769–1024px, 96% on 1025–1366px
+- [x] Editor select widths use min-width/max-width (auto-fit content)
 
-## 📊 Performance Metrics (Target)
-- **LCP (Largest Contentful Paint)**: < 2.5s
-- **FID (First Input Delay)**: < 100ms
-- **CLS (Cumulative Layout Shift)**: < 0.1
-- **Total Bundle Size**: < 1MB
-- **Time to Interactive**: < 3s
+## ✅ Service Worker
+- [x] Version bumped to v1.1.0
+- [x] Removed TinyMCE files from cache list
+- [x] Added all current CSS/JS files to static cache
+- [x] Added localnoteseditor/core.js and styles.css
 
-## 🔒 Security Checklist
-- [x] CSP политика настроена
-- [x] XSS защита активна
-- [x] Clickjacking защита активна
-- [x] Валидация входных данных
-- [x] Безопасное хранение данных
-- [x] HTTPS enforcement
+## ✅ Bug Fixes
+- [x] Green border on editor modal no longer floats to top of page (position: relative added)
+- [x] `t('months')` no longer throws — t() returns arrays as-is
+- [x] Calendar Today button translated
+- [x] No notes in week view translated
 
-## 📱 PWA Features
-- [x] Service Worker активен
-- [x] Manifest.json настроен
-- [x] Offline поддержка
-- [x] Кэширование ресурсов
-- [x] Иконки для всех размеров
-- [x] Splash screen поддержка
+## 🔄 Pre-Release
+- [ ] Test on Chrome, Firefox, Safari, Edge
+- [ ] Test on iOS Safari and Android Chrome
+- [ ] Test PWA install flow
+- [ ] Test import/export encrypted notes
+- [ ] Test all 12 language versions
+- [ ] Verify calendar on all three views
+- [ ] Check offline mode after SW install
+- [ ] Update version in manifest.json
 
-## 🌐 Multi-language Support
-- [x] 12 языков поддерживается
-- [x] Автоматическое определение языка
-- [x] TinyMCE локализация
-- [x] SEO оптимизация для всех языков
-- [x] Hreflang теги настроены
+## 📊 Performance Targets
+- LCP < 2.5s
+- FID < 100ms
+- CLS < 0.1
+- Bundle < 1MB
 
-## 📈 Analytics & Monitoring
-- [x] Google Analytics интегрирован
-- [x] Performance мониторинг активен
-- [x] Security мониторинг активен
-- [x] Error tracking настроен
+## 🔒 Security
+- [x] AES-256-GCM encryption
+- [x] PBKDF2 key derivation (100,000 iterations)
+- [x] Lockout after 5 failed decrypt attempts
+- [x] CSP configured
+- [x] XSS sanitization
 
-## 🚀 Deployment Ready
-- [x] Все файлы оптимизированы
-- [x] Кэш busting настроен
-- [x] CDN готовность
-- [x] Gzip сжатие готово
-- [x] HTTP/2 оптимизация
-
-## 📝 Documentation
-- [x] README.md обновлен
-- [x] API документация
-- [x] Changelog создан
-- [x] Release notes готовы
+## 🌐 Languages
+- [x] EN, RU, UA, PL, CS, SK, BG, HR, SR, BS, MK, SL
+- [x] Auto language detection from URL/browser
+- [x] All new features translated in all 12 languages
 
 ---
 
-## 🎯 Release Notes v1.0.2
-
-### New Features
-- Добавлен мониторинг производительности в реальном времени
-- Улучшена система безопасности с защитой от XSS и clickjacking
-- Оптимизирована загрузка ресурсов для лучшей производительности
-
-### Performance Improvements
-- Асинхронная загрузка CSS и JavaScript файлов
-- Оптимизирован Service Worker с ограничением размера кэша
-- Добавлена ленивая загрузка изображений
-- Улучшена поддержка WebP изображений
-
-### Security Enhancements
-- Улучшена Content Security Policy
-- Добавлена валидация загружаемых файлов
-- Реализовано безопасное хранение данных
-- Добавлен мониторинг подозрительной активности
-
-### Bug Fixes
-- Исправлен дублирующийся слеш в CSS импортах
-- Улучшена обработка ошибок загрузки ресурсов
-- Оптимизирована работа с памятью
-
-### Technical Improvements
-- Добавлены source maps для отладки
-- Улучшена структура кода
-- Добавлены комментарии для сложных участков
-- Оптимизированы размеры файлов
-
----
-
-**Ready for Production Release** ✅
+**Status**: Ready for testing ✅

@@ -1402,31 +1402,46 @@ footer a:hover { color: var(--primary-color); }
 
     .center_nav .sticky {
         flex-direction: row !important;
-        align-items: stretch;
-        gap: 12px;
-        padding: 10px 20px;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        flex-wrap: nowrap;
     }
 
+    /* Горизонтальный скролл кнопок */
     .block_btn {
-        flex: 2;
-        gap: 8px;
-        align-items: stretch;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        scroll-snap-type: x mandatory;
+        gap: 8px !important;
+        flex: 1;
+        min-width: 0;
+        padding-bottom: 4px;
+    }
+
+    .block_btn::-webkit-scrollbar {
+        display: none;
     }
 
     .block_btn button {
+        flex: 0 0 auto !important;
         min-width: 0;
-        flex: 1;
         height: 44px;
         font-size: 13px;
         padding: 0 12px;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        line-height: 1.2;
+        overflow: visible;
+        text-overflow: unset;
+        scroll-snap-align: start;
     }
 
     #searchInput {
-        flex: 0.8;
+        flex: 0 0 200px;
         height: 44px;
         font-size: 14px;
     }
@@ -1449,27 +1464,45 @@ footer a:hover { color: var(--primary-color); }
     }
 
     .center_nav .sticky {
-        padding: 14px 24px;
+        padding: 10px 20px;
         align-items: stretch;
+        flex-wrap: nowrap;
     }
 
+    /* Горизонтальный скролл кнопок как на мобильных */
     .block_btn {
-        align-items: stretch;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        scroll-snap-type: x mandatory;
+        gap: 8px !important;
+        padding-bottom: 4px;
+        align-items: center;
+    }
+
+    .block_btn::-webkit-scrollbar {
+        display: none;
     }
 
     .block_btn button {
-        height: 46px;
-        font-size: 14px;
+        flex: 0 0 auto !important;
+        height: 44px;
+        font-size: 13px;
         padding: 0 14px;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        line-height: 1.2;
+        overflow: visible;
+        text-overflow: unset;
+        scroll-snap-align: start;
     }
 
     #searchInput {
-        height: 46px;
+        height: 44px;
         font-size: 15px;
+        flex: 0 0 220px;
     }
 }
 
@@ -1678,6 +1711,7 @@ footer a:hover { color: var(--primary-color); }
     box-shadow: 0 16px 40px rgba(0,0,0,0.4);
     display: flex;
     flex-direction: column;
+    position: relative;
     animation: modalContentSlideDown 0.3s ease;
 }
 @keyframes modalContentSlideDown {
@@ -1773,6 +1807,40 @@ footer a:hover { color: var(--primary-color); }
 .modal-buttons-container button.save { background: var(--primary-color); color: #ffffff; border-color: var(--primary-color); }
 .modal-buttons-container button.cancel { background: #dc3545; color: white; border-color: #dc3545; }
 
+/* ===== IMPORT LOADING OVERLAY ===== */
+#import-loading-ov {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(6px);
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.import-loading-spinner {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: var(--modal-bg, #1a1a1a);
+    border: 1px solid var(--border-color, #333);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.import-loading-spinner::after {
+    content: '';
+    width: 28px;
+    height: 28px;
+    border: 3px solid var(--border-color, #333);
+    border-top-color: var(--primary-color, #28a745);
+    border-radius: 50%;
+    animation: importSpin 0.7s linear infinite;
+}
+@keyframes importSpin {
+    to { transform: rotate(360deg); }
+}
+
 /* ===== ЭКСПОРТ МОДАЛЬНОЕ ОКНО ===== */
 .export-modal {
     position: fixed;
@@ -1786,7 +1854,6 @@ footer a:hover { color: var(--primary-color); }
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: fadeIn 0.3s;
 }
 .export-modal-content {
     background: var(--modal-bg);
@@ -1795,6 +1862,7 @@ footer a:hover { color: var(--primary-color); }
     max-width: 500px;
     width: 90%;
     text-align: center;
+    animation: modalSlideUp 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 .export-modal-content h3 {
     color: var(--primary-color);
@@ -2068,6 +2136,10 @@ footer a:hover { color: var(--primary-color); }
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+@keyframes modalSlideUp {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
 }
 @keyframes fadeOutDown {
     from { opacity: 1; transform: translateY(0); }

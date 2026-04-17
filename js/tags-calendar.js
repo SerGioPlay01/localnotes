@@ -436,7 +436,7 @@ async function renderCalendar(modal) {
         '<button class="cal-nav-btn" id="cal-prev"><i class="bi bi-chevron-left"></i></button>' +
         '<h2 class="cal-title" id="cal-title"></h2>' +
         '<button class="cal-nav-btn" id="cal-next"><i class="bi bi-chevron-right"></i></button>' +
-        '<button class="cal-today-btn" id="cal-today">Today</button>' +
+        '<button class="cal-today-btn" id="cal-today">' + _t('calendarToday', 'Today') + '</button>' +
         '</div>' +
         '<div class="cal-view-btns">' +
         '<button class="cal-view-btn' + (calendarView==='month'?' active':'') + '" data-v="month">' + _t('calendarMonth', 'Month') + '</button>' +
@@ -452,19 +452,20 @@ async function renderCalendar(modal) {
     const updateView = async () => {
         const title = modal.querySelector('#cal-title');
         const body  = modal.querySelector('#cal-body');
+        const now   = new Date(); // always current date, not captured at open time
         const months = window.t ? window.t('months') : ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
         if (calendarView === 'month') {
             title.textContent = months[calendarDate.getMonth()] + ' ' + calendarDate.getFullYear();
-            body.innerHTML = await buildMonthView(notes, allTags, today);
+            body.innerHTML = await buildMonthView(notes, allTags, now);
         } else if (calendarView === 'week') {
             const weekStart = getWeekStart(calendarDate);
             const weekEnd   = new Date(weekStart); weekEnd.setDate(weekEnd.getDate() + 6);
             title.textContent = formatDateShort(weekStart) + ' – ' + formatDateShort(weekEnd);
-            body.innerHTML = buildWeekView(notes, allTags, today, weekStart);
+            body.innerHTML = buildWeekView(notes, allTags, now, weekStart);
         } else {
             title.textContent = _t('calendarAgenda', 'Agenda') + ' — ' + months[calendarDate.getMonth()] + ' ' + calendarDate.getFullYear();
-            body.innerHTML = buildAgendaView(notes, allTags, today);
+            body.innerHTML = buildAgendaView(notes, allTags, now);
         }
         wireCalendarClicks(modal, notes);
     };
@@ -481,7 +482,11 @@ async function renderCalendar(modal) {
         await updateView();
     });
     modal.querySelector('#cal-today').addEventListener('click', async () => {
-        calendarDate = new Date(); await updateView();
+        calendarDate = new Date();
+        await updateView();
+        // Scroll to today's cell if visible
+        const todayCell = modal.querySelector('.cal-today');
+        if (todayCell) todayCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
     modal.querySelector('#cal-close').addEventListener('click', () => { modal.style.display = 'none'; });
     modal.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
@@ -564,7 +569,7 @@ function buildWeekView(notes, allTags, today, weekStart) {
             const overdue = isOverdue(note.dueDate) ? ' cal-overdue' : isDueToday(note.dueDate) ? ' cal-due-today' : '';
             html += '<div class="cal-note-chip' + overdue + '" style="--chip-color:' + color + '" data-note-id="' + note.id + '">' + escapeHtml(extractNoteTitle(note).slice(0, 25)) + '</div>';
         });
-        if (dayNotes.length === 0) html += '<div class="cal-empty-day">No notes</div>';
+        if (dayNotes.length === 0) html += '<div class="cal-empty-day">' + (window.t ? window.t('calendarNoNotesDay') : 'No notes') + '</div>';
         html += '</div></div>';
     });
     html += '</div>';

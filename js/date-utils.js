@@ -1,4 +1,4 @@
-// Утилиты для форматирования дат в зависимости от языка
+﻿// Утилиты для форматирования дат в зависимости от языка
 // Система локализации дат для Local Notes
 
 // Форматы дат для разных языков
@@ -390,23 +390,14 @@ function refreshAllDates() {
 
 // Функция для тестирования форматирования дат
 function testDateFormatting() {
-    console.log('=== Testing Date Formatting ===');
-    
     const testDate = new Date();
     const languages = ['en', 'ru', 'ua', 'pl', 'cs', 'sk', 'bg', 'hr', 'sr', 'bs', 'mk', 'sl'];
     
     languages.forEach(lang => {
-        console.log(`\n--- Testing ${lang} ---`);
-        console.log('Current langData:', window.langData ? Object.keys(window.langData) : 'No langData');
-        console.log('Lang data for', lang, ':', window.langData && window.langData[lang] ? 'exists' : 'missing');
-        
         if (window.langData && window.langData[lang]) {
-            console.log('Months:', window.langData[lang].months ? 'exists' : 'missing');
-            console.log('MonthsShort:', window.langData[lang].monthsShort ? 'exists' : 'missing');
         }
         
         const formatted = formatDate(testDate, 'medium', lang);
-        console.log('Formatted date:', formatted);
     });
 }
 

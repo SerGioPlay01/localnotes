@@ -51,8 +51,8 @@
         margin: 0 !important;
         padding-top: max(3px, env(safe-area-inset-top)) !important;
         padding-bottom: env(safe-area-inset-bottom) !important;
-        padding-left: env(safe-area-inset-left) !important;
-        padding-right: env(safe-area-inset-right) !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
         border-radius: 0 !important;
         overflow: hidden;
         box-sizing: border-box !important;
@@ -82,7 +82,7 @@
 
     #editModal .modal-content .lne-editor {
         min-height: 100%;
-        padding: 12px 14px;
+        padding: 12px max(14px, env(safe-area-inset-right, 0px)) 12px max(14px, env(safe-area-inset-left, 0px));
         font-size: 15px;
     }
 
@@ -95,6 +95,9 @@
         position: sticky;
         top: 0;
         z-index: 10;
+        /* Тулбар занимает полную ширину, с отступом под safe-area на iPhone */
+        padding-left: env(safe-area-inset-left, 0px);
+        padding-right: env(safe-area-inset-right, 0px);
     }
     #editModal .modal-content .lne-toolbar::-webkit-scrollbar { display: none; }
 

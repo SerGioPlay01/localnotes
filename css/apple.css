@@ -376,6 +376,10 @@ html, body {
         /* Hide scrollbar but keep scroll */
         scrollbar-width: none;
         -ms-overflow-style: none;
+        /* Sticky — stays at top while editor content scrolls */
+        position: sticky;
+        top: 0;
+        z-index: 10;
     }
     .lne-toolbar::-webkit-scrollbar {
         display: none;

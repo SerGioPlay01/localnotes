@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Local Notes - Main Application
  * Based on original code, TinyMCE replaced with LocalNotesEditor
  */
@@ -966,6 +966,20 @@ async function loadNotes() {
             // Remove contenteditable from all elements in note cards (not in editor)
             notePreview.querySelectorAll('[contenteditable]').forEach(el => {
                 el.removeAttribute('contenteditable');
+            });
+
+            // Восстановить aspect-ratio на старых враперах без style (по атрибутам iframe/video)
+            notePreview.querySelectorAll('.lne-video-wrapper:not([style]), .video-embed-wrapper:not([style])').forEach(wrapper => {
+                const el = wrapper.querySelector('iframe, video');
+                if (!el) return;
+                const w = el.getAttribute('width') || el.width;
+                const h = el.getAttribute('height') || el.height;
+                if (w && h && parseInt(w) && parseInt(h)) {
+                    wrapper.style.aspectRatio = w + '/' + h;
+                    wrapper.style.maxWidth = w + 'px';
+                } else {
+                    wrapper.style.aspectRatio = '16/9';
+                }
             });
             // Hide add-desc buttons in card view
             notePreview.querySelectorAll('.checklist-add-desc').forEach(btn => {

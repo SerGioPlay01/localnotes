@@ -1367,10 +1367,6 @@ class LocalNotesEditor {
             if (self._ctxActiveBar && self._ctxActiveBar.parentNode)
                 self._ctxActiveBar.parentNode.removeChild(self._ctxActiveBar);
             self._ctxActiveBar = null;
-            // Восстанавливаем все тач-оверлеи на видео
-            self.ed.querySelectorAll('.lne-video-touch-overlay').forEach(function(ov) {
-                ov.style.display = '';
-            });
         };
         // Сохраняем removeCtx на экземпляре для вызова извне
         this._removeCtx = removeCtx;
@@ -1477,14 +1473,15 @@ class LocalNotesEditor {
         // VIDEO
         this.ed.querySelectorAll('.lne-video-wrapper, .video-embed-wrapper').forEach(function(vw) {
             // На тач-устройствах iframe перехватывает все события.
-            // Добавляем прозрачный оверлей поверх iframe, который ловит тапы.
+            // Оверлей всегда висит поверх iframe и перехватывает тапы.
+            // Первый тап → тулбар. Повторный тап → закрыть тулбар.
+            // Взаимодействие с плеером недоступно в режиме редактирования — это нормально.
             if (isTouchDevice) {
                 var iframe = vw.querySelector('iframe');
                 if (iframe && !vw._lneTouchOverlay) {
                     var overlay = document.createElement('div');
                     overlay.className = 'lne-video-touch-overlay';
                     overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;z-index:3;cursor:pointer;';
-                    // Убедимся что враппер position:relative
                     if (getComputedStyle(vw).position === 'static') vw.style.position = 'relative';
                     vw.appendChild(overlay);
                     vw._lneTouchOverlay = overlay;
@@ -1495,8 +1492,6 @@ class LocalNotesEditor {
                         clearTimeout(self._ctxHoverTimer);
                         if (self._ctxActiveBar && self._ctxActiveBar._forEl === vw) {
                             removeCtx();
-                            // Убираем оверлей чтобы дать пользователю взаимодействовать с плеером
-                            overlay.style.display = 'none';
                             return;
                         }
                         removeCtx();

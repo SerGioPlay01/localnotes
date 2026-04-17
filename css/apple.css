@@ -1,0 +1,764 @@
+/*
+ * apple.css — iOS & macOS experience improvements
+ * Covers: safe-area, rubber-band scroll, momentum scroll,
+ *         touch targets, hover states, modal, editor, checklists,
+ *         macOS trackpad/cursor polish, system font fallbacks,
+ *         dark/light theme refinements for Apple displays.
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════
+   1. FOUNDATION — safe-area, font rendering, selection
+   ═══════════════════════════════════════════════════════════════════════ */
+
+html {
+    /* Momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    /* Prevent text size adjustment on orientation change */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    /* Crisp font rendering on Retina / macOS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: always;
+    /* No tap flash on iOS */
+    -webkit-tap-highlight-color: transparent;
+    /* Prevent callout on long-press */
+    -webkit-touch-callout: none;
+}
+
+/* Better text selection color on macOS */
+::selection {
+    background: rgba(174, 252, 110, 0.35);
+    color: inherit;
+}
+::-moz-selection {
+    background: rgba(174, 252, 110, 0.35);
+    color: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   2. SAFE AREA — iPhone notch / Dynamic Island / home indicator
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Header: push down below status bar in standalone PWA */
+.info-app {
+    padding-top: env(safe-area-inset-top);
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: max(14px, env(safe-area-inset-right));
+}
+
+/* Sticky nav: account for safe area when scrolled to top */
+.center_nav {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+}
+
+/* Bottom toggle button: above home indicator */
+.btn_view_div {
+    padding-bottom: max(12px, calc(env(safe-area-inset-bottom) + 8px));
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: max(14px, env(safe-area-inset-right));
+}
+
+/* Footer */
+footer {
+    padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px));
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+}
+
+/* Notes container: side gutters on notched iPhones (landscape) */
+#notesContainer {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   3. MODAL — full-screen editor on iOS
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    /* The modal overlay itself */
+    .modal {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .modal-content {
+        /* Prevent rubber-band scroll on the modal container */
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: auto;
+    }
+
+    /* Editor body: momentum scroll */
+    .modal-content .lne-body {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+    }
+
+    /* Toolbar: horizontal momentum scroll, no bounce */
+    .modal-content .lne-toolbar {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   4. TOUCH TARGETS — minimum 44×44pt (Apple HIG)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (hover: none) and (pointer: coarse) {
+    /* Nav buttons */
+    .block_btn button {
+        min-height: 44px !important;
+        touch-action: manipulation;
+    }
+
+    /* Search */
+    #searchInput {
+        min-height: 44px !important;
+        touch-action: manipulation;
+    }
+
+    /* Note action buttons */
+    .editBtn, .deleteBtn, .exportBtn {
+        min-height: 44px !important;
+        touch-action: manipulation;
+    }
+
+    /* Modal buttons */
+    .modal-buttons-container button {
+        min-height: 44px !important;
+        touch-action: manipulation;
+    }
+
+    /* Toggle view */
+    #toggleViewButton {
+        min-height: 44px !important;
+        touch-action: manipulation;
+    }
+
+    /* Editor toolbar buttons */
+    .lne-btn {
+        min-width: 40px !important;
+        min-height: 40px !important;
+        touch-action: manipulation;
+    }
+
+    /* Checklist checkbox */
+    .checklist-checkbox-ios {
+        width: 24px !important;
+        height: 24px !important;
+        min-width: 24px !important;
+        min-height: 24px !important;
+        touch-action: manipulation;
+    }
+
+    /* Checklist add-desc button */
+    .checklist-add-desc {
+        min-width: 36px !important;
+        min-height: 36px !important;
+        touch-action: manipulation;
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+        min-width: 44px !important;
+        min-height: 44px !important;
+        touch-action: manipulation;
+    }
+
+    /* All interactive elements: no tap flash */
+    button, a, input, select, label, [role="button"] {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   5. ACTIVE STATES — iOS-style press feedback (replaces hover)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (hover: none) and (pointer: coarse) {
+    .block_btn button:active {
+        transform: scale(0.96) !important;
+        opacity: 0.82 !important;
+        transition: transform 0.08s ease, opacity 0.08s ease !important;
+    }
+
+    .editBtn:active, .deleteBtn:active, .exportBtn:active {
+        transform: scale(0.94) !important;
+        opacity: 0.78 !important;
+        transition: transform 0.08s ease !important;
+    }
+
+    .modal-buttons-container button:active {
+        transform: scale(0.97) !important;
+        opacity: 0.85 !important;
+        transition: transform 0.08s ease !important;
+    }
+
+    .lne-btn:active {
+        transform: scale(0.9) !important;
+        transition: transform 0.06s ease !important;
+    }
+
+    .note:active {
+        transform: scale(0.99) !important;
+        transition: transform 0.1s ease !important;
+    }
+
+    #toggleViewButton:active {
+        transform: scale(0.97) !important;
+        opacity: 0.88 !important;
+        transition: transform 0.08s ease !important;
+    }
+
+    .welcome-dismiss-btn:active {
+        transform: scale(0.97) !important;
+        transition: transform 0.08s ease !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   6. INPUTS — prevent zoom on focus (iOS requires font-size ≥ 16px)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@supports (-webkit-touch-callout: none) {
+    /* Prevent iOS auto-zoom on input focus */
+    input[type="text"],
+    input[type="search"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="url"],
+    textarea,
+    select {
+        font-size: 16px !important;
+    }
+
+    /* Editor selects */
+    .lne-sel {
+        font-size: 16px !important;
+    }
+
+    /* Editor inputs in modals */
+    .lne-inp {
+        font-size: 16px !important;
+    }
+
+    /* Search input */
+    #searchInput {
+        font-size: 16px !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   7. SCROLLING — momentum, overscroll, rubber-band control
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Main page scroll: allow natural iOS rubber-band */
+html, body {
+    overscroll-behavior-y: auto;
+}
+
+/* Notes container: contain scroll */
+#notesContainer {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+/* Horizontal button scroll: no vertical bleed */
+.block_btn {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: none;
+    /* Smooth snap */
+    scroll-snap-type: x mandatory;
+    -webkit-scroll-snap-type: x mandatory;
+}
+
+.block_btn button {
+    scroll-snap-align: start;
+}
+
+/* Note content scroll in grid view */
+#notesContainer.default-view .noteContent {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+/* Editor inner scroll */
+.lne-body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+}
+
+/* LNE modals (link/image/etc) */
+.lne-mbody {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   8. CHECKLIST — iOS-specific interaction polish
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@supports (-webkit-touch-callout: none) {
+    /* Prevent long-press context menu on checklist items */
+    .checklist-item-wrapper {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    /* Allow text selection inside text spans */
+    .checklist-text-content,
+    .checklist-text-ios,
+    .checklist-desc {
+        -webkit-user-select: text;
+        user-select: text;
+        -webkit-touch-callout: default;
+    }
+
+    /* Checkbox: crisp rendering on Retina */
+    .checklist-checkbox-ios {
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 6px;
+        /* Slightly larger hit area via padding trick */
+        padding: 2px;
+        box-sizing: content-box;
+    }
+
+    /* Checked state checkmark — use SVG-like approach for crispness */
+    .checklist-checkbox-ios:checked::after {
+        font-size: 13px;
+        font-weight: 900;
+        line-height: 1;
+        /* Pixel-perfect centering on Retina */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) translateZ(0);
+    }
+
+    /* Smooth transition on check */
+    .checklist-checkbox-ios {
+        transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+    .checklist-checkbox-ios:active {
+        transform: scale(0.88);
+    }
+
+    /* Strikethrough: use -webkit-text-decoration for older iOS */
+    .checklist-done {
+        -webkit-text-decoration: line-through rgba(174, 252, 110, 0.65) !important;
+        text-decoration: line-through rgba(174, 252, 110, 0.65) !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   9. EDITOR TOOLBAR — iOS horizontal scroll polish
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .lne-toolbar {
+        /* Smooth horizontal scroll */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
+        /* Hide scrollbar but keep scroll */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .lne-toolbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .lne-toolbar-row {
+        /* Prevent wrapping — single scrollable row */
+        flex-wrap: nowrap !important;
+        /* GPU-accelerated scroll */
+        will-change: transform;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+
+    /* Larger toolbar buttons on touch */
+    .lne-btn {
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 8px !important;
+    }
+
+    /* Selects: readable on small screens */
+    .lne-sel {
+        height: 34px !important;
+        border-radius: 8px !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   10. KEYBOARD AVOIDANCE — iOS virtual keyboard
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    /* When keyboard is open, editor body should still scroll */
+    .modal-content .lne-body {
+        /* dvh accounts for keyboard on modern iOS */
+        max-height: calc(100dvh - 200px);
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Modal buttons stay visible above keyboard */
+    .modal-buttons-container {
+        position: relative;
+        z-index: 2;
+        flex-shrink: 0;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   11. macOS — trackpad, cursor, hover refinements
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Only apply hover effects on devices with fine pointer (mouse/trackpad) */
+@media (hover: hover) and (pointer: fine) {
+    /* Smooth cursor transitions */
+    button, a, [role="button"], .note, .lne-btn, .editBtn, .deleteBtn, .exportBtn {
+        cursor: pointer;
+    }
+
+    /* Note hover: subtle lift */
+    #notesContainer.default-view .note:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    box-shadow 0.25s ease;
+    }
+
+    /* List note hover: slide right */
+    #notesContainer.full-width-view .note:hover {
+        transform: translateX(6px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    box-shadow 0.2s ease;
+    }
+
+    /* Nav buttons: subtle glow */
+    .block_btn button:hover {
+        box-shadow: 0 2px 12px rgba(174, 252, 110, 0.15);
+        transition: background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    /* Editor toolbar buttons: smooth */
+    .lne-btn:hover {
+        transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+    }
+
+    /* Checklist item hover */
+    .checklist-item-wrapper:hover {
+        transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    /* Scrollbar: macOS-style thin overlay */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(174, 252, 110, 0.25);
+        border-radius: 10px;
+        border: none;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(174, 252, 110, 0.5);
+    }
+    /* Hide scrollbar when not hovering (macOS overlay style) */
+    ::-webkit-scrollbar-thumb:window-inactive {
+        background: rgba(174, 252, 110, 0.1);
+    }
+
+    /* Light theme scrollbar */
+    [data-theme="light"] ::-webkit-scrollbar-thumb {
+        background: rgba(40, 167, 69, 0.25);
+    }
+    [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+        background: rgba(40, 167, 69, 0.5);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   12. RETINA / HIGH-DPI — crisp borders and shadows
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Hairline borders on Retina */
+    .note {
+        border-width: 0.5px;
+    }
+
+    .lne-wrapper {
+        border-width: 0.5px;
+    }
+
+    .modal-content {
+        border-width: 0.5px;
+    }
+
+    /* Crisper shadows */
+    .note {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Sharper text in editor */
+    .lne-editor {
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   13. DARK MODE — respect system preference (prefers-color-scheme)
+       as a fallback when JS theme hasn't loaded yet
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-color-scheme: dark) {
+    /* Only apply if no explicit theme is set */
+    html:not([data-theme]) body {
+        background-color: #0a0a0a;
+        color: #ffffff;
+    }
+    html:not([data-theme]) .modal-content {
+        background: #1a1a1a;
+        border-color: #272727;
+    }
+    html:not([data-theme]) .lne-wrapper {
+        background: #1a1a1a;
+        border-color: #272727;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    html:not([data-theme]) body {
+        background-color: #ffffff;
+        color: #212529;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   14. REDUCED MOTION — respect accessibility preference
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .note:hover,
+    #notesContainer.default-view .note:hover,
+    #notesContainer.full-width-view .note:hover {
+        transform: none !important;
+    }
+
+    .block_btn button:active,
+    .modal-buttons-container button:active,
+    .lne-btn:active {
+        transform: none !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   15. iPAD — split view, slide over, Stage Manager
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 768px) and (max-width: 1366px) and (hover: none) and (pointer: coarse) {
+    /* iPad: safe area for all orientations */
+    .info-app {
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+    }
+
+    .center_nav .sticky {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+    }
+
+    /* iPad modal: centered card, not full-screen */
+    #editModal .modal-content {
+        padding-top: max(8px, env(safe-area-inset-top)) !important;
+        padding-bottom: max(8px, env(safe-area-inset-bottom)) !important;
+    }
+
+    /* Larger touch targets on iPad */
+    .lne-btn {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    .editBtn, .deleteBtn, .exportBtn {
+        height: 40px !important;
+    }
+
+    /* Notes grid: 2 columns on iPad portrait */
+    @media (max-width: 900px) {
+        #notesContainer.default-view {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   16. STANDALONE PWA — when added to Home Screen
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (display-mode: standalone) {
+    /* Extra top padding for status bar in standalone mode */
+    .info-app {
+        padding-top: max(env(safe-area-inset-top), 20px);
+    }
+
+    /* Hide browser-specific UI hints */
+    .ln-install-banner {
+        display: none !important;
+    }
+
+    /* Bottom nav: extra padding for home indicator */
+    .btn_view_div {
+        padding-bottom: max(16px, calc(env(safe-area-inset-bottom) + 10px));
+    }
+
+    /* Prevent overscroll glow on iOS PWA */
+    html {
+        overscroll-behavior: none;
+    }
+    body {
+        overscroll-behavior: none;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   17. LIGHT THEME — Apple-style refinements
+   ═══════════════════════════════════════════════════════════════════════ */
+
+[data-theme="light"] {
+    /* Slightly warmer background, closer to macOS light */
+    --bg-color: #f5f5f7;
+    --card-bg: #ffffff;
+    --header-bg: rgba(255, 255, 255, 0.85);
+    --modal-bg: #ffffff;
+}
+
+/* Frosted glass header on light theme (macOS vibrancy feel) */
+[data-theme="light"] .info-app,
+[data-theme="light"] .center_nav {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Frosted glass modal on light theme */
+[data-theme="light"] .modal-content {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   18. DARK THEME — Apple-style refinements
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Frosted glass header on dark theme */
+[data-theme="dark"] .info-app,
+[data-theme="dark"] .center_nav {
+    background: rgba(8, 8, 8, 0.85) !important;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Frosted glass modal on dark theme */
+[data-theme="dark"] .modal-content {
+    background: rgba(26, 26, 26, 0.97) !important;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   19. FOCUS STYLES — keyboard navigation (macOS Tab key)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Only show focus ring for keyboard navigation, not mouse/touch */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 2px solid rgba(174, 252, 110, 0.8);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+[data-theme="light"] :focus-visible {
+    outline-color: rgba(40, 167, 69, 0.8);
+}
+
+/* contentEditable — никогда не показываем outline/ring */
+[contenteditable]:focus,
+[contenteditable]:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   20. MISC — small polish details
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Prevent double-tap zoom on buttons (iOS) */
+button, a {
+    touch-action: manipulation;
+}
+
+/* Smooth image rendering on Retina */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* Prevent callout on images (long-press save on iOS) */
+.lne-editor img {
+    -webkit-touch-callout: none;
+    pointer-events: auto;
+}
+
+/* Better border-radius on iOS (avoids subpixel artifacts) */
+.note,
+.lne-wrapper,
+.lne-modal,
+.block_btn button,
+#searchInput,
+.modal-buttons-container button {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Remove will-change after animation to free GPU memory */
+.note:not(:hover) {
+    will-change: auto;
+}

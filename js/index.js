@@ -735,8 +735,11 @@ function openModal(noteId, noteContent, noteCreationTime) {
     const modal = document.getElementById('editModal');
     if (!modal) { console.error('Modal not found'); return; }
 
+    // iOS Safari: save scroll position before locking body
+    const scrollY = window.scrollY;
     modal.style.display = 'block';
     document.body.classList.add('modal-open');
+    document.body.dataset.scrollY = scrollY;
 
     if (responsiveManager?.isTabletDevice) {
         setTimeout(() => responsiveManager.applyFullscreenModal(modal), 100);
@@ -835,6 +838,9 @@ function openModal(noteId, noteContent, noteCreationTime) {
             await notesDB.saveNote(note);
             modal.style.display = 'none';
             document.body.classList.remove('modal-open');
+            const savedY = parseInt(document.body.dataset.scrollY || '0', 10);
+            window.scrollTo(0, savedY);
+            delete document.body.dataset.scrollY;
             currentNoteId = null;
             if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
                 if (typeof localNotesEditorInstance._removeCtx === 'function') localNotesEditorInstance._removeCtx();
@@ -855,6 +861,10 @@ function closeModal() {
     const editModal = document.getElementById('editModal');
     if (editModal) editModal.style.display = 'none';
     document.body.classList.remove('modal-open');
+    // iOS Safari: restore scroll position
+    const savedY = parseInt(document.body.dataset.scrollY || '0', 10);
+    window.scrollTo(0, savedY);
+    delete document.body.dataset.scrollY;
     currentNoteId = null;
     if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
         if (typeof localNotesEditorInstance._removeCtx === 'function') localNotesEditorInstance._removeCtx();
@@ -1096,14 +1106,7 @@ async function loadNotes() {
 }
 
 function handleImageClick(e) {
-    if (e.target.tagName !== 'IMG') return;
-    const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:99999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
-    const img = document.createElement('img');
-    img.src = e.target.src; img.style.cssText = 'max-width:90%;max-height:90%;object-fit:contain;border-radius:8px;';
-    overlay.appendChild(img);
-    overlay.addEventListener('click', () => document.body.removeChild(overlay));
-    document.body.appendChild(overlay);
+    // Handled by js/img.js
 }
 
 // ============================================================================
@@ -1761,6 +1764,9 @@ function initializeEventListeners() {
         const modal = document.getElementById('editModal');
         if (modal) modal.style.display = 'none';
         document.body.classList.remove('modal-open');
+        const savedY = parseInt(document.body.dataset.scrollY || '0', 10);
+        window.scrollTo(0, savedY);
+        delete document.body.dataset.scrollY;
         currentNoteId = null;
         if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
             if (typeof localNotesEditorInstance._removeCtx === 'function') localNotesEditorInstance._removeCtx();
@@ -1774,6 +1780,9 @@ function initializeEventListeners() {
         if (e.target === editModal) {
             editModal.style.display = 'none';
             document.body.classList.remove('modal-open');
+            const savedY = parseInt(document.body.dataset.scrollY || '0', 10);
+            window.scrollTo(0, savedY);
+            delete document.body.dataset.scrollY;
             currentNoteId = null;
             if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
                 if (typeof localNotesEditorInstance._removeCtx === 'function') localNotesEditorInstance._removeCtx();

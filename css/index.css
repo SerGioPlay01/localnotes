@@ -9,7 +9,7 @@
 * { box-sizing: border-box; }
 html, body { overflow-x: hidden; width: 100%; max-width: 100%; }
 body { margin: 0; padding: 0; }
-body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; }
+body.modal-open { overflow: hidden; }
 
 /* ===== CSS ПЕРЕМЕННЫЕ ===== */
 :root {
@@ -107,8 +107,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 /* ===== СКРОЛЛБАРЫ ===== */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 10px; border: 2px solid var(--primary-color); }
-* { scrollbar-width: thin; scrollbar-color: #cfcfcf var(--primary-color); }
+::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 10px; border: none; }
+* { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
+
+/* На тач-устройствах скроллбары скрываем полностью */
+@media (hover: none) and (pointer: coarse) {
+    ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    * { scrollbar-width: none !important; }
+}
 
 /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
 * { margin: 0; padding: 0; -webkit-tap-highlight-color: #0000; }
@@ -1713,13 +1719,14 @@ footer a:hover { color: var(--primary-color); }
 .modal {
     display: none;
     position: fixed;
-    z-index: 999;
+    z-index: 10000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(20,20,20,0.8) 100%);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     animation: modalFadeIn 0.3s ease-out;
 }
 @keyframes modalFadeIn {
@@ -1730,14 +1737,14 @@ footer a:hover { color: var(--primary-color); }
 /* Модальное окно редактора */
 .modal-content {
     background: var(--modal-bg);
-    margin: 5vh auto;
+    margin: 4vh auto;
     padding: 8px;
     border: 1px solid var(--modal-border);
     border-radius: 10px;
     width: 90%;
     max-width: 1200px;
-    height: 85vh;
-    height: 85dvh;
+    height: 88vh;
+    height: 88dvh;
     overflow: hidden;
     box-shadow: 0 16px 40px rgba(0,0,0,0.4);
     display: flex;
@@ -1758,6 +1765,8 @@ footer a:hover { color: var(--primary-color); }
     height: 3px;
     background: var(--gradient-primary);
     border-radius: 20px 20px 0 0;
+    z-index: 10;
+    pointer-events: none;
 }
 .modal_h2 { display: none; }
 
@@ -2106,7 +2115,7 @@ footer a:hover { color: var(--primary-color); }
     .modal-content {
         margin: 0;
         width: 100%;
-        height: 100%;
+        /* height управляется editor-modal.css с учётом safe-area */
         border-radius: 0;
         animation: modalContentSlideUp 0.3s;
     }
@@ -4398,8 +4407,24 @@ body.quick-edit-active .center_nav::after {
 .note.quick-edit-note {
     border-color: var(--primary-color) !important;
     box-shadow: 0 0 0 1px var(--primary-color) !important;
+}
+
+/* Сетка: фиксированная высота, контент скроллится */
+#notesContainer.default-view .note.quick-edit-note {
+    height: 450px !important;
+    overflow: hidden;
+}
+
+#notesContainer.default-view .note.quick-edit-note .noteContent[contenteditable="true"] {
+    overflow-y: auto !important;
+    max-height: none !important;
+    height: 100%;
+}
+
+/* Список: авто высота */
+#notesContainer.full-width-view .note.quick-edit-note {
     height: auto !important;
-    min-height: 450px;
+    min-height: 150px;
 }
 
 /* Контент заметки — редактируемый */
@@ -5089,6 +5114,21 @@ html, body {
 /* Убираем outline только там, где есть :focus-visible */
 :focus:not(:focus-visible) {
     outline: none;
+}
+
+/* contentEditable (редактор) — никогда не показываем outline */
+[contenteditable]:focus,
+[contenteditable]:focus-visible,
+.lne-editor:focus,
+.lne-editor:focus-visible,
+.checklist-text-content:focus,
+.checklist-text-content:focus-visible,
+.checklist-text-ios:focus,
+.checklist-text-ios:focus-visible,
+.checklist-desc:focus,
+.checklist-desc:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
 }
 
 /* Кнопки — минимальный размер касания 44×44px (WCAG 2.5.5) */

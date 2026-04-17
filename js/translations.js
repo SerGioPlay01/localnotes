@@ -413,7 +413,7 @@ const translations = {
         importNotes: "Импортировать заметки",
         clearAllNotes: "Очистить все заметки",
         toggleView: "Переключить вид",
-        saveNote: "Сохранить заметку",
+        saveNote: "Сохранить",
         cancel: "Отмена",
         confirmYes: "Да",
         confirmNo: "Нет",

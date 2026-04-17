@@ -2697,47 +2697,49 @@ footer a:hover { color: var(--primary-color); }
     margin: 14px 0;
     border-radius: 8px;
     overflow: hidden;
+    /* ширина и aspect-ratio берутся из inline style, выставленного при вставке */
     width: 100%;
     max-width: 100%;
 }
-/* Если враппер имеет явный aspect-ratio (выставляется JS при вставке) — используем его */
-.noteContent .lne-video-wrapper[style*="aspect-ratio"],
-.noteContent .video-embed-wrapper[style*="aspect-ratio"] {
-    width: 100%;
+/* Если враппер имеет явный aspect-ratio — iframe абсолютно позиционирован внутри */
+.noteContent .lne-video-wrapper[style],
+.noteContent .video-embed-wrapper[style] {
+    /* inline style содержит aspect-ratio и max-width */
 }
-.noteContent .lne-video-wrapper[style*="aspect-ratio"] iframe,
-.noteContent .lne-video-wrapper[style*="aspect-ratio"] video,
-.noteContent .video-embed-wrapper[style*="aspect-ratio"] iframe,
-.noteContent .video-embed-wrapper[style*="aspect-ratio"] video {
+.noteContent .lne-video-wrapper[style] iframe,
+.noteContent .lne-video-wrapper[style] video,
+.noteContent .video-embed-wrapper[style] iframe,
+.noteContent .video-embed-wrapper[style] video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     border-radius: 0;
 }
-#notesContainer.default-view .noteContent .lne-video-wrapper:not([style*="aspect-ratio"]),
-#notesContainer.default-view .noteContent .video-embed-wrapper:not([style*="aspect-ratio"]) {
+/* Старые заметки без inline style — fallback */
+#notesContainer.default-view .noteContent .lne-video-wrapper:not([style]),
+#notesContainer.default-view .noteContent .video-embed-wrapper:not([style]) {
     height: 175px;
 }
-#notesContainer.default-view .noteContent .lne-video-wrapper:not([style*="aspect-ratio"]) iframe,
-#notesContainer.default-view .noteContent .lne-video-wrapper:not([style*="aspect-ratio"]) video,
-#notesContainer.default-view .noteContent .video-embed-wrapper:not([style*="aspect-ratio"]) iframe,
-#notesContainer.default-view .noteContent .video-embed-wrapper:not([style*="aspect-ratio"]) video {
+#notesContainer.default-view .noteContent .lne-video-wrapper:not([style]) iframe,
+#notesContainer.default-view .noteContent .lne-video-wrapper:not([style]) video,
+#notesContainer.default-view .noteContent .video-embed-wrapper:not([style]) iframe,
+#notesContainer.default-view .noteContent .video-embed-wrapper:not([style]) video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     border-radius: 0;
 }
-#notesContainer.full-width-view .noteContent .lne-video-wrapper:not([style*="aspect-ratio"]),
-#notesContainer.full-width-view .noteContent .video-embed-wrapper:not([style*="aspect-ratio"]) {
+#notesContainer.full-width-view .noteContent .lne-video-wrapper:not([style]),
+#notesContainer.full-width-view .noteContent .video-embed-wrapper:not([style]) {
     aspect-ratio: 16 / 9;
     height: auto;
 }
-#notesContainer.full-width-view .noteContent .lne-video-wrapper:not([style*="aspect-ratio"]) iframe,
-#notesContainer.full-width-view .noteContent .lne-video-wrapper:not([style*="aspect-ratio"]) video,
-#notesContainer.full-width-view .noteContent .video-embed-wrapper:not([style*="aspect-ratio"]) iframe,
-#notesContainer.full-width-view .noteContent .video-embed-wrapper:not([style*="aspect-ratio"]) video {
+#notesContainer.full-width-view .noteContent .lne-video-wrapper:not([style]) iframe,
+#notesContainer.full-width-view .noteContent .lne-video-wrapper:not([style]) video,
+#notesContainer.full-width-view .noteContent .video-embed-wrapper:not([style]) iframe,
+#notesContainer.full-width-view .noteContent .video-embed-wrapper:not([style]) video {
     width: 100%;
     height: 100%;
 }

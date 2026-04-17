@@ -542,13 +542,22 @@ textarea.lne-inp { resize: vertical; }
         justify-content: center;
         font-size: 16px;
         pointer-events: none;
-        z-index: 2;
+        z-index: 4;
         line-height: 32px;
         text-align: center;
     }
     .lne-editor .lne-video-wrapper,
     .lne-editor .video-embed-wrapper {
         position: relative;
+    }
+    /* JS-оверлей поверх iframe — перехватывает тапы */
+    .lne-editor .lne-video-touch-overlay {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: 3;
+        cursor: pointer;
+        background: transparent;
     }
 }
 .lne-editor .lne-code-wrapper:hover {

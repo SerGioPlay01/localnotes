@@ -286,6 +286,10 @@ function validateAndFixImages(content) {
             if (!img.src) { img.remove(); return; }
             if (img.src.startsWith('blob:')) img.remove();
         });
+        // Восстановить src у iframe из data-src (браузер теряет src при innerHTML)
+        d.querySelectorAll('iframe[data-src]').forEach(f => {
+            f.setAttribute('src', f.getAttribute('data-src'));
+        });
         return d.innerHTML;
     } catch (e) { return content; }
 }

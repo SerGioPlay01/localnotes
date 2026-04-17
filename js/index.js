@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Local Notes - Main Application
  * Based on original code, TinyMCE replaced with LocalNotesEditor
  */
@@ -1745,12 +1745,10 @@ function initializeEventListeners() {
 // ============================================================================
 // APP INIT
 // ============================================================================
-document.addEventListener('DOMContentLoaded', () => {
-    // Show welcome message immediately so user sees it without waiting
-    showWelcomeMessage();
-});
+(async () => {
+    const notesContainer = document.getElementById('notesContainer');
+    if (notesContainer) notesContainer.style.visibility = 'hidden';
 
-window.onload = async () => {
     try {
         await notesDB.init();
         await notesDB.migrateFromLocalStorage();
@@ -1764,7 +1762,18 @@ window.onload = async () => {
         console.error('❌ Init error:', e);
         if (typeof showCustomAlert === 'function') showCustomAlert(typeof t === 'function' ? t('error') : 'Error', typeof t === 'function' ? t('errorInitializingApp') : 'Error initializing app!', 'error');
     }
-};
+
+    const revealContent = () => {
+        if (notesContainer) notesContainer.style.visibility = '';
+    };
+
+    // Tell preloader app is ready — it will call onPreloaderDone after fade
+    window.onPreloaderDone = revealContent;
+    window.appReady = true;
+
+    // If preloader already removed (e.g. safety fallback fired), reveal immediately
+    if (!document.getElementById('app-preloader')) revealContent();
+})();
 
 // Export for compatibility
 window.loadNotes = loadNotes;

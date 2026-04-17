@@ -166,6 +166,40 @@ body {
     letter-spacing: 0.02em;
 }
 
+/* ===== BETA BADGE ===== */
+.beta-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #aefc6e 0%, #7dd87d 100%);
+    color: #000;
+    font-size: 0.75rem;
+    font-family: 'Golos Text', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(174, 252, 110, 0.35);
+    flex-shrink: 0;
+    align-self: center;
+}
+.beta-badge:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 14px rgba(174, 252, 110, 0.55);
+}
+[data-theme="light"] .beta-badge {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.35);
+}
+@media (max-width: 768px) {
+    .beta-badge { font-size: 0.65rem; padding: 3px 7px; }
+}
+
 /* ===== ОСНОВНЫЕ КОНТЕЙНЕРЫ ===== */
 .app-notes-center {
     display: flex;

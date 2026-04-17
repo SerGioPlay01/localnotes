@@ -1,4 +1,4 @@
-﻿/* LocalNotesEditor — Professional Rich Text Editor Styles */
+/* LocalNotesEditor — Professional Rich Text Editor Styles */
 @import url('/localnoteseditor/bootstrap-icons/font/bootstrap-icons.css');
 
 /* ═══════════════════════════ WRAPPER ══════════════════════════════════ */
@@ -523,6 +523,34 @@ textarea.lne-inp { resize: vertical; }
     outline-offset: 2px;
     cursor: pointer;
 }
+/* На тач-устройствах показываем кнопку-оверлей поверх iframe */
+@media (hover: none) and (pointer: coarse) {
+    .lne-editor .lne-video-wrapper::after,
+    .lne-editor .video-embed-wrapper::after {
+        content: '\F4CA'; /* bi-pencil-square */
+        font-family: 'bootstrap-icons';
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 32px;
+        height: 32px;
+        background: rgba(0,0,0,.6);
+        color: #fff;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        pointer-events: none;
+        z-index: 2;
+        line-height: 32px;
+        text-align: center;
+    }
+    .lne-editor .lne-video-wrapper,
+    .lne-editor .video-embed-wrapper {
+        position: relative;
+    }
+}
 .lne-editor .lne-code-wrapper:hover {
     outline: 1px solid rgba(40,167,69,.4);
     border-radius: 8px;
@@ -542,9 +570,11 @@ textarea.lne-inp { resize: vertical; }
 @media (max-width: 768px) {
     /* Larger touch targets for ctx toolbar */
     .lne-ctx-toolbar-float { padding: 5px; gap: 3px; }
-    .lne-ctx-btn { width: 36px; height: 36px; font-size: 16px; }
+    .lne-ctx-btn { width: 40px; height: 40px; font-size: 17px; }
     /* Hide tooltip on touch */
     .lne-ctx-btn::after { display: none; }
+    /* На мобильных тулбар fixed — убираем тень чтобы не перекрывал */
+    .lne-ctx-toolbar-float { box-shadow: 0 4px 20px rgba(0,0,0,.7); }
     /* Toolbar — single scrollable row, no wrapping */
     .lne-toolbar { padding: 0; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
     .lne-toolbar::-webkit-scrollbar { display: none; }

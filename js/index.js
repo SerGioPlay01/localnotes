@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Local Notes - Main Application
  * Based on original code, TinyMCE replaced with LocalNotesEditor
  */
@@ -854,6 +854,10 @@ function closeModal() {
     document.body.classList.remove('modal-open');
     currentNoteId = null;
     if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) localNotesEditorInstance.setContent('');
+    // Hide float context toolbar (video/image/table/code) if visible
+    if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance?._removeCtx) {
+        localNotesEditorInstance._removeCtx();
+    }
 }
 
 // ============================================================================
@@ -1734,22 +1738,12 @@ function initializeEventListeners() {
     });
 
     const cancelBtn = document.getElementById('cancelNoteButton');
-    if (cancelBtn) cancelBtn.addEventListener('click', () => {
-        const modal = document.getElementById('editModal');
-        if (modal) modal.style.display = 'none';
-        document.body.classList.remove('modal-open');
-        currentNoteId = null;
-        if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) localNotesEditorInstance.setContent('');
-    });
+    if (cancelBtn) cancelBtn.addEventListener('click', () => closeModal());
 
     // Close modal on backdrop click
     const editModal = document.getElementById('editModal');
     if (editModal) editModal.addEventListener('click', e => {
-        if (e.target === editModal) {
-            editModal.style.display = 'none';
-            document.body.classList.remove('modal-open');
-            currentNoteId = null;
-        }
+        if (e.target === editModal) closeModal();
     });
 
     // Keyboard shortcuts

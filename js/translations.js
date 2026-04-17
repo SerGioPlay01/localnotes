@@ -1,4 +1,4 @@
-// Система переводов для динамического текста
+﻿// Система переводов для динамического текста
 if (typeof translations === 'undefined') {
 const translations = {
     en: {
@@ -92,6 +92,66 @@ const translations = {
         numberOfRows: "Number of rows",
         enterColumns: "Enter number of columns:",
         numberOfColumns: "Number of columns",
+        tableHeaderRow: "Header row",
+        tableHeader: "Header",
+        tableZebra: "Zebra striping",
+        tableWidth: "Table width",
+        textColor: "Text color",
+        highlightColor: "Highlight color",
+        // Editor misc
+        undo: "Undo", redo: "Redo",
+        bold: "Bold", italic: "Italic", underline: "Underline",
+        strikethrough: "Strikethrough", superscript: "Superscript", subscript: "Subscript",
+        paragraphStyle: "Style", fontFamily: "Font", fontSize: "Size",
+        clearFormat: "Clear formatting",
+        alignLeft: "Align left", alignCenter: "Center", alignRight: "Align right", alignJustify: "Justify",
+        bulletList: "Bullet list", numberedList: "Numbered list",
+        checklist: "Checklist", indent: "Indent", outdent: "Outdent",
+        insertLink: "Insert link", insertImage: "Insert image", insertVideo: "Insert video",
+        horizontalLine: "Horizontal rule", codeBlock: "Code block", blockquote: "Blockquote",
+        emoji: "Emoji", specialChars: "Special characters",
+        findReplace: "Find & Replace", wordCount: "Word count", fullscreen: "Fullscreen",
+        // Link modal
+        linkUrl: "URL", linkText: "Text", linkTitle: "Title (tooltip)", linkTarget: "Open in", linkRel: "Relation",
+        // Image modal
+        uploadFile: "Upload file", dropImage: "Drop image here or click",
+        altText: "Alt text", imageWidth: "Width", alignment: "Alignment",
+        imageBorderRadius: "Border radius",
+        // Find&Replace
+        findText: "Find", replaceWith: "Replace with", caseSensitive: "Case sensitive", wholeWord: "Whole word",
+        // Stats
+        words: "Words", characters: "Characters", charsNoSpaces: "Chars (no spaces)",
+        lines: "Lines", images: "Images", links: "Links", undoLevels: "History",
+        apply: "Apply", customColor: "Custom:",
+        copied: "Copied!",
+        // Missing editor keys
+        alignCenter: "Center", alignJustify: "Justify", alignRight: "Align right",
+        alignment: "Alignment",
+        blockquote: "Blockquote",
+        caseSensitive: "Case sensitive",
+        characters: "Characters", charsNoSpaces: "Chars (no spaces)",
+        deleteColumn: "Delete column", deleteRow: "Delete row",
+        dropImage: "Drop image here or click",
+        encryptNote: "Encrypt Note",
+        fontFamily: "Font", fontSize: "Size",
+        fullscreen: "Fullscreen",
+        images: "Images",
+        imageWidth: "Width",
+        indent: "Indent", outdent: "Outdent",
+        insertImage: "Insert image", insertVideo: "Insert video",
+        italic: "Italic",
+        links: "Links",
+        linkRel: "Relation", linkTarget: "Open in", linkText: "Text", linkTitle: "Title (tooltip)",
+        noteSaved: "Note saved",
+        numberedList: "Numbered list",
+        redo: "Redo",
+        replaceWith: "Replace with",
+        specialChars: "Special characters",
+        subscript: "Subscript", superscript: "Superscript",
+        tableProperties: "Table properties",
+        underline: "Underline",
+        undoLevels: "History",
+        wholeWord: "Whole word",
         
         // Кнопки
         addNote: "Add a note",
@@ -104,6 +164,7 @@ const translations = {
         confirmNo: "No",
         ok: "OK",
         export: "Export",
+        editorPlaceholder: "Start typing...",
         passwordCopied: "Password copied!",
         copyFailed: "Failed to copy to clipboard",
         copy: "Copy",
@@ -112,6 +173,23 @@ const translations = {
         exportHtml: "HTML",
         exportEncryptedDesc: "Encrypted files (.note)",
         exportHtmlDesc: "HTML files",
+
+        // Video modal
+        videoInsert: "Insert video",
+        videoPlatform: "Platform",
+        videoDirectLink: "Direct link",
+        videoCustomIframe: "Custom iframe",
+        videoPlatformSelect: "Platform",
+        videoUrl: "Video URL",
+        videoPlaybackSettings: "Playback settings",
+        videoAutoplay: "Autoplay",
+        videoLoop: "Loop",
+        videoMute: "Mute",
+        videoDirectUrl: "Direct URL (mp4, webm, ogg)",
+        videoWidth: "Width (px)",
+        videoHeight: "Height (px)",
+        videoIframeCode: "Paste iframe / embed code",
+        videoIframeHint: "Paste any embed code from any platform. It will be inserted as-is.",
         
         // Футер
         footerDescription: "Local Notes is a simple and convenient tool for creating notes right in your browser. All notes are saved in your browser. Save your thoughts, ideas, and stories, structuring them with headings, text formatting, lists, and more. Export notes to an file and share them with friends anonymously - just send the file, and they can open it by importing it into the web application. With Local Notes, your notes are always at hand, organized, and secure.",
@@ -174,7 +252,25 @@ const translations = {
         quickEditOffTitle: "Disable quick edit mode",
         quickEditHint: "Quick edit",
         quickEditSaved: "Note saved",
-        quickEditCancelled: "Changes cancelled"
+        quickEditCancelled: "Changes cancelled",
+
+        // Calendar
+        calendar: "Calendar",
+        calendarMonth: "Month",
+        calendarWeek: "Week",
+        calendarAgenda: "Agenda",
+        calendarNoNotes: "No notes this month",
+
+        // Decrypt modal
+        dcmSkipFile: "Skip file",
+        dcmDecrypt: "Decrypt",
+        dcmChecking: "Checking...",
+        dcmPasswordCorrect: "Password correct!",
+        dcmWrongPassword: "Wrong password",
+        dcmEnterPassword: "Enter a password",
+        dcmDecrypting: "Decrypting...",
+        dcmWrongPasswordRetry: "Wrong password — try again",
+        dcmEnterPasswordPlaceholder: "Enter password..."
     },
     
     ru: {
@@ -268,6 +364,34 @@ const translations = {
         numberOfRows: "Количество строк",
         enterColumns: "Введите количество столбцов:",
         numberOfColumns: "Количество столбцов",
+        tableHeaderRow: "Строка заголовка",
+        tableHeader: "Заголовок",
+        tableZebra: "Чередование строк",
+        tableWidth: "Ширина таблицы",
+        textColor: "Цвет текста",
+        highlightColor: "Цвет фона",
+        // Редактор
+        undo: "Отмена", redo: "Повтор",
+        bold: "Жирный", italic: "Курсив", underline: "Подчёркнутый",
+        strikethrough: "Зачёркнутый", superscript: "Надстрочный", subscript: "Подстрочный",
+        paragraphStyle: "Стиль", fontFamily: "Шрифт", fontSize: "Размер",
+        clearFormat: "Очистить форматирование",
+        alignLeft: "По левому краю", alignCenter: "По центру", alignRight: "По правому краю", alignJustify: "По ширине",
+        bulletList: "Маркированный список", numberedList: "Нумерованный список",
+        checklist: "Список задач", indent: "Увеличить отступ", outdent: "Уменьшить отступ",
+        insertLink: "Вставить ссылку", insertImage: "Вставить изображение", insertVideo: "Вставить видео",
+        horizontalLine: "Горизонтальная линия", codeBlock: "Блок кода", blockquote: "Цитата",
+        emoji: "Эмодзи", specialChars: "Специальные символы",
+        findReplace: "Найти и заменить", wordCount: "Статистика", fullscreen: "На весь экран",
+        linkUrl: "URL", linkText: "Текст", linkTitle: "Подсказка", linkTarget: "Открыть в", linkRel: "Отношение",
+        uploadFile: "Загрузить файл", dropImage: "Перетащите изображение или нажмите",
+        altText: "Альтернативный текст", imageWidth: "Ширина", alignment: "Выравнивание",
+        imageBorderRadius: "Скругление углов",
+        findText: "Найти", replaceWith: "Заменить на", caseSensitive: "Учитывать регистр", wholeWord: "Целое слово",
+        words: "Слова", characters: "Символы", charsNoSpaces: "Символы (без пробелов)",
+        lines: "Строки", images: "Изображения", links: "Ссылки", undoLevels: "История",
+        apply: "Применить", customColor: "Свой цвет:",
+        copied: "Скопировано!",
         
         // Кнопки
         addNote: "Добавить заметку",
@@ -288,8 +412,23 @@ const translations = {
         exportHtml: "HTML",
         exportEncryptedDesc: "Зашифрованные файлы (.note)",
         exportHtmlDesc: "HTML файлы",
-        
-        // Футер
+
+        // Video modal
+        videoInsert: "Вставка видео",
+        videoPlatform: "Платформа",
+        videoDirectLink: "Прямая ссылка",
+        videoCustomIframe: "Кастомный iframe",
+        videoPlatformSelect: "Платформа",
+        videoUrl: "URL видео",
+        videoPlaybackSettings: "Настройки воспроизведения",
+        videoAutoplay: "Автовоспроизведение",
+        videoLoop: "Зацикливание",
+        videoMute: "Без звука",
+        videoDirectUrl: "Прямой URL (mp4, webm, ogg)",
+        videoWidth: "Ширина (px)",
+        videoHeight: "Высота (px)",
+        videoIframeCode: "Вставьте iframe / embed-код",
+        videoIframeHint: "Вставьте любой embed-код с любой платформы — он будет вставлен как есть.",
         footerDescription: "Local Notes — это простое и удобное средство для создания заметок прямо в браузере. Все заметки сохраняются в вашем браузере. Сохраняйте свои мысли, идеи и истории, структурируя их с помощью заголовков, форматирования текста, списков и многого другого. Экспортируйте заметки в файл и делитесь ими с друзьями анонимно — просто отправьте файл, и они смогут открыть его, импортировав в веб-приложение. С Local Notes ваши заметки всегда под рукой, организованы и защищены.",
         cookiePolicy: "Политика Cookie",
         termsOfUse: "Условия использования",
@@ -358,7 +497,45 @@ const translations = {
         quickEditOffTitle: "Выключить режим быстрого редактирования",
         quickEditHint: "Быстрое редактирование",
         quickEditSaved: "Заметка сохранена",
-        quickEditCancelled: "Изменения отменены"
+        quickEditCancelled: "Изменения отменены",
+        // Editor keys
+        alignCenter: "По центру", alignJustify: "По ширине", alignRight: "По правому краю",
+        alignment: "Выравнивание", blockquote: "Цитата",
+        caseSensitive: "Учитывать регистр",
+        characters: "Символы", charsNoSpaces: "Символы (без пробелов)",
+        deleteColumn: "Удалить столбец", deleteRow: "Удалить строку",
+        dropImage: "Перетащите изображение или нажмите",
+        encryptNote: "Зашифровать заметку",
+        fontFamily: "Шрифт", fontSize: "Размер", fullscreen: "На весь экран",
+        images: "Изображения", imageWidth: "Ширина",
+        indent: "Увеличить отступ", outdent: "Уменьшить отступ",
+        insertImage: "Вставить изображение", insertVideo: "Вставить видео",
+        italic: "Курсив", links: "Ссылки",
+        linkRel: "Отношение", linkTarget: "Открыть в", linkText: "Текст", linkTitle: "Подсказка",
+        noteSaved: "Заметка сохранена", numberedList: "Нумерованный список",
+        redo: "Повтор", replaceWith: "Заменить на",
+        specialChars: "Специальные символы",
+        subscript: "Подстрочный", superscript: "Надстрочный",
+        tableProperties: "Свойства таблицы",
+        underline: "Подчёркнутый", undoLevels: "История", wholeWord: "Целое слово",
+
+        // Calendar
+        calendar: "Календарь",
+        calendarMonth: "Месяц",
+        calendarWeek: "Неделя",
+        calendarAgenda: "Повестка",
+        calendarNoNotes: "Нет заметок в этом месяце",
+
+        // Decrypt modal
+        dcmSkipFile: "Пропустить файл",
+        dcmDecrypt: "Расшифровать",
+        dcmChecking: "Проверка...",
+        dcmPasswordCorrect: "Пароль верный!",
+        dcmWrongPassword: "Неверный пароль",
+        dcmEnterPassword: "Введите пароль",
+        dcmDecrypting: "Расшифровка...",
+        dcmWrongPasswordRetry: "Неверный пароль — попробуйте снова",
+        dcmEnterPasswordPlaceholder: "Введите пароль..."
     },
     
     ua: {
@@ -439,6 +616,10 @@ const translations = {
         numberOfRows: "Кількість рядків",
         enterColumns: "Введіть кількість стовпців:",
         numberOfColumns: "Кількість стовпців",
+        tableHeaderRow: "Рядок заголовку",
+        tableHeader: "Заголовок",
+        textColor: "Колір тексту",
+        highlightColor: "Колір фону",
         
         // Кнопки
         addNote: "Додати нотатку",
@@ -456,8 +637,23 @@ const translations = {
         exportHtml: "HTML",
         exportEncryptedDesc: "Зашифровані файли (.note)",
         exportHtmlDesc: "HTML файли",
-        
-        // Футер
+
+        // Video modal
+        videoInsert: "Вставка відео",
+        videoPlatform: "Платформа",
+        videoDirectLink: "Пряме посилання",
+        videoCustomIframe: "Кастомний iframe",
+        videoPlatformSelect: "Платформа",
+        videoUrl: "URL відео",
+        videoPlaybackSettings: "Налаштування відтворення",
+        videoAutoplay: "Автовідтворення",
+        videoLoop: "Зациклення",
+        videoMute: "Без звуку",
+        videoDirectUrl: "Прямий URL (mp4, webm, ogg)",
+        videoWidth: "Ширина (px)",
+        videoHeight: "Висота (px)",
+        videoIframeCode: "Вставте iframe / embed-код",
+        videoIframeHint: "Вставте будь-який embed-код з будь-якої платформи — він буде вставлений як є.",
         footerDescription: "Local Notes — це простий і зручний інструмент для створення нотаток прямо в браузері. Всі нотатки зберігаються у вашому браузері. Зберігайте свої думки, ідеї та історії, структуруючи їх за допомогою заголовків, форматування тексту, списків та багато іншого. Експортуйте нотатки у файл і діліться ними з друзями анонімно — просто надішліть файл, і вони зможуть відкрити його, імпортувавши в веб-додаток. З Local Notes ваші нотатки завжди під рукою, організовані та захищені.",
         cookiePolicy: "Політика Cookie",
         termsOfUse: "Умови використання",
@@ -519,6 +715,26 @@ const translations = {
         quickEditHint: "Швидке редагування",
         quickEditSaved: "Нотатку збережено",
         quickEditCancelled: "Зміни скасовано",
+        // Editor keys
+        alignCenter: "По центру", alignJustify: "По ширині", alignRight: "По правому краю",
+        alignment: "Вирівнювання", blockquote: "Цитата",
+        caseSensitive: "Враховувати регістр",
+        characters: "Символи", charsNoSpaces: "Символи (без пробілів)",
+        deleteColumn: "Видалити стовпець", deleteRow: "Видалити рядок",
+        dropImage: "Перетягніть зображення або натисніть",
+        encryptNote: "Зашифрувати нотатку",
+        fontFamily: "Шрифт", fontSize: "Розмір", fullscreen: "На весь екран",
+        images: "Зображення", imageWidth: "Ширина",
+        indent: "Збільшити відступ", outdent: "Зменшити відступ",
+        insertImage: "Вставити зображення", insertVideo: "Вставити відео",
+        italic: "Курсив", links: "Посилання",
+        linkRel: "Відношення", linkTarget: "Відкрити в", linkText: "Текст", linkTitle: "Підказка",
+        noteSaved: "Нотатку збережено", numberedList: "Нумерований список",
+        redo: "Повтор", replaceWith: "Замінити на",
+        specialChars: "Спеціальні символи",
+        subscript: "Підрядковий", superscript: "Надрядковий",
+        tableProperties: "Властивості таблиці",
+        underline: "Підкреслений", undoLevels: "Історія", wholeWord: "Ціле слово",
         enterPasswordForFile: "Введіть пароль для файлу",
         importingFiles: "Імпорт файлів",
         processingFile: "Обробка файлу",
@@ -531,7 +747,25 @@ const translations = {
         validatingPassword: "Перевірка пароля...",
         passwordValid: "Пароль правильний",
         passwordInvalid: "Пароль неправильний",
-        validationError: "Помилка перевірки"
+        validationError: "Помилка перевірки",
+
+        // Calendar
+        calendar: "Календар",
+        calendarMonth: "Місяць",
+        calendarWeek: "Тиждень",
+        calendarAgenda: "Порядок денний",
+        calendarNoNotes: "Немає нотаток у цьому місяці",
+
+        // Decrypt modal
+        dcmSkipFile: "Пропустити файл",
+        dcmDecrypt: "Розшифрувати",
+        dcmChecking: "Перевірка...",
+        dcmPasswordCorrect: "Пароль вірний!",
+        dcmWrongPassword: "Невірний пароль",
+        dcmEnterPassword: "Введіть пароль",
+        dcmDecrypting: "Розшифровка...",
+        dcmWrongPasswordRetry: "Невірний пароль — спробуйте знову",
+        dcmEnterPasswordPlaceholder: "Введіть пароль..."
     },
     
     pl: {
@@ -692,6 +926,26 @@ const translations = {
         quickEditHint: "Szybka edycja",
         quickEditSaved: "Notatka zapisana",
         quickEditCancelled: "Zmiany anulowane",
+        // Editor keys
+        alignCenter: "Wyśrodkuj", alignJustify: "Wyjustuj", alignRight: "Wyrównaj do prawej",
+        alignment: "Wyrównanie", blockquote: "Cytat",
+        caseSensitive: "Uwzględnij wielkość liter",
+        characters: "Znaki", charsNoSpaces: "Znaki (bez spacji)",
+        deleteColumn: "Usuń kolumnę", deleteRow: "Usuń wiersz",
+        dropImage: "Upuść obraz tutaj lub kliknij",
+        encryptNote: "Zaszyfruj notatkę",
+        fontFamily: "Czcionka", fontSize: "Rozmiar", fullscreen: "Pełny ekran",
+        images: "Obrazy", imageWidth: "Szerokość",
+        indent: "Zwiększ wcięcie", outdent: "Zmniejsz wcięcie",
+        insertImage: "Wstaw obraz", insertVideo: "Wstaw wideo",
+        italic: "Kursywa", links: "Linki",
+        linkRel: "Relacja", linkTarget: "Otwórz w", linkText: "Tekst", linkTitle: "Podpowiedź",
+        noteSaved: "Notatka zapisana", numberedList: "Lista numerowana",
+        redo: "Ponów", replaceWith: "Zastąp przez",
+        specialChars: "Znaki specjalne",
+        subscript: "Indeks dolny", superscript: "Indeks górny",
+        tableProperties: "Właściwości tabeli",
+        underline: "Podkreślenie", undoLevels: "Historia", wholeWord: "Całe słowo",
         enterPasswordForFile: "Wprowadź hasło dla pliku",
         importingFiles: "Importowanie plików",
         processingFile: "Przetwarzanie pliku",
@@ -704,7 +958,25 @@ const translations = {
         validatingPassword: "Sprawdzanie hasła...",
         passwordValid: "Hasło jest poprawne",
         passwordInvalid: "Hasło jest niepoprawne",
-        validationError: "Błąd walidacji"
+        validationError: "Błąd walidacji",
+
+        // Calendar
+        calendar: "Kalendarz",
+        calendarMonth: "Miesiąc",
+        calendarWeek: "Tydzień",
+        calendarAgenda: "Agenda",
+        calendarNoNotes: "Brak notatek w tym miesiącu",
+
+        // Decrypt modal
+        dcmSkipFile: "Pomiń plik",
+        dcmDecrypt: "Odszyfruj",
+        dcmChecking: "Sprawdzanie...",
+        dcmPasswordCorrect: "Hasło poprawne!",
+        dcmWrongPassword: "Złe hasło",
+        dcmEnterPassword: "Wprowadź hasło",
+        dcmDecrypting: "Odszyfrowywanie...",
+        dcmWrongPasswordRetry: "Złe hasło — spróbuj ponownie",
+        dcmEnterPasswordPlaceholder: "Wprowadź hasło..."
     },
     
     cs: {
@@ -865,6 +1137,26 @@ const translations = {
         quickEditHint: "Rychlá úprava",
         quickEditSaved: "Poznámka uložena",
         quickEditCancelled: "Změny zrušeny",
+        // Editor keys
+        alignCenter: "Na střed", alignJustify: "Do bloku", alignRight: "Zarovnat vpravo",
+        alignment: "Zarovnání", blockquote: "Citát",
+        caseSensitive: "Rozlišovat velikost písmen",
+        characters: "Znaky", charsNoSpaces: "Znaky (bez mezer)",
+        deleteColumn: "Smazat sloupec", deleteRow: "Smazat řádek",
+        dropImage: "Přetáhněte obrázek nebo klikněte",
+        encryptNote: "Zašifrovat poznámku",
+        fontFamily: "Písmo", fontSize: "Velikost", fullscreen: "Celá obrazovka",
+        images: "Obrázky", imageWidth: "Šířka",
+        indent: "Zvětšit odsazení", outdent: "Zmenšit odsazení",
+        insertImage: "Vložit obrázek", insertVideo: "Vložit video",
+        italic: "Kurzíva", links: "Odkazy",
+        linkRel: "Vztah", linkTarget: "Otevřít v", linkText: "Text", linkTitle: "Popisek",
+        noteSaved: "Poznámka uložena", numberedList: "Číslovaný seznam",
+        redo: "Znovu", replaceWith: "Nahradit za",
+        specialChars: "Speciální znaky",
+        subscript: "Dolní index", superscript: "Horní index",
+        tableProperties: "Vlastnosti tabulky",
+        underline: "Podtržení", undoLevels: "Historie", wholeWord: "Celé slovo",
         enterPasswordForFile: "Zadejte heslo pro soubor",
         importingFiles: "Importování souborů",
         processingFile: "Zpracování souboru",
@@ -877,7 +1169,25 @@ const translations = {
         validatingPassword: "Ověřování hesla...",
         passwordValid: "Heslo je správné",
         passwordInvalid: "Heslo je nesprávné",
-        validationError: "Chyba ověření"
+        validationError: "Chyba ověření",
+
+        // Calendar
+        calendar: "Kalendář",
+        calendarMonth: "Měsíc",
+        calendarWeek: "Týden",
+        calendarAgenda: "Agenda",
+        calendarNoNotes: "Žádné poznámky v tomto měsíci",
+
+        // Decrypt modal
+        dcmSkipFile: "Přeskočit soubor",
+        dcmDecrypt: "Dešifrovat",
+        dcmChecking: "Kontrola...",
+        dcmPasswordCorrect: "Heslo správné!",
+        dcmWrongPassword: "Špatné heslo",
+        dcmEnterPassword: "Zadejte heslo",
+        dcmDecrypting: "Dešifrování...",
+        dcmWrongPasswordRetry: "Špatné heslo — zkuste znovu",
+        dcmEnterPasswordPlaceholder: "Zadejte heslo..."
     },
     
     sk: {
@@ -1036,6 +1346,26 @@ const translations = {
         quickEditHint: "Rýchla úprava",
         quickEditSaved: "Poznámka uložená",
         quickEditCancelled: "Zmeny zrušené",
+        // Editor keys
+        alignCenter: "Na stred", alignJustify: "Do bloku", alignRight: "Zarovnať vpravo",
+        alignment: "Zarovnanie", blockquote: "Citát",
+        caseSensitive: "Rozlišovať veľkosť písmen",
+        characters: "Znaky", charsNoSpaces: "Znaky (bez medzier)",
+        deleteColumn: "Zmazať stĺpec", deleteRow: "Zmazať riadok",
+        dropImage: "Presuňte obrázok alebo kliknite",
+        encryptNote: "Zašifrovať poznámku",
+        fontFamily: "Písmo", fontSize: "Veľkosť", fullscreen: "Celá obrazovka",
+        images: "Obrázky", imageWidth: "Šírka",
+        indent: "Zväčšiť odsadenie", outdent: "Zmenšiť odsadenie",
+        insertImage: "Vložiť obrázok", insertVideo: "Vložiť video",
+        italic: "Kurzíva", links: "Odkazy",
+        linkRel: "Vzťah", linkTarget: "Otvoriť v", linkText: "Text", linkTitle: "Popis",
+        noteSaved: "Poznámka uložená", numberedList: "Číslovaný zoznam",
+        redo: "Znova", replaceWith: "Nahradiť za",
+        specialChars: "Špeciálne znaky",
+        subscript: "Dolný index", superscript: "Horný index",
+        tableProperties: "Vlastnosti tabuľky",
+        underline: "Podčiarknutie", undoLevels: "História", wholeWord: "Celé slovo",
         enterPasswordForFile: "Zadajte heslo pre súbor",
         importingFiles: "Importovanie súborov",
         processingFile: "Spracovanie súboru",
@@ -1048,7 +1378,25 @@ const translations = {
         validatingPassword: "Overovanie hesla...",
         passwordValid: "Heslo je správne",
         passwordInvalid: "Heslo je nesprávne",
-        validationError: "Chyba overenia"
+        validationError: "Chyba overenia",
+
+        // Calendar
+        calendar: "Kalendár",
+        calendarMonth: "Mesiac",
+        calendarWeek: "Týždeň",
+        calendarAgenda: "Agenda",
+        calendarNoNotes: "Žiadne poznámky v tomto mesiaci",
+
+        // Decrypt modal
+        dcmSkipFile: "Preskočiť súbor",
+        dcmDecrypt: "Dešifrovať",
+        dcmChecking: "Kontrola...",
+        dcmPasswordCorrect: "Heslo správne!",
+        dcmWrongPassword: "Zlé heslo",
+        dcmEnterPassword: "Zadajte heslo",
+        dcmDecrypting: "Dešifrovanie...",
+        dcmWrongPasswordRetry: "Zlé heslo — skúste znova",
+        dcmEnterPasswordPlaceholder: "Zadajte heslo..."
     },
     
     bg: {
@@ -1205,6 +1553,26 @@ const translations = {
         quickEditHint: "Бързо редактиране",
         quickEditSaved: "Бележката е запазена",
         quickEditCancelled: "Промените са отменени",
+        // Editor keys
+        alignCenter: "Центриране", alignJustify: "Изравняване", alignRight: "Дясно подравняване",
+        alignment: "Подравняване", blockquote: "Цитат",
+        caseSensitive: "Чувствителност към регистъра",
+        characters: "Знаци", charsNoSpaces: "Знаци (без интервали)",
+        deleteColumn: "Изтрий колона", deleteRow: "Изтрий ред",
+        dropImage: "Пуснете изображение тук или кликнете",
+        encryptNote: "Шифроване на бележка",
+        fontFamily: "Шрифт", fontSize: "Размер", fullscreen: "Цял екран",
+        images: "Изображения", imageWidth: "Ширина",
+        indent: "Увеличи отстъп", outdent: "Намали отстъп",
+        insertImage: "Вмъкни изображение", insertVideo: "Вмъкни видео",
+        italic: "Курсив", links: "Връзки",
+        linkRel: "Отношение", linkTarget: "Отвори в", linkText: "Текст", linkTitle: "Подсказка",
+        noteSaved: "Бележката е запазена", numberedList: "Номериран списък",
+        redo: "Повтори", replaceWith: "Замени с",
+        specialChars: "Специални знаци",
+        subscript: "Долен индекс", superscript: "Горен индекс",
+        tableProperties: "Свойства на таблицата",
+        underline: "Подчертаване", undoLevels: "История", wholeWord: "Цяла дума",
         enterPasswordForFile: "Въведете парола за файл",
         importingFiles: "Импортиране на файлове",
         processingFile: "Обработка на файл",
@@ -1217,7 +1585,25 @@ const translations = {
         validatingPassword: "Проверка на парола...",
         passwordValid: "Паролата е правилна",
         passwordInvalid: "Паролата е неправилна",
-        validationError: "Грешка при проверка"
+        validationError: "Грешка при проверка",
+
+        // Calendar
+        calendar: "Календар",
+        calendarMonth: "Месец",
+        calendarWeek: "Седмица",
+        calendarAgenda: "Дневен ред",
+        calendarNoNotes: "Няма бележки в този месец",
+
+        // Decrypt modal
+        dcmSkipFile: "Пропусни файл",
+        dcmDecrypt: "Декриптирай",
+        dcmChecking: "Проверка...",
+        dcmPasswordCorrect: "Паролата е правилна!",
+        dcmWrongPassword: "Грешна парола",
+        dcmEnterPassword: "Въведете парола",
+        dcmDecrypting: "Декриптиране...",
+        dcmWrongPasswordRetry: "Грешна парола — опитайте отново",
+        dcmEnterPasswordPlaceholder: "Въведете парола..."
     },
     
     hr: {
@@ -1368,6 +1754,26 @@ const translations = {
         quickEditHint: "Brza izmjena",
         quickEditSaved: "Bilješka je spremljena",
         quickEditCancelled: "Promjene su otkazane",
+        // Editor keys
+        alignCenter: "Centriraj", alignJustify: "Poravnaj", alignRight: "Poravnaj desno",
+        alignment: "Poravnanje", blockquote: "Citat",
+        caseSensitive: "Razlikuj velika i mala slova",
+        characters: "Znakovi", charsNoSpaces: "Znakovi (bez razmaka)",
+        deleteColumn: "Obriši stupac", deleteRow: "Obriši redak",
+        dropImage: "Povucite sliku ovdje ili kliknite",
+        encryptNote: "Šifriraj bilješku",
+        fontFamily: "Font", fontSize: "Veličina", fullscreen: "Cijeli zaslon",
+        images: "Slike", imageWidth: "Širina",
+        indent: "Povećaj uvlaku", outdent: "Smanji uvlaku",
+        insertImage: "Umetni sliku", insertVideo: "Umetni video",
+        italic: "Kurziv", links: "Veze",
+        linkRel: "Odnos", linkTarget: "Otvori u", linkText: "Tekst", linkTitle: "Opis",
+        noteSaved: "Bilješka je spremljena", numberedList: "Numerirana lista",
+        redo: "Ponovi", replaceWith: "Zamijeni s",
+        specialChars: "Posebni znakovi",
+        subscript: "Indeks", superscript: "Eksponent",
+        tableProperties: "Svojstva tablice",
+        underline: "Podvlačenje", undoLevels: "Povijest", wholeWord: "Cijela riječ",
         enterPasswordForFile: "Unesite lozinku za datoteku",
         importingFiles: "Uvoz datoteka",
         processingFile: "Obrada datoteke",
@@ -1380,7 +1786,25 @@ const translations = {
         validatingPassword: "Provjera lozinke...",
         passwordValid: "Lozinka je ispravna",
         passwordInvalid: "Lozinka je neispravna",
-        validationError: "Greška provjere"
+        validationError: "Greška provjere",
+
+        // Calendar
+        calendar: "Kalendar",
+        calendarMonth: "Mjesec",
+        calendarWeek: "Tjedan",
+        calendarAgenda: "Agenda",
+        calendarNoNotes: "Nema bilješki ovaj mjesec",
+
+        // Decrypt modal
+        dcmSkipFile: "Preskoči datoteku",
+        dcmDecrypt: "Dešifriraj",
+        dcmChecking: "Provjera...",
+        dcmPasswordCorrect: "Lozinka ispravna!",
+        dcmWrongPassword: "Pogrešna lozinka",
+        dcmEnterPassword: "Unesite lozinku",
+        dcmDecrypting: "Dešifriranje...",
+        dcmWrongPasswordRetry: "Pogrešna lozinka — pokušajte ponovo",
+        dcmEnterPasswordPlaceholder: "Unesite lozinku..."
     },
     
     sr: {
@@ -1528,6 +1952,26 @@ const translations = {
         quickEditHint: "Брзо уређивање",
         quickEditSaved: "Белешка је сачувана",
         quickEditCancelled: "Промене су отказане",
+        // Editor keys
+        alignCenter: "Центрирај", alignJustify: "Поравнај", alignRight: "Поравнај десно",
+        alignment: "Поравнање", blockquote: "Цитат",
+        caseSensitive: "Разликуј велика и мала слова",
+        characters: "Знакови", charsNoSpaces: "Знакови (без размака)",
+        deleteColumn: "Обриши колону", deleteRow: "Обриши ред",
+        dropImage: "Превуците слику овде или кликните",
+        encryptNote: "Шифруј белешку",
+        fontFamily: "Фонт", fontSize: "Величина", fullscreen: "Цео екран",
+        images: "Слике", imageWidth: "Ширина",
+        indent: "Повећај увлаку", outdent: "Смањи увлаку",
+        insertImage: "Уметни слику", insertVideo: "Уметни видео",
+        italic: "Курзив", links: "Везе",
+        linkRel: "Однос", linkTarget: "Отвори у", linkText: "Текст", linkTitle: "Опис",
+        noteSaved: "Белешка је сачувана", numberedList: "Нумерисана листа",
+        redo: "Понови", replaceWith: "Замени са",
+        specialChars: "Посебни знакови",
+        subscript: "Индекс", superscript: "Експонент",
+        tableProperties: "Својства табеле",
+        underline: "Подвлачење", undoLevels: "Историја", wholeWord: "Цела реч",
         enterPasswordForFile: "Унесите лозинку за фајл",
         processingFile: "Обрада фајла",
         of: "од",
@@ -1539,7 +1983,25 @@ const translations = {
         validatingPassword: "Провера лозинке...",
         passwordValid: "Лозинка је исправна",
         passwordInvalid: "Лозинка је неисправна",
-        validationError: "Грешка провере"
+        validationError: "Грешка провере",
+
+        // Calendar
+        calendar: "Календар",
+        calendarMonth: "Месец",
+        calendarWeek: "Недеља",
+        calendarAgenda: "Агенда",
+        calendarNoNotes: "Нема белешки овог месеца",
+
+        // Decrypt modal
+        dcmSkipFile: "Прескочи фајл",
+        dcmDecrypt: "Дешифруј",
+        dcmChecking: "Провера...",
+        dcmPasswordCorrect: "Лозинка исправна!",
+        dcmWrongPassword: "Погрешна лозинка",
+        dcmEnterPassword: "Унесите лозинку",
+        dcmDecrypting: "Дешифровање...",
+        dcmWrongPasswordRetry: "Погрешна лозинка — покушајте поново",
+        dcmEnterPasswordPlaceholder: "Унесите лозинку..."
     },
     
     bs: {
@@ -1690,6 +2152,26 @@ const translations = {
         quickEditHint: "Brza izmjena",
         quickEditSaved: "Bilješka je sačuvana",
         quickEditCancelled: "Promjene su otkazane",
+        // Editor keys
+        alignCenter: "Centriraj", alignJustify: "Poravnaj", alignRight: "Poravnaj desno",
+        alignment: "Poravnanje", blockquote: "Citat",
+        caseSensitive: "Razlikuj velika i mala slova",
+        characters: "Znakovi", charsNoSpaces: "Znakovi (bez razmaka)",
+        deleteColumn: "Obriši kolonu", deleteRow: "Obriši red",
+        dropImage: "Prevucite sliku ovdje ili kliknite",
+        encryptNote: "Šifriraj bilješku",
+        fontFamily: "Font", fontSize: "Veličina", fullscreen: "Cijeli ekran",
+        images: "Slike", imageWidth: "Širina",
+        indent: "Povećaj uvlaku", outdent: "Smanji uvlaku",
+        insertImage: "Umetni sliku", insertVideo: "Umetni video",
+        italic: "Kurziv", links: "Veze",
+        linkRel: "Odnos", linkTarget: "Otvori u", linkText: "Tekst", linkTitle: "Opis",
+        noteSaved: "Bilješka je sačuvana", numberedList: "Numerisana lista",
+        redo: "Ponovi", replaceWith: "Zamijeni s",
+        specialChars: "Posebni znakovi",
+        subscript: "Indeks", superscript: "Eksponent",
+        tableProperties: "Svojstva tabele",
+        underline: "Podvlačenje", undoLevels: "Historija", wholeWord: "Cijela riječ",
         enterPasswordForFile: "Unesite lozinku za datoteku",
         importingFiles: "Uvoz datoteka",
         processingFile: "Obrada datoteke",
@@ -1702,7 +2184,25 @@ const translations = {
         validatingPassword: "Provjera lozinke...",
         passwordValid: "Lozinka je ispravna",
         passwordInvalid: "Lozinka je neispravna",
-        validationError: "Greška provjere"
+        validationError: "Greška provjere",
+
+        // Calendar
+        calendar: "Kalendar",
+        calendarMonth: "Mjesec",
+        calendarWeek: "Sedmica",
+        calendarAgenda: "Agenda",
+        calendarNoNotes: "Nema bilješki ovaj mjesec",
+
+        // Decrypt modal
+        dcmSkipFile: "Preskoči datoteku",
+        dcmDecrypt: "Dešifriraj",
+        dcmChecking: "Provjera...",
+        dcmPasswordCorrect: "Lozinka ispravna!",
+        dcmWrongPassword: "Pogrešna lozinka",
+        dcmEnterPassword: "Unesite lozinku",
+        dcmDecrypting: "Dešifriranje...",
+        dcmWrongPasswordRetry: "Pogrešna lozinka — pokušajte ponovo",
+        dcmEnterPasswordPlaceholder: "Unesite lozinku..."
     },
     
     mk: {
@@ -1870,9 +2370,47 @@ const translations = {
         validatingPassword: "Проверка на лозинка...",
         passwordValid: "Лозинката е правилна",
         passwordInvalid: "Лозинката е неправилна",
-        validationError: "Грешка при проверка"
+        validationError: "Грешка при проверка",
+        // Editor keys
+        alignCenter: "Центрирај", alignJustify: "Порамни", alignRight: "Порамни десно",
+        alignment: "Порамнување", blockquote: "Цитат",
+        caseSensitive: "Разликувај мали и големи букви",
+        characters: "Знаци", charsNoSpaces: "Знаци (без празни места)",
+        deleteColumn: "Избриши колона", deleteRow: "Избриши ред",
+        dropImage: "Повлечете слика овде или кликнете",
+        encryptNote: "Шифрирај белешка",
+        fontFamily: "Фонт", fontSize: "Големина", fullscreen: "Цел екран",
+        images: "Слики", imageWidth: "Ширина",
+        indent: "Зголеми вовлекување", outdent: "Намали вовлекување",
+        insertImage: "Вметни слика", insertVideo: "Вметни видео",
+        italic: "Курзив", links: "Врски",
+        linkRel: "Однос", linkTarget: "Отвори во", linkText: "Текст", linkTitle: "Опис",
+        noteSaved: "Белешката е зачувана", numberedList: "Нумерирана листа",
+        redo: "Повтори", replaceWith: "Замени со",
+        specialChars: "Специјални знаци",
+        subscript: "Индекс", superscript: "Експонент",
+        tableProperties: "Својства на табела",
+        underline: "Подвлекување", undoLevels: "Историја", wholeWord: "Цел збор",
+
+        // Calendar
+        calendar: "Календар",
+        calendarMonth: "Месец",
+        calendarWeek: "Недела",
+        calendarAgenda: "Агенда",
+        calendarNoNotes: "Нема белешки овој месец",
+
+        // Decrypt modal
+        dcmSkipFile: "Прескокни датотека",
+        dcmDecrypt: "Дешифрирај",
+        dcmChecking: "Проверка...",
+        dcmPasswordCorrect: "Лозинката е правилна!",
+        dcmWrongPassword: "Погрешна лозинка",
+        dcmEnterPassword: "Внесете лозинка",
+        dcmDecrypting: "Дешифрирање...",
+        dcmWrongPasswordRetry: "Погрешна лозинка — обидете се повторно",
+        dcmEnterPasswordPlaceholder: "Внесете лозинка..."
     },
-    
+
     sl: {
         // Общие сообщения
         error: "Napaka",
@@ -2028,14 +2566,55 @@ const translations = {
         validatingPassword: "Preverjanje gesla...",
         passwordValid: "Geslo je pravilno",
         passwordInvalid: "Geslo je nepravilno",
-        validationError: "Napaka preverjanja"
+        validationError: "Napaka preverjanja",
+        // Editor keys
+        alignCenter: "Na sredino", alignJustify: "Poravnaj", alignRight: "Poravnaj desno",
+        alignment: "Poravnava", blockquote: "Citat",
+        caseSensitive: "Razlikuj velike in male črke",
+        characters: "Znaki", charsNoSpaces: "Znaki (brez presledkov)",
+        deleteColumn: "Izbriši stolpec", deleteRow: "Izbriši vrstico",
+        dropImage: "Povlecite sliko sem ali kliknite",
+        encryptNote: "Šifriraj opombo",
+        fontFamily: "Pisava", fontSize: "Velikost", fullscreen: "Celozaslonski",
+        images: "Slike", imageWidth: "Širina",
+        indent: "Povečaj zamik", outdent: "Zmanjšaj zamik",
+        insertImage: "Vstavi sliko", insertVideo: "Vstavi video",
+        italic: "Ležeče", links: "Povezave",
+        linkRel: "Razmerje", linkTarget: "Odpri v", linkText: "Besedilo", linkTitle: "Opis",
+        noteSaved: "Opomba shranjena", numberedList: "Oštevilčen seznam",
+        redo: "Ponovi", replaceWith: "Zamenjaj z",
+        specialChars: "Posebni znaki",
+        subscript: "Podpisano", superscript: "Nadpisano",
+        tableProperties: "Lastnosti tabele",
+        underline: "Podčrtano", undoLevels: "Zgodovina", wholeWord: "Cela beseda",
+
+        // Calendar
+        calendar: "Koledar",
+        calendarMonth: "Mesec",
+        calendarWeek: "Teden",
+        calendarAgenda: "Agenda",
+        calendarNoNotes: "Ni opomb ta mesec",
+
+        // Decrypt modal
+        dcmSkipFile: "Preskoči datoteko",
+        dcmDecrypt: "Dešifriraj",
+        dcmChecking: "Preverjanje...",
+        dcmPasswordCorrect: "Geslo pravilno!",
+        dcmWrongPassword: "Napačno geslo",
+        dcmEnterPassword: "Vnesite geslo",
+        dcmDecrypting: "Dešifriranje...",
+        dcmWrongPasswordRetry: "Napačno geslo — poskusite znova",
+        dcmEnterPasswordPlaceholder: "Vnesite geslo..."
     }
 };
 
 // Функция для получения перевода
 function t(key, params = {}) {
     const lang = window.currentLang || 'en';
-    const translation = translations[lang]?.[key] || translations['en'][key] || key;
+    const translation = translations[lang]?.[key] ?? translations['en'][key] ?? key;
+    
+    // Если значение — массив или объект (например months, weekdays), возвращаем как есть
+    if (typeof translation !== 'string') return translation;
     
     // Заменяем параметры в тексте
     return translation.replace(/\{(\w+)\}/g, (match, param) => params[param] || match);
@@ -2108,6 +2687,12 @@ function updateButtonTexts() {
     }
     if (okButton) {
         okButton.innerHTML = `<i class="fas fa-check"></i> ${t("ok")}`;
+    }
+
+    // Calendar button
+    const calendarBtn = document.getElementById("calendarBtn");
+    if (calendarBtn) {
+        calendarBtn.innerHTML = `<i class="bi bi-calendar3"></i> ${t("calendar")}`;
     }
 }
 } // Закрываем блок if (typeof translations === 'undefined')

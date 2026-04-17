@@ -148,7 +148,7 @@ function updateInterface(langData, language) {
     updateButtonTexts();
     
     // Обновляем отображение дат при смене языка
-    if (typeof refreshAllDates === 'function') {
+    if (typeof refreshAllDates === 'function' && typeof notesDatabase !== 'undefined' && notesDatabase) {
         // Добавляем задержку, чтобы убедиться, что все скрипты загружены и langData обновлен
         setTimeout(() => {
             // Проверяем, что langData обновлен для текущего языка

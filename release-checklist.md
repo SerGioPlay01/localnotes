@@ -1,4 +1,4 @@
-# Release Checklist - Local Notes v1.0.2
+# Release Checklist - Local Notes v1.0.4
 
 ## ✅ Performance Optimizations
 - [x] Асинхронная загрузка CSS файлов

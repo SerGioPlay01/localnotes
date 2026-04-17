@@ -381,8 +381,10 @@ function refreshAllDates() {
     updateDateDisplay();
     
     // Перезагружаем заметки для обновления дат в футерах заметок
-    if (typeof loadNotes === 'function') {
-        loadNotes();
+    if (typeof loadNotes === 'function' && typeof notesDatabase !== 'undefined' && notesDatabase) {
+        loadNotes().catch(error => {
+            console.warn('⚠️ Could not refresh notes:', error);
+        });
     }
 }
 

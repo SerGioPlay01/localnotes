@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -31,7 +31,7 @@
 
     <meta charset="UTF-8">
     <meta http-equiv="Permissions-Policy" content="browsing-topics=(), run-ad-auction=(), camera=(), microphone=(), geolocation=()">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com chrome-extension:; connect-src 'self' blob: https://www.google-analytics.com https://analytics.google.com; frame-src 'self' https://www.youtube.com https://youtu.be https://www.youtube-nocookie.com https://rutube.ru https://vk.com https://player.vimeo.com https://www.dailymotion.com https://player.twitch.tv; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://assets.twitch.tv; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com chrome-extension:; connect-src 'self' blob: https://www.google-analytics.com https://analytics.google.com https://assets.twitch.tv https://api.twitch.tv; frame-src 'self' https://www.youtube.com https://youtu.be https://www.youtube-nocookie.com https://rutube.ru https://vk.com https://vkvideo.ru https://vk.ru https://ok.ru https://www.tiktok.com https://player.vimeo.com https://www.dailymotion.com https://player.twitch.tv https://clips.twitch.tv; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; upgrade-insecure-requests;">
 
     
     <!-- Cache busting meta tags -->
@@ -235,9 +235,9 @@
             "url": "https://sergioplay-dev.vercel.app/"
         },
         "datePublished": "2024-01-01",
-        "dateModified": "2025-01-12",
-        "version": "1.0.2",
-        "softwareVersion": "1.0.2",
+        "dateModified": "2026-07-16",
+        "version": "1.0.5",
+        "softwareVersion": "1.0.5",
         "browserRequirements": "Requires JavaScript. Requires HTML5.",
         "memoryRequirements": "Minimal",
         "storageRequirements": "Browser Local Storage",
@@ -494,7 +494,7 @@
             originalLog('%c   ✓ 12 interface languages', 'color: #666; font-size: 12px;');
             originalLog('%c   ✓ PWA - works as an app', 'color: #666; font-size: 12px;');
             originalLog('%c   ✓ Offline mode', 'color: #666; font-size: 12px;');
-            originalLog('%c   ✓ TinyMCE editor', 'color: #666; font-size: 12px;');
+            originalLog('%c   ✓ LocalNotesEditor - rich text editing', 'color: #666; font-size: 12px;');
             originalLog('%c   ✓ Search with transliteration', 'color: #666; font-size: 12px;');
             
             originalLog('%c\n📊 INFORMATION', 'color: #9C27B0; font-size: 16px; font-weight: bold;');
@@ -530,12 +530,14 @@
     </script>
 
     <!-- Critical CSS loaded first with cache busting -->
-    <link rel="stylesheet" href="/css/index.css?v=1.0.3">
-    <link rel="stylesheet" href="/css/preloader.css?v=1.0.3">
-    <link rel="stylesheet" href="/css/img.css?v=1.0.3">
-    <link rel="stylesheet" href="/css/highlight.css?v=1.0.3">
-    <link rel="stylesheet" href="/css/tinymce-custom.css?v=1.0.3">
-    <link rel="stylesheet" href="/fonts/local-fonts.css?v=1.0.3">
+    <link rel="stylesheet" href="/css/index.css?v=1.0.9">
+    <link rel="stylesheet" href="/css/preloader.css?v=1.0.9">
+    <link rel="stylesheet" href="/css/img.css?v=1.0.9">
+    <link rel="stylesheet" href="/css/highlight.css?v=1.0.9">
+    <link rel="stylesheet" href="/localnoteseditor/styles.css?v=1.0.9">
+    <link rel="stylesheet" href="/css/editor-modal.css?v=1.0.9">
+    <link rel="stylesheet" href="/css/tags-calendar.css?v=1.0.9">
+    <link rel="stylesheet" href="/fonts/local-fonts.css?v=1.0.9">
     
     <!-- Prevent FOUC by hiding content until styles are loaded -->
     <style>
@@ -595,16 +597,16 @@
             style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <!-- iOS "Add to Home Screen" banner (shown only in Safari, not in standalone) -->
-    <div id="ios-install-banner" class="ios-install-banner" role="banner" aria-live="polite" hidden>
-        <div class="ios-install-banner-icon">
+    <!-- Safari Mobile "Add to Home Screen" banner (shown only in Safari, not in standalone) -->
+    <div id="ln-install-banner" class="ln-install-banner" role="banner" aria-live="polite" hidden>
+        <div class="ln-install-banner-icon">
             <img src="/favicon/apple-touch-icon.png" alt="Local Notes" width="44" height="44">
         </div>
-        <div class="ios-install-banner-text">
+        <div class="ln-install-banner-text">
             <strong>Local Notes</strong>
-            <span id="ios-install-hint">Tap <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> then "Add to Home Screen"</span>
+            <span id="ln-install-hint">Tap <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> then "Add to Home Screen"</span>
         </div>
-        <button class="ios-install-banner-close" id="ios-install-close" aria-label="Close">✕</button>
+        <button class="ln-install-banner-close" id="ln-install-close" aria-label="Close">✕</button>
     </div>
 
     <!-- Header section - full width -->
@@ -620,12 +622,16 @@
                 <button id="addNoteButton"><i class="fas fa-plus"></i> Add a note</button>
                 <button id="importButton"><i class="fas fa-upload"></i> Import notes</button>
                 <button id="clearAllButton"><i class="fas fa-trash-alt"></i> Clear all notes</button>
+                <button id="calendarBtn"><i class="bi bi-calendar3"></i> Calendar</button>
                 <button id="quickEditToggle"><i class="fas fa-bolt"></i> Quick Edit</button>
                 <input multiple type="file" id="importInput" accept=".note,.html,.md">
             </div>
             <input type="text" id="searchInput" placeholder="Search notes...">
         </section>
     </div>
+
+    <!-- Hidden tag panel (for filter logic, renders in floating panel) -->
+    <div id="tagPanel" style="display:none"></div>
 
     <!-- Main content section -->
     <section class="app-notes-center">
@@ -642,8 +648,9 @@
             <div id="editModal" class="modal">
                 <div class="modal-content">
                     <h2 class="modal_h2">Editor</h2>
-                    <textarea id="editorContainer" class="tinymce"></textarea>
+                    <div id="editorContainer" class="lne-editor-wrapper"></div>
                     <div class="modal-buttons-container">
+                        <button id="noteSettingsBtn" class="btn btn-settings"><i class="bi bi-sliders2"></i></button>
                         <button id="saveNoteButton"><i class="fas fa-save"></i> Save note</button>
                         <button id="cancelNoteButton" class="btn cancel"><i class="fas fa-times"></i> Cancel</button>
                     </div>
@@ -690,71 +697,60 @@
 
 
     <!-- Critical JavaScript loaded first with cache busting -->
-    <script src="/js/utils.js?v=1.0.3"></script>
-    <script src="/js/selectors.js?v=1.0.3"></script>
-    <script src="/js/translate.js?v=1.0.3"></script>
-    <script src="/js/themes.js?v=1.0.3"></script>
-    <script src="/js/performance.js?v=1.0.3"></script>
-    <script src="/js/security.js?v=1.0.3"></script>
-    <script src="/lottiesnimstion/lottie.min.js?v=1.0.3"></script>
-    <script src="/js/preloader.js?v=1.0.3"></script>
+    <script src="/js/utils.js?v=1.0.9"></script>
+    <script src="/js/selectors.js?v=1.0.9"></script>
+    <script src="/js/translate.js?v=1.0.9"></script>
+    <script src="/js/themes.js?v=1.0.9"></script>
+    <script src="/js/performance.js?v=1.0.9"></script>
+    <script src="/js/security.js?v=1.0.9"></script>
+    <script src="/lottiesnimstion/lottie.min.js?v=1.0.9"></script>
+    <script src="/js/preloader.js?v=1.0.9"></script>
     
-    <!-- TinyMCE loaded with defer for better performance -->
-    <script src="/editor_news/tinymce.min.js?v=1.0.3" defer></script>
+    <!-- LocalNotesEditor -->
+    <script src="/localnoteseditor/core.js?v=1.0.9" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
     <script>
-        // Load non-critical scripts asynchronously
-        function loadScript(src, callback) {
+        // Load scripts sequentially to ensure proper order
+        function loadScriptsSequentially(scripts, index = 0) {
+            if (index >= scripts.length) {
+                console.log('✅ All scripts loaded successfully');
+                return;
+            }
+
             const script = document.createElement('script');
-            script.src = src;
-            script.async = true;
-            if (callback) script.onload = callback;
+            script.src = scripts[index];
+            script.async = false;
+            script.onload = () => {
+                console.log(`✅ Loaded: ${scripts[index]}`);
+                loadScriptsSequentially(scripts, index + 1);
+            };
+            script.onerror = () => {
+                console.error(`❌ Failed to load: ${scripts[index]}`);
+                loadScriptsSequentially(scripts, index + 1);
+            };
             document.head.appendChild(script);
         }
         
         // Load scripts after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            loadScript('/js/magicurl.js?v=1.0.3');
-            loadScript('/js/highlight.min.js?v=1.0.3');
-            loadScript('/js/translations.js?v=1.0.3');
-            loadScript('/js/tinymce-translations.js?v=1.0.3');
-            loadScript('/js/img.js?v=1.0.3');
-            loadScript('/js/date-utils.js?v=1.0.3');
+            const scripts = [
+                '/js/magicurl.js?v=1.0.9',
+                '/js/highlight.min.js?v=1.0.9',
+                '/js/translations.js?v=1.0.9',
+                '/js/img.js?v=1.0.9',
+                '/js/date-utils.js?v=1.0.9',
+                '/js/editor-integration.js?v=1.0.9',
+                '/js/tags-calendar.js?v=1.0.9',
+                '/js/index.js?v=1.0.9'
+            ];
             
-            // Load main script last
-            loadScript('/js/index.js?v=1.0.3');
+            loadScriptsSequentially(scripts);
         });
     </script>
     
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js?v=1.0.3')
-                    .then(function(registration) {
-                        // Принудительно обновляем Service Worker при загрузке
-                        registration.update();
-                        
-                        // Проверка обновлений
-                        registration.addEventListener('updatefound', function() {
-                            const newWorker = registration.installing;
-                            newWorker.addEventListener('statechange', function() {
-                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    // Новый Service Worker доступен
-                                    if (confirm('Доступно обновление приложения. Перезагрузить страницу?')) {
-                                        window.location.reload();
-                                    }
-                                }
-                            });
-                        });
-                    })
-                    .catch(function(error) {
-                        console.warn('Service Worker registration failed:', error);
-                    });
-            });
-        }
-    </script>
+    <!-- Service Worker + PWA Modal -->
+    <script src="/js/pwa.js?v=1.0.9"></script>
 
     <!-- Universal Cookies Banner -->
     <script src="cookies_banner_universal/cookies-banner.js"></script>

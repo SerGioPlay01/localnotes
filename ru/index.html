@@ -31,7 +31,7 @@
 
     <meta charset="UTF-8">
     <meta http-equiv="Permissions-Policy" content="browsing-topics=(), run-ad-auction=(), camera=(), microphone=(), geolocation=()">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://assets.twitch.tv; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com chrome-extension:; connect-src 'self' blob: https://www.google-analytics.com https://analytics.google.com https://assets.twitch.tv https://api.twitch.tv; frame-src 'self' https://www.youtube.com https://youtu.be https://www.youtube-nocookie.com https://rutube.ru https://vk.com https://vkvideo.ru https://vk.ru https://ok.ru https://www.tiktok.com https://player.vimeo.com https://www.dailymotion.com https://player.twitch.tv https://clips.twitch.tv; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; upgrade-insecure-requests;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://assets.twitch.tv; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com chrome-extension:; connect-src 'self' blob: https://www.google-analytics.com https://analytics.google.com https://assets.twitch.tv https://api.twitch.tv; frame-src 'self' https://www.youtube.com https://youtu.be https://www.youtube-nocookie.com https://rutube.ru https://vk.com https://vkvideo.ru https://vk.ru https://ok.ru https://www.tiktok.com https://player.vimeo.com https://www.dailymotion.com https://player.twitch.tv https://clips.twitch.tv; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; upgrade-insecure-requests;">
 
     
     <!-- Cache busting meta tags -->
@@ -99,85 +99,52 @@
     <!-- iPad Pro 12.9" — 1024×1366 @2x -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../resources/splash/splash-2048x2732.png">
 
-    <!-- Enhanced SEO Meta Tags -->
-    <title>Local Notes - Secure Note Taking App | Browser Notes with Encryption</title>
-    <meta name="description" content="Local Notes - Secure note-taking app with AES-256 encryption, 12 languages support, offline functionality. Create, store, and export notes directly in your browser. Free, private, and fast.">
-    <meta name="keywords" content="local notes, secure notes, browser notes, note-taking app, encrypted notes, offline notes, AES-256, privacy, productivity, note app, web notes, local storage, export notes, import notes, multi-language, PWA, progressive web app">
+    <!-- SEO Meta Tags — Русский -->
+    <title>Local Notes — Безопасные заметки в браузере | Шифрование AES-256</title>
+    <meta name="description" content="Local Notes — бесплатное приложение для заметок с шифрованием AES-256, поддержкой 12 языков и офлайн-режимом. Создавайте, храните и экспортируйте заметки прямо в браузере. Без регистрации, без сервера.">
+    <meta name="keywords" content="локальные заметки, безопасные заметки, заметки в браузере, приложение для заметок, зашифрованные заметки, офлайн заметки, AES-256, конфиденциальность, продуктивность, веб-заметки, локальное хранилище, экспорт заметок, PWA">
     <meta name="author" content="SerGio Play">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="bingbot" content="index, follow">
     <meta name="yandex" content="index, follow">
-    <meta name="baiduspider" content="index, follow">
-
     <meta name="yandex-verification" content="f2380dbf6f6a15a8" />
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="https://localnotes-three.vercel.app/ru/">
-    
-    <!-- Enhanced Open Graph Meta Tags -->
-    <meta property="og:title" content="📝 Local Notes - Secure Note Taking App | AES-256 Encryption & 12 Languages">
+
+    <!-- Hreflang -->
+    <link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/">
+    <link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/">
+    <link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/">
+    <link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/">
+    <link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/">
+    <link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/">
+    <link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/">
+    <link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/">
+    <link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/">
+    <link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/">
+    <link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/">
+    <link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/">
+    <link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="📝 Local Notes — Безопасные заметки с шифрованием AES-256">
     <meta property="og:site_name" content="Local Notes">
-    <meta property="og:url" content="https://localnotes-three.vercel.app/">
-    <meta property="og:description" content="🔒 Secure note-taking app with AES-256 encryption, 12 languages support, offline functionality. Create, store, and export notes directly in your browser. Free, private, and fast. No registration required!">
-    <meta property="og:image" content="https://localnotes-three.vercel.app/resources/obl_web.jpg">
-    <meta property="og:image:secure_url" content="https://localnotes-three.vercel.app/resources/obl_web.jpg">
+    <meta property="og:url" content="https://localnotes-three.vercel.app/ru/">
+    <meta property="og:description" content="🔒 Бесплатное приложение для заметок с шифрованием AES-256, поддержкой 12 языков и офлайн-режимом. Без регистрации и сервера.">
+    <meta property="og:image" content="https://localnotes-three.vercel.app/resources/obl_web_ru.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Local Notes - Secure Note Taking Application with AES-256 Encryption">
-    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:alt" content="Local Notes — Безопасное приложение для заметок">
     <meta property="og:type" content="website">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:locale:alternate" content="ru_RU">
-    <meta property="og:locale:alternate" content="uk_UA">
-    <meta property="og:locale:alternate" content="pl_PL">
-    <meta property="og:locale:alternate" content="cs_CZ">
-    <meta property="og:locale:alternate" content="sk_SK">
-    <meta property="og:locale:alternate" content="bg_BG">
-    <meta property="og:locale:alternate" content="hr_HR">
-    <meta property="og:locale:alternate" content="sr_RS">
-    <meta property="og:locale:alternate" content="bs_BA">
-    <meta property="og:locale:alternate" content="mk_MK">
-    <meta property="og:locale:alternate" content="sl_SI">
-    
-    <!-- Additional Open Graph Meta Tags for Better Social Sharing -->
-    <meta property="og:updated_time" content="2025-01-12T00:00:00Z">
-    <meta property="og:see_also" content="https://localnotes-three.vercel.app/ru/">
-    <meta property="og:see_also" content="https://localnotes-three.vercel.app/ua/">
-    <meta property="og:see_also" content="https://localnotes-three.vercel.app/pl/">
-    <meta property="article:author" content="SerGio Play">
-    <meta property="article:publisher" content="https://sergioplay-dev.vercel.app/">
-    <meta property="article:section" content="Productivity">
-    <meta property="article:tag" content="notes">
-    <meta property="article:tag" content="encryption">
-    <meta property="article:tag" content="privacy">
-    <meta property="article:tag" content="productivity">
-    <meta property="article:tag" content="PWA">
-    <meta property="article:tag" content="offline">
-    <meta property="article:tag" content="secure">
-    <meta property="article:tag" content="browser">
-    <meta property="article:tag" content="local storage">
-    <meta property="article:tag" content="multi-language">
-    <meta property="article:tag" content="AES-256">
-    <meta property="article:tag" content="free">
-    <meta property="article:tag" content="no registration">
-    
-    <!-- Twitter Card Meta Tags -->
+    <meta property="og:locale" content="ru_RU">
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@LocalNotesApp">
-    <meta name="twitter:creator" content="@SerGioPlay">
-    <meta name="twitter:title" content="📝 Local Notes - Secure Note Taking App | AES-256 Encryption & 12 Languages">
-    <meta name="twitter:description" content="🔒 Secure note-taking app with AES-256 encryption, 12 languages support, offline functionality. Create, store, and export notes directly in your browser. Free, private, and fast. No registration required!">
-    <meta name="twitter:image" content="https://localnotes-three.vercel.app/resources/obl_web.jpg">
-    <meta name="twitter:image:alt" content="Local Notes - Secure Note Taking Application with AES-256 Encryption">
-    <meta name="twitter:domain" content="localnotes-web.netlify.app">
-    <meta name="twitter:url" content="https://localnotes-three.vercel.app/">
-    <meta name="twitter:label1" content="Features">
-    <meta name="twitter:data1" content="AES-256 Encryption, 12 Languages, Offline, PWA">
-    <meta name="twitter:label2" content="Price">
-    <meta name="twitter:data2" content="Free">
-    <meta name="twitter:app:name:iphone" content="Local Notes">
-    <meta name="twitter:app:name:ipad" content="Local Notes">
+    <meta name="twitter:title" content="📝 Local Notes — Безопасные заметки с шифрованием AES-256">
+    <meta name="twitter:description" content="🔒 Бесплатное приложение для заметок с шифрованием AES-256, поддержкой 12 языков и офлайн-режимом.">
+    <meta name="twitter:image" content="https://localnotes-three.vercel.app/resources/obl_web_ru.jpg">
+    <meta name="twitter:image:alt" content="Local Notes — Безопасное приложение для заметок">
     <meta name="twitter:app:name:googleplay" content="Local Notes">
     <meta name="twitter:app:url:iphone" content="https://localnotes-three.vercel.app/">
     <meta name="twitter:app:url:ipad" content="https://localnotes-three.vercel.app/">
@@ -195,7 +162,7 @@
     <meta name="revisit-after" content="7 days">
     <meta name="expires" content="never">
     <meta name="copyright" content="SerGio Play">
-    <meta name="reply-to" content="contact@localnotes.app">
+    <meta name="reply-to" content="sklarovs441@gmail.com">
     <meta name="owner" content="SerGio Play">
     <meta name="url" content="https://localnotes-three.vercel.app/">
     <meta name="identifier-URL" content="https://localnotes-three.vercel.app/">
@@ -437,6 +404,11 @@
                 /\[GET_CSS\]/,
                 /content-scripts\.js/,
                 /Loading the (font|script)/,
+                /✅/,
+                /❌/,
+                /Live reload/,
+                /Google Analytics script failed/,
+                /Initializing language/,
                 /The resource.*was preloaded/
             ];
             
@@ -502,13 +474,7 @@
                 setTimeout(updateButtonTexts, 200);
             }
         }
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            redirectToLanguage();
-        });
-
-        // Fallback: show page after 1 second if no redirect happened
+// Fallback: show page after 1 second if no redirect happened
         setTimeout(function() {
             if (!document.body.classList.contains('styles-loaded')) {
                 showMainPage();
@@ -518,14 +484,14 @@
     </script>
 
     <!-- Critical CSS loaded first with cache busting -->
-    <link rel="stylesheet" href="../css/index.css?v=1.0.9">
-    <link rel="stylesheet" href="../css/preloader.css?v=1.0.9">
-    <link rel="stylesheet" href="../css/img.css?v=1.0.9">
-    <link rel="stylesheet" href="../css/highlight.css?v=1.0.9">
-    <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.0.9">
-    <link rel="stylesheet" href="../css/editor-modal.css?v=1.0.9">
-    <link rel="stylesheet" href="../css/tags-calendar.css?v=1.0.9">
-    <link rel="stylesheet" href="../fonts/local-fonts.css?v=1.0.9">
+    <link rel="stylesheet" href="../css/index.css?v=1.1.0">
+    <link rel="stylesheet" href="../css/preloader.css?v=1.1.0">
+    <link rel="stylesheet" href="../css/img.css?v=1.1.0">
+    <link rel="stylesheet" href="../css/highlight.css?v=1.1.0">
+    <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.1.0">
+    <link rel="stylesheet" href="../css/editor-modal.css?v=1.1.0">
+    <link rel="stylesheet" href="../css/tags-calendar.css?v=1.1.0">
+    <link rel="stylesheet" href="../fonts/local-fonts.css?v=1.1.0">
     
     <!-- Prevent FOUC by hiding content until styles are loaded -->
     <style>
@@ -547,7 +513,6 @@
                 cacheNames.forEach(function(cacheName) {
                     if (cacheName.includes('v1.0.2') || cacheName.includes('static-v1.0.2') || cacheName.includes('dynamic-v1.0.2')) {
                         caches.delete(cacheName);
-                        console.log('Deleted old cache:', cacheName);
                     }
                 });
             });
@@ -685,24 +650,23 @@
 
 
     <!-- Critical JavaScript loaded first with cache busting -->
-    <script src="../js/utils.js?v=1.0.9"></script>
-    <script src="../js/selectors.js?v=1.0.9"></script>
-    <script src="../js/translate.js?v=1.0.9"></script>
-    <script src="../js/themes.js?v=1.0.9"></script>
-    <script src="../js/performance.js?v=1.0.9"></script>
-    <script src="../js/security.js?v=1.0.9"></script>
-    <script src="../lottiesnimstion/lottie.min.js?v=1.0.9"></script>
-    <script src="../js/preloader.js?v=1.0.9"></script>
+    <script src="../js/utils.js?v=1.1.0"></script>
+    <script src="../js/selectors.js?v=1.1.0"></script>
+    <script src="../js/translate.js?v=1.1.0"></script>
+    <script src="../js/themes.js?v=1.1.0"></script>
+    <script src="../js/performance.js?v=1.1.0"></script>
+    <script src="../js/security.js?v=1.1.0"></script>
+    <script src="../lottiesnimstion/lottie.min.js?v=1.1.0"></script>
+    <script src="../js/preloader.js?v=1.1.0"></script>
     
     <!-- LocalNotesEditor -->
-    <script src="../localnoteseditor/core.js?v=1.0.9" defer></script>
+    <script src="../localnoteseditor/core.js?v=1.1.0" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
     <script>
         // Load scripts sequentially to ensure proper order
         function loadScriptsSequentially(scripts, index = 0) {
             if (index >= scripts.length) {
-                console.log('✅ All scripts loaded successfully');
                 return;
             }
 
@@ -710,7 +674,6 @@
             script.src = scripts[index];
             script.async = false;
             script.onload = () => {
-                console.log(`✅ Loaded: ${scripts[index]}`);
                 loadScriptsSequentially(scripts, index + 1);
             };
             script.onerror = () => {
@@ -723,14 +686,14 @@
         // Load scripts after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             const scripts = [
-                '/js/magicurl.js?v=1.0.9',
-                '/js/highlight.min.js?v=1.0.9',
-                '/js/translations.js?v=1.0.9',
-                '/js/img.js?v=1.0.9',
-                '/js/date-utils.js?v=1.0.9',
-                '/js/editor-integration.js?v=1.0.9',
-                '/js/tags-calendar.js?v=1.0.9',
-                '/js/index.js?v=1.0.9'
+                '/js/magicurl.js?v=1.1.0',
+                '/js/highlight.min.js?v=1.1.0',
+                '/js/translations.js?v=1.1.0',
+                '/js/img.js?v=1.1.0',
+                '/js/date-utils.js?v=1.1.0',
+                '/js/editor-integration.js?v=1.1.0',
+                '/js/tags-calendar.js?v=1.1.0',
+                '/js/index.js?v=1.1.0'
             ];
             
             loadScriptsSequentially(scripts);
@@ -738,7 +701,7 @@
     </script>
     
     <!-- Service Worker + PWA Modal -->
-    <script src="../js/pwa.js?v=1.0.9"></script>
+    <script src="../js/pwa.js?v=1.1.0"></script>
 
     <!-- Universal Cookies Banner -->
     <script src="../cookies_banner_universal/cookies-banner.js"></script>

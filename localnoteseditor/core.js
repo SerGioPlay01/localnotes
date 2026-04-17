@@ -1416,19 +1416,16 @@ class LocalNotesEditor {
                 }
             });
 
-            // Тач: iframe перехватывает события — ловим touchend на враппере
+            // Тач: ловим touchend на элементе (img, video-wrapper, code-wrapper и т.д.)
             if (isTouchDevice) {
                 el.addEventListener('touchend', function(e) {
-                    var target = e.target;
-                    if (target.tagName === 'IFRAME' || target.tagName === 'VIDEO') {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        clearTimeout(self._ctxHoverTimer);
-                        if (self._ctxActiveBar && self._ctxActiveBar._forEl === el) { removeCtx(); return; }
-                        removeCtx();
-                        self._ctxActiveBar = showFn(el);
-                        if (self._ctxActiveBar) self._ctxActiveBar._forEl = el;
-                    }
+                    e.preventDefault();
+                    e.stopPropagation();
+                    clearTimeout(self._ctxHoverTimer);
+                    if (self._ctxActiveBar && self._ctxActiveBar._forEl === el) { removeCtx(); return; }
+                    removeCtx();
+                    self._ctxActiveBar = showFn(el);
+                    if (self._ctxActiveBar) self._ctxActiveBar._forEl = el;
                 }, { passive: false });
             }
         };
@@ -1443,12 +1440,11 @@ class LocalNotesEditor {
             if (table._lneCtxBound) return;
             table._lneCtxBound = true;
 
-            table.addEventListener('click', function(e) {
+            var handleTableActivate = function(e) {
                 var cell = e.target.closest('td, th');
                 if (!cell) return;
                 e.stopPropagation();
                 clearTimeout(self._ctxHoverTimer);
-                // Toggle: повторный клик по той же ячейке скрывает тулбар
                 if (self._ctxActiveBar && self._ctxActiveBar._forEl === cell) {
                     removeCtx();
                     return;
@@ -1457,10 +1453,21 @@ class LocalNotesEditor {
                 self._ctxActiveBar = self._showTableCtx(table, cell);
                 if (self._ctxActiveBar) {
                     self._ctxActiveBar._forEl = cell;
-                    self._ctxActiveBar.addEventListener('mouseenter', function() { clearTimeout(self._ctxHoverTimer); });
-                    self._ctxActiveBar.addEventListener('mouseleave', function() { self._ctxHoverTimer = setTimeout(removeCtx, 350); });
+                    if (!isTouchDevice) {
+                        self._ctxActiveBar.addEventListener('mouseenter', function() { clearTimeout(self._ctxHoverTimer); });
+                        self._ctxActiveBar.addEventListener('mouseleave', function() { self._ctxHoverTimer = setTimeout(removeCtx, 350); });
+                    }
                 }
-            });
+            };
+
+            table.addEventListener('click', handleTableActivate);
+
+            if (isTouchDevice) {
+                table.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    handleTableActivate(e);
+                }, { passive: false });
+            }
         });
 
         // VIDEO
@@ -1476,7 +1483,14 @@ class LocalNotesEditor {
         // Click outside → remove (вешаем один раз на экземпляр)
         if (!this._ctxDocClickBound) {
             this._ctxDocClickBound = true;
+            // На тач-устройствах после touchend браузер генерирует синтетический click (~300ms),
+            // который сразу закрывал бы только что открытый тулбар. Блокируем его.
+            document.addEventListener('touchend', function() {
+                self._ctxTouchJustFired = true;
+                setTimeout(function() { self._ctxTouchJustFired = false; }, 500);
+            }, true);
             document.addEventListener('click', function() {
+                if (self._ctxTouchJustFired) return;
                 clearTimeout(self._ctxHoverTimer);
                 if (self._removeCtx) self._removeCtx();
             }, true);

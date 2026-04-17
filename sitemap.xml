@@ -24,7 +24,7 @@
         <image:image>
             <image:loc>https://localnotes-three.vercel.app/resources/obl_web.jpg</image:loc>
             <image:title>🔒 Local Notes: Online Browser Notes with AES-256 Encryption | No Sign-Up, Offline Ready</image:title>
-            <image:caption>Simple and secure online notepad for browser notes. Military-grade AES-256 encryption, local data storage, and offline access. The most private way to take notes in your browser in 12 languages with zero server uploads.</image:caption>
+            <image:caption>Simple and secure online notepad for browser notes. Industry-standard AES-256 encryption, local data storage, and offline access. The most private way to take notes in your browser in 12 languages with zero server uploads.</image:caption>
             <image:geo_location>Global</image:geo_location>
             <image:license>https://localnotes-three.vercel.app/LICENSE</image:license>
         </image:image>

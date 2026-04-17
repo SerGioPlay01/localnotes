@@ -39,7 +39,7 @@
 
 ### Key Features
 
-- **🔒 AES-256 encryption** — military-grade data protection
+- **🔒 AES-256 encryption** — industry-standard data protection
 - **🌍 12 languages** — full UI localization including all modals and buttons
 - **📱 PWA** — install as a native app
 - **⚡ LocalNotesEditor** — custom lightweight editor, no external dependencies
@@ -214,7 +214,7 @@ Click the install icon in Chrome/Edge address bar and confirm.
 Locally in IndexedDB. Nothing is ever sent to a server.
 
 **How secure is the encryption?**
-AES-256-GCM with PBKDF2 (100,000 iterations) — military standard.
+AES-256-GCM with PBKDF2 (100,000 iterations) — industry-standard protection.
 
 **How to move notes to another browser?**
 Export to `.note` file, then import in the new browser.

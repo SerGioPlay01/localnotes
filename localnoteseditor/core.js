@@ -1,4 +1,4 @@
-﻿/**
+/**
  * LocalNotesEditor — Professional Rich Text Editor
  * Features: Full formatting, tables, media, code highlighting, 
  *   find/replace, word count, templates, emoji, special chars,
@@ -374,7 +374,26 @@ class LocalNotesEditor {
     _insertHTML(html) {
         this._saveSnap();
         this._restoreRange();
-        document.execCommand('insertHTML', false, html);
+        // execCommand strips iframes — use direct DOM insertion when html contains iframe/video
+        if (/<iframe|<video/i.test(html)) {
+            var sel = window.getSelection();
+            if (sel && sel.rangeCount) {
+                var range = sel.getRangeAt(0);
+                range.deleteContents();
+                var tmp = document.createElement('div');
+                tmp.innerHTML = html;
+                var frag = document.createDocumentFragment();
+                while (tmp.firstChild) frag.appendChild(tmp.firstChild);
+                range.insertNode(frag);
+                range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } else {
+                this.ed.insertAdjacentHTML('beforeend', html);
+            }
+        } else {
+            document.execCommand('insertHTML', false, html);
+        }
         this._syncState();
     }
 
@@ -880,7 +899,18 @@ class LocalNotesEditor {
                 } else { prev.innerHTML=''; prev.style.display='none'; }
             }
             urlI.addEventListener('input', updPrev);
-            platI.addEventListener('change', updPrev);
+            platI.addEventListener('change', function() {
+                var ph = {
+                    youtube: 'https://www.youtube.com/watch?v=...',
+                    rutube: 'https://rutube.ru/video/...',
+                    vk: 'https://vkvideo.ru/video-123_456 или live.vkvideo.ru/channel',
+                    vimeo: 'https://vimeo.com/...',
+                    dailymotion: 'https://www.dailymotion.com/video/...',
+                    twitch: 'https://www.twitch.tv/channel или /videos/123456'
+                };
+                urlI.placeholder = ph[platI.value] || 'https://...';
+                updPrev();
+            });
         }, 0);
     }
 
@@ -896,10 +926,39 @@ class LocalNotesEditor {
         if (vi) { var vp=(ap?'autoplay=1':'')+(mu?'&muted=1':'')+(lp?'&loop=1':''); return '<iframe src="https://player.vimeo.com/video/'+vi[1]+(vp?'?'+vp:'')+'" width="560" height="315" frameborder="0" allowfullscreen></iframe>'; }
         var dm = url.match(/dailymotion\.com\/video\/([a-z0-9]+)/i);
         if (dm) return '<iframe src="https://www.dailymotion.com/embed/video/' + dm[1] + '" width="560" height="315" frameborder="0" allowfullscreen></iframe>';
-        var twC = url.match(/twitch\.tv\/([^/?#]+)/);
-        if (twC && !url.includes('/videos/')) return '<iframe src="https://player.twitch.tv/?channel=' + twC[1] + '&parent=' + window.location.hostname + '" width="560" height="315" frameborder="0" allowfullscreen></iframe>';
+
+        // Twitch VOD: twitch.tv/videos/123456
         var twV = url.match(/twitch\.tv\/videos\/(\d+)/);
-        if (twV) return '<iframe src="https://player.twitch.tv/?video=v' + twV[1] + '&parent=' + window.location.hostname + '" width="560" height="315" frameborder="0" allowfullscreen></iframe>';
+        if (twV) return '<iframe src="https://player.twitch.tv/?video=v' + twV[1] + '&parent=' + window.location.hostname + (ap?'&autoplay=true':'&autoplay=false') + (mu?'&muted=true':'') + '" width="560" height="315" frameborder="0" allowfullscreen allow="autoplay"></iframe>';
+        // Twitch clip: clips.twitch.tv/SlugName or twitch.tv/channel/clip/SlugName
+        var twCl = url.match(/clips\.twitch\.tv\/([^/?#]+)/) || url.match(/twitch\.tv\/[^/]+\/clip\/([^/?#]+)/);
+        if (twCl) return '<iframe src="https://clips.twitch.tv/embed?clip=' + twCl[1] + '&parent=' + window.location.hostname + '" width="560" height="315" frameborder="0" allowfullscreen allow="autoplay"></iframe>';
+        // Twitch live channel: twitch.tv/channelname
+        var twC = url.match(/twitch\.tv\/([^/?#]+)/);
+        if (twC) return '<iframe src="https://player.twitch.tv/?channel=' + twC[1] + '&parent=' + window.location.hostname + (ap?'&autoplay=true':'&autoplay=false') + (mu?'&muted=true':'') + '" width="560" height="315" frameborder="0" allowfullscreen allow="autoplay"></iframe>';
+
+        // VK Video / VK Live — поддержка vk.com, vkvideo.ru, vk.ru
+        // Форматы: vk.com/video-123_456, vkvideo.ru/video-123_456, vk.com/video?z=video-123_456
+        var vkM = url.match(/(?:vk\.com|vkvideo\.ru|vk\.ru)\/video(-?\d+_\d+)/) ||
+                  url.match(/(?:vk\.com|vkvideo\.ru|vk\.ru)\/video\?z=video(-?\d+_\d+)/);
+        if (vkM) {
+            var parts = vkM[1].split('_');
+            return '<iframe src="https://vkvideo.ru/video_ext.php?oid=' + parts[0] + '&id=' + parts[1] + '&hd=2' + (ap?'&autoplay=1':'') + '" width="560" height="315" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>';
+        }
+        // VK Live stream: vk.com/live или vkvideo.ru/live (трансляции сообществ/пользователей)
+        var vkLive = url.match(/(?:vk\.com|vkvideo\.ru)\/(?:live\?z=video|live\/)(-?\d+_\d+)/) ||
+                     url.match(/(?:vk\.com|vkvideo\.ru)\/video(-?\d+_\d+).*live/);
+        if (vkLive) {
+            var lparts = vkLive[1].split('_');
+            return '<iframe src="https://vkvideo.ru/video_ext.php?oid=' + lparts[0] + '&id=' + lparts[1] + '&hd=2' + (ap?'&autoplay=1':'') + '" width="560" height="315" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>';
+        }
+        // live.vkvideo.ru/channelname — VK Live стриминговая платформа
+        // embed URL: https://live.vkvideo.ru/app/embed/{channelname}
+        var vkLiveCh = url.match(/live\.vkvideo\.ru\/(?!app\/)([^/?#]+)/);
+        if (vkLiveCh) {
+            return '<iframe src="https://live.vkvideo.ru/app/embed/' + vkLiveCh[1] + '" width="620" height="378" frameborder="0" allowfullscreen scrolling="no" allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>';
+        }
+
         if (url.match(/\.(mp4|webm|ogg)(\?|$)/i)) return '<video width="560" height="315" controls' + (ap?' autoplay':'') + (mu?' muted':'') + (lp?' loop':'') + ' style="max-width:100%"><source src="' + url + '"></video>';
         return null;
     }
@@ -1164,7 +1223,7 @@ class LocalNotesEditor {
             '<tr><td>' + this._('images','Images') + '</td><td><strong>' + imgs + '</strong></td></tr>' +
             '<tr><td>' + this._('links','Links') + '</td><td><strong>' + links + '</strong></td></tr>' +
             '<tr><td>HTML size</td><td><strong>' + (bytes > 1024 ? Math.round(bytes/1024) + ' KB' : bytes + ' B') + '</strong></td></tr>' +
-            '</table>', function() {});
+            '</table>', function(ov, close) { close(); });
     }
 
     // ── Statusbar ────────────────────────────────────────────────────────

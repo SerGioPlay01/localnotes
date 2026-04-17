@@ -861,17 +861,18 @@ class LocalNotesEditor {
                     ov.querySelector('#lne-vauto').checked ? 1:0,
                     ov.querySelector('#lne-vloop').checked ? 1:0,
                     ov.querySelector('#lne-vmute').checked ? 1:0);
-                if (embed) { self._insertHTML('<div class="lne-video-wrapper">' + embed + '</div>'); close(); }
+                if (embed) { self._insertHTML('<div class="lne-video-wrapper" style="' + self._arStyle(embed) + '">' + embed + '</div>'); close(); }
             } else if (active === 'dir') {
                 var dUrl = ov.querySelector('#lne-vdir').value.trim(); if (!dUrl) return;
                 var vw = ov.querySelector('#lne-vdw').value || '560', vh = ov.querySelector('#lne-vdh').value || '315';
                 var ap = ov.querySelector('#lne-vdauto').checked, lp = ov.querySelector('#lne-vdloop').checked, mu = ov.querySelector('#lne-vdmute').checked;
-                self._insertHTML('<div class="lne-video-wrapper"><video width="' + vw + '" height="' + vh + '" controls style="max-width:100%"' +
-                    (ap?' autoplay':'') + (lp?' loop':'') + (mu?' muted':'') + '><source src="' + dUrl + '"></video></div>');
+                var videoHtml = '<video width="' + vw + '" height="' + vh + '" controls style="max-width:100%"' +
+                    (ap?' autoplay':'') + (lp?' loop':'') + (mu?' muted':'') + '><source src="' + dUrl + '"></video>';
+                self._insertHTML('<div class="lne-video-wrapper" style="aspect-ratio:' + vw + '/' + vh + '">' + videoHtml + '</div>');
                 close();
             } else {
                 var code = ov.querySelector('#lne-vifr').value.trim(); if (!code) return;
-                self._insertHTML('<div class="lne-video-wrapper">' + code + '</div>'); close();
+                self._insertHTML('<div class="lne-video-wrapper" style="' + self._arStyle(code) + '">' + code + '</div>'); close();
             }
         }, true);
 
@@ -912,6 +913,18 @@ class LocalNotesEditor {
                 updPrev();
             });
         }, 0);
+    }
+
+    // Вычисляет aspect-ratio из width/height атрибутов iframe/video в html-строке
+    _arStyle(html) {
+        var m = html.match(/width=["']?(\d+)["']?[^>]*height=["']?(\d+)["']?/i) ||
+                html.match(/height=["']?(\d+)["']?[^>]*width=["']?(\d+)["']?/i);
+        if (m) {
+            var w = html.match(/width=["']?(\d+)/i);
+            var h = html.match(/height=["']?(\d+)/i);
+            if (w && h) return 'aspect-ratio:' + w[1] + '/' + h[1];
+        }
+        return 'aspect-ratio:16/9';
     }
 
     _buildEmbed(url, platform, ap, lp, mu) {

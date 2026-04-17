@@ -585,8 +585,8 @@ textarea.lne-inp { resize: vertical; }
     .lne-ctx-btn::after { display: none; }
     /* На мобильных тулбар fixed — убираем тень чтобы не перекрывал */
     .lne-ctx-toolbar-float { box-shadow: 0 4px 20px rgba(0,0,0,.7); }
-    /* Toolbar — single scrollable row, no wrapping */
-    .lne-toolbar { padding: 0; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    /* Toolbar — single scrollable row, no wrapping; sticky so it stays visible while scrolling */
+    .lne-toolbar { padding: 0; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; position: sticky; top: 0; z-index: 10; }
     .lne-toolbar::-webkit-scrollbar { display: none; }
     .lne-toolbar-row { flex-wrap: nowrap !important; padding: 4px 8px; min-width: max-content; }
     .lne-toolbar-row + .lne-toolbar-row { border-top: none; border-left: 1px solid var(--border-color, #272727); }
@@ -760,4 +760,125 @@ textarea.lne-inp { resize: vertical; }
 .lne-editor .lne-video-wrapper,
 .lne-editor .video-embed-wrapper {
     cursor: default;
+}
+
+/* ═══════════════════════════ MARKDOWN MODE ════════════════════════════ */
+
+/* Active state for toggle buttons (MD mode, etc.) */
+.lne-btn.lne-btn-active {
+    background: rgba(174,252,110,0.15) !important;
+    color: #aefc6e !important;
+    border-color: rgba(174,252,110,0.4) !important;
+}
+
+/* Split container */
+.lne-md-container {
+    display: flex;
+    height: 500px;
+    border: 1px solid var(--border-color, #272727);
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+}
+
+/* Textarea (left pane) */
+.lne-md-textarea {
+    flex: 1;
+    resize: none;
+    padding: 16px;
+    font-family: 'Courier New', 'Consolas', monospace;
+    font-size: 13.5px;
+    line-height: 1.65;
+    background: var(--input-bg, #1a1a1a);
+    color: var(--text-color, #fff);
+    border: none;
+    border-right: 1px solid var(--border-color, #272727);
+    outline: none;
+    tab-size: 2;
+    -webkit-font-smoothing: antialiased;
+}
+.lne-md-textarea::placeholder { color: var(--text-muted, #555); }
+
+/* Preview (right pane) */
+.lne-md-preview {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.7;
+    background: var(--bg-secondary, #111);
+    color: var(--text-color, #fff);
+}
+
+/* Preview typography */
+.lne-md-preview h1,
+.lne-md-preview h2,
+.lne-md-preview h3,
+.lne-md-preview h4 { margin: 1em 0 0.4em; font-weight: 700; line-height: 1.25; }
+.lne-md-preview h1 { font-size: 1.8em; border-bottom: 1px solid var(--border-color,#272727); padding-bottom: 0.3em; }
+.lne-md-preview h2 { font-size: 1.4em; border-bottom: 1px solid var(--border-color,#272727); padding-bottom: 0.2em; }
+.lne-md-preview p  { margin: 0 0 0.9em; }
+.lne-md-preview ul,
+.lne-md-preview ol { margin: 0 0 0.9em 1.4em; }
+.lne-md-preview li { margin-bottom: 0.25em; }
+.lne-md-preview blockquote {
+    margin: 0 0 0.9em;
+    padding: 8px 16px;
+    border-left: 3px solid rgba(174,252,110,0.5);
+    background: rgba(174,252,110,0.04);
+    color: var(--text-secondary, #b3b3b3);
+    border-radius: 0 6px 6px 0;
+}
+.lne-md-preview code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.88em;
+    background: rgba(255,255,255,0.08);
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+.lne-md-preview pre {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border-color,#272727);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    margin: 0 0 0.9em;
+}
+.lne-md-preview pre code { background: none; padding: 0; font-size: 0.87em; }
+.lne-md-preview table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 0.9em;
+    font-size: 0.9em;
+}
+.lne-md-preview th,
+.lne-md-preview td {
+    padding: 7px 12px;
+    border: 1px solid var(--border-color,#272727);
+    text-align: left;
+}
+.lne-md-preview th { background: rgba(255,255,255,0.05); font-weight: 600; }
+.lne-md-preview hr { border: none; border-top: 1px solid var(--border-color,#272727); margin: 1.2em 0; }
+.lne-md-preview a  { color: #aefc6e; text-decoration: underline; }
+.lne-md-preview img { max-width: 100%; border-radius: 6px; }
+.lne-md-preview mark { background: rgba(241,196,15,0.3); color: inherit; padding: 1px 3px; border-radius: 3px; }
+
+/* Checklist in preview */
+.lne-md-preview .lne-checklist { list-style: none; margin-left: 0; }
+.lne-md-preview .lne-checklist-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px; }
+.lne-md-preview .lne-checklist-item input { margin-top: 3px; accent-color: #aefc6e; }
+.lne-md-preview .lne-checklist-item.checked span { text-decoration: line-through; opacity: 0.6; }
+
+/* Divider label */
+.lne-md-container::before {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+}
+
+/* Mobile: stack vertically */
+@media (max-width: 600px) {
+    .lne-md-container { flex-direction: column; height: auto; }
+    .lne-md-textarea  { height: 220px; border-right: none; border-bottom: 1px solid var(--border-color,#272727); }
+    .lne-md-preview   { height: 280px; }
 }

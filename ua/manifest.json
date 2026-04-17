@@ -1,0 +1,146 @@
+{
+    "name": "🇺🇦 Локальні Нотатки - Безпечний український додаток для нотаток v1.0.3",
+    "short_name": "Локальні Нотатки",
+    "description": "Професійний безпечний український додаток для нотаток з військовим шифруванням AES-256, підтримкою 12 мов, офлайн функціональністю та оптимізацією продуктивності. Створюйте, зберігайте та експортуйте нотатки прямо в браузері без збору даних.",
+    "theme_color": "#060116",
+    "background_color": "#060116",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "scope": "/ua/",
+    "start_url": "/ua/",
+    "lang": "uk",
+    "dir": "ltr",
+    "categories": ["продуктивність", "утиліти", "бізнес", "освіта", "стиль життя", "безпека", "приватність"],
+    "keywords": ["нотатки", "безпека", "шифрування", "AES-256", "офлайн", "PWA", "продуктивність", "приватність", "локальне сховище", "багатомовність", "GDPR", "нуль-даних", "військове-шифрування", "кросплатформенність", "Україна", "українська мова"],
+    "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+    "screenshots": [
+        {
+            "src": "/resources/screenshot-desktop-ua.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Десктопний вигляд додатку Локальні Нотатки"
+        },
+        {
+            "src": "/resources/screenshot-mobile-ua.png",
+            "sizes": "390x844",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Мобільний вигляд додатку Локальні Нотатки"
+        },
+        {
+            "src": "/resources/obl_web_ua.jpg",
+            "sizes": "1200x630",
+            "type": "image/jpeg",
+            "form_factor": "wide",
+            "label": "Локальні Нотатки - Безпечні нотатки з шифруванням AES-256"
+        }
+    ],
+    "icons": [
+        {
+            "src": "/favicon/favicon-16x16.png",
+            "sizes": "16x16",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/favicon/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/favicon/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/favicon/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/favicon/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Додати нову нотатку",
+            "short_name": "Нова нотатка",
+            "description": "Швидко створити нову безпечну нотатку",
+            "url": "/ua/?action=new",
+            "icons": [
+                {
+                    "src": "/favicon/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Пошук нотаток",
+            "short_name": "Пошук",
+            "description": "Пошук серед зашифрованих нотаток",
+            "url": "/ua/?action=search",
+            "icons": [
+                {
+                    "src": "/favicon/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Імпорт нотаток",
+            "short_name": "Імпорт",
+            "description": "Імпорт нотаток з файлу",
+            "url": "/ua/?action=import",
+            "icons": [
+                {
+                    "src": "/favicon/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        }
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false,
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    "launch_handler": {
+        "client_mode": "navigate-existing"
+    },
+    "file_handlers": [
+        {
+            "action": "/ua/",
+            "accept": {
+                "text/plain": [".note", ".txt", ".md"],
+                "text/html": [".html", ".htm"]
+            }
+        }
+    ],
+    "protocol_handlers": [
+        {
+            "protocol": "web+localnotes",
+            "url": "/ua/?protocol=%s"
+        }
+    ],
+    "share_target": {
+        "action": "/ua/",
+        "method": "GET",
+        "params": {
+            "title": "заголовок",
+            "text": "текст",
+            "url": "посилання"
+        }
+    },
+    "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+    "handle_links": "preferred"
+}

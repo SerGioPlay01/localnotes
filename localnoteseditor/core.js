@@ -868,7 +868,7 @@ class LocalNotesEditor {
                 var ap = ov.querySelector('#lne-vdauto').checked, lp = ov.querySelector('#lne-vdloop').checked, mu = ov.querySelector('#lne-vdmute').checked;
                 var videoHtml = '<video width="' + vw + '" height="' + vh + '" controls style="max-width:100%"' +
                     (ap?' autoplay':'') + (lp?' loop':'') + (mu?' muted':'') + '><source src="' + dUrl + '"></video>';
-                self._insertHTML('<div class="lne-video-wrapper" style="aspect-ratio:' + vw + '/' + vh + '">' + videoHtml + '</div>');
+                self._insertHTML('<div class="lne-video-wrapper" style="aspect-ratio:' + vw + '/' + vh + ';max-width:' + vw + 'px">' + videoHtml + '</div>');
                 close();
             } else {
                 var code = ov.querySelector('#lne-vifr').value.trim(); if (!code) return;
@@ -915,14 +915,12 @@ class LocalNotesEditor {
         }, 0);
     }
 
-    // Вычисляет aspect-ratio из width/height атрибутов iframe/video в html-строке
+    // Вычисляет aspect-ratio и max-width из width/height атрибутов iframe/video в html-строке
     _arStyle(html) {
-        var m = html.match(/width=["']?(\d+)["']?[^>]*height=["']?(\d+)["']?/i) ||
-                html.match(/height=["']?(\d+)["']?[^>]*width=["']?(\d+)["']?/i);
-        if (m) {
-            var w = html.match(/width=["']?(\d+)/i);
-            var h = html.match(/height=["']?(\d+)/i);
-            if (w && h) return 'aspect-ratio:' + w[1] + '/' + h[1];
+        var w = html.match(/width=["']?(\d+)/i);
+        var h = html.match(/height=["']?(\d+)/i);
+        if (w && h) {
+            return 'aspect-ratio:' + w[1] + '/' + h[1] + ';max-width:' + w[1] + 'px';
         }
         return 'aspect-ratio:16/9';
     }

@@ -1438,39 +1438,25 @@ class LocalNotesEditor {
             bindHoverCtx(img, function(el) { return self._showImageCtx(el); });
         });
 
-        // TABLE — bind to table, show on cell click/hover
+        // TABLE — показываем тулбар только по клику на ячейку, не по hover
         this.ed.querySelectorAll('table').forEach(function(table) {
             if (table._lneCtxBound) return;
             table._lneCtxBound = true;
-            var lastCell = null;
 
-            table.addEventListener('mousemove', function(e) {
-                var cell = e.target.closest('td, th');
-                if (cell && cell !== lastCell) {
-                    lastCell = cell;
-                    clearTimeout(self._ctxHoverTimer);
-                    self._ctxHoverTimer = setTimeout(function() {
-                        removeCtx();
-                        self._ctxActiveBar = self._showTableCtx(table, cell);
-                        if (self._ctxActiveBar) {
-                            self._ctxActiveBar.addEventListener('mouseenter', function() { clearTimeout(self._ctxHoverTimer); });
-                            self._ctxActiveBar.addEventListener('mouseleave', function() { self._ctxHoverTimer = setTimeout(removeCtx, 350); });
-                        }
-                    }, 200);
-                }
-            });
-            table.addEventListener('mouseleave', function() {
-                lastCell = null;
-                self._ctxHoverTimer = setTimeout(removeCtx, 350);
-            });
             table.addEventListener('click', function(e) {
                 var cell = e.target.closest('td, th');
                 if (!cell) return;
                 e.stopPropagation();
                 clearTimeout(self._ctxHoverTimer);
+                // Toggle: повторный клик по той же ячейке скрывает тулбар
+                if (self._ctxActiveBar && self._ctxActiveBar._forEl === cell) {
+                    removeCtx();
+                    return;
+                }
                 removeCtx();
                 self._ctxActiveBar = self._showTableCtx(table, cell);
                 if (self._ctxActiveBar) {
+                    self._ctxActiveBar._forEl = cell;
                     self._ctxActiveBar.addEventListener('mouseenter', function() { clearTimeout(self._ctxHoverTimer); });
                     self._ctxActiveBar.addEventListener('mouseleave', function() { self._ctxHoverTimer = setTimeout(removeCtx, 350); });
                 }

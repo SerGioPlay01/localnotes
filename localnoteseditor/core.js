@@ -1356,72 +1356,78 @@ class LocalNotesEditor {
 
     _initContextToolbars() {
         var self = this;
-        var hoverTimer = null;
-        var activeBar = null;
+
+        // Состояние — на экземпляре, чтобы все вызовы _initContextToolbars
+        // работали с одним и тем же hoverTimer/activeBar
+        if (!this._ctxHoverTimer) this._ctxHoverTimer = null;
+        if (!this._ctxActiveBar)  this._ctxActiveBar  = null;
 
         var removeCtx = function() {
-            if (activeBar && activeBar.parentNode) activeBar.parentNode.removeChild(activeBar);
-            activeBar = null;
+            clearTimeout(self._ctxHoverTimer);
+            if (self._ctxActiveBar && self._ctxActiveBar.parentNode)
+                self._ctxActiveBar.parentNode.removeChild(self._ctxActiveBar);
+            self._ctxActiveBar = null;
         };
+        // Сохраняем removeCtx на экземпляре для вызова извне
+        this._removeCtx = removeCtx;
 
-        // Show bar on hover, keep visible while hovering bar or element
         var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
         var bindHoverCtx = function(el, showFn) {
-            if (el.dataset.ctxBound) return;
-            el.dataset.ctxBound = '1';
+            // Снимаем старый флаг — перепривязываем при каждом _initAll
+            // но используем _lneHandler чтобы не дублировать
+            if (el._lneCtxBound) return;
+            el._lneCtxBound = true;
 
             if (!isTouchDevice) {
                 el.addEventListener('mouseenter', function() {
-                    clearTimeout(hoverTimer);
-                    hoverTimer = setTimeout(function() {
+                    clearTimeout(self._ctxHoverTimer);
+                    self._ctxHoverTimer = setTimeout(function() {
                         removeCtx();
-                        activeBar = showFn(el);
-                        if (activeBar) {
-                            activeBar.addEventListener('mouseenter', function() {
-                                clearTimeout(hoverTimer);
+                        self._ctxActiveBar = showFn(el);
+                        if (self._ctxActiveBar) {
+                            self._ctxActiveBar.addEventListener('mouseenter', function() {
+                                clearTimeout(self._ctxHoverTimer);
                             });
-                            activeBar.addEventListener('mouseleave', function() {
-                                hoverTimer = setTimeout(removeCtx, 350);
+                            self._ctxActiveBar.addEventListener('mouseleave', function() {
+                                self._ctxHoverTimer = setTimeout(removeCtx, 350);
                             });
                         }
                     }, 180);
                 });
-
                 el.addEventListener('mouseleave', function() {
-                    hoverTimer = setTimeout(removeCtx, 350);
+                    self._ctxHoverTimer = setTimeout(removeCtx, 350);
                 });
             }
 
-            // Click / tap — показываем тулбар
+            // Click / tap
             el.addEventListener('click', function(e) {
                 e.stopPropagation();
-                clearTimeout(hoverTimer);
-                // Если тулбар уже показан для этого элемента — скрываем (toggle)
-                if (activeBar && activeBar._forEl === el) { removeCtx(); return; }
+                clearTimeout(self._ctxHoverTimer);
+                if (self._ctxActiveBar && self._ctxActiveBar._forEl === el) { removeCtx(); return; }
                 removeCtx();
-                activeBar = showFn(el);
-                if (activeBar) {
-                    activeBar._forEl = el;
+                self._ctxActiveBar = showFn(el);
+                if (self._ctxActiveBar) {
+                    self._ctxActiveBar._forEl = el;
                     if (!isTouchDevice) {
-                        activeBar.addEventListener('mouseenter', function() { clearTimeout(hoverTimer); });
-                        activeBar.addEventListener('mouseleave', function() { hoverTimer = setTimeout(removeCtx, 350); });
+                        self._ctxActiveBar.addEventListener('mouseenter', function() { clearTimeout(self._ctxHoverTimer); });
+                        self._ctxActiveBar.addEventListener('mouseleave', function() { self._ctxHoverTimer = setTimeout(removeCtx, 350); });
                     }
                 }
             });
 
-            // Тач: перехватываем touchend на враппере чтобы iframe не блокировал
+            // Тач: iframe перехватывает события — ловим touchend на враппере
             if (isTouchDevice) {
                 el.addEventListener('touchend', function(e) {
-                    // Только если тап был на самом враппере или его не-iframe потомке
                     var target = e.target;
                     if (target.tagName === 'IFRAME' || target.tagName === 'VIDEO') {
                         e.preventDefault();
                         e.stopPropagation();
-                        clearTimeout(hoverTimer);
-                        if (activeBar && activeBar._forEl === el) { removeCtx(); return; }
+                        clearTimeout(self._ctxHoverTimer);
+                        if (self._ctxActiveBar && self._ctxActiveBar._forEl === el) { removeCtx(); return; }
                         removeCtx();
-                        activeBar = showFn(el);
-                        if (activeBar) activeBar._forEl = el;
+                        self._ctxActiveBar = showFn(el);
+                        if (self._ctxActiveBar) self._ctxActiveBar._forEl = el;
                     }
                 }, { passive: false });
             }
@@ -1434,39 +1440,39 @@ class LocalNotesEditor {
 
         // TABLE — bind to table, show on cell click/hover
         this.ed.querySelectorAll('table').forEach(function(table) {
-            if (table.dataset.ctxBound) return;
-            table.dataset.ctxBound = '1';
+            if (table._lneCtxBound) return;
+            table._lneCtxBound = true;
             var lastCell = null;
 
             table.addEventListener('mousemove', function(e) {
                 var cell = e.target.closest('td, th');
                 if (cell && cell !== lastCell) {
                     lastCell = cell;
-                    clearTimeout(hoverTimer);
-                    hoverTimer = setTimeout(function() {
+                    clearTimeout(self._ctxHoverTimer);
+                    self._ctxHoverTimer = setTimeout(function() {
                         removeCtx();
-                        activeBar = self._showTableCtx(table, cell);
-                        if (activeBar) {
-                            activeBar.addEventListener('mouseenter', function() { clearTimeout(hoverTimer); });
-                            activeBar.addEventListener('mouseleave', function() { hoverTimer = setTimeout(removeCtx, 350); });
+                        self._ctxActiveBar = self._showTableCtx(table, cell);
+                        if (self._ctxActiveBar) {
+                            self._ctxActiveBar.addEventListener('mouseenter', function() { clearTimeout(self._ctxHoverTimer); });
+                            self._ctxActiveBar.addEventListener('mouseleave', function() { self._ctxHoverTimer = setTimeout(removeCtx, 350); });
                         }
                     }, 200);
                 }
             });
             table.addEventListener('mouseleave', function() {
                 lastCell = null;
-                hoverTimer = setTimeout(removeCtx, 350);
+                self._ctxHoverTimer = setTimeout(removeCtx, 350);
             });
             table.addEventListener('click', function(e) {
                 var cell = e.target.closest('td, th');
                 if (!cell) return;
                 e.stopPropagation();
-                clearTimeout(hoverTimer);
+                clearTimeout(self._ctxHoverTimer);
                 removeCtx();
-                activeBar = self._showTableCtx(table, cell);
-                if (activeBar) {
-                    activeBar.addEventListener('mouseenter', function() { clearTimeout(hoverTimer); });
-                    activeBar.addEventListener('mouseleave', function() { hoverTimer = setTimeout(removeCtx, 350); });
+                self._ctxActiveBar = self._showTableCtx(table, cell);
+                if (self._ctxActiveBar) {
+                    self._ctxActiveBar.addEventListener('mouseenter', function() { clearTimeout(self._ctxHoverTimer); });
+                    self._ctxActiveBar.addEventListener('mouseleave', function() { self._ctxHoverTimer = setTimeout(removeCtx, 350); });
                 }
             });
         });
@@ -1481,11 +1487,14 @@ class LocalNotesEditor {
             bindHoverCtx(cw, function(el) { return self._showCodeCtx(el); });
         });
 
-        // Click outside → remove
-        document.addEventListener('click', function() {
-            clearTimeout(hoverTimer);
-            removeCtx();
-        }, true);
+        // Click outside → remove (вешаем один раз на экземпляр)
+        if (!this._ctxDocClickBound) {
+            this._ctxDocClickBound = true;
+            document.addEventListener('click', function() {
+                clearTimeout(self._ctxHoverTimer);
+                if (self._removeCtx) self._removeCtx();
+            }, true);
+        }
     }
 
     _ctxBar(items) {
@@ -1849,6 +1858,9 @@ class LocalNotesEditor {
                 }
             }
             self._syncState();
+            // Перепривязать тулбар к враперу (на случай если vw.innerHTML был заменён)
+            vw._lneCtxBound = false;
+            self._initContextToolbars();
             close();
         });
     }

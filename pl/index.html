@@ -537,14 +537,14 @@
     </script>
 
     <!-- Critical CSS loaded first with cache busting -->
-    <link rel="stylesheet" href="../css/index.css?v=1.1.1">
-    <link rel="stylesheet" href="../css/img.css?v=1.1.1">
-    <link rel="stylesheet" href="../css/highlight.css?v=1.1.1">
-    <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.1.1">
-    <link rel="stylesheet" href="../css/editor-modal.css?v=1.1.1">
-    <link rel="stylesheet" href="../css/apple.css?v=1.1.1">
-    <link rel="stylesheet" href="../css/tags-calendar.css?v=1.1.1">
-    <link rel="stylesheet" href="../fonts/local-fonts.css?v=1.1.1">
+    <link rel="stylesheet" href="../css/index.css?v=1.1.2">
+    <link rel="stylesheet" href="../css/img.css?v=1.1.2">
+    <link rel="stylesheet" href="../css/highlight.css?v=1.1.2">
+    <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.1.2">
+    <link rel="stylesheet" href="../css/editor-modal.css?v=1.1.2">
+    <link rel="stylesheet" href="../css/apple.css?v=1.1.2">
+    <link rel="stylesheet" href="../css/tags-calendar.css?v=1.1.2">
+    <link rel="stylesheet" href="../fonts/local-fonts.css?v=1.1.2">
     
     <!-- Prevent FOUC: hide only main content, NOT the preloader -->
     <style>
@@ -736,16 +736,16 @@
 
 
     <!-- Critical JavaScript loaded first with cache busting -->
-    <script src="../js/utils.js?v=1.1.1"></script>
-    <script src="../js/selectors.js?v=1.1.1"></script>
-    <script src="../js/translate.js?v=1.1.1"></script>
-    <script src="../js/themes.js?v=1.1.1"></script>
-    <script src="../js/performance.js?v=1.1.1"></script>
-    <script src="../js/security.js?v=1.1.1"></script>
-    <script src="../js/preloader.js?v=1.1.1"></script>
+    <script src="../js/utils.js?v=1.1.2"></script>
+    <script src="../js/selectors.js?v=1.1.2"></script>
+    <script src="../js/translate.js?v=1.1.2"></script>
+    <script src="../js/themes.js?v=1.1.2"></script>
+    <script src="../js/performance.js?v=1.1.2"></script>
+    <script src="../js/security.js?v=1.1.2"></script>
+    <script src="../js/preloader.js?v=1.1.2"></script>
     
     <!-- LocalNotesEditor -->
-    <script src="../localnoteseditor/core.js?v=1.1.1" defer></script>
+    <script src="../localnoteseditor/core.js?v=1.1.2" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
     <script>
@@ -771,14 +771,15 @@
         // Load scripts after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             const scripts = [
-                '/js/magicurl.js?v=1.1.1',
-                '/js/highlight.min.js?v=1.1.1',
-                '/js/translations.js?v=1.1.1',
-                '/js/img.js?v=1.1.1',
-                '/js/date-utils.js?v=1.1.1',
-                '/js/editor-integration.js?v=1.1.1',
-                '/js/tags-calendar.js?v=1.1.1',
-                '/js/index.js?v=1.1.1'
+                '/js/magicurl.js?v=1.1.2',
+                '/js/highlight.min.js?v=1.1.2',
+                '/js/translations.js?v=1.1.2',
+                '/js/img.js?v=1.1.2',
+                '/js/date-utils.js?v=1.1.2',
+                '/js/editor-integration.js?v=1.1.2',
+                '/js/markdown.js?v=1.1.2',
+                '/js/tags-calendar.js?v=1.1.2',
+                '/js/index.js?v=1.1.2'
             ];
             
             loadScriptsSequentially(scripts);
@@ -786,7 +787,7 @@
     </script>
     
     <!-- Service Worker + PWA Modal -->
-    <script src="../js/pwa.js?v=1.1.1"></script>
+    <script src="../js/pwa.js?v=1.1.2"></script>
 
     <!-- Universal Cookies Banner -->
     <script src="../cookies_banner_universal/cookies-banner.js"></script>

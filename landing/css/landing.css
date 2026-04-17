@@ -730,6 +730,7 @@ section { position: relative; z-index: 1; }
 }
 /* dismiss animation */
 .cookie-banner.hiding {
+  animation: none;
   transform: translateX(-50%) translateY(140px);
   opacity: 0;
   transition: transform 0.4s ease, opacity 0.3s ease;

@@ -113,7 +113,7 @@
 .lne-editor tr:hover td { background: rgba(255,255,255,.02); }
 .lne-editor mark.lne-find-mark { background: rgba(255,200,0,.35); color: inherit; border-radius: 2px; }
 .lne-editor mark.lne-find-cur  { background: rgba(255,140,0,.6); color: #fff; border-radius: 2px; outline: 1px solid orange; }
-.lne-video-wrapper { margin: 14px 0; }
+.lne-video-wrapper { margin: 14px 0; display: block; clear: both; }
 .lne-video-wrapper iframe,.lne-video-wrapper video { max-width: 100%; display: block; }
 
 /* ═══════════════════════════ CHECKLIST ══════════════════════════════════ */
@@ -665,13 +665,99 @@ textarea.lne-inp { resize: vertical; }
         content: '';
         display: block;
         width: 40px; height: 4px;
-        background: var(--border-color, #444);
+        background: var(--border-color, #555);
         border-radius: 2px;
-        margin: 10px auto -4px;
+        margin: 12px auto 0;
+        flex-shrink: 0;
+        cursor: grab;
+        opacity: 0.6;
     }
 }
 
 @keyframes slideUp {
     from { opacity: 0; transform: translateY(40px); }
     to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════ iOS FIXES ══════════════════════════════════ */
+
+/* Fullscreen editor — учитываем safe area на iPhone с notch */
+.lne-fullscreen {
+    padding-top: env(safe-area-inset-top) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
+/* Toolbar на iOS — минимальная высота для тач-таргетов */
+@supports (-webkit-touch-callout: none) {
+    .lne-btn {
+        min-width: 36px;
+        min-height: 36px;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .lne-toolbar-row {
+        -webkit-overflow-scrolling: touch;
+    }
+    /* Чеклист — убираем глюки с выделением на iOS */
+    .checklist-item-wrapper {
+        -webkit-user-select: none;
+        user-select: none;
+    }
+    .checklist-text-content,
+    .checklist-text-ios,
+    .checklist-desc {
+        -webkit-user-select: text;
+        user-select: text;
+    }
+    /* Чекбокс — явный размер, iOS иначе может схлопнуть */
+    .checklist-checkbox-ios {
+        width: 22px !important;
+        height: 22px !important;
+        min-width: 22px !important;
+        min-height: 22px !important;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+    /* Кнопка описания — тач-таргет */
+    .checklist-add-desc {
+        min-width: 32px;
+        min-height: 32px;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
+    /* Убираем zoom при фокусе на input/select на iOS */
+    .lne-sel,
+    .lne-inp {
+        font-size: 16px !important;
+    }
+    /* Скролл тулбара без резинки */
+    .lne-toolbar {
+        overscroll-behavior-x: contain;
+    }
+}
+
+/* ═══════════════════════════ KEYBOARD AVOIDANCE ════════════════════════ */
+@media (hover: none) and (pointer: coarse) {
+    /* Smooth transition when keyboard pushes modal up */
+    .lne-modal {
+        transition: margin-bottom 0.2s ease, max-height 0.2s ease;
+    }
+    /* Footer buttons always visible — no overflow clip on modal */
+    .lne-mft {
+        position: sticky;
+        bottom: 0;
+        background: var(--modal-bg, #1a1a1a);
+        z-index: 3;
+    }
+    /* Body shrinks to give space to footer */
+    .lne-mbody {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* ── Video wrapper: prevent cursor/text insertion inside ── */
+.lne-editor .lne-video-wrapper,
+.lne-editor .video-embed-wrapper {
+    cursor: default;
 }

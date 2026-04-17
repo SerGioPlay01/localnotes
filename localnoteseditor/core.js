@@ -190,35 +190,42 @@ class LocalNotesEditor {
         var selF = this.toolbar.querySelector('.lne-sel-font');
         var selS = this.toolbar.querySelector('.lne-sel-size');
         if (selH) { selH.addEventListener('mousedown', function() { self._saveRange(); }); selH.addEventListener('change', function(e) { if (!e.target.value) return; self._restoreRange(); self._saveSnap(); document.execCommand('formatBlock', false, e.target.value); e.target.value = ''; self._syncState(); }); }
-        if (selF) { selF.addEventListener('mousedown', function() { self._saveRange(); }); selF.addEventListener('change', function(e) { if (!e.target.value) return; self._restoreRange(); self._saveSnap(); document.execCommand('fontName', false, e.target.value); e.target.value = ''; self.ed.focus(); }); }
-        if (selS) { selS.addEventListener('mousedown', function() { self._saveRange(); }); selS.addEventListener('change', function(e) { if (!e.target.value) return; self._restoreRange(); self._applySize(e.target.value + 'px'); e.target.value = ''; self.ed.focus(); }); }
+        if (selF) { selF.addEventListener('mousedown', function() { self._saveRange(); }); selF.addEventListener('change', function(e) { if (!e.target.value) return; self._restoreRange(); self._saveSnap(); document.execCommand('fontName', false, e.target.value); e.target.value = ''; var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0); if (!isTouch) self.ed.focus(); }); }
+        if (selS) { selS.addEventListener('mousedown', function() { self._saveRange(); }); selS.addEventListener('change', function(e) { if (!e.target.value) return; self._restoreRange(); self._applySize(e.target.value + 'px'); e.target.value = ''; var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0); if (!isTouch) self.ed.focus(); }); }
     }
 
     _exec(cmd, btn) {
         this._restoreRange();
-        var map = {
-            undo: function() { this.undo(); },
-            redo: function() { this.redo(); },
-            insertChecklist:   function() { this._insertChecklist(); },
+        // Commands that open a modal — don't refocus editor after
+        var modalCmds = {
             insertLink:        function() { this._modalLink(); },
             insertImage:       function() { this._modalImage(); },
             insertVideo:       function() { this._modalVideo(); },
             insertTable:       function() { this._modalTable(); },
-            insertCode:        function() { this._insertCodeBlock(); },
-            insertBlockquote:  function() { this._insertBlockquote(); },
             insertEmoji:       function() { this._modalEmoji(); },
             insertSpecialChar: function() { this._modalSpecialChars(); },
             findReplace:       function() { this._modalFindReplace(); },
             wordCount:         function() { this._modalWordCount(); },
-            fullscreen:        function() { this._toggleFullscreen(); },
             foreColor:         function() { this._modalColor('foreColor', btn); },
             hiliteColor:       function() { this._modalColor('hiliteColor', btn); }
+        };
+        if (modalCmds[cmd]) { modalCmds[cmd].call(this); return; }
+        // Non-modal commands
+        var map = {
+            undo:             function() { this.undo(); },
+            redo:             function() { this.redo(); },
+            insertChecklist:  function() { this._insertChecklist(); },
+            insertCode:       function() { this._insertCodeBlock(); },
+            insertBlockquote: function() { this._insertBlockquote(); },
+            fullscreen:       function() { this._toggleFullscreen(); }
         };
         if (map[cmd]) { map[cmd].call(this); return; }
         this._saveSnap();
         document.execCommand(cmd, false, null);
         this._syncState();
-        this.ed.focus();
+        // On touch devices don't refocus — avoids keyboard popping up
+        var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        if (!isTouchDevice) this.ed.focus();
     }
 
     // ── State sync ───────────────────────────────────────────────────────
@@ -477,6 +484,8 @@ class LocalNotesEditor {
 
     _onKey(e) {
         var c = e.key.toLowerCase();
+        // Hide context toolbar on any keypress
+        if (this._removeCtx) this._removeCtx();
         if (e.ctrlKey || e.metaKey) {
             if (!e.shiftKey && c === 'z') { e.preventDefault(); this.undo(); return; }
             if ((e.shiftKey && c === 'z') || c === 'y') { e.preventDefault(); this.redo(); return; }
@@ -487,11 +496,35 @@ class LocalNotesEditor {
             if (c === 'h') { e.preventDefault(); this._modalFindReplace(); return; }
         }
         if (e.key === 'F11') { e.preventDefault(); this._toggleFullscreen(); return; }
-        // Enter inside checklist
         if (e.key === 'Enter' && !e.shiftKey) {
             var sel = window.getSelection();
             var n = sel && sel.anchorNode;
             if (n && n.nodeType === 3) n = n.parentNode;
+            // Exit video-wrapper: insert <p> after it
+            if (n && n.closest && n.closest('.lne-video-wrapper, .video-embed-wrapper')) {
+                e.preventDefault();
+                var vw = n.closest('.lne-video-wrapper, .video-embed-wrapper');
+                var p = document.createElement('p');
+                p.innerHTML = '<br>';
+                vw.parentNode.insertBefore(p, vw.nextSibling);
+                var range = document.createRange();
+                range.setStart(p, 0);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+                return;
+            }
+            // Enter before video-wrapper: insert <p> before it instead of inside
+            if (n && n.closest) {
+                var parentBlock = n.closest('p, div, h1, h2, h3, h4, h5, h6, li');
+                if (parentBlock) {
+                    var next = parentBlock.nextElementSibling;
+                    if (next && (next.classList.contains('lne-video-wrapper') || next.classList.contains('video-embed-wrapper'))) {
+                        // Normal Enter — browser handles it, just make sure ctx is gone
+                        if (this._removeCtx) this._removeCtx();
+                    }
+                }
+            }
             if (n && n.closest && n.closest('.checklist-item-wrapper')) { e.preventDefault(); this._insertChecklist(); return; }
         }
         // Tab inside editor → indent
@@ -586,21 +619,28 @@ class LocalNotesEditor {
         descWrap.appendChild(descArea);
 
         // Toggle description
-        addDescBtn.addEventListener('mousedown', function(e) {
+        var toggleDescNew = function(e) {
             e.preventDefault();
             e.stopPropagation();
             var isOpen = descWrap.classList.toggle('checklist-desc-open');
             addDescBtn.classList.toggle('active', isOpen);
             if (isOpen) setTimeout(function() { descArea.focus(); }, 50);
-        });
+        };
+        addDescBtn.addEventListener('mousedown', toggleDescNew);
+        addDescBtn.addEventListener('touchend', toggleDescNew, { passive: false });
         if (description) addDescBtn.classList.add('active');
 
-        // Checkbox toggle
-        cb.addEventListener('change', function() {
+        // Checkbox toggle — iOS Safari needs touchend fallback
+        var toggleCheckNew = function() {
             cb.setAttribute('data-checked', cb.checked ? 'true' : 'false');
             textSpan.classList.toggle('checklist-done', cb.checked);
             wrapper.classList.toggle('checklist-item-done', cb.checked);
-        });
+        };
+        cb.addEventListener('change', toggleCheckNew);
+        cb.addEventListener('touchend', function() {
+            cb.checked = !cb.checked;
+            toggleCheckNew();
+        }, { passive: true });
 
         wrapper.appendChild(addDescBtn);  // ← dropdown arrow FIRST
         wrapper.appendChild(cb);
@@ -702,6 +742,7 @@ class LocalNotesEditor {
     // ── Modal factory ────────────────────────────────────────────────────
 
     _modal(title, icon, body, onOk, wide) {
+        var self = this;
         var ov = document.createElement('div');
         ov.className = 'lne-modal-ov' + (wide ? ' lne-modal-wide' : '');
         ov.innerHTML =
@@ -714,7 +755,34 @@ class LocalNotesEditor {
             '<button class="lne-mbtn lne-mbtn-pri lne-mok"><i class="bi bi-check-lg"></i> ' + this._('ok','OK') + '</button>' +
             '</div></div>';
         document.body.appendChild(ov);
-        var close = function() { if (ov.parentNode) document.body.removeChild(ov); };
+        // Blur editor before modal opens — prevents iOS keyboard from staying open
+        if (self.ed) self.ed.blur();
+        if (document.activeElement && document.activeElement !== document.body) {
+            document.activeElement.blur();
+        }
+        var modal = ov.querySelector('.lne-modal');
+        var close = function() {
+            if (window.visualViewport) window.visualViewport.removeEventListener('resize', onVpResize);
+            if (ov.parentNode) document.body.removeChild(ov);
+        };
+
+        // ── visualViewport: push modal above keyboard on iOS/Android ──
+        var onVpResize = function() {
+            var vv = window.visualViewport;
+            if (!vv || !modal) return;
+            var keyboardHeight = window.innerHeight - vv.height - vv.offsetTop;
+            if (keyboardHeight > 50) {
+                // Keyboard is open — shift modal up
+                modal.style.marginBottom = keyboardHeight + 'px';
+                modal.style.maxHeight = (vv.height * 0.92) + 'px';
+            } else {
+                modal.style.marginBottom = '';
+                modal.style.maxHeight = '';
+            }
+        };
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', onVpResize);
+        }
         ov.querySelector('.lne-mclose').addEventListener('click', close);
         ov.querySelector('.lne-mcancel').addEventListener('click', close);
         ov.addEventListener('click', function(e) { if (e.target === ov) close(); });
@@ -722,7 +790,72 @@ class LocalNotesEditor {
         document.addEventListener('keydown', function esc(e) {
             if (e.key === 'Escape') { document.removeEventListener('keydown', esc); close(); }
         });
-        setTimeout(function() { var inp = ov.querySelector('input,textarea'); if (inp) inp.focus(); }, 60);
+        // Auto-focus first input only on non-touch devices
+        var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        if (!isTouchDevice) {
+            setTimeout(function() { var inp = ov.querySelector('input,textarea'); if (inp) inp.focus(); }, 60);
+        }
+
+        // ── Swipe-down to close on touch devices ──────────────────────
+        if (isTouchDevice) {
+            var startY = 0;
+            var currentY = 0;
+            var isDragging = false;
+
+            var onTouchStart = function(e) {
+                startY = e.touches[0].clientY;
+                currentY = startY;
+                isDragging = true;
+                modal.style.transition = 'none';
+            };
+
+            var onTouchMove = function(e) {
+                if (!isDragging) return;
+                currentY = e.touches[0].clientY;
+                var delta = currentY - startY;
+                if (delta > 0) {
+                    // Only allow downward drag
+                    modal.style.transform = 'translateY(' + delta + 'px)';
+                    modal.style.opacity = String(1 - delta / 300);
+                    e.preventDefault();
+                }
+            };
+
+            var onTouchEnd = function() {
+                if (!isDragging) return;
+                isDragging = false;
+                var delta = currentY - startY;
+                modal.style.transition = '';
+                if (delta > 80) {
+                    // Swiped down enough — close
+                    modal.style.transform = 'translateY(100%)';
+                    modal.style.opacity = '0';
+                    setTimeout(close, 200);
+                } else {
+                    // Snap back
+                    modal.style.transform = '';
+                    modal.style.opacity = '';
+                }
+            };
+
+            // Attach to header and the ::before handle area (top of modal)
+            var header = ov.querySelector('.lne-mhd');
+            if (header) {
+                header.addEventListener('touchstart', onTouchStart, { passive: true });
+                header.addEventListener('touchmove', onTouchMove, { passive: false });
+                header.addEventListener('touchend', onTouchEnd, { passive: true });
+            }
+            // Also attach to top 40px of modal (covers ::before handle)
+            modal.addEventListener('touchstart', function(e) {
+                var rect = modal.getBoundingClientRect();
+                if (e.touches[0].clientY - rect.top < 40) {
+                    onTouchStart(e);
+                }
+            }, { passive: true });
+            modal.addEventListener('touchmove', onTouchMove, { passive: false });
+            modal.addEventListener('touchend', onTouchEnd, { passive: true });
+        }
+
         return { ov: ov, close: close };
     }
 
@@ -1068,13 +1201,13 @@ class LocalNotesEditor {
     _modalEmoji() {
         var self = this;
         var categories = {
-            '😀 Smileys': ['😀','😃','😄','😁','��','😅','🤣','😂','🙂','🙃','😉','😊','😇','🥰','��','🤩','😘','😗','😚','😙','😋','😛','😜','🤪','��','🤑','🤗','🤭','🤫','🤔','🤐','🤨','😐','😑','��','😏','😒','🙄','😬','🤥','😌','😔','😪','🤤','��','😷','🤒','🤕','🤢','🤮','🤧','🥵','🥶','🥴','��','🤯','🤠','🥳','😎','🤓','🧐'],
-            '👍 Gestures': ['👍','👎','👊','✊','🤛','🤜','🤞','✌️','🤟','🤘','👌','🤌','🤏','👈','👉','👆','👇','☝️','👋','🤚','🖐️','✋','🖖','👏','🙌','🫶','🤲','🙏','✍️','💪','🦾','🦿','🦵','🦶','👂','🦻'],
-            '❤️ Hearts': ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❤️‍🔥','❤️‍🩹','💕','💞','💓','💗','💖','💘','💝','💟','☮️'],
-            '🎉 Celebrate': ['🎉','🎊','🎈','🎁','🎀','🎗️','🎟️','🎫','🎖️','🏆','🥇','🥈','🥉','🎆','🎇','✨','🌟','⭐','🌠','🎑','🧨'],
-            '🌍 Nature': ['🌍','🌎','🌏','🌐','🌱','🌿','🍀','🌲','🌳','🌴','🌵','🌾','🌺','🌸','🌼','🌻','🌷','🌹','🥀','💐','🍁','🍂','🍃','☀️','🌤️','⛅','🌦️','🌧️','⛈️','🌩️','🌨️','❄️','☃️','⛄','🌬️','💨','🌊','🌀','🌈'],
-            '🍕 Food': ['🍕','🍔','🍟','🌭','🍿','🧂','🥓','🥚','🍳','🧇','🥞','🧈','🍞','🥐','🥨','🥯','🧀','🥗','🥘','🍲','🍛','🍜','🍝','🍠','🥟','🦪','🍱','🍤','🍙','🍚','🍘','🍥','🥮','🍢','🧁','🍰','🎂','🍮','🍭','🍬','🍫','🍩','🍪','🌰','🥜','🍯'],
-            '⚡ Symbols': ['⚡','🔥','💧','🌊','��','⭐','🌟','✨','💥','❄️','🌈','☀️','🌙','⚙️','🔑','🗝️','🔒','🔓','💡','🔔','🔕','🎵','🎶','🎼','📌','📍','✅','❌','❓','❗','💯','🔴','🟠','🟡','🟢','��','🟣','⚫','⚪']
+            '😀 Smileys': ['😀','😃','😄','😁','😆','😅','🤣','😂','🙂','🙃','😉','😊','😇','🥰','😍','🤩','😘','😗','😚','😙','😋','😛','😜','🤪','😝','🤑','🤗','🤐','🤨','😐','😑','😶','😏','😒','🙄','😬','🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢','🤮','🤧','🥵','🥶','🥴','😵','🤯','🤠','🥳','😎','🤓','🧐','😕','😟','🙁','☹️','😮','😯','😲','😳','🥺','😦','😧','😨','😰','😥','😢','😭','😱','😖','😣','😞','😓','😩','😫','🥱','😤','😡','😠','🤬','😈','👿','💀','☠️','💩','🤡','👹','👺','👻','👽','👾','🤖'],
+            '👍 Gestures': ['👍','👎','👊','✊','🤛','🤜','🤞','✌️','🤘','👌','🤏','👈','👉','👆','👇','☝️','👋','🤚','🖐️','✋','🖖','👏','🙌','🤲','🙏','✍️','💪','🦾','🦶','👂','🦻','👃','🦷','🦴','👀','👁️','👅','👄','💋','👶','👦','👧','👨','👩','🧓','👴','👵'],
+            '❤️ Hearts': ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','💕','💞','💓','💗','💖','💘','💝','💟','☮️','✝️','☪️','🕉️','☸️','✡️','🔯','🕎','☯️','☦️','🛐','⛎'],
+            '🎉 Celebrate': ['🎉','🎊','🎈','🎁','🎀','🎗️','🎟️','🎫','🎖️','🏆','🥇','🥈','🥉','🎆','🎇','✨','🌟','⭐','🌠','🎑','🧨','🎃','🎄','🎋','🎍','🎎','🎏','🎐','🎠','🎡','🎢','🎪','🤹','🎭','🎨','🖼️','🎬','🎤','🎧','🎼','🎹','🥁','🎷','🎺','🎸','🎻'],
+            '🌍 Nature': ['🌍','🌎','🌏','🌐','🌱','🌿','🍀','🌲','🌳','🌴','🌵','🌾','🌺','🌸','🌼','🌻','🌷','🌹','🥀','💐','🍁','🍂','🍃','☀️','🌤️','⛅','🌦️','🌧️','⛈️','🌩️','🌨️','❄️','☃️','⛄','🌬️','💨','🌊','🌀','🌈','🌂','☂️','🌡️','⛱️','⚡','🔥','💧','🌊','🦁','🐯','🐻','🐼','🐨','🐸','🐵','🙈','🙉','🙊','🐔','🐧','🐦','🐤','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐞','🐜','🦟','🦗','🕷️','🦂','🐢','🐍','🦎','🦖','🦕','🐙','🦑','🦐','🦞','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈','🐊','🐅','🐆','🦓','🦍','🦧','🐘','🦛','🦏','🐪','🐫','🦒','🦘','🐃','🐂','🐄','🐎','🐖','🐏','🐑','🦙','🐐','🦌','🐕','🐩','🦮','🐕‍🦺','🐈','🐈‍⬛','🐓','🦃','🦚','🦜','🦢','🦩','🕊️','🐇','🦝','🦨','🦡','🦦','🦥','🐁','🐀','🐿️','🦔'],
+            '🍕 Food': ['🍕','🍔','🍟','🌭','🍿','🧂','🥓','🥚','🍳','🧇','🥞','🧈','🍞','🥐','🥨','🥯','🧀','🥗','🥘','🍲','🍛','🍜','🍝','🍠','🥟','🍱','🍤','🍙','🍚','🍘','🍥','🥮','🍢','🧁','🍰','🎂','🍮','🍭','🍬','🍫','🍩','🍪','🌰','🥜','🍯','🍼','🥛','☕','🍵','🧃','🥤','🧋','🍶','🍺','🍻','🥂','🍷','🥃','🍸','🍹','🧉','🍾','🧊','🥄','🍴','🍽️','🥢','🧆','🥙','🧇','🥗','🥫'],
+            '⚡ Symbols': ['⚡','🔥','💧','⭐','🌟','✨','💥','❄️','🌈','☀️','🌙','⚙️','🔑','🗝️','🔒','🔓','💡','🔔','🔕','🎵','🎶','🎼','📌','📍','✅','❌','❓','❗','💯','🔴','🟠','🟡','🟢','🔵','🟣','⚫','⚪','🟤','🔶','🔷','🔸','🔹','🔺','🔻','💠','🔘','🔲','🔳','▪️','▫️','◾','◽','◼️','◻️','⬛','⬜','🔈','🔉','🔊','📢','📣','🔇','🔔','🔕','📳','📴','📵','📶','📳','🚫','⛔','📛','🔞','🔃','🔄','🔙','🔚','🔛','🔜','🔝','🛐','⚛️','🉑','☑️','✔️','✖️','🔱','📛','🔰','♻️','✅','🈴','🈺','🈷️','✴️','🆚','💟','🆘','❎','🆔','🆕','🆙','🆒','🆓','🆖','🅰️','🅱️','🆎','🆑','🅾️','🆗','🅿️','🆙','🆒']
         };
         var tabs = '', panels = '';
         var first = true;
@@ -1318,21 +1451,30 @@ class LocalNotesEditor {
                     addDescBtn.classList.add('active');
                     wrapper.classList.add('checklist-has-desc');
                 }
-                addDescBtn.addEventListener('mousedown', function(e) {
+                var toggleDesc = function(e) {
                     e.preventDefault(); e.stopPropagation();
                     var isOpen = descWrap.classList.toggle('checklist-desc-open');
                     addDescBtn.classList.toggle('active', isOpen);
                     wrapper.classList.toggle('checklist-has-desc', isOpen);
                     if (isOpen && descArea) setTimeout(function() { descArea.focus(); }, 50);
-                });
+                };
+                addDescBtn.addEventListener('mousedown', toggleDesc);
+                addDescBtn.addEventListener('touchend', toggleDesc, { passive: false });
             }
 
-            // Wire checkbox
-            cb.addEventListener('change', function() {
+            // Wire checkbox — iOS Safari needs touchend fallback
+            var toggleCheck = function() {
                 cb.setAttribute('data-checked', cb.checked ? 'true' : 'false');
                 if (textSpan) textSpan.classList.toggle('checklist-done', cb.checked);
                 wrapper.classList.toggle('checklist-item-done', cb.checked);
-            });
+            };
+            cb.addEventListener('change', toggleCheck);
+            // iOS Safari sometimes doesn't fire 'change' on contentEditable parent
+            cb.addEventListener('touchend', function(e) {
+                // Only toggle if the touch didn't move (tap)
+                cb.checked = !cb.checked;
+                toggleCheck();
+            }, { passive: true });
         });
     }
 
@@ -1370,6 +1512,17 @@ class LocalNotesEditor {
         };
         // Сохраняем removeCtx на экземпляре для вызова извне
         this._removeCtx = removeCtx;
+
+        // Close bar when tapping/clicking outside — attach once per editor instance
+        if (!this._ctxDocListener) {
+            this._ctxDocListener = function(e) {
+                if (self._ctxActiveBar && !self._ctxActiveBar.contains(e.target)) {
+                    removeCtx();
+                }
+            };
+            document.addEventListener('click', this._ctxDocListener, true);
+            document.addEventListener('touchend', this._ctxDocListener, true);
+        }
 
         var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
@@ -1472,17 +1625,16 @@ class LocalNotesEditor {
 
         // VIDEO
         this.ed.querySelectorAll('.lne-video-wrapper, .video-embed-wrapper').forEach(function(vw) {
-            // Убираем старые оверлеи если устройство изменилось или дублируются
+            // ── Touch overlay: remove all duplicates first ──
             var isTouchOnly = isTouchDevice && !window.matchMedia('(pointer: fine)').matches;
-            vw.querySelectorAll('.lne-video-touch-overlay').forEach(function(ov, i) {
-                // Оставляем максимум один, и только на toch-only устройствах
-                if (!isTouchOnly || i > 0) { ov.parentNode.removeChild(ov); }
+            vw.querySelectorAll('.lne-video-touch-overlay').forEach(function(ov) {
+                ov.parentNode.removeChild(ov);
             });
-            if (!isTouchOnly && vw._lneTouchOverlay) { vw._lneTouchOverlay = null; }
+            vw._lneTouchOverlay = null;
 
             if (isTouchOnly) {
                 var iframe = vw.querySelector('iframe');
-                if (iframe && !vw._lneTouchOverlay) {
+                if (iframe) {
                     var overlay = document.createElement('div');
                     overlay.className = 'lne-video-touch-overlay';
                     overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;z-index:3;cursor:pointer;';
@@ -1537,7 +1689,14 @@ class LocalNotesEditor {
             btn.className = 'lne-ctx-btn';
             btn.innerHTML = '<i class="' + item.icon + '"></i>';
             btn.title = item.label;
-            btn.addEventListener('mousedown', function(e) { e.preventDefault(); e.stopPropagation(); item.action(); });
+            var handler = function(e) { e.preventDefault(); e.stopPropagation(); item.action(); };
+            btn.addEventListener('mousedown', handler);
+            // Touch devices: use touchend so buttons respond to taps
+            btn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                item.action();
+            }, { passive: false });
             bar.appendChild(btn);
         });
         return bar;

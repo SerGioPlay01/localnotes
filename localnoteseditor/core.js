@@ -1526,6 +1526,7 @@ class LocalNotesEditor {
     }
 
     _ctxBar(items) {
+        var self = this;
         var bar = document.createElement('div');
         bar.className = 'lne-ctx-toolbar-float';
         items.forEach(function(item) {
@@ -1533,7 +1534,19 @@ class LocalNotesEditor {
             btn.className = 'lne-ctx-btn';
             btn.innerHTML = '<i class="' + item.icon + '"></i>';
             btn.title = item.label;
-            btn.addEventListener('mousedown', function(e) { e.preventDefault(); e.stopPropagation(); item.action(); });
+            btn.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (self._removeCtx) self._removeCtx();
+                item.action();
+            });
+            // Touch: also handle touchend so the bar is removed before the modal opens
+            btn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (self._removeCtx) self._removeCtx();
+                item.action();
+            }, { passive: false });
             bar.appendChild(btn);
         });
         return bar;

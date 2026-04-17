@@ -95,8 +95,9 @@
   // The inline script right after the banner already hid it if consent exists.
   // Here we just wire up the buttons.
   var banner = document.getElementById('cookieBanner');
-  if (banner && banner.style.display !== 'none') {
+  if (banner) {
     function dismissBanner() {
+      banner.style.animation = 'none';
       banner.classList.add('hiding');
       setTimeout(function() { if (banner.parentNode) banner.remove(); }, 450);
     }

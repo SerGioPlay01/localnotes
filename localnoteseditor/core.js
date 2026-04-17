@@ -1763,8 +1763,18 @@ class LocalNotesEditor {
             var h = ov.querySelector('#lne-ve-h').value;
             self._saveSnap();
             if (code) {
-                // Replace entire wrapper content
+                // Replace entire wrapper content and recalculate wrapper style
                 vw.innerHTML = code;
+                var newEl = vw.querySelector('iframe, video');
+                var nw = newEl && (newEl.getAttribute('width') || newEl.width);
+                var nh = newEl && (newEl.getAttribute('height') || newEl.height);
+                if (nw && nh && parseInt(nw) && parseInt(nh)) {
+                    vw.style.aspectRatio = nw + '/' + nh;
+                    vw.style.maxWidth = nw + 'px';
+                } else {
+                    vw.style.aspectRatio = '16/9';
+                    vw.style.maxWidth = '';
+                }
             } else {
                 var url = ov.querySelector('#lne-ve-url').value.trim();
                 if (url && el) {
@@ -1776,7 +1786,13 @@ class LocalNotesEditor {
                 }
                 if (el && w) { el.setAttribute('width', w); el.style.width = w + 'px'; }
                 if (el && h) { el.setAttribute('height', h); el.style.height = h + 'px'; }
+                // Обновить aspect-ratio и max-width враппера
+                if (w && h && parseInt(w) && parseInt(h)) {
+                    vw.style.aspectRatio = w + '/' + h;
+                    vw.style.maxWidth = w + 'px';
+                }
             }
+            self._syncState();
             close();
         });
     }

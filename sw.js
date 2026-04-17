@@ -1,7 +1,7 @@
 // Service Worker для Local Notes
-const CACHE_NAME = 'local-notes-v1.1.0';
-const STATIC_CACHE = 'static-v1.1.0';
-const DYNAMIC_CACHE = 'dynamic-v1.1.0';
+const CACHE_NAME = 'local-notes-v1.1.1';
+const STATIC_CACHE = 'static-v1.1.1';
+const DYNAMIC_CACHE = 'dynamic-v1.1.1';
 const CACHE_LIMIT = 50; // Максимальное количество файлов в динамическом кэше
 
 // Файлы для кэширования

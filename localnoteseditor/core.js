@@ -1472,11 +1472,15 @@ class LocalNotesEditor {
 
         // VIDEO
         this.ed.querySelectorAll('.lne-video-wrapper, .video-embed-wrapper').forEach(function(vw) {
-            // На тач-устройствах iframe перехватывает все события.
-            // Оверлей всегда висит поверх iframe и перехватывает тапы.
-            // Первый тап → тулбар. Повторный тап → закрыть тулбар.
-            // Взаимодействие с плеером недоступно в режиме редактирования — это нормально.
-            if (isTouchDevice) {
+            // Убираем старые оверлеи если устройство изменилось или дублируются
+            var isTouchOnly = isTouchDevice && !window.matchMedia('(pointer: fine)').matches;
+            vw.querySelectorAll('.lne-video-touch-overlay').forEach(function(ov, i) {
+                // Оставляем максимум один, и только на toch-only устройствах
+                if (!isTouchOnly || i > 0) { ov.parentNode.removeChild(ov); }
+            });
+            if (!isTouchOnly && vw._lneTouchOverlay) { vw._lneTouchOverlay = null; }
+
+            if (isTouchOnly) {
                 var iframe = vw.querySelector('iframe');
                 if (iframe && !vw._lneTouchOverlay) {
                     var overlay = document.createElement('div');
@@ -1526,7 +1530,6 @@ class LocalNotesEditor {
     }
 
     _ctxBar(items) {
-        var self = this;
         var bar = document.createElement('div');
         bar.className = 'lne-ctx-toolbar-float';
         items.forEach(function(item) {
@@ -1534,31 +1537,20 @@ class LocalNotesEditor {
             btn.className = 'lne-ctx-btn';
             btn.innerHTML = '<i class="' + item.icon + '"></i>';
             btn.title = item.label;
-            btn.addEventListener('mousedown', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (self._removeCtx) self._removeCtx();
-                item.action();
-            });
-            // Touch: also handle touchend so the bar is removed before the modal opens
-            btn.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (self._removeCtx) self._removeCtx();
-                item.action();
-            }, { passive: false });
+            btn.addEventListener('mousedown', function(e) { e.preventDefault(); e.stopPropagation(); item.action(); });
             bar.appendChild(btn);
         });
         return bar;
     }
 
     _positionCtx(bar, el) {
+        bar.style.visibility = 'hidden';
+        bar.style.width = 'fit-content';
         document.body.appendChild(bar);
         var rect = el.getBoundingClientRect();
         var isMobile = window.innerWidth <= 768;
 
         if (isMobile) {
-            // На мобильных — fixed позиционирование относительно viewport
             bar.style.position = 'fixed';
             bar.style.zIndex = '99999';
             var bh = bar.offsetHeight || 44;
@@ -1566,8 +1558,8 @@ class LocalNotesEditor {
             if (top < 4) top = rect.bottom + 6;
             if (top + bh > window.innerHeight) top = Math.max(4, window.innerHeight - bh - 4);
             bar.style.top = top + 'px';
-            var left = rect.left;
             var bw = bar.offsetWidth || 80;
+            var left = rect.left;
             if (left + bw > window.innerWidth) left = window.innerWidth - bw - 8;
             if (left < 4) left = 4;
             bar.style.left = left + 'px';
@@ -1575,13 +1567,14 @@ class LocalNotesEditor {
             var scrollY = window.scrollY || document.documentElement.scrollTop;
             var scrollX = window.scrollX || document.documentElement.scrollLeft;
             bar.style.position = 'absolute';
-            bar.style.top  = (rect.top + scrollY - (bar.offsetHeight || 0) - 6) + 'px';
+            var bh = bar.offsetHeight || 0;
+            var bw = bar.offsetWidth || 0;
+            bar.style.top  = (rect.top + scrollY - bh - 6) + 'px';
             bar.style.left = (rect.left + scrollX) + 'px';
-            var bw = bar.offsetWidth;
-            var vw = window.innerWidth;
-            if (rect.left + bw > vw) bar.style.left = (vw - bw - 8 + scrollX) + 'px';
-            if (rect.top - bar.offsetHeight < 0) bar.style.top = (rect.bottom + scrollY + 6) + 'px';
+            if (rect.left + bw > window.innerWidth) bar.style.left = (window.innerWidth - bw - 8 + scrollX) + 'px';
+            if (rect.top - bh < 0) bar.style.top = (rect.bottom + scrollY + 6) + 'px';
         }
+        bar.style.visibility = '';
     }
 
     _showImageCtx(img) {
@@ -1589,7 +1582,7 @@ class LocalNotesEditor {
         var bar = this._ctxBar([
             {
                 icon: 'bi bi-pencil', label: this._('imageWidth','Edit image'),
-                action: function() { self._modalImageEdit(img); }
+                action: function() { if (self._removeCtx) self._removeCtx(); self._modalImageEdit(img); }
             },
             {
                 icon: 'bi bi-text-left', label: this._('alignLeft','Align left'),
@@ -1753,7 +1746,7 @@ class LocalNotesEditor {
             },
             {
                 icon: 'bi bi-gear', label: this._('tableProperties','Table properties'),
-                action: function() { self._modalTableEdit(table); }
+                action: function() { if (self._removeCtx) self._removeCtx(); self._modalTableEdit(table); }
             },
             {
                 icon: 'bi bi-trash', label: this._('delete','Delete table'),
@@ -1806,7 +1799,7 @@ class LocalNotesEditor {
         var bar = this._ctxBar([
             {
                 icon: 'bi bi-pencil', label: this._('videoInsert','Edit video'),
-                action: function() { self._modalVideoEdit(vw); }
+                action: function() { if (self._removeCtx) self._removeCtx(); self._modalVideoEdit(vw); }
             },
             {
                 icon: 'bi bi-trash', label: this._('delete','Delete'),

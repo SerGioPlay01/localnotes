@@ -1,4 +1,4 @@
-/* LocalNotesEditor — Professional Rich Text Editor Styles */
+﻿/* LocalNotesEditor — Professional Rich Text Editor Styles */
 @import url('/localnoteseditor/bootstrap-icons/font/bootstrap-icons.css');
 
 /* ═══════════════════════════ WRAPPER ══════════════════════════════════ */
@@ -463,6 +463,7 @@ textarea.lne-inp { resize: vertical; }
     position: absolute;
     z-index: 99997;
     display: flex;
+    width: fit-content;
     gap: 2px;
     background: var(--modal-bg, #1a1a1a);
     border: 1px solid var(--border-color, #272727);

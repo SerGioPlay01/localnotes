@@ -836,7 +836,10 @@ function openModal(noteId, noteContent, noteCreationTime) {
             modal.style.display = 'none';
             document.body.classList.remove('modal-open');
             currentNoteId = null;
-            if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) localNotesEditorInstance.setContent('');
+            if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
+                if (typeof localNotesEditorInstance._removeCtx === 'function') localNotesEditorInstance._removeCtx();
+                localNotesEditorInstance.setContent('');
+            }
             window._noteMeta = { tags: [], dueDate: null, color: '', pinned: false };
             await loadNotes();
         } catch (e) {
@@ -853,10 +856,9 @@ function closeModal() {
     if (editModal) editModal.style.display = 'none';
     document.body.classList.remove('modal-open');
     currentNoteId = null;
-    if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) localNotesEditorInstance.setContent('');
-    // Hide float context toolbar (video/image/table/code) if visible
-    if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance?._removeCtx) {
-        localNotesEditorInstance._removeCtx();
+    if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
+        if (typeof localNotesEditorInstance._removeCtx === 'function') localNotesEditorInstance._removeCtx();
+        localNotesEditorInstance.setContent('');
     }
 }
 
@@ -1738,12 +1740,28 @@ function initializeEventListeners() {
     });
 
     const cancelBtn = document.getElementById('cancelNoteButton');
-    if (cancelBtn) cancelBtn.addEventListener('click', () => closeModal());
+    if (cancelBtn) cancelBtn.addEventListener('click', () => {
+        const modal = document.getElementById('editModal');
+        if (modal) modal.style.display = 'none';
+        document.body.classList.remove('modal-open');
+        currentNoteId = null;
+        if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
+            if (typeof localNotesEditorInstance._removeCtx === 'function') localNotesEditorInstance._removeCtx();
+            localNotesEditorInstance.setContent('');
+        }
+    });
 
     // Close modal on backdrop click
     const editModal = document.getElementById('editModal');
     if (editModal) editModal.addEventListener('click', e => {
-        if (e.target === editModal) closeModal();
+        if (e.target === editModal) {
+            editModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            currentNoteId = null;
+            if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
+                if (typeof localNotesEditorInstance._removeCtx === 'function') localNotesEditorInstance._removeCtx();
+            }
+        }
     });
 
     // Keyboard shortcuts

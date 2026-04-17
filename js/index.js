@@ -1128,7 +1128,7 @@ function showWelcomeMessage() {
             <p class="welcome-description">${gt('welcomeDescription','Local Notes is a secure web application for creating and storing notes directly in your browser.')}</p></div>
         <div class="welcome-section"><h2 class="welcome-section-title">${gt('welcomeFeatures','Key Features')}</h2>
             <ul class="welcome-features">
-                <li>${gt('welcomeFeature1','Military-grade AES-256 encryption')}</li>
+                <li>${gt('welcomeFeature1','Industry-standard AES-256 encryption')}</li>
                 <li>${gt('welcomeFeature2','12 languages supported')}</li>
                 <li>${gt('welcomeFeature3','PWA support - install as app')}</li>
                 <li>${gt('welcomeFeature4','Optimized performance')}</li>
@@ -1139,7 +1139,7 @@ function showWelcomeMessage() {
         <div class="welcome-section"><h2 class="welcome-section-title">${gt('welcomeGoals','Project Goals')}</h2>
             <ul class="welcome-goals">
                 <li>${gt('welcomeGoal1','Maximum privacy - data stays local')}</li>
-                <li>${gt('welcomeGoal2','Security - military-grade encryption')}</li>
+                <li>${gt('welcomeGoal2','Security - industry-standard encryption')}</li>
                 <li>${gt('welcomeGoal3','Accessibility - 12 languages')}</li>
                 <li>${gt('welcomeGoal4','Universality - works everywhere')}</li>
                 <li>${gt('welcomeGoal5','Performance - fast operation')}</li>
@@ -1168,8 +1168,23 @@ function updateWelcomeTranslations() {
     const wm = document.querySelector('.welcome-message');
     if (!wm || typeof t !== 'function') return;
     try {
-        const map = {'.welcome-title':'welcomeTitle','.welcome-subtitle':'welcomeSubtitle'};
+        // Update all section titles by their order
+        const sectionTitles = wm.querySelectorAll('.welcome-section-title');
+        const sectionTitleKeys = ['welcomeAbout', 'welcomeFeatures', 'welcomeGoals', 'welcomeDeveloper', 'welcomeGetStarted'];
+        sectionTitles.forEach((el, idx) => { if (sectionTitleKeys[idx]) el.textContent = t(sectionTitleKeys[idx]) || el.textContent; });
+
+        // Update text blocks
+        const map = {
+            '.welcome-title': 'welcomeTitle',
+            '.welcome-subtitle': 'welcomeSubtitle',
+            '.welcome-description': 'welcomeDescription',
+            '.welcome-developer-info': 'welcomeDeveloperInfo',
+            '.welcome-get-started': 'welcomeGetStartedText',
+            '.welcome-dismiss-btn': 'welcomeDismiss'
+        };
         Object.entries(map).forEach(([sel, key]) => { const el = wm.querySelector(sel); if (el) el.textContent = t(key) || el.textContent; });
+
+        // Update lists
         [['welcomeFeature1','welcomeFeature2','welcomeFeature3','welcomeFeature4','welcomeFeature5','welcomeFeature6','welcomeFeature7'],
          ['welcomeGoal1','welcomeGoal2','welcomeGoal3','welcomeGoal4','welcomeGoal5','welcomeGoal6']].forEach((keys, i) => {
             const items = wm.querySelectorAll(i === 0 ? '.welcome-features li' : '.welcome-goals li');
@@ -1374,6 +1389,8 @@ function updateButtonTexts() {
         ['calendarBtn', `<i class="bi bi-calendar3"></i> ${fn('calendar') || 'Calendar'}`]
     ].forEach(([id, html]) => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
     if (window.appUtils) window.appUtils.updateToggleViewButton();
+    // Re-apply quick edit button text after language is ready
+    applyQuickEditMode();
 }
 window.updateButtonTexts = updateButtonTexts;
 

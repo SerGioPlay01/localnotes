@@ -9528,13 +9528,13 @@ function showWelcomeMessage() {
             
             <div class="welcome-section">
                 <h2 class="welcome-section-title">${getTranslation('welcomeAbout', 'About Local Notes')}</h2>
-                <p class="welcome-description">${getTranslation('welcomeDescription', 'Local Notes is a secure web application for creating and storing notes directly in your browser. All data remains on your device with military-grade encryption.')}</p>
+                <p class="welcome-description">${getTranslation('welcomeDescription', 'Local Notes is a secure web application for creating and storing notes directly in your browser. All data remains on your device with industry-standard encryption.')}</p>
             </div>
             
             <div class="welcome-section">
                 <h2 class="welcome-section-title">${getTranslation('welcomeFeatures', 'Key Features')}</h2>
                 <ul class="welcome-features">
-                    <li>${getTranslation('welcomeFeature1', 'Military-grade AES-256 encryption')}</li>
+                    <li>${getTranslation('welcomeFeature1', 'Industry-standard AES-256 encryption')}</li>
                     <li>${getTranslation('welcomeFeature2', '12 languages supported')}</li>
                     <li>${getTranslation('welcomeFeature3', 'PWA support - install as app')}</li>
                     <li>${getTranslation('welcomeFeature4', 'Optimized performance')}</li>
@@ -9548,7 +9548,7 @@ function showWelcomeMessage() {
                 <h2 class="welcome-section-title">${getTranslation('welcomeGoals', 'Project Goals')}</h2>
                 <ul class="welcome-goals">
                     <li>${getTranslation('welcomeGoal1', 'Maximum privacy - data stays local')}</li>
-                    <li>${getTranslation('welcomeGoal2', 'Security - military-grade encryption')}</li>
+                    <li>${getTranslation('welcomeGoal2', 'Security - industry-standard encryption')}</li>
                     <li>${getTranslation('welcomeGoal3', 'Accessibility - 12 languages')}</li>
                     <li>${getTranslation('welcomeGoal4', 'Universality - works everywhere')}</li>
                     <li>${getTranslation('welcomeGoal5', 'Performance - fast operation')}</li>
@@ -9613,7 +9613,7 @@ function updateWelcomeTranslations() {
         if (aboutTitle) aboutTitle.textContent = t('welcomeAbout') || 'About Local Notes';
         
         const aboutDesc = welcomeMessage.querySelector('.welcome-section:nth-child(2) .welcome-description');
-        if (aboutDesc) aboutDesc.textContent = t('welcomeDescription') || 'Local Notes is a secure web application for creating and storing notes directly in your browser. All data remains on your device with military-grade encryption.';
+        if (aboutDesc) aboutDesc.textContent = t('welcomeDescription') || 'Local Notes is a secure web application for creating and storing notes directly in your browser. All data remains on your device with industry-standard encryption.';
         
         const featuresTitle = welcomeMessage.querySelector('.welcome-section:nth-child(3) .welcome-section-title');
         if (featuresTitle) featuresTitle.textContent = t('welcomeFeatures') || 'Key Features';

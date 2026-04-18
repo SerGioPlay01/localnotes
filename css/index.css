@@ -1472,13 +1472,13 @@ footer a:hover { color: var(--primary-color); }
     }
 
     #notesContainer.default-view .note.has-video {
-        height: auto !important;
-        overflow: visible !important;
+        height: 400px !important;
+        overflow: hidden !important;
     }
 
     #notesContainer.default-view .note.has-video .noteContent {
-        overflow: visible !important;
-        flex: none !important;
+        overflow-y: auto !important;
+        flex: 1 !important;
         margin-top: 0 !important;
     }
 

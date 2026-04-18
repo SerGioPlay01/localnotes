@@ -1,4 +1,4 @@
-﻿// Функция для инициализации языка при загрузке страницы
+// Функция для инициализации языка при загрузке страницы
 function initializeLanguage() {
     // Если язык уже установлен (например, на языковых страницах)
     if (window.currentLang) {
@@ -23,6 +23,11 @@ function changeLanguage(language) {
         .then(data => {
             const langData = data[language];
             
+            // Кешируем все языковые данные в localStorage для офлайн-режима
+            try {
+                localStorage.setItem('langDataCache', JSON.stringify(data));
+            } catch (e) { /* ignore quota errors */ }
+
             // Проверяем, что данные для языка существуют
             if (!langData) {
                 console.warn(`Language data for '${language}' not found, falling back to 'en'`);
@@ -42,6 +47,21 @@ function changeLanguage(language) {
         .catch(err => {
             console.error("Error loading language file:", err);
             console.error("Attempted to load from:", langJsonPath);
+            // Офлайн-режим: восстанавливаем данные из кеша
+            try {
+                const cached = localStorage.getItem('langDataCache');
+                if (cached) {
+                    const data = JSON.parse(cached);
+                    const langData = data[language] || data['en'];
+                    if (langData) {
+                        console.warn('Offline mode: using cached language data for', language);
+                        document.body.setAttribute('data-lang', language);
+                        updateInterface(langData, language);
+                    }
+                }
+            } catch (cacheErr) {
+                console.error('Failed to restore language from cache:', cacheErr);
+            }
         });
 }
 

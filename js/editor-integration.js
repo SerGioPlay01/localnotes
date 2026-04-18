@@ -212,7 +212,8 @@ window.localNotesEditorAPI = {
     }
 
     window.visualViewport.addEventListener('resize', onViewportChange);
-    window.visualViewport.addEventListener('scroll', onViewportChange);
+    // NOTE: не слушаем 'scroll' — на iOS это срабатывает при скролле lne-body
+    // и сбрасывает m.style.top, заставляя модал прыгать
 
     // Hook into modal open/close
     document.addEventListener('DOMContentLoaded', function () {
@@ -233,23 +234,33 @@ window.localNotesEditorAPI = {
 })();
 
 /**
- * Cursor scroll — keeps the caret visible above the keyboard on mobile
+ * Cursor scroll — keeps the caret visible above the keyboard on mobile.
+ *
+ * The tricky case: user scrolls lne-body to the bottom of a long note,
+ * taps somewhere — keyboard opens, shrinks the viewport, and the caret
+ * ends up hidden under the keyboard.  We must re-scroll lne-body AFTER
+ * the keyboard has finished animating (visualViewport resize settles).
  */
 (function () {
     // Only on touch devices
     if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) return;
 
     var PADDING = 24; // px gap between caret and bottom of visible area
-    var rafId = null;
+    var rafId   = null;
+    var timers  = [];
+
+    function clearTimers() {
+        timers.forEach(clearTimeout);
+        timers = [];
+    }
 
     function getCaretRect() {
         var sel = window.getSelection();
         if (!sel || sel.rangeCount === 0) return null;
         var range = sel.getRangeAt(0).cloneRange();
-        range.collapse(true); // collapse to start = caret position
+        range.collapse(true);
         var rects = range.getClientRects();
         if (rects.length > 0) return rects[0];
-        // Fallback: bounding rect of the container
         var node = range.startContainer;
         if (node.nodeType === 3) node = node.parentElement;
         return node ? node.getBoundingClientRect() : null;
@@ -265,26 +276,24 @@ window.localNotesEditorAPI = {
         var caretRect = getCaretRect();
         if (!caretRect) return;
 
-        // Bottom of the visual viewport (accounts for keyboard)
-        var vvBottom = window.visualViewport
-            ? window.visualViewport.offsetTop + window.visualViewport.height
-            : window.innerHeight;
+        // Use visualViewport when available — it reflects the area above the keyboard
+        var vv = window.visualViewport;
+        var vvTop    = vv ? vv.offsetTop            : 0;
+        var vvBottom = vv ? vv.offsetTop + vv.height : window.innerHeight;
 
-        var toolbar = modal.querySelector('.lne-toolbar');
+        var toolbar       = modal.querySelector('.lne-toolbar');
         var toolbarBottom = toolbar ? toolbar.getBoundingClientRect().bottom : 0;
 
         var caretBottom = caretRect.bottom;
         var caretTop    = caretRect.top;
 
-        // Caret is below the visible area (hidden under keyboard)
+        // Caret hidden under keyboard (or too close to bottom)
         if (caretBottom + PADDING > vvBottom) {
-            var overflow = caretBottom + PADDING - vvBottom;
-            body.scrollTop += overflow;
+            body.scrollTop += (caretBottom + PADDING - vvBottom);
         }
-        // Caret is above the toolbar (scrolled too far up)
+        // Caret scrolled above toolbar
         else if (caretTop < toolbarBottom + PADDING) {
-            var overflow2 = toolbarBottom + PADDING - caretTop;
-            body.scrollTop -= overflow2;
+            body.scrollTop -= (toolbarBottom + PADDING - caretTop);
         }
     }
 
@@ -293,17 +302,20 @@ window.localNotesEditorAPI = {
         rafId = requestAnimationFrame(scrollCaretIntoView);
     }
 
+    // Re-check after keyboard animation completes (fires at multiple points
+    // because different devices animate the keyboard at different speeds)
+    function scheduleScrollDelayed() {
+        clearTimers();
+        [80, 200, 400].forEach(function (ms) {
+            timers.push(setTimeout(scrollCaretIntoView, ms));
+        });
+    }
+
     document.addEventListener('selectionchange', scheduleScroll);
     document.addEventListener('input', scheduleScroll, true);
 
-    // When the keyboard opens/resizes the viewport, re-check caret position.
-    // This is the main fix: keyboard appears AFTER selectionchange fires,
-    // so we need to scroll again once the viewport settles.
+    // KEY FIX: keyboard opens → visualViewport shrinks → scroll caret into view
     if (window.visualViewport) {
-        window.visualViewport.addEventListener('resize', function () {
-            // Fire at 100ms and again at 300ms to cover slow keyboard animations
-            setTimeout(scrollCaretIntoView, 100);
-            setTimeout(scrollCaretIntoView, 300);
-        });
+        window.visualViewport.addEventListener('resize', scheduleScrollDelayed);
     }
 })();

@@ -475,11 +475,45 @@ class LocalNotesEditor {
         this.ed.addEventListener('paste',     function(e) { self._onPaste(e); });
         this.ed.addEventListener('drop',      function(e) { self._onDrop(e); });
         this.ed.addEventListener('keydown',   function(e) { self._onKey(e); });
+        // Mobile virtual keyboards fire 'beforeinput' instead of reliable keydown
+        this.ed.addEventListener('beforeinput', function(e) {
+            if (e.inputType === 'deleteContentBackward' || e.inputType === 'deleteContentForward') {
+                if (self._tryRemoveEmptyChecklist()) { e.preventDefault(); }
+            }
+        });
         this.ed.addEventListener('mouseup',   function() { self._saveRange(); self._syncState(); });
         this.ed.addEventListener('keyup',     function() { self._saveRange(); self._syncState(); });
         this.ed.addEventListener('click',     function() { self._saveRange(); self._syncState(); });
         this.ed.addEventListener('input',     function() { self._saveSnap(); self._updateStatusbar(); });
         this.ed.addEventListener('focus',     function() { if (!self.ed.innerHTML) self.ed.innerHTML = '<p><br></p>'; });
+    }
+
+    // Shared backspace logic — works for both keydown and mobile beforeinput
+    _tryRemoveEmptyChecklist() {
+        var sel = window.getSelection();
+        var n = sel && sel.anchorNode;
+        if (n && n.nodeType === 3) n = n.parentNode;
+        var clWrapper = n && n.closest && n.closest('.checklist-item-wrapper');
+        if (!clWrapper) return false;
+        var textSpan = clWrapper.querySelector('.checklist-text-content');
+        var descArea = clWrapper.querySelector('.checklist-desc');
+        var textEmpty = !textSpan || textSpan.textContent.trim() === '';
+        var descEmpty = !descArea || descArea.textContent.trim() === '';
+        if (textEmpty && descEmpty) {
+            this._saveSnap();
+            var sibling = clWrapper.nextElementSibling || clWrapper.previousElementSibling;
+            clWrapper.remove();
+            if (sibling) {
+                var focusTarget = sibling.querySelector('.checklist-text-content') || sibling;
+                var range = document.createRange();
+                range.selectNodeContents(focusTarget);
+                range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+            return true;
+        }
+        return false;
     }
 
     _onKey(e) {
@@ -529,31 +563,7 @@ class LocalNotesEditor {
         }
         // Backspace/Delete inside checklist item — remove wrapper if text is empty
         if (e.key === 'Backspace' || e.key === 'Delete') {
-            var sel2 = window.getSelection();
-            var n2 = sel2 && sel2.anchorNode;
-            if (n2 && n2.nodeType === 3) n2 = n2.parentNode;
-            var clWrapper = n2 && n2.closest && n2.closest('.checklist-item-wrapper');
-            if (clWrapper) {
-                var textSpan2 = clWrapper.querySelector('.checklist-text-content');
-                var descArea2 = clWrapper.querySelector('.checklist-desc');
-                var textEmpty = !textSpan2 || textSpan2.textContent.trim() === '';
-                var descEmpty = !descArea2 || descArea2.textContent.trim() === '';
-                if (textEmpty && descEmpty) {
-                    e.preventDefault();
-                    this._saveSnap();
-                    var next2 = clWrapper.nextElementSibling || clWrapper.previousElementSibling;
-                    clWrapper.remove();
-                    if (next2) {
-                        var focusTarget = next2.querySelector('.checklist-text-content') || next2;
-                        var range2 = document.createRange();
-                        range2.selectNodeContents(focusTarget);
-                        range2.collapse(false);
-                        sel2.removeAllRanges();
-                        sel2.addRange(range2);
-                    }
-                    return;
-                }
-            }
+            if (this._tryRemoveEmptyChecklist()) { e.preventDefault(); return; }
         }
         // Tab inside editor → indent
         if (e.key === 'Tab') { e.preventDefault(); this._saveSnap(); document.execCommand(e.shiftKey ? 'outdent' : 'indent'); }

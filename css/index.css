@@ -217,7 +217,7 @@ body {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
 }
-.app-notes { width: 95%; }
+.app-notes { width: 95%; box-sizing: border-box; }
 .center_nav { position: sticky; top: 0; width: 100%; background: var(--header-bg); z-index: 10; }
 .sticky {
     display: flex;
@@ -399,9 +399,15 @@ body {
 
 /* ===== ЗАМЕТКИ ===== */
 #notesContainer {
+    width: 100%;
+    box-sizing: border-box;
     margin-top: 20px;
     margin-bottom: 5%;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notes_center {
+    width: 100%;
 }
 
 /* Режим сетки (по умолчанию) */

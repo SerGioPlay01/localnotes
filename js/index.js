@@ -588,7 +588,6 @@ class AdvancedEncryption {
                 reject(new Error('Worker timeout'));
             }, 60000);
             const handler = ({ data }) => {
-                if (data.id === '_dbg') { console.info('[worker dbg]', data.msg); return; }
                 if (data.id !== id) return;
                 worker.removeEventListener('message', handler);
                 clearTimeout(timer);
@@ -630,7 +629,6 @@ class AdvancedEncryption {
         try {
             return await this._decryptMainThread(encData, password, originInfo);
         } catch (mainErr) {
-            console.error('[decrypt fallback error]', mainErr.message);
             throw mainErr;
         }
     }

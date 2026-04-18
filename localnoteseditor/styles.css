@@ -1,5 +1,5 @@
 /* LocalNotesEditor — Professional Rich Text Editor Styles */
-@import url('/localnoteseditor/bootstrap-icons/font/bootstrap-icons.css');
+/* bootstrap-icons loaded directly in <head> for all pages */
 
 /* ═══════════════════════════ WRAPPER ══════════════════════════════════ */
 .lne-wrapper {

@@ -232,7 +232,25 @@ function showTagEditModal(tag, onCreated) {
         });
     });
 
-    const close = () => { if (modal.parentNode) document.body.removeChild(modal); };
+    const close = () => { 
+        if (window.visualViewport) window.visualViewport.removeEventListener('resize', onVpResize);
+        if (modal.parentNode) document.body.removeChild(modal); 
+    };
+
+    const lneModal = modal.querySelector('.lne-modal');
+    const onVpResize = function() {
+        var vv = window.visualViewport;
+        if (!vv || !lneModal) return;
+        var keyboardHeight = window.innerHeight - vv.height - vv.offsetTop;
+        if (keyboardHeight > 50) {
+            lneModal.style.marginBottom = keyboardHeight + 'px';
+            lneModal.style.maxHeight = (vv.height * 0.92) + 'px';
+        } else {
+            lneModal.style.marginBottom = '';
+            lneModal.style.maxHeight = '';
+        }
+    };
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', onVpResize);
     modal.querySelector('.lne-mclose').addEventListener('click', close);
     modal.querySelector('.lne-mcancel').addEventListener('click', close);
     modal.querySelector('.lne-mok').addEventListener('click', async () => {

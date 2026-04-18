@@ -1,4 +1,4 @@
-п»ї<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="bg">
 
 <head>
@@ -45,13 +45,13 @@
     <!-- viewport-fit=cover is critical for iOS safe-area support -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     
-    <!-- ===== iOS PWA вЂ” РџРћР›РќРћР­РљР РђРќРќР«Р™ Р Р•Р–РРњ ===== -->
-    <!-- РЈР±РёСЂР°РµС‚ Р±СЂР°СѓР·РµСЂРЅС‹Р№ UI РїСЂРё РґРѕР±Р°РІР»РµРЅРёРё РЅР° РґРѕРјР°С€РЅРёР№ СЌРєСЂР°РЅ -->
+    <!-- ===== iOS PWA — ПОЛНОЭКРАННЫЙ РЕЖИМ ===== -->
+    <!-- Убирает браузерный UI при добавлении на домашний экран -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- black-translucent: СЃС‚Р°С‚СѓСЃ-Р±Р°СЂ РїСЂРѕР·СЂР°С‡РЅС‹Р№, РєРѕРЅС‚РµРЅС‚ СѓС…РѕРґРёС‚ РїРѕРґ РЅРµРіРѕ (РєРѕРјРїРµРЅСЃРёСЂСѓРµРј С‡РµСЂРµР· safe-area) -->
+    <!-- black-translucent: статус-бар прозрачный, контент уходит под него (компенсируем через safe-area) -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Local Notes">
-    <!-- РћС‚РєР»СЋС‡Р°РµРј Р°РІС‚РѕРѕРїСЂРµРґРµР»РµРЅРёРµ С‚РµР»РµС„РѕРЅРЅС‹С… РЅРѕРјРµСЂРѕРІ -->
+    <!-- Отключаем автоопределение телефонных номеров -->
     <meta name="format-detection" content="telephone=no">
 
     <!-- PWA / Android -->
@@ -62,47 +62,47 @@
     <meta name="msapplication-navbutton-color" content="#0a0a0a">
 
     <!-- ===== iOS SPLASH SCREENS (Launch Images) ===== -->
-    <!-- iPhone SE (1st gen) / iPod Touch 5th gen вЂ” 640Г—1136 -->
+    <!-- iPhone SE (1st gen) / iPod Touch 5th gen — 640?1136 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../resources/splash/splash-640x1136.png">
-    <!-- iPhone 6/7/8 вЂ” 750Г—1334 -->
+    <!-- iPhone 6/7/8 — 750?1334 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../resources/splash/splash-750x1334.png">
-    <!-- iPhone 6+/7+/8+ вЂ” 1242Г—2208 -->
+    <!-- iPhone 6+/7+/8+ — 1242?2208 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../resources/splash/splash-1242x2208.png">
-    <!-- iPhone X/XS/11 Pro вЂ” 1125Г—2436 -->
+    <!-- iPhone X/XS/11 Pro — 1125?2436 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../resources/splash/splash-1125x2436.png">
-    <!-- iPhone XR/11 вЂ” 828Г—1792 -->
+    <!-- iPhone XR/11 — 828?1792 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../resources/splash/splash-828x1792.png">
-    <!-- iPhone XS Max/11 Pro Max вЂ” 1242Г—2688 -->
+    <!-- iPhone XS Max/11 Pro Max — 1242?2688 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../resources/splash/splash-1242x2688.png">
-    <!-- iPhone 12/13/14 mini вЂ” 1080Г—2340 -->
+    <!-- iPhone 12/13/14 mini — 1080?2340 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 360px) and (device-height: 780px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../resources/splash/splash-1080x2340.png">
-    <!-- iPhone 12/13/14 вЂ” 1170Г—2532 -->
+    <!-- iPhone 12/13/14 — 1170?2532 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../resources/splash/splash-1170x2532.png">
-    <!-- iPhone 12/13/14 Pro Max вЂ” 1284Г—2778 -->
+    <!-- iPhone 12/13/14 Pro Max — 1284?2778 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../resources/splash/splash-1284x2778.png">
-    <!-- iPhone 14 Pro вЂ” 1179Г—2556 -->
+    <!-- iPhone 14 Pro — 1179?2556 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../resources/splash/splash-1179x2556.png">
-    <!-- iPhone 14 Pro Max / 15 Pro Max вЂ” 1290Г—2796 -->
+    <!-- iPhone 14 Pro Max / 15 Pro Max — 1290?2796 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../resources/splash/splash-1290x2796.png">
-    <!-- iPhone 15 / 16 вЂ” 1179Г—2556 -->
+    <!-- iPhone 15 / 16 — 1179?2556 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../resources/splash/splash-1179x2556.png">
-    <!-- iPhone 16 Pro вЂ” 1206Г—2622 -->
+    <!-- iPhone 16 Pro — 1206?2622 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../resources/splash/splash-1206x2622.png">
-    <!-- iPhone 16 Pro Max вЂ” 1320Г—2868 -->
+    <!-- iPhone 16 Pro Max — 1320?2868 -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="../resources/splash/splash-1320x2868.png">
-    <!-- iPad Mini вЂ” 768Г—1024 @2x -->
+    <!-- iPad Mini — 768?1024 @2x -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../resources/splash/splash-1536x2048.png">
-    <!-- iPad Air / iPad 9th gen вЂ” 820Г—1180 @2x -->
+    <!-- iPad Air / iPad 9th gen — 820?1180 @2x -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../resources/splash/splash-1640x2360.png">
-    <!-- iPad Pro 11" вЂ” 834Г—1194 @2x -->
+    <!-- iPad Pro 11" — 834?1194 @2x -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../resources/splash/splash-1668x2388.png">
-    <!-- iPad Pro 12.9" вЂ” 1024Г—1366 @2x -->
+    <!-- iPad Pro 12.9" — 1024?1366 @2x -->
     <link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="../resources/splash/splash-2048x2732.png">
 
-    <!-- SEO Meta Tags вЂ” Р‘СЉР»РіР°СЂСЃРєРё -->
-    <title>Local Notes вЂ” РЎРёРіСѓСЂРЅРё Р±РµР»РµР¶РєРё РІ Р±СЂР°СѓР·СЉСЂР° | РљСЂРёРїС‚РёСЂР°РЅРµ AES-256</title>
-    <meta name="description" content="Local Notes вЂ” Р±РµР·РїР»Р°С‚РЅРѕ РїСЂРёР»РѕР¶РµРЅРёРµ Р·Р° Р±РµР»РµР¶РєРё СЃ РєСЂРёРїС‚РёСЂР°РЅРµ AES-256, РїРѕРґРґСЂСЉР¶РєР° РЅР° 12 РµР·РёРєР° Рё РѕС„Р»Р°Р№РЅ СЂРµР¶РёРј. РЎСЉР·РґР°РІР°Р№С‚Рµ, СЃСЉС…СЂР°РЅСЏРІР°Р№С‚Рµ Рё РµРєСЃРїРѕСЂС‚РёСЂР°Р№С‚Рµ Р±РµР»РµР¶РєРё РґРёСЂРµРєС‚РЅРѕ РІ Р±СЂР°СѓР·СЉСЂР°. Р‘РµР· СЂРµРіРёСЃС‚СЂР°С†РёСЏ Рё СЃСЉСЂРІСЉСЂ.">
-    <meta name="keywords" content="Р»РѕРєР°Р»РЅРё Р±РµР»РµР¶РєРё, СЃРёРіСѓСЂРЅРё Р±РµР»РµР¶РєРё, Р±РµР»РµР¶РєРё РІ Р±СЂР°СѓР·СЉСЂР°, РїСЂРёР»РѕР¶РµРЅРёРµ Р·Р° Р±РµР»РµР¶РєРё, РєСЂРёРїС‚РёСЂР°РЅРё Р±РµР»РµР¶РєРё, РѕС„Р»Р°Р№РЅ Р±РµР»РµР¶РєРё, AES-256, РїРѕРІРµСЂРёС‚РµР»РЅРѕСЃС‚, РїСЂРѕРґСѓРєС‚РёРІРЅРѕСЃС‚, СѓРµР± Р±РµР»РµР¶РєРё, PWA">
+    <!-- SEO Meta Tags — Български -->
+    <title>Local Notes — Сигурни бележки в браузъра | Криптиране AES-256</title>
+    <meta name="description" content="Local Notes — безплатно приложение за бележки с криптиране AES-256, поддръжка на 12 езика и офлайн режим. Създавайте, съхранявайте и експортирайте бележки директно в браузъра. Без регистрация и сървър.">
+    <meta name="keywords" content="локални бележки, сигурни бележки, бележки в браузъра, приложение за бележки, криптирани бележки, офлайн бележки, AES-256, поверителност, продуктивност, уеб бележки, PWA">
     <meta name="author" content="SerGio Play">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -120,27 +120,27 @@
     <link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/">
     <link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/">
     <link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/">
-    <meta property="og:title" content="рџ“ќ Local Notes вЂ” РЎРёРіСѓСЂРЅРё Р±РµР»РµР¶РєРё СЃ РєСЂРёРїС‚РёСЂР°РЅРµ AES-256">
+    <meta property="og:title" content="?? Local Notes — Сигурни бележки с криптиране AES-256">
     <meta property="og:site_name" content="Local Notes">
     <meta property="og:url" content="https://localnotes-three.vercel.app/bg/">
-    <meta property="og:description" content="рџ”’ Р‘РµР·РїР»Р°С‚РЅРѕ РїСЂРёР»РѕР¶РµРЅРёРµ Р·Р° Р±РµР»РµР¶РєРё СЃ РєСЂРёРїС‚РёСЂР°РЅРµ AES-256, РїРѕРґРґСЂСЉР¶РєР° РЅР° 12 РµР·РёРєР° Рё РѕС„Р»Р°Р№РЅ СЂРµР¶РёРј. Р‘РµР· СЂРµРіРёСЃС‚СЂР°С†РёСЏ Рё СЃСЉСЂРІСЉСЂ.">
+    <meta property="og:description" content="?? Безплатно приложение за бележки с криптиране AES-256, поддръжка на 12 езика и офлайн режим. Без регистрация и сървър.">
     <meta property="og:image" content="https://localnotes-three.vercel.app/resources/obl_web_bg.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Local Notes вЂ” РЎРёРіСѓСЂРЅРѕ РїСЂРёР»РѕР¶РµРЅРёРµ Р·Р° Р±РµР»РµР¶РєРё">
+    <meta property="og:image:alt" content="Local Notes — Сигурно приложение за бележки">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="bg_BG">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="рџ“ќ Local Notes вЂ” РЎРёРіСѓСЂРЅРё Р±РµР»РµР¶РєРё СЃ РєСЂРёРїС‚РёСЂР°РЅРµ AES-256">
-    <meta name="twitter:description" content="рџ”’ Р‘РµР·РїР»Р°С‚РЅРѕ РїСЂРёР»РѕР¶РµРЅРёРµ Р·Р° Р±РµР»РµР¶РєРё СЃ РєСЂРёРїС‚РёСЂР°РЅРµ AES-256, РїРѕРґРґСЂСЉР¶РєР° РЅР° 12 РµР·РёРєР° Рё РѕС„Р»Р°Р№РЅ СЂРµР¶РёРј.">
+    <meta name="twitter:title" content="?? Local Notes — Сигурни бележки с криптиране AES-256">
+    <meta name="twitter:description" content="?? Безплатно приложение за бележки с криптиране AES-256, поддръжка на 12 езика и офлайн режим.">
     <meta name="twitter:image" content="https://localnotes-three.vercel.app/resources/obl_web_bg.jpg">
-    <meta name="twitter:image:alt" content="Local Notes вЂ” РЎРёРіСѓСЂРЅРѕ РїСЂРёР»РѕР¶РµРЅРёРµ Р·Р° Р±РµР»РµР¶РєРё">
+    <meta name="twitter:image:alt" content="Local Notes — Сигурно приложение за бележки">
 
     <!-- Enhanced Open Graph Meta Tags -->
-    <meta property="og:title" content="рџ“ќ Local Notes - Secure Note Taking App | AES-256 Encryption & 12 Languages">
+    <meta property="og:title" content="?? Local Notes - Secure Note Taking App | AES-256 Encryption & 12 Languages">
     <meta property="og:site_name" content="Local Notes">
     <meta property="og:url" content="https://localnotes-three.vercel.app/">
-    <meta property="og:description" content="рџ”’ Secure note-taking app with AES-256 encryption, 12 languages support, offline functionality. Create, store, and export notes directly in your browser. Free, private, and fast. No registration required!">
+    <meta property="og:description" content="?? Secure note-taking app with AES-256 encryption, 12 languages support, offline functionality. Create, store, and export notes directly in your browser. Free, private, and fast. No registration required!">
     <meta property="og:image" content="https://localnotes-three.vercel.app/resources/obl_web.jpg">
     <meta property="og:image:secure_url" content="https://localnotes-three.vercel.app/resources/obl_web.jpg">
     <meta property="og:image:width" content="1200">
@@ -187,8 +187,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@LocalNotesApp">
     <meta name="twitter:creator" content="@SerGioPlay">
-    <meta name="twitter:title" content="рџ“ќ Local Notes - Secure Note Taking App | AES-256 Encryption & 12 Languages">
-    <meta name="twitter:description" content="рџ”’ Secure note-taking app with AES-256 encryption, 12 languages support, offline functionality. Create, store, and export notes directly in your browser. Free, private, and fast. No registration required!">
+    <meta name="twitter:title" content="?? Local Notes - Secure Note Taking App | AES-256 Encryption & 12 Languages">
+    <meta name="twitter:description" content="?? Secure note-taking app with AES-256 encryption, 12 languages support, offline functionality. Create, store, and export notes directly in your browser. Free, private, and fast. No registration required!">
     <meta name="twitter:image" content="https://localnotes-three.vercel.app/resources/obl_web.jpg">
     <meta name="twitter:image:alt" content="Local Notes - Secure Note Taking Application with AES-256 Encryption">
     <meta name="twitter:domain" content="localnotes-three.vercel.app">
@@ -235,7 +235,7 @@
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "Local Notes",
-        "alternateName": "Р›РѕРєР°Р»СЊРЅС‹Рµ Р·Р°РјРµС‚РєРё",
+        "alternateName": "Локальные заметки",
         "description": "Secure note-taking application with AES-256 encryption, multi-language support, and offline functionality",
         "url": "https://localnotes-three.vercel.app/",
         "applicationCategory": "ProductivityApplication",
@@ -407,12 +407,12 @@
                 
                 // Check if user agent contains Cyrillic or Russian-specific strings
                 if (userAgent.includes('ru-RU') || userAgent.includes('ru_ru') || 
-                    userAgent.includes('Russian') || userAgent.includes('Р СѓСЃСЃРєРёР№')) {
+                    userAgent.includes('Russian') || userAgent.includes('Русский')) {
                     return 'ru';
                 }
                 
                 if (userAgent.includes('uk-UA') || userAgent.includes('uk_ua') || 
-                    userAgent.includes('Ukrainian') || userAgent.includes('РЈРєСЂР°С—РЅСЃСЊРєР°')) {
+                    userAgent.includes('Ukrainian') || userAgent.includes('Українська')) {
                     return 'ua';
                 }
             } catch (e) {
@@ -436,7 +436,7 @@
             // Clear console and show beautiful project information
             console.clear();
             
-            // Р¤РёР»СЊС‚СЂСѓРµРј РЅРµР¶РµР»Р°С‚РµР»СЊРЅС‹Рµ Р»РѕРіРё
+            // Фильтруем нежелательные логи
             const originalLog = console.log;
             const originalWarn = console.warn;
             const originalError = console.error;
@@ -458,8 +458,8 @@
                 /\[GET_CSS\]/,
                 /content-scripts\.js/,
                 /Loading the (font|script)/,
-                /вњ…/,
-                /вќЊ/,
+                /?/,
+                /?/,
                 /Live reload/,
                 /Google Analytics script failed/,
                 /Initializing language/,
@@ -491,39 +491,39 @@
             
             // ASCII Art Banner
             originalLog('%c' + 
-                'в•”в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•—\n' +
-                'в•‘                                                           в•‘\n' +
-                'в•‘              рџ“ќ  LOCAL NOTES - SECURE NOTES  рџ“ќ            в•‘\n' +
-                'в•‘                                                           в•‘\n' +
-                'в•љв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ќ',
+                'г===========================================================¬\n' +
+                '¦                                                           ¦\n' +
+                '¦              ??  LOCAL NOTES - SECURE NOTES  ??            ¦\n' +
+                '¦                                                           ¦\n' +
+                'L===========================================================-',
                 'color: #4CAF50; font-weight: bold; font-size: 12px; font-family: monospace;'
             );
             
-            originalLog('%c\nрџ”ђ SECURITY', 'color: #FF5722; font-size: 16px; font-weight: bold;');
-            originalLog('%c   вњ“ AES-256 industry-standard encryption', 'color: #666; font-size: 12px;');
-            originalLog('%c   вњ“ All data stored locally', 'color: #666; font-size: 12px;');
-            originalLog('%c   вњ“ No data sent to servers', 'color: #666; font-size: 12px;');
+            originalLog('%c\n?? SECURITY', 'color: #FF5722; font-size: 16px; font-weight: bold;');
+            originalLog('%c   ? AES-256 industry-standard encryption', 'color: #666; font-size: 12px;');
+            originalLog('%c   ? All data stored locally', 'color: #666; font-size: 12px;');
+            originalLog('%c   ? No data sent to servers', 'color: #666; font-size: 12px;');
             
-            originalLog('%c\nрџЊЌ FEATURES', 'color: #2196F3; font-size: 16px; font-weight: bold;');
-            originalLog('%c   вњ“ 12 interface languages', 'color: #666; font-size: 12px;');
-            originalLog('%c   вњ“ PWA - works as an app', 'color: #666; font-size: 12px;');
-            originalLog('%c   вњ“ Offline mode', 'color: #666; font-size: 12px;');
-            originalLog('%c   вњ“ LocalNotesEditor - rich text editing', 'color: #666; font-size: 12px;');
-            originalLog('%c   вњ“ Search with transliteration', 'color: #666; font-size: 12px;');
+            originalLog('%c\n?? FEATURES', 'color: #2196F3; font-size: 16px; font-weight: bold;');
+            originalLog('%c   ? 12 interface languages', 'color: #666; font-size: 12px;');
+            originalLog('%c   ? PWA - works as an app', 'color: #666; font-size: 12px;');
+            originalLog('%c   ? Offline mode', 'color: #666; font-size: 12px;');
+            originalLog('%c   ? LocalNotesEditor - rich text editing', 'color: #666; font-size: 12px;');
+            originalLog('%c   ? Search with transliteration', 'color: #666; font-size: 12px;');
             
-            originalLog('%c\nрџ“Љ INFORMATION', 'color: #9C27B0; font-size: 16px; font-weight: bold;');
+            originalLog('%c\n?? INFORMATION', 'color: #9C27B0; font-size: 16px; font-weight: bold;');
             originalLog('%c   Version:  1.0.3', 'color: #666; font-size: 12px;');
             originalLog('%c   Author:   SerGio Play', 'color: #666; font-size: 12px;');
             originalLog('%c   Website:  https://localnotes-three.vercel.app/', 'color: #666; font-size: 12px;');
             originalLog('%c   GitHub:   https://github.com/SerGioPlay01/localnotes', 'color: #666; font-size: 12px;');
             
-            originalLog('%c\nрџ’Ў TIP', 'color: #FF9800; font-size: 16px; font-weight: bold;');
+            originalLog('%c\n?? TIP', 'color: #FF9800; font-size: 16px; font-weight: bold;');
             originalLog('%c   Use search with transliteration for convenient searching!', 'color: #666; font-size: 12px;');
-            originalLog('%c   Cyrillic в†” Latin automatically', 'color: #666; font-size: 12px;');
+            originalLog('%c   Cyrillic - Latin automatically', 'color: #666; font-size: 12px;');
             
-            originalLog('%c\n' + 'в•ђ'.repeat(63) + '\n', 'color: #4CAF50; font-weight: bold;');
+            originalLog('%c\n' + '='.repeat(63) + '\n', 'color: #4CAF50; font-weight: bold;');
             
-            // РћР±РЅРѕРІР»СЏРµРј С‚РµРєСЃС‚ РєРЅРѕРїРѕРє РїРѕСЃР»Рµ Р·Р°РіСЂСѓР·РєРё СЃС‚СЂР°РЅРёС†С‹
+            // Обновляем текст кнопок после загрузки страницы
             if (typeof updateButtonTexts === 'function') {
                 setTimeout(updateButtonTexts, 200);
             }
@@ -643,14 +643,14 @@
             <strong>Local Notes</strong>
             <span id="ln-install-hint">Tap <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> then "Add to Home Screen"</span>
         </div>
-        <button class="ln-install-banner-close" id="ln-install-close" aria-label="Close">вњ•</button>
+        <button class="ln-install-banner-close" id="ln-install-close" aria-label="Close">?</button>
     </div>
 
     <!-- Header section - full width -->
     <div class="info-app">
         <span class="logo"></span>
-        <h1 class="name-app">Р›РѕРєР°Р»РЅРё Р±РµР»РµР¶РєРё</h1>
-        <a href="/bg/beta.html" class="beta-badge" aria-label="РРЅС„РѕСЂРјР°С†РёСЏ Р·Р° Р±РµС‚Р° РІРµСЂСЃРёСЏС‚Р°">BETA</a>
+        <h1 class="name-app">Локални бележки</h1>
+        <a href="/bg/beta.html" class="beta-badge" aria-label="Информация за бета версията">BETA</a>
     </div>
 
     <!-- Navigation section - full width -->
@@ -664,7 +664,7 @@
                 <button id="quickEditToggle"><i class="fas fa-bolt"></i> Quick Edit</button>
                 <input multiple type="file" id="importInput" accept=".note,.html,.md">
             </div>
-            <input type="text" id="searchInput" autocomplete="off" placeholder="РўСЉСЂСЃРµРЅРµ РЅР° Р±РµР»РµР¶РєРё... (#С‚Р°Рі)">
+            <input type="text" id="searchInput" autocomplete="off" placeholder="Търсене на бележки... (#таг)">
         </section>
     </div>
 
@@ -763,7 +763,7 @@
                 loadScriptsSequentially(scripts, index + 1);
             };
             script.onerror = () => {
-                console.error(`вќЊ Failed to load: ${scripts[index]}`);
+                console.error(`? Failed to load: ${scripts[index]}`);
                 loadScriptsSequentially(scripts, index + 1);
             };
             document.head.appendChild(script);
@@ -789,6 +789,7 @@
     
     <!-- Service Worker + PWA Modal -->
     <script src="../js/pwa.js?v=1.1.2"></script>
+    <script src="../js/network-mode.js?v=1.1.2"></script>
 
     <!-- Universal Cookies Banner -->
     <script src="../cookies_banner_universal/cookies-banner.js"></script>

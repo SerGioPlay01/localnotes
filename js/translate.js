@@ -145,6 +145,11 @@ function updateInterface(langData, language) {
 
     // Обновляем текст кнопок с иконками
     updateButtonTexts();
+
+    // Обновляем метки переключателя сети
+    if (typeof window.lnNetworkModeRefreshLabels === 'function') {
+        window.lnNetworkModeRefreshLabels();
+    }
     
     // Обновляем отображение дат при смене языка
     if (typeof refreshAllDates === 'function' && typeof notesDatabase !== 'undefined' && notesDatabase) {

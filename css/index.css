@@ -1307,6 +1307,91 @@ footer a:hover { color: var(--primary-color); }
 .info-about-project, .footer-content { width: 90%; text-align: left; padding: 20px; line-height: 1.6;}
 .footer-content { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 
+/* ══════════════════ NETWORK MODE TOGGLE ══════════════════ */
+.ln-net-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  user-select: none;
+  transition: background 0.25s;
+}
+.ln-net-toggle:hover { background: rgba(255,255,255,0.07); }
+
+/* labels */
+.ln-net-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: color 0.3s, opacity 0.3s;
+  color: var(--footer-text);
+  opacity: 0.4;
+}
+.ln-net-label svg { flex-shrink: 0; }
+
+/* active label highlight */
+.ln-net-toggle[data-mode="offline"] .ln-net-label--offline { opacity: 1; color: #f87171; }
+.ln-net-toggle[data-mode="online"]  .ln-net-label--online  { opacity: 1; color: var(--primary-color, #aefc6e); }
+
+/* switch track */
+.ln-net-switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  padding: 0 3px;
+  background: #f87171;
+  transition: background 0.35s cubic-bezier(.4,0,.2,1);
+  flex-shrink: 0;
+  outline-offset: 3px;
+}
+.ln-net-switch[aria-checked="true"] {
+  background: var(--primary-color, #aefc6e);
+  justify-content: flex-end;
+}
+
+/* thumb */
+.ln-net-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1),
+              width 0.15s cubic-bezier(.4,0,.2,1),
+              box-shadow 0.2s;
+  flex-shrink: 0;
+}
+.ln-net-switch[aria-checked="true"] .ln-net-thumb {
+  box-shadow: 0 1px 6px rgba(0,0,0,0.25);
+}
+
+/* ripple on click */
+.ln-net-switch:active .ln-net-thumb {
+  width: 22px;
+}
+
+/* light theme */
+[data-theme="light"] .ln-net-toggle {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.1);
+}
+[data-theme="light"] .ln-net-toggle:hover { background: rgba(0,0,0,0.07); }
+[data-theme="light"] .ln-net-label { color: #444; }
+[data-theme="light"] .ln-net-switch { box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+[data-theme="light"] .ln-net-thumb { background: #fff; }
+/* ═══════════════════════════════════════════════════════════ */
+
 
 /* ===== МОБИЛЬНЫЕ СТИЛИ ДЛЯ ХЕДЕРА И НАВИГАЦИИ ===== */
 

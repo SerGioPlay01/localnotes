@@ -1,4 +1,4 @@
-/**
+﻿/**
  * LocalNotes — Advanced Markdown Support
  * Provides: MD->HTML parser, HTML->MD exporter, live MD mode in editor,
  *           smart paste detection, and improved .md file import.

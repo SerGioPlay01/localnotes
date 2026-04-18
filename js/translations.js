@@ -1,4 +1,4 @@
-// Система переводов для динамического текста
+﻿// Система переводов для динамического текста
 if (typeof translations === 'undefined') {
 const translations = {
     en: {
@@ -290,7 +290,10 @@ const translations = {
         dcmWrongPasswordRetry: "Wrong password — try again",
         dcmEnterPasswordPlaceholder: "Enter password...",
         markdownMode: "Markdown mode  Ctrl+M",
-        exitMarkdownMode: "Exit Markdown mode  Ctrl+M"
+        exitMarkdownMode: "Exit Markdown mode  Ctrl+M",
+        offlineMode: "Offline",
+        onlineMode: "Online",
+        networkModeLabel: "Network mode"
     },
     
     ru: {
@@ -576,7 +579,10 @@ const translations = {
         dcmWrongPasswordRetry: "Неверный пароль — попробуйте снова",
         dcmEnterPasswordPlaceholder: "Введите пароль...",
         markdownMode: "Режим Markdown  Ctrl+M",
-        exitMarkdownMode: "Выйти из режима Markdown  Ctrl+M"
+        exitMarkdownMode: "Выйти из режима Markdown  Ctrl+M",
+        offlineMode: "Офлайн",
+        onlineMode: "Онлайн",
+        networkModeLabel: "Режим сети"
     },
     
     ua: {
@@ -826,7 +832,10 @@ const translations = {
         dcmWrongPasswordRetry: "Невірний пароль — спробуйте знову",
         dcmEnterPasswordPlaceholder: "Введіть пароль...",
         markdownMode: "Режим Markdown  Ctrl+M",
-        exitMarkdownMode: "Вийти з режиму Markdown  Ctrl+M"
+        exitMarkdownMode: "Вийти з режиму Markdown  Ctrl+M",
+        offlineMode: "Офлайн",
+        onlineMode: "Онлайн",
+        networkModeLabel: "Режим мережі"
     },
     
     pl: {
@@ -1057,7 +1066,10 @@ const translations = {
         dcmWrongPasswordRetry: "Złe hasło — spróbuj ponownie",
         dcmEnterPasswordPlaceholder: "Wprowadź hasło...",
         markdownMode: "Tryb Markdown  Ctrl+M",
-        exitMarkdownMode: "Wyjdź z trybu Markdown  Ctrl+M"
+        exitMarkdownMode: "Wyjdź z trybu Markdown  Ctrl+M",
+        offlineMode: "Offline",
+        onlineMode: "Online",
+        networkModeLabel: "Tryb sieci"
     },
     
     cs: {
@@ -1288,7 +1300,10 @@ const translations = {
         dcmWrongPasswordRetry: "Špatné heslo — zkuste znovu",
         dcmEnterPasswordPlaceholder: "Zadejte heslo...",
         markdownMode: "Režim Markdown  Ctrl+M",
-        exitMarkdownMode: "Ukončit režim Markdown  Ctrl+M"
+        exitMarkdownMode: "Ukončit režim Markdown  Ctrl+M",
+        offlineMode: "Offline",
+        onlineMode: "Online",
+        networkModeLabel: "Síťový režim"
     },
     
     sk: {
@@ -1517,7 +1532,10 @@ const translations = {
         dcmWrongPasswordRetry: "Zlé heslo — skúste znova",
         dcmEnterPasswordPlaceholder: "Zadajte heslo...",
         markdownMode: "Režim Markdown  Ctrl+M",
-        exitMarkdownMode: "Ukončiť režim Markdown  Ctrl+M"
+        exitMarkdownMode: "Ukončiť režim Markdown  Ctrl+M",
+        offlineMode: "Offline",
+        onlineMode: "Online",
+        networkModeLabel: "Sieťový režim"
     },
     
     bg: {
@@ -1744,7 +1762,10 @@ const translations = {
         dcmWrongPasswordRetry: "Грешна парола — опитайте отново",
         dcmEnterPasswordPlaceholder: "Въведете парола...",
         markdownMode: "Режим Markdown  Ctrl+M",
-        exitMarkdownMode: "Изход от режим Markdown  Ctrl+M"
+        exitMarkdownMode: "Изход от режим Markdown  Ctrl+M",
+        offlineMode: "Офлайн",
+        onlineMode: "Онлайн",
+        networkModeLabel: "Мрежов режим"
     },
     
     hr: {
@@ -1965,7 +1986,10 @@ const translations = {
         dcmWrongPasswordRetry: "Pogrešna lozinka — pokušajte ponovo",
         dcmEnterPasswordPlaceholder: "Unesite lozinku...",
         markdownMode: "Markdown način  Ctrl+M",
-        exitMarkdownMode: "Izlaz iz Markdown načina  Ctrl+M"
+        exitMarkdownMode: "Izlaz iz Markdown načina  Ctrl+M",
+        offlineMode: "Offline",
+        onlineMode: "Online",
+        networkModeLabel: "Mrežni način"
     },
     
     sr: {
@@ -2182,7 +2206,10 @@ const translations = {
         dcmWrongPasswordRetry: "Погрешна лозинка — покушајте поново",
         dcmEnterPasswordPlaceholder: "Унесите лозинку...",
         markdownMode: "Markdown режим  Ctrl+M",
-        exitMarkdownMode: "Излаз из Markdown режима  Ctrl+M"
+        exitMarkdownMode: "Излаз из Markdown режима  Ctrl+M",
+        offlineMode: "Офлајн",
+        onlineMode: "Онлајн",
+        networkModeLabel: "Мрежни режим"
     },
     
     bs: {
@@ -2403,7 +2430,10 @@ const translations = {
         dcmWrongPasswordRetry: "Pogrešna lozinka — pokušajte ponovo",
         dcmEnterPasswordPlaceholder: "Unesite lozinku...",
         markdownMode: "Markdown način  Ctrl+M",
-        exitMarkdownMode: "Izlaz iz Markdown načina  Ctrl+M"
+        exitMarkdownMode: "Izlaz iz Markdown načina  Ctrl+M",
+        offlineMode: "Offline",
+        onlineMode: "Online",
+        networkModeLabel: "Mrežni način"
     },
     
     mk: {
@@ -2629,7 +2659,10 @@ const translations = {
         dcmWrongPasswordRetry: "Погрешна лозинка — обидете се повторно",
         dcmEnterPasswordPlaceholder: "Внесете лозинка...",
         markdownMode: "Markdown режим  Ctrl+M",
-        exitMarkdownMode: "Излез од Markdown режим  Ctrl+M"
+        exitMarkdownMode: "Излез од Markdown режим  Ctrl+M",
+        offlineMode: "Офлајн",
+        onlineMode: "Онлајн",
+        networkModeLabel: "Мрежен режим"
     },
 
     sl: {
@@ -2845,7 +2878,10 @@ const translations = {
         dcmWrongPasswordRetry: "Napačno geslo — poskusite znova",
         dcmEnterPasswordPlaceholder: "Vnesite geslo...",
         markdownMode: "Markdown način  Ctrl+M",
-        exitMarkdownMode: "Izhod iz Markdown načina  Ctrl+M"
+        exitMarkdownMode: "Izhod iz Markdown načina  Ctrl+M",
+        offlineMode: "Brez povezave",
+        onlineMode: "S povezavo",
+        networkModeLabel: "Omrežni način"
     }
 };
 

@@ -236,9 +236,11 @@ async function decryptFull(encData, password, originInfo) {
     }
 
     // v4
-    const salt   = combined.slice(5,  37);
-    const ivAes  = combined.slice(37, 49);
-    const padLen = new DataView(combined.buffer, combined.byteOffset + 49).getUint16(0, false);
+    const salt    = combined.slice(5,  37);
+    const ivAes   = combined.slice(37, 49);
+    // Читаем padLen напрямую из slice — избегаем проблем с byteOffset
+    const padLenBytes = combined.slice(49, 51);
+    const padLen  = (padLenBytes[0] << 8) | padLenBytes[1];
     const hmacTag = combined.slice(51, 115);
     const withCanary = combined.slice(115);
     if (withCanary.length < 8) throw new Error('Data too short');
@@ -260,6 +262,12 @@ async function decryptFull(encData, password, originInfo) {
     const decBytes = new Uint8Array(decBuf);
     const unshuffled = await blockUnshuffle(shufKey, decBytes);
     const unxored    = await xorStream(xorKey, unshuffled);
+
+    // Диагностика padding
+    const last2 = unxored.slice(-2);
+    const pLen = (last2[0] << 8) | last2[1];
+    self.postMessage({ id: '_dbg', msg: `decBytes=${decBytes.length} unshuffled=${unshuffled.length} unxored=${unxored.length} padLen=${pLen} valid=${pLen>=1&&pLen<=64}` });
+
     const unpadded   = zeroUnpad(unxored);
 
     zeroize(decBytes, unshuffled, unxored);

@@ -587,6 +587,7 @@ class AdvancedEncryption {
                 reject(new Error('Worker timeout'));
             }, 60000);
             const handler = ({ data }) => {
+                if (data.id === '_dbg') { console.info('[worker dbg]', data.msg); return; }
                 if (data.id !== id) return;
                 worker.removeEventListener('message', handler);
                 clearTimeout(timer);
@@ -704,7 +705,8 @@ class AdvancedEncryption {
         let keys = null, decBytes = null, unshuffled = null, unxored = null;
         try {
             const salt = combined.slice(5,37), ivAes = combined.slice(37,49);
-            const padLen = new DataView(combined.buffer, combined.byteOffset+49).getUint16(0, false);
+            const padLenBytes = combined.slice(49, 51);
+            const padLen = (padLenBytes[0] << 8) | padLenBytes[1];
             const hmacTag = combined.slice(51,115), withCanary = combined.slice(115);
             if (withCanary.length < 8) throw new Error('Data too short');
             const cipher = withCanary.slice(0, withCanary.length - 8);

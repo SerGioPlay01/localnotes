@@ -527,6 +527,34 @@ class LocalNotesEditor {
             }
             if (n && n.closest && n.closest('.checklist-item-wrapper')) { e.preventDefault(); this._insertChecklist(); return; }
         }
+        // Backspace/Delete inside checklist item — remove wrapper if text is empty
+        if (e.key === 'Backspace' || e.key === 'Delete') {
+            var sel2 = window.getSelection();
+            var n2 = sel2 && sel2.anchorNode;
+            if (n2 && n2.nodeType === 3) n2 = n2.parentNode;
+            var clWrapper = n2 && n2.closest && n2.closest('.checklist-item-wrapper');
+            if (clWrapper) {
+                var textSpan2 = clWrapper.querySelector('.checklist-text-content');
+                var descArea2 = clWrapper.querySelector('.checklist-desc');
+                var textEmpty = !textSpan2 || textSpan2.textContent.trim() === '';
+                var descEmpty = !descArea2 || descArea2.textContent.trim() === '';
+                if (textEmpty && descEmpty) {
+                    e.preventDefault();
+                    this._saveSnap();
+                    var next2 = clWrapper.nextElementSibling || clWrapper.previousElementSibling;
+                    clWrapper.remove();
+                    if (next2) {
+                        var focusTarget = next2.querySelector('.checklist-text-content') || next2;
+                        var range2 = document.createRange();
+                        range2.selectNodeContents(focusTarget);
+                        range2.collapse(false);
+                        sel2.removeAllRanges();
+                        sel2.addRange(range2);
+                    }
+                    return;
+                }
+            }
+        }
         // Tab inside editor → indent
         if (e.key === 'Tab') { e.preventDefault(); this._saveSnap(); document.execCommand(e.shiftKey ? 'outdent' : 'indent'); }
     }

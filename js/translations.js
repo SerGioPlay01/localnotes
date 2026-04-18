@@ -2919,13 +2919,17 @@ function updateButtonTexts() {
     const okButton = document.getElementById("ok");
     
     if (addNoteButton) {
-        addNoteButton.innerHTML = t("addNote");
+        addNoteButton.innerHTML = `<i class="bi bi-plus-lg"></i> ${t("addNote")}`;
     }
     if (importButton) {
-        importButton.innerHTML = t("importNotes");
+        importButton.innerHTML = `<i class="bi bi-box-arrow-in-down"></i> ${t("importNotes")}`;
     }
     if (clearAllButton) {
-        clearAllButton.innerHTML = t("clearAllNotes");
+        clearAllButton.innerHTML = `<i class="bi bi-trash3"></i> ${t("clearAllNotes")}`;
+    }
+    const quickEditToggle = document.getElementById("quickEditToggle");
+    if (quickEditToggle && !quickEditToggle.classList.contains('active')) {
+        quickEditToggle.innerHTML = `<i class="bi bi-lightning-charge"></i> ${t("quickEditOn") || 'Quick Edit'}`;
     }
     if (toggleViewButton) {
         // Обновляем кнопку переключения вида с правильными переводами
@@ -2933,9 +2937,9 @@ function updateButtonTexts() {
         const isFullWidth = notesContainer && notesContainer.classList.contains("full-width-view");
         
         if (isFullWidth) {
-            toggleViewButton.innerHTML = t("viewModeGrid");
+            toggleViewButton.innerHTML = `<i class="bi bi-grid"></i> ${t("viewModeGrid")}`;
         } else {
-            toggleViewButton.innerHTML = t("viewModeList");
+            toggleViewButton.innerHTML = `<i class="bi bi-list-ul"></i> ${t("viewModeList")}`;
         }
         
         // Принудительно обновляем кнопку через AppUtils, если он доступен
@@ -2950,19 +2954,19 @@ function updateButtonTexts() {
         }
     }
     if (saveNoteButton) {
-        saveNoteButton.innerHTML = `<i class="fas fa-save"></i> ${t("saveNote")}`;
+        saveNoteButton.innerHTML = `<i class="bi bi-floppy"></i> ${t("saveNote")}`;
     }
     if (cancelNoteButton) {
-        cancelNoteButton.innerHTML = `<i class="fas fa-times"></i> ${t("cancel")}`;
+        cancelNoteButton.innerHTML = `<i class="bi bi-x-lg"></i> ${t("cancel")}`;
     }
     if (confirmYesButton) {
-        confirmYesButton.innerHTML = `<i class="fas fa-check"></i> ${t("confirmYes")}`;
+        confirmYesButton.innerHTML = `<i class="bi bi-check-lg"></i> ${t("confirmYes")}`;
     }
     if (confirmNoButton) {
-        confirmNoButton.innerHTML = `<i class="fas fa-times"></i> ${t("confirmNo")}`;
+        confirmNoButton.innerHTML = `<i class="bi bi-x-lg"></i> ${t("confirmNo")}`;
     }
     if (okButton) {
-        okButton.innerHTML = `<i class="fas fa-check"></i> ${t("ok")}`;
+        okButton.innerHTML = `<i class="bi bi-check-lg"></i> ${t("ok")}`;
     }
 
     // Calendar button

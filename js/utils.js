@@ -49,27 +49,20 @@ class AppUtils {
         if (typeof window.t === 'function') {
             try {
                 if (isFullWidth) {
-                    // Текущий режим: полная ширина (список), показываем кнопку для переключения на сетку
-                    const gridText = window.t('viewModeGrid');
-                    btn.innerHTML = `<i class="fas fa-th"></i> ${gridText}`;
+                    btn.innerHTML = `<i class="bi bi-grid"></i> ${window.t('viewModeGrid')}`;
                 } else {
-                    // Текущий режим: сетка, показываем кнопку для переключения на список
-                    const listText = window.t('viewModeList');
-                    btn.innerHTML = `<i class="fas fa-list"></i> ${listText}`;
+                    btn.innerHTML = `<i class="bi bi-list-ul"></i> ${window.t('viewModeList')}`;
                 }
             } catch (error) {
-                // Fallback к старой логике
                 this.useFallbackText(btn, isFullWidth, currentLang);
             }
         } else if (langTranslations && langTranslations.viewModeGrid && langTranslations.viewModeList) {
-            // Используем переводы из объекта
             if (isFullWidth) {
-                btn.innerHTML = `<i class="fas fa-th"></i> ${langTranslations.viewModeGrid}`;
+                btn.innerHTML = `<i class="bi bi-grid"></i> ${langTranslations.viewModeGrid}`;
             } else {
-                btn.innerHTML = `<i class="fas fa-list"></i> ${langTranslations.viewModeList}`;
+                btn.innerHTML = `<i class="bi bi-list-ul"></i> ${langTranslations.viewModeList}`;
             }
         } else {
-            // Fallback для случаев, когда переводы недоступны
             this.useFallbackText(btn, isFullWidth, currentLang);
         }
         
@@ -78,19 +71,13 @@ class AppUtils {
     // Fallback метод для установки текста кнопки
     useFallbackText(btn, isFullWidth, currentLang) {
         if (isFullWidth) {
-            // Текущий режим: список, показываем кнопку для переключения на сетку
-            if (currentLang.startsWith("ru")) {
-                btn.innerHTML = '<i class="fas fa-th"></i> Сетка';
-            } else {
-                btn.innerHTML = '<i class="fas fa-th"></i> Grid';
-            }
+            btn.innerHTML = currentLang.startsWith("ru") 
+                ? '<i class="bi bi-grid"></i> Сетка'
+                : '<i class="bi bi-grid"></i> Grid';
         } else {
-            // Текущий режим: сетка, показываем кнопку для переключения на список
-            if (currentLang.startsWith("ru")) {
-                btn.innerHTML = '<i class="fas fa-list"></i> Список';
-            } else {
-                btn.innerHTML = '<i class="fas fa-list"></i> List';
-            }
+            btn.innerHTML = currentLang.startsWith("ru")
+                ? '<i class="bi bi-list-ul"></i> Список'
+                : '<i class="bi bi-list-ul"></i> List';
         }
     }
     

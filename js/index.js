@@ -514,8 +514,8 @@ function showCustomPrompt(title, message, placeholder = '', defaultValue = '', c
         <div class="modal-content-inner"><h3>${title}</h3><p>${message}</p>
         <input type="${inputType}" id="customPromptInput" placeholder="${placeholder}" value="${isPassword ? '' : escapeHtml(defaultValue)}"></div>
         <div class="modal-buttons-container">
-            <button id="customPromptOk" class="btn"><i class="fas fa-check"></i> ${(typeof t === 'function' ? t('ok') : 'OK')}</button>
-            <button id="customPromptCancel" class="btn cancel"><i class="fas fa-times"></i> ${(typeof t === 'function' ? t('cancel') : 'Cancel')}</button>
+            <button id="customPromptOk" class="btn"><i class="bi bi-check-lg"></i> ${(typeof t === 'function' ? t('ok') : 'OK')}</button>
+            <button id="customPromptCancel" class="btn cancel"><i class="bi bi-x-lg"></i> ${(typeof t === 'function' ? t('cancel') : 'Cancel')}</button>
         </div></div>`;
     document.body.appendChild(modal); modal.style.display = 'block';
     const inp = modal.querySelector('#customPromptInput');
@@ -548,7 +548,7 @@ function showClearAllConfirmationModal() {
     modal.className = 'modal'; modal.style.display = 'block';
     modal.innerHTML = `<div class="modal-content modal-content-warning">
         <div class="modal-content-inner">
-            <h3><i class="fas fa-exclamation-triangle"></i> ${(typeof t === 'function' ? t('confirmDeleteAllTitle') : 'Delete All Notes')}</h3>
+            <h3><i class="bi bi-exclamation-triangle"></i> ${(typeof t === 'function' ? t('confirmDeleteAllTitle') : 'Delete All Notes')}</h3>
             <p>${(typeof t === 'function' ? t('confirmDeleteAll') : 'Delete ALL notes?')}</p>
             <div class="warning-details">
                 <p><strong>⚠️ ${(typeof t === 'function' ? t('warning') : 'Warning')}:</strong> ${(typeof t === 'function' ? t('clearAllWarning') : 'This action is irreversible!')}</p>
@@ -560,8 +560,8 @@ function showClearAllConfirmationModal() {
             </div>
         </div>
         <div class="modal-buttons-container">
-            <button id="confirmClearAllBtn" class="btn cancel"><i class="fas fa-trash"></i> ${(typeof t === 'function' ? t('deleteAll') : 'Delete All')}</button>
-            <button id="cancelClearAllBtn" class="btn save"><i class="fas fa-times"></i> ${(typeof t === 'function' ? t('cancel') : 'Cancel')}</button>
+            <button id="confirmClearAllBtn" class="btn cancel"><i class="bi bi-trash3"></i> ${(typeof t === 'function' ? t('deleteAll') : 'Delete All')}</button>
+            <button id="cancelClearAllBtn" class="btn save"><i class="bi bi-x-lg"></i> ${(typeof t === 'function' ? t('cancel') : 'Cancel')}</button>
         </div></div>`;
     document.body.appendChild(modal);
     document.body.classList.add('modal-open');
@@ -1699,11 +1699,11 @@ function applyQuickEditMode() {
     const btn = document.getElementById('quickEditToggle');
     if (quickEditActive) {
         document.body.classList.add('quick-edit-active');
-        if (btn) { btn.classList.add('active'); btn.innerHTML = typeof t === 'function' ? t('quickEditOff') || 'Quick Edit: ON' : 'Quick Edit: ON'; btn.title = typeof t === 'function' ? t('quickEditOffTitle') || 'Disable quick edit mode' : 'Disable quick edit mode'; }
+        if (btn) { btn.classList.add('active'); btn.innerHTML = `<i class="bi bi-lightning-charge-fill"></i> ${typeof t === 'function' ? t('quickEditOff') || 'Quick Edit: ON' : 'Quick Edit: ON'}`; btn.title = typeof t === 'function' ? t('quickEditOffTitle') || 'Disable quick edit mode' : 'Disable quick edit mode'; }
         document.getElementById('notesContainer')?.querySelectorAll('.note').forEach(el => enableQuickEditOnNote(el));
     } else {
         document.body.classList.remove('quick-edit-active');
-        if (btn) { btn.classList.remove('active'); btn.innerHTML = typeof t === 'function' ? t('quickEditOn') || 'Quick Edit' : 'Quick Edit'; btn.title = typeof t === 'function' ? t('quickEditOnTitle') || 'Enable quick edit mode' : 'Enable quick edit mode'; }
+        if (btn) { btn.classList.remove('active'); btn.innerHTML = `<i class="bi bi-lightning-charge"></i> ${typeof t === 'function' ? t('quickEditOn') || 'Quick Edit' : 'Quick Edit'}`; btn.title = typeof t === 'function' ? t('quickEditOnTitle') || 'Enable quick edit mode' : 'Enable quick edit mode'; }
         document.getElementById('notesContainer')?.querySelectorAll('.note').forEach(el => disableQuickEditOnNote(el));
     }
 }
@@ -1827,14 +1827,14 @@ function updateButtonTexts() {
     const fn = typeof t === 'function' ? t : window.t;
     if (typeof fn !== 'function') return;
     [
-        ['addNoteButton', `<i class="fas fa-plus"></i> ${fn('addNote') || 'Add a note'}`],
-        ['importButton', `<i class="fas fa-upload"></i> ${fn('importNotes') || 'Import notes'}`],
-        ['clearAllButton', `<i class="fas fa-trash-alt"></i> ${fn('clearAllNotes') || 'Clear all notes'}`],
-        ['saveNoteButton', `<i class="fas fa-save"></i> ${fn('saveNote') || 'Save note'}`],
-        ['cancelNoteButton', `<i class="fas fa-times"></i> ${fn('cancel') || 'Cancel'}`],
-        ['confirmYes', `<i class="fas fa-check"></i> ${fn('confirmYes') || 'Yes'}`],
-        ['confirmNo', `<i class="fas fa-times"></i> ${fn('confirmNo') || 'No'}`],
-        ['ok', `<i class="fas fa-check"></i> ${fn('ok') || 'OK'}`],
+        ['addNoteButton', `<i class="bi bi-plus-lg"></i> ${fn('addNote') || 'Add a note'}`],
+        ['importButton', `<i class="bi bi-box-arrow-in-down"></i> ${fn('importNotes') || 'Import notes'}`],
+        ['clearAllButton', `<i class="bi bi-trash3"></i> ${fn('clearAllNotes') || 'Clear all notes'}`],
+        ['saveNoteButton', `<i class="bi bi-floppy"></i> ${fn('saveNote') || 'Save note'}`],
+        ['cancelNoteButton', `<i class="bi bi-x-lg"></i> ${fn('cancel') || 'Cancel'}`],
+        ['confirmYes', `<i class="bi bi-check-lg"></i> ${fn('confirmYes') || 'Yes'}`],
+        ['confirmNo', `<i class="bi bi-x-lg"></i> ${fn('confirmNo') || 'No'}`],
+        ['ok', `<i class="bi bi-check-lg"></i> ${fn('ok') || 'OK'}`],
         ['calendarBtn', `<i class="bi bi-calendar3"></i> ${fn('calendar') || 'Calendar'}`]
     ].forEach(([id, html]) => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
     if (window.appUtils) window.appUtils.updateToggleViewButton();

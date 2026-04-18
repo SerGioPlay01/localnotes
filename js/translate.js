@@ -126,17 +126,17 @@ function updateInterface(langData, language) {
 
     const addNoteButton = document.getElementById('addNoteButton');
     if (addNoteButton) {
-        addNoteButton.textContent = langData.addNoteButton;
+        addNoteButton.innerHTML = `<i class="bi bi-plus-lg"></i> ${langData.addNoteButton}`;
     }
 
     const importButton = document.getElementById('importButton');
     if (importButton) {
-        importButton.textContent = langData.importButton;
+        importButton.innerHTML = `<i class="bi bi-box-arrow-in-down"></i> ${langData.importButton}`;
     }
 
     const clearAllButton = document.getElementById('clearAllButton');
     if (clearAllButton) {
-        clearAllButton.textContent = langData.clearAllButton;
+        clearAllButton.innerHTML = `<i class="bi bi-trash3"></i> ${langData.clearAllButton}`;
     }
 
     const searchInput = document.getElementById('searchInput');
@@ -151,12 +151,12 @@ function updateInterface(langData, language) {
 
     const saveNoteButton = document.getElementById('saveNoteButton');
     if (saveNoteButton) {
-        saveNoteButton.textContent = langData.saveNoteButton;
+        saveNoteButton.innerHTML = `<i class="bi bi-floppy"></i> ${langData.saveNoteButton}`;
     }
 
     const cancelNoteButton = document.getElementById('cancelNoteButton');
     if (cancelNoteButton) {
-        cancelNoteButton.textContent = langData.cancelNoteButton;
+        cancelNoteButton.innerHTML = `<i class="bi bi-x-lg"></i> ${langData.cancelNoteButton}`;
     }
 
     const footerText = document.querySelector('.info-about-project p');
@@ -230,52 +230,51 @@ function updateButtonTexts() {
     const confirmYesButton = document.getElementById("confirmYes");
     const confirmNoButton = document.getElementById("confirmNo");
     const okButton = document.getElementById("ok");
-    
+
+    // Helper: get text without icon (strip existing <i> tags)
+    const txt = el => el.textContent.trim();
+
     if (addNoteButton) {
-        addNoteButton.innerHTML = addNoteButton.textContent;
+        addNoteButton.innerHTML = `<i class="bi bi-plus-lg"></i> ${txt(addNoteButton)}`;
     }
     if (importButton) {
-        importButton.innerHTML = importButton.textContent;
+        importButton.innerHTML = `<i class="bi bi-box-arrow-in-down"></i> ${txt(importButton)}`;
     }
     if (clearAllButton) {
-        clearAllButton.innerHTML = clearAllButton.textContent;
+        clearAllButton.innerHTML = `<i class="bi bi-trash3"></i> ${txt(clearAllButton)}`;
+    }
+    const quickEditToggle = document.getElementById("quickEditToggle");
+    if (quickEditToggle && !quickEditToggle.classList.contains('active')) {
+        quickEditToggle.innerHTML = `<i class="bi bi-lightning-charge"></i> ${txt(quickEditToggle)}`;
     }
     if (toggleViewButton) {
-        // Обновляем кнопку переключения вида с правильными переводами
         const notesContainer = document.getElementById("notesContainer");
         const isFullWidth = notesContainer && notesContainer.classList.contains("full-width-view");
-        
-        if (isFullWidth) {
-            toggleViewButton.innerHTML = toggleViewButton.textContent;
-        } else {
-            toggleViewButton.innerHTML = toggleViewButton.textContent;
-        }
-        
-        // Принудительно обновляем кнопку через AppUtils, если он доступен
+        const label = txt(toggleViewButton);
+        toggleViewButton.innerHTML = isFullWidth
+            ? `<i class="bi bi-grid"></i> ${label}`
+            : `<i class="bi bi-list-ul"></i> ${label}`;
+
         if (window.appUtils && typeof window.appUtils.forceUpdateToggleButton === 'function') {
-            // Добавляем небольшую задержку, чтобы избежать ошибок
             setTimeout(() => {
-                try {
-                    window.appUtils.forceUpdateToggleButton();
-                } catch (error) {
-                }
+                try { window.appUtils.forceUpdateToggleButton(); } catch (e) {}
             }, 50);
         }
     }
     if (saveNoteButton) {
-        saveNoteButton.innerHTML = `<i class="fas fa-save"></i> ${saveNoteButton.textContent}`;
+        saveNoteButton.innerHTML = `<i class="bi bi-floppy"></i> ${txt(saveNoteButton)}`;
     }
     if (cancelNoteButton) {
-        cancelNoteButton.innerHTML = `<i class="fas fa-times"></i> ${cancelNoteButton.textContent}`;
+        cancelNoteButton.innerHTML = `<i class="bi bi-x-lg"></i> ${txt(cancelNoteButton)}`;
     }
     if (confirmYesButton) {
-        confirmYesButton.innerHTML = `<i class="fas fa-check"></i> ${confirmYesButton.textContent}`;
+        confirmYesButton.innerHTML = `<i class="bi bi-check-lg"></i> ${txt(confirmYesButton)}`;
     }
     if (confirmNoButton) {
-        confirmNoButton.innerHTML = `<i class="fas fa-times"></i> ${confirmNoButton.textContent}`;
+        confirmNoButton.innerHTML = `<i class="bi bi-x-lg"></i> ${txt(confirmNoButton)}`;
     }
     if (okButton) {
-        okButton.innerHTML = `<i class="fas fa-check"></i> ${okButton.textContent}`;
+        okButton.innerHTML = `<i class="bi bi-check-lg"></i> ${txt(okButton)}`;
     }
 }
 

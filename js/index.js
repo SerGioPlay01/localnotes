@@ -1043,10 +1043,18 @@ async function loadNotes() {
             notePreview.classList.add('noteContent');
             notePreview.innerHTML = note.content;
 
+            // Remove any stale video touch overlays saved in note content
+            notePreview.querySelectorAll('.lne-video-touch-overlay').forEach(ov => ov.remove());
+
             // Remove contenteditable from all elements in note cards (not in editor)
             notePreview.querySelectorAll('[contenteditable]').forEach(el => {
                 el.removeAttribute('contenteditable');
             });
+
+            // Mark note card if it contains video/iframe — used for CSS height override
+            if (notePreview.querySelector('iframe, video, .lne-video-wrapper, .video-embed-wrapper')) {
+                noteEl.classList.add('has-video');
+            }
 
             // Восстановить aspect-ratio на старых враперах без style (по атрибутам iframe/video)
             notePreview.querySelectorAll('.lne-video-wrapper:not([style]), .video-embed-wrapper:not([style])').forEach(wrapper => {
@@ -1061,6 +1069,28 @@ async function loadNotes() {
                     wrapper.style.aspectRatio = '16/9';
                 }
             });
+
+            // Fix height of video wrappers with aspect-ratio so iframe fills correctly
+            // Use ResizeObserver to recalculate when card width is known
+            const fixVideoWrapperHeights = () => {
+                notePreview.querySelectorAll('.lne-video-wrapper[style], .video-embed-wrapper[style]').forEach(wrapper => {
+                    const ar = wrapper.style.aspectRatio;
+                    if (!ar) return;
+                    const parts = ar.split('/').map(Number);
+                    if (parts.length !== 2 || !parts[1]) return;
+                    const ratio = parts[0] / parts[1];
+                    const width = wrapper.getBoundingClientRect().width || wrapper.offsetWidth;
+                    if (width > 0) {
+                        wrapper.style.height = Math.round(width / ratio) + 'px';
+                    }
+                });
+            };
+            // Run after layout
+            requestAnimationFrame(() => { fixVideoWrapperHeights(); });
+            if (window.ResizeObserver) {
+                const ro = new ResizeObserver(() => fixVideoWrapperHeights());
+                ro.observe(notePreview);
+            }
             // Hide add-desc buttons in card view
             notePreview.querySelectorAll('.checklist-add-desc').forEach(btn => {
                 btn.style.display = 'none';
@@ -1735,7 +1765,7 @@ async function saveQuickEdit(noteEl, content, noteId, noteCreationTime) {
 
 function disableQuickEditOnNote(noteEl) {
     const content = noteEl.querySelector('.noteContent');
-    if (content) { content.setAttribute('contenteditable', 'false'); content.removeAttribute('spellcheck'); }
+    if (content) { content.removeAttribute('contenteditable'); content.removeAttribute('spellcheck'); }
     noteEl.classList.remove('quick-edit-note', 'quick-edit-dirty');
     const bar = noteEl.querySelector('.quick-edit-bar'); if (bar) noteEl.removeChild(bar);
 }

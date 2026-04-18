@@ -114,7 +114,7 @@
 .lne-editor mark.lne-find-mark { background: rgba(255,200,0,.35); color: inherit; border-radius: 2px; }
 .lne-editor mark.lne-find-cur  { background: rgba(255,140,0,.6); color: #fff; border-radius: 2px; outline: 1px solid orange; }
 .lne-video-wrapper { margin: 14px 0; display: block; clear: both; max-width: 100% !important; }
-.lne-video-wrapper iframe,.lne-video-wrapper video { max-width: 100%; width: 100%; display: block; }
+.lne-video-wrapper iframe,.lne-video-wrapper video { max-width: 100%; width: 100%; height: auto; display: block; }
 
 /* ═══════════════════════════ CHECKLIST ══════════════════════════════════ */
 .checklist-item-wrapper {

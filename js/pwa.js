@@ -37,7 +37,7 @@ function _pwaShowUpdateToast() {
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js?v=1.1.3')
+        navigator.serviceWorker.register('/sw.js?v=1.1.4')
             .then(function(registration) {
                 registration.update();
 

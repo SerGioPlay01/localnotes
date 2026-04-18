@@ -1998,16 +1998,26 @@ async function importNotesWithFormat(event) {
 }
 
 async function importNotesHTML(files) {
+    // Strip dangerous/style-breaking tags from imported HTML
+    function sanitizeImportedHTML(html) {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        // Remove all elements that break app styles
+        doc.querySelectorAll('style, link, script, meta, head, noscript').forEach(el => el.remove());
+        // Return only body content, or full parsed text if no body
+        const body = doc.body;
+        return body ? body.innerHTML : doc.documentElement.innerHTML;
+    }
+
     let imported = 0, errors = 0;
     for (const file of files) {
         try {
             const text = await file.text();
             if (isEncryptedFile(text)) { errors++; showCustomAlert(typeof t === 'function' ? t('warning') : 'Warning', file.name + ' is encrypted, use Encrypted format', 'warning'); continue; }
             const tag = /<!-- Exported on [\d-T:.Z]+ -->/;
-            let content = text;
+            let content = sanitizeImportedHTML(text);
             if (tag.test(text)) {
                 const notes = text.replace(tag,'').trim().split('\n\n---\n\n');
-                for (const n of notes) if (n.trim()) { await notesDB.saveNote({ id: 'note_'+Date.now()+'_'+Math.random().toString(36).substr(2,9), content: n, creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(n) }); imported++; }
+                for (const n of notes) if (n.trim()) { await notesDB.saveNote({ id: 'note_'+Date.now()+'_'+Math.random().toString(36).substr(2,9), content: sanitizeImportedHTML(n), creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(n) }); imported++; }
             } else { await notesDB.saveNote({ id: 'note_'+Date.now()+'_'+Math.random().toString(36).substr(2,9), content, creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(content) }); imported++; }
         } catch (e) { errors++; showCustomAlert(typeof t === 'function' ? t('error') : 'Error', file.name + ': ' + e.message, 'error'); }
     }

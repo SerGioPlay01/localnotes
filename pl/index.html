@@ -1,44 +1,33 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 
 <head>
-    <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics — loaded after page is interactive -->
     <script>
-        // Load Google Analytics with better error handling
-        function loadGoogleAnalytics() {
-            const script = document.createElement('script');
-            script.async = true;
-            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-HR9HLBQFCR';
-            script.onload = function() {
-                try {
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var s = document.createElement('script');
+                s.async = true;
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-HR9HLBQFCR';
+                s.onload = function() {
                     window.dataLayer = window.dataLayer || [];
                     function gtag() { dataLayer.push(arguments); }
                     gtag('js', new Date());
                     gtag('config', 'G-HR9HLBQFCR');
-                } catch (error) {
-                    console.warn('Google Analytics initialization failed:', error);
-                }
-            };
-            script.onerror = function() {
-                console.warn('Google Analytics script failed to load - continuing without analytics');
-            };
-            document.head.appendChild(script);
-        }
-        
-        // Load analytics after a short delay to not block page load
-        setTimeout(loadGoogleAnalytics, 100);
+                };
+                document.head.appendChild(s);
+            }, 2000);
+        });
     </script>
 
     <meta charset="UTF-8">
+    <!-- Preconnect to external origins -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
     <meta http-equiv="Permissions-Policy" content="browsing-topics=(), run-ad-auction=(), camera=(), microphone=(), geolocation=()">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://assets.twitch.tv; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com chrome-extension:; connect-src 'self' blob: https://www.google-analytics.com https://analytics.google.com https://assets.twitch.tv https://api.twitch.tv; frame-src 'self' https://www.youtube.com https://youtu.be https://www.youtube-nocookie.com https://rutube.ru https://vk.com https://vkvideo.ru https://vk.ru https://ok.ru https://www.tiktok.com https://player.vimeo.com https://www.dailymotion.com https://player.twitch.tv https://clips.twitch.tv; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; upgrade-insecure-requests;">
 
     
-    <!-- Cache busting meta tags -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <meta name="cache-buster" content="<script>document.write(Date.now())</script>">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -225,9 +214,6 @@
     <meta name="target" content="all">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Local Notes">
     
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -256,9 +242,9 @@
             "url": "https://sergioplay-dev.vercel.app/"
         },
         "datePublished": "2024-01-01",
-        "dateModified": "2026-07-16",
-        "version": "1.0.5",
-        "softwareVersion": "1.0.5",
+        "dateModified": "2026-04-18",
+        "version": "1.1.4",
+        "softwareVersion": "1.1.4",
         "browserRequirements": "Requires JavaScript. Requires HTML5.",
         "memoryRequirements": "Minimal",
         "storageRequirements": "Browser Local Storage",
@@ -310,7 +296,7 @@
         // Language mapping for automatic redirection
         const languageMap = {
             'ru': '/ru/',
-            'ua': '/ua/',
+            'uk': '/ua/',
             'pl': '/pl/',
             'cs': '/cs/',
             'sk': '/sk/',
@@ -352,7 +338,7 @@
                 if (countryCode) {
                     // Special cases for countries
                     if (countryCode === 'ua') {
-                        return 'ua';
+                        return 'uk';
                     }
                     if (countryCode === 'by') {
                         return 'ru';
@@ -395,7 +381,7 @@
                 
                 // Ukrainian timezone
                 if (timezone.includes('Kiev') || timezone.includes('Europe/Kiev')) {
-                    return 'ua';
+                    return 'uk';
                 }
             } catch (e) {
                 // Ignore errors
@@ -413,7 +399,7 @@
                 
                 if (userAgent.includes('uk-UA') || userAgent.includes('uk_ua') || 
                     userAgent.includes('Ukrainian') || userAgent.includes('Українська')) {
-                    return 'ua';
+                    return 'uk';
                 }
             } catch (e) {
                 // Ignore errors
@@ -511,7 +497,7 @@
             originalLog('%c   ? Search with transliteration', 'color: #666; font-size: 12px;');
             
             originalLog('%c\n?? INFORMATION', 'color: #9C27B0; font-size: 16px; font-weight: bold;');
-            originalLog('%c   Version:  1.0.3', 'color: #666; font-size: 12px;');
+            originalLog('%c   Version:  1.1.4', 'color: #666; font-size: 12px;');
             originalLog('%c   Author:   SerGio Play', 'color: #666; font-size: 12px;');
             originalLog('%c   Website:  https://localnotes-three.vercel.app/', 'color: #666; font-size: 12px;');
             originalLog('%c   GitHub:   https://github.com/SerGioPlay01/localnotes', 'color: #666; font-size: 12px;');
@@ -536,15 +522,28 @@
 
     </script>
 
-    <!-- Critical CSS loaded first with cache busting -->
-    <link rel="stylesheet" href="../css/index.css?v=1.1.3">
-    <link rel="stylesheet" href="../css/img.css?v=1.1.3">
-    <link rel="stylesheet" href="../css/highlight.css?v=1.1.3">
-    <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.1.3">
-    <link rel="stylesheet" href="../css/editor-modal.css?v=1.1.3">
-    <link rel="stylesheet" href="../css/apple.css?v=1.1.3">
-    <link rel="stylesheet" href="../css/tags-calendar.css?v=1.1.3">
-    <link rel="stylesheet" href="../fonts/local-fonts.css?v=1.1.3">
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="../fonts/golos_web/GolosTextVF-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../fonts/intro/Intro.woff2" as="font" type="font/woff2" crossorigin>
+
+    <!-- Critical CSS -->
+    <link rel="stylesheet" href="../css/index.css?v=1.1.4">
+    <link rel="stylesheet" href="../css/img.css?v=1.1.4">
+    <link rel="stylesheet" href="../fonts/local-fonts.css?v=1.1.4">
+
+    <!-- Non-critical CSS — loaded async to avoid render blocking -->
+    <link rel="stylesheet" href="../css/highlight.css?v=1.1.4" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.1.4" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/editor-modal.css?v=1.1.4" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/apple.css?v=1.1.4" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/tags-calendar.css?v=1.1.4" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="../css/highlight.css?v=1.1.4">
+        <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.1.4">
+        <link rel="stylesheet" href="../css/editor-modal.css?v=1.1.4">
+        <link rel="stylesheet" href="../css/apple.css?v=1.1.4">
+        <link rel="stylesheet" href="../css/tags-calendar.css?v=1.1.4">
+    </noscript>
     
     <!-- Prevent FOUC: hide only main content, NOT the preloader -->
     <style>
@@ -594,7 +593,7 @@
         if ('caches' in window) {
             caches.keys().then(function(cacheNames) {
                 cacheNames.forEach(function(cacheName) {
-                    if (cacheName.includes('v1.0.2') || cacheName.includes('static-v1.0.2') || cacheName.includes('dynamic-v1.0.2')) {
+                    if (cacheName.includes('v1.0.2') || cacheName.includes('v1.0.3') || cacheName.includes('v1.0.4') || cacheName.includes('v1.0.5') || cacheName.includes('v1.1.0') || cacheName.includes('v1.1.1') || cacheName.includes('v1.1.2') || cacheName.includes('v1.1.3')) {
                         caches.delete(cacheName);
                     }
                 });
@@ -606,24 +605,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
     <link rel="manifest" href="../favicon/site.webmanifest">
-    <link rel="manifest" href="../manifest.json">
 
-    <!-- Hreflang tags for SEO -->
-    <link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/pl/">
-    <link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/">
-    <link rel="alternate" hreflang="ua" href="https://localnotes-three.vercel.app/ua/">
-    <link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/">
-    <link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/">
-    <link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/">
-    <link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/">
-    <link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/">
-    <link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/">
-    <link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/">
-    <link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/">
-    <link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/">
-    <link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/pl/">
-
-    <title>Local Notes</title>
+    <!-- Hreflang tags for SEO — defined once above -->
 </head>
 
 <body>
@@ -656,11 +639,11 @@
     <div class="center_nav">
         <section class="sticky">
             <div class="block_btn">
-                <button id="addNoteButton"><i class="fas fa-plus"></i> Add a note</button>
-                <button id="importButton"><i class="fas fa-upload"></i> Import notes</button>
-                <button id="clearAllButton"><i class="fas fa-trash-alt"></i> Clear all notes</button>
+                <button id="addNoteButton"><i class="bi bi-plus-lg"></i> Add a note</button>
+                <button id="importButton"><i class="bi bi-upload"></i> Import notes</button>
+                <button id="clearAllButton"><i class="bi bi-trash3"></i> Clear all notes</button>
                 <button id="calendarBtn"><i class="bi bi-calendar3"></i> Calendar</button>
-                <button id="quickEditToggle"><i class="fas fa-bolt"></i> Quick Edit</button>
+                <button id="quickEditToggle"><i class="bi bi-lightning-charge"></i> Quick Edit</button>
                 <input multiple type="file" id="importInput" accept=".note,.html,.md">
             </div>
             <input type="text" id="searchInput" autocomplete="off" placeholder="Szukaj notatek... (#tag)">
@@ -674,7 +657,7 @@
     <section class="app-notes-center">
         <section class="app-notes">
             <div class="btn_view_div">
-                <button id="toggleViewButton"><i class="fas fa-th"></i> Toggle View</button>
+                <button id="toggleViewButton"><i class="bi bi-grid"></i> Toggle View</button>
             </div>
 
             <div class="notes_center">
@@ -688,8 +671,8 @@
                     <div id="editorContainer" class="lne-editor-wrapper"></div>
                     <div class="modal-buttons-container">
                         <button id="noteSettingsBtn" class="btn btn-settings"><i class="bi bi-sliders2"></i></button>
-                        <button id="saveNoteButton"><i class="fas fa-save"></i> Save note</button>
-                        <button id="cancelNoteButton" class="btn cancel"><i class="fas fa-times"></i> Cancel</button>
+                        <button id="saveNoteButton"><i class="bi bi-floppy"></i> Save note</button>
+                        <button id="cancelNoteButton" class="btn cancel"><i class="bi bi-x-lg"></i> Cancel</button>
                     </div>
                 </div>
             </div>
@@ -698,14 +681,14 @@
             <div id="confirmModal" class="modal">
                 <div class="modal-content-error">
                     <p id="confirmMessage"></p>
-                    <button id="confirmYes" class="btn"><i class="fas fa-check"></i> OK</button>
-                    <button id="confirmNo" class="btn cancel"><i class="fas fa-times"></i> Cancel</button>
+                    <button id="confirmYes" class="btn"><i class="bi bi-check-lg"></i> OK</button>
+                    <button id="confirmNo" class="btn cancel"><i class="bi bi-x-lg"></i> Cancel</button>
                 </div>
             </div>
 
             <div id="error" class="modal">
                 <div class="modal-content-error">
-                    <button id="ok" class="btn cancel"><i class="fas fa-check"></i> OK</button>
+                    <button id="ok" class="btn cancel"><i class="bi bi-check-lg"></i> OK</button>
                 </div>
             </div>
         </section>
@@ -736,16 +719,16 @@
 
 
     <!-- Critical JavaScript loaded first with cache busting -->
-    <script src="../js/utils.js?v=1.1.3"></script>
-    <script src="../js/selectors.js?v=1.1.3"></script>
-    <script src="../js/translate.js?v=1.1.3"></script>
-    <script src="../js/themes.js?v=1.1.3"></script>
-    <script src="../js/performance.js?v=1.1.3"></script>
-    <script src="../js/security.js?v=1.1.3"></script>
-    <script src="../js/preloader.js?v=1.1.3"></script>
+    <script src="../js/utils.js?v=1.1.4"></script>
+    <script src="../js/selectors.js?v=1.1.4"></script>
+    <script src="../js/translate.js?v=1.1.4"></script>
+    <script src="../js/themes.js?v=1.1.4"></script>
+    <script src="../js/performance.js?v=1.1.4"></script>
+    <script src="../js/security.js?v=1.1.4"></script>
+    <script src="../js/preloader.js?v=1.1.4"></script>
     
     <!-- LocalNotesEditor -->
-    <script src="../localnoteseditor/core.js?v=1.1.3" defer></script>
+    <script src="../localnoteseditor/core.js?v=1.1.4" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
     <script>
@@ -771,15 +754,15 @@
         // Load scripts after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             const scripts = [
-                '/js/magicurl.js?v=1.1.3',
-                '/js/highlight.min.js?v=1.1.3',
-                '/js/translations.js?v=1.1.3',
-                '/js/img.js?v=1.1.3',
-                '/js/date-utils.js?v=1.1.3',
-                '/js/editor-integration.js?v=1.1.3',
-                '/js/markdown.js?v=1.1.3',
-                '/js/tags-calendar.js?v=1.1.3',
-                '/js/index.js?v=1.1.3'
+                '/js/magicurl.js?v=1.1.4',
+                '/js/highlight.min.js?v=1.1.4',
+                '/js/translations.js?v=1.1.4',
+                '/js/img.js?v=1.1.4',
+                '/js/date-utils.js?v=1.1.4',
+                '/js/editor-integration.js?v=1.1.4',
+                '/js/markdown.js?v=1.1.4',
+                '/js/tags-calendar.js?v=1.1.4',
+                '/js/index.js?v=1.1.4'
             ];
             
             loadScriptsSequentially(scripts);
@@ -787,8 +770,8 @@
     </script>
     
     <!-- Service Worker + PWA Modal -->
-    <script src="../js/pwa.js?v=1.1.3"></script>
-    <script src="../js/network-mode.js?v=1.1.3"></script>
+    <script src="../js/pwa.js?v=1.1.4"></script>
+    <script src="../js/network-mode.js?v=1.1.4"></script>
 
     <!-- Universal Cookies Banner -->
     <script src="../cookies_banner_universal/cookies-banner.js"></script>

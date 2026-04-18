@@ -246,6 +246,157 @@ body {
 }
 #searchInput:focus { border-color: var(--primary-color); background: var(--button-hover); }
 
+/* Search stats badge — float below search input */
+.search-stats {
+    display: none;
+    position: absolute;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: var(--modal-bg, #1e1e1e);
+    border: 1px solid rgba(174, 252, 110, 0.3);
+    border-radius: 8px;
+    padding: 4px 12px;
+    z-index: 9000;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    white-space: nowrap;
+}
+
+/* Tag autocomplete dropdown */
+.search-tag-dropdown {
+    background: var(--modal-bg, #1e1e1e);
+    border: 1px solid var(--button-border);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    overflow: hidden;
+    max-height: 260px;
+    overflow-y: auto;
+    /* Анимация появления от инпута */
+    transform-origin: top center;
+    opacity: 0;
+    transform: scaleY(0.88) translateY(-6px);
+    transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.search-tag-dropdown.is-open {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+}
+.search-tag-dropdown.is-closing {
+    opacity: 0;
+    transform: scaleY(0.88) translateY(-6px);
+}
+.search-tag-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 9px 14px;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+}
+.search-tag-item:hover, .search-tag-item:focus {
+    background: var(--button-hover);
+    outline: none;
+}
+.search-tag-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Search hint dropdown (shown on focus) */
+.search-hint-dropdown {
+    max-height: 360px;
+    padding-bottom: 6px;
+}
+.search-hint-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 14px 6px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--primary-color);
+    opacity: 0.8;
+    border-bottom: 1px solid var(--button-border);
+}
+.search-hint-tips {
+    padding: 8px 14px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-bottom: 1px solid var(--button-border);
+}
+.search-hint-tip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+}
+.search-hint-key {
+    font-family: monospace;
+    font-size: 12px;
+    background: rgba(174, 252, 110, 0.12);
+    color: var(--primary-color);
+    border: 1px solid rgba(174, 252, 110, 0.25);
+    border-radius: 4px;
+    padding: 2px 7px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 90px;
+    text-align: center;
+}
+.search-hint-desc {
+    color: var(--text-color);
+    opacity: 0.65;
+    font-size: 12px;
+}
+.search-hint-tags-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.5;
+    color: var(--text-color);
+}
+.search-hint-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 4px 14px 10px;
+}
+.search-hint-tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid color-mix(in srgb, var(--tag-color) 40%, transparent);
+    background: color-mix(in srgb, var(--tag-color) 12%, transparent);
+    color: var(--text-color);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+}
+.search-hint-tag-pill:hover {
+    background: color-mix(in srgb, var(--tag-color) 25%, transparent);
+    transform: translateY(-1px);
+}
+
 /* ===== ЗАМЕТКИ ===== */
 #notesContainer {
     margin-top: 20px;

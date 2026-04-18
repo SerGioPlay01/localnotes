@@ -427,7 +427,7 @@ body {
     flex-direction: column;
     position: relative;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
+    overflow: clip;
 }
 
 /* List mode — allow full height, no clip */
@@ -445,6 +445,26 @@ body {
     overflow: hidden;
 }
 
+/* Notes with video — same fixed height as regular notes on desktop */
+#notesContainer.default-view .note.has-video {
+    height: 450px;
+    overflow: hidden;
+}
+
+#notesContainer.default-view .note.has-video .noteContent {
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Collapse empty paragraphs around video wrappers */
+.noteContent .lne-video-wrapper + p:empty,
+.noteContent .video-embed-wrapper + p:empty,
+.noteContent p:empty:first-child {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    min-height: 0;
+}
 /* Заметка в режиме списка - полная высота содержимого */
 #notesContainer.full-width-view .note {
     height: auto;
@@ -483,6 +503,7 @@ body {
 #notesContainer.default-view .noteContent {
     flex: 1;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     min-height: 0;
     max-height: none;
 }
@@ -1442,6 +1463,21 @@ footer a:hover { color: var(--primary-color); }
     #notesContainer.default-view .note {
         height: 400px !important;
         border-radius: 12px !important;
+    }
+
+    #notesContainer.default-view .note.has-video {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    #notesContainer.default-view .note.has-video .noteContent {
+        overflow: visible !important;
+        flex: none !important;
+        margin-top: 0 !important;
+    }
+
+    #notesContainer.full-width-view .note.has-video .noteContent {
+        margin-top: 0 !important;
     }
 
     #notesContainer.full-width-view .note {
@@ -2604,7 +2640,7 @@ footer a:hover { color: var(--primary-color); }
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    overflow: hidden;
+    overflow: clip;
     border-radius: 8px;
     margin: 12px 0;
 }
@@ -2890,15 +2926,14 @@ footer a:hover { color: var(--primary-color); }
     position: relative;
     margin: 14px 0;
     border-radius: 8px;
-    overflow: hidden;
-    /* ширина и aspect-ratio берутся из inline style, выставленного при вставке */
+    overflow: clip;
     width: 100%;
     max-width: 100%;
 }
-/* Если враппер имеет явный aspect-ratio — iframe абсолютно позиционирован внутри */
+/* Враппер с inline style (aspect-ratio + max-width) — iframe заполняет его */
 .noteContent .lne-video-wrapper[style],
 .noteContent .video-embed-wrapper[style] {
-    /* inline style содержит aspect-ratio и max-width */
+    height: auto;
 }
 .noteContent .lne-video-wrapper[style] iframe,
 .noteContent .lne-video-wrapper[style] video,

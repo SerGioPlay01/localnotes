@@ -1611,34 +1611,6 @@ class LocalNotesEditor {
             };
 
             table.addEventListener('click', handleTableActivate);
-
-            if (isTouchDevice) {
-                var _tblTouchStartX, _tblTouchStartY;
-                table.addEventListener('touchstart', function(e) {
-                    _tblTouchStartX = e.touches[0].clientX;
-                    _tblTouchStartY = e.touches[0].clientY;
-                }, { passive: true });
-                table.addEventListener('touchend', function(e) {
-                    var dx = e.changedTouches[0].clientX - _tblTouchStartX;
-                    var dy = e.changedTouches[0].clientY - _tblTouchStartY;
-                    if (Math.abs(dx) > 10 || Math.abs(dy) > 10) return;
-                    var cell = e.target.closest('td, th');
-                    if (!cell) return;
-                    e.stopPropagation();
-                    clearTimeout(self._ctxHoverTimer);
-                    if (self._ctxActiveBar && self._ctxActiveBar._forEl === cell) {
-                        removeCtx();
-                        return;
-                    }
-                    removeCtx();
-                    // Защищаем от синтетического click который браузер генерирует после touchend
-                    self._ctxTouchJustFired = true;
-                    clearTimeout(self._ctxTouchTimer);
-                    self._ctxTouchTimer = setTimeout(function() { self._ctxTouchJustFired = false; }, 700);
-                    self._ctxActiveBar = self._showTableCtx(table, cell);
-                    if (self._ctxActiveBar) self._ctxActiveBar._forEl = cell;
-                }, { passive: true });
-            }
         });
 
         // VIDEO
@@ -1685,13 +1657,13 @@ class LocalNotesEditor {
         // Click outside → remove (вешаем один раз на экземпляр)
         if (!this._ctxDocClickBound) {
             this._ctxDocClickBound = true;
+            // Bubble фаза — stopPropagation из обработчиков элементов работает
             document.addEventListener('click', function(e) {
-                if (self._ctxTouchJustFired) return;
                 if (self._ctxActiveBar && !self._ctxActiveBar.contains(e.target)) {
                     clearTimeout(self._ctxHoverTimer);
                     if (self._removeCtx) self._removeCtx();
                 }
-            }, true);
+            }, false);
         }
     }
 

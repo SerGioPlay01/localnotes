@@ -652,15 +652,24 @@ class AdvancedEncryption {
         if (!isV4 && combined[0] === 3) {
             const salt = combined.slice(1,17), iv = combined.slice(17,29), pepper = combined.slice(29,33);
             const hmacTag = combined.slice(33,65), cipher = combined.slice(65);
-            const { encKey, macKey } = await this._deriveKeysV3(password, salt);
+            const { encKey, macKey: macRaw } = await this._deriveKeysV3(password, salt);
+            // v3 использовал HMAC-SHA-256
+            const macKey256 = await crypto.subtle.importKey('raw', macRaw, { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
             const aad = new Uint8Array(33 + cipher.length);
             aad.set(combined.slice(0,33), 0); aad.set(cipher, 33);
-            const valid = await CryptoMutations.verifyHMAC(macKey, aad, hmacTag);
+            const valid = await crypto.subtle.verify('HMAC', macKey256, hmacTag, aad);
             if (!valid) throw new Error('Integrity check failed');
             const decBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, encKey, cipher);
+            const decBytes = new Uint8Array(decBuf);
+            // v3: оригинальный LCG xorScramble
             const pepperSeed = (pepper[0]<<24|pepper[1]<<16|pepper[2]<<8|pepper[3])>>>0;
-            const seedKey = new Uint8Array(4); new DataView(seedKey.buffer).setUint32(0, pepperSeed, false);
-            return new TextDecoder().decode(await CryptoMutations.xorStream(seedKey, new Uint8Array(decBuf)));
+            const unscrambled = new Uint8Array(decBytes.length);
+            let s = pepperSeed;
+            for (let i = 0; i < decBytes.length; i++) {
+                s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
+                unscrambled[i] = decBytes[i] ^ (s & 0xff);
+            }
+            return new TextDecoder().decode(unscrambled);
         }
         if (!isV4) {
             const legacyKey = await this._legacyDeriveKey(password, combined.slice(0,16));

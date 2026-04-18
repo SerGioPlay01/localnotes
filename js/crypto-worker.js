@@ -213,9 +213,15 @@ async function decryptFull(encData, password, originInfo) {
         if (!valid) throw new Error('Integrity check failed');
         const decBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, encKey, cipher);
         const decBytes = new Uint8Array(decBuf);
+        // v3 использовал LCG xorScramble — восстанавливаем оригинальный алгоритм
         const pepperSeed = (pepper[0] << 24 | pepper[1] << 16 | pepper[2] << 8 | pepper[3]) >>> 0;
-        const seedKey = new Uint8Array(4); new DataView(seedKey.buffer).setUint32(0, pepperSeed, false);
-        return new TextDecoder().decode(await xorStream(seedKey, decBytes));
+        const unscrambled = new Uint8Array(decBytes.length);
+        let s = pepperSeed;
+        for (let i = 0; i < decBytes.length; i++) {
+            s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
+            unscrambled[i] = decBytes[i] ^ (s & 0xff);
+        }
+        return new TextDecoder().decode(unscrambled);
     }
 
     // v2 legacy fallback

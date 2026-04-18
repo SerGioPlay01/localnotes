@@ -1,4 +1,4 @@
-﻿/* LocalNotesEditor — Professional Rich Text Editor Styles */
+/* LocalNotesEditor — Professional Rich Text Editor Styles */
 @import url('/localnoteseditor/bootstrap-icons/font/bootstrap-icons.css');
 
 /* ═══════════════════════════ WRAPPER ══════════════════════════════════ */
@@ -113,8 +113,8 @@
 .lne-editor tr:hover td { background: rgba(255,255,255,.02); }
 .lne-editor mark.lne-find-mark { background: rgba(255,200,0,.35); color: inherit; border-radius: 2px; }
 .lne-editor mark.lne-find-cur  { background: rgba(255,140,0,.6); color: #fff; border-radius: 2px; outline: 1px solid orange; }
-.lne-video-wrapper { margin: 14px 0; display: block; clear: both; }
-.lne-video-wrapper iframe,.lne-video-wrapper video { max-width: 100%; display: block; }
+.lne-video-wrapper { margin: 14px 0; display: block; clear: both; max-width: 100% !important; }
+.lne-video-wrapper iframe,.lne-video-wrapper video { max-width: 100%; width: 100%; display: block; }
 
 /* ═══════════════════════════ CHECKLIST ══════════════════════════════════ */
 .checklist-item-wrapper {
@@ -332,6 +332,30 @@ textarea.lne-inp { resize: vertical; }
     .lne-editor { padding: 12px 14px; font-size: 14px; }
     .lne-sep { display: none; }
     .lne-swgrid { grid-template-columns: repeat(6, 30px); }
+    /* Видео враппер — не выходит за экран, управление плеера не обрезается */
+    .lne-video-wrapper {
+        max-width: 100% !important;
+        overflow: visible !important;
+    }
+    .lne-video-wrapper iframe,
+    .lne-video-wrapper video {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    /* Если враппер имеет aspect-ratio — iframe должен заполнять его */
+    .lne-video-wrapper[style] iframe,
+    .lne-video-wrapper[style] video {
+        position: absolute;
+        inset: 0;
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .lne-video-wrapper[style] {
+        position: relative;
+        width: 100% !important;
+        height: auto !important;
+    }
 }
 @media (max-width: 480px) {
     .lne-btn { width: 26px; height: 26px; }

@@ -1,3 +1,31 @@
+// Глобальная переменная для хранения текущего языка
+// Инициализируем сразу из localStorage чтобы быть готовыми до рендера нот
+window.currentLang = null;
+
+// Синхронное восстановление langData из кеша при старте (для офлайн-режима)
+// Это выполняется немедленно, до любого рендера нот
+(function restoreLangCacheSync() {
+    try {
+        // Восстанавливаем currentLang синхронно из localStorage
+        const savedLang = localStorage.getItem('preferredLanguage');
+        if (savedLang && !window.currentLang) {
+            window.currentLang = savedLang;
+        }
+
+        const cached = localStorage.getItem('langDataCache');
+        if (cached) {
+            const data = JSON.parse(cached);
+            window.langData = window.langData || {};
+            // Заполняем все языки из кеша
+            Object.keys(data).forEach(lang => {
+                if (!window.langData[lang]) {
+                    window.langData[lang] = data[lang];
+                }
+            });
+        }
+    } catch (e) { /* ignore */ }
+})();
+
 // Функция для инициализации языка при загрузке страницы
 function initializeLanguage() {
     // Если язык уже установлен (например, на языковых страницах)
@@ -71,6 +99,9 @@ function updateInterface(langData, language) {
     window.langData = window.langData || {};
     window.langData[language] = langData;
     window.currentLang = language;
+
+    // Сохраняем язык в localStorage для офлайн-режима
+    try { localStorage.setItem('preferredLanguage', language); } catch (e) { /* ignore */ }
     
     // Обновляем язык куки баннера, если он доступен
     if (window.CookiesBanner && typeof window.CookiesBanner.updateLanguage === 'function') {
@@ -247,9 +278,6 @@ function updateButtonTexts() {
         okButton.innerHTML = `<i class="fas fa-check"></i> ${okButton.textContent}`;
     }
 }
-
-// Глобальная переменная для хранения текущего языка
-window.currentLang = null;
 
 // Функция для определения языка браузера пользователя
 function getCurrentLanguage() {

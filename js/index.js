@@ -1947,26 +1947,11 @@ function showExportOptions(noteContent) {
     modal.addEventListener('click', e => { if (e.target === modal) close(); });
 }
 
-async function importNotesWithFormat(event) {
+function importNotesWithFormat(event) {
     const files = event.target.files;
     if (!files?.length) return;
     const filesArray = Array.from(files);
     event.target.value = '';
-
-    // Show fullscreen loading overlay immediately
-    const loadingOv = document.createElement('div');
-    loadingOv.id = 'import-loading-ov';
-    loadingOv.innerHTML = '<div class="import-loading-spinner"><i class="bi bi-hourglass-split"></i></div>';
-    document.body.appendChild(loadingOv);
-
-    // Force browser to paint the overlay before continuing
-    await new Promise(resolve => {
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                setTimeout(resolve, 10); // Extra 10ms to ensure visibility
-            });
-        });
-    });
 
     const modal = document.createElement('div');
     modal.className = 'export-modal';
@@ -1980,7 +1965,6 @@ async function importNotesWithFormat(event) {
         <button class="export-close">${typeof t === 'function' ? t('cancel') : 'Cancel'}</button></div>`;
 
     // Remove loading overlay, show format modal
-    if (loadingOv.parentNode) document.body.removeChild(loadingOv);
     document.body.appendChild(modal);
 
     const close = () => { if (modal.parentNode) document.body.removeChild(modal); };

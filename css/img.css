@@ -1,5 +1,4 @@
-/* Затемнение и стили для полноэкранного просмотра */
-.fullscreen-overlay {
+﻿.fullscreen-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -26,12 +25,9 @@
     opacity: 0;
     animation: slideIn 0.5s ease-in-out forwards;
 }
-/* Добавляем класс для анимации исчезновения */
 .fullscreen-image.closing {
     animation: slideOut 0.5s ease-in-out forwards;
 }
-
-/* Анимация появления изображения */
 @keyframes slideIn {
     from {
         opacity: 0;
@@ -42,8 +38,6 @@
         transform: translateY(0);
     }
 }
-
-/* Анимация исчезновения изображения */
 @keyframes slideOut {
     from {
         opacity: 1;

@@ -1,22 +1,39 @@
-/* ===== БАЗОВЫЕ СТИЛИ ===== */
+﻿@font-face {
+    font-family: 'Golos Text';
+    src: url('/fonts/golos_web/golostextvf-regular.woff2') format('woff2'),
+         url('/fonts/golos_web/golostextvf-regular.woff') format('woff');
+    font-weight: 1 900;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Intro';
+    src: url('/fonts/intro/intro.woff2') format('woff2'),
+         url('/fonts/intro/intro.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Lekton Nerd Font Mono';
+    src: local('Lekton Nerd Font Mono'), local('LektonNFM'),
+         url('/fonts/lekton-nerd-font-mono/lekton-nerd-font-mono.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: optional;
+}
 * { box-sizing: border-box; }
 html, body { overflow-x: hidden; width: 100%; max-width: 100%; }
 body { margin: 0; padding: 0; }
 body.modal-open { overflow: hidden; }
-
-/* ===== CSS ПЕРЕМЕННЫЕ ===== */
 :root {
     --primary-color: #28a745;
-    --secondary-color: #f9f8fd;
-    --accent-color: #007bff;
     --text-color: #ffffff;
     --text-secondary: #b3b3b3;
-    --text-muted: #808080;
     --bg-color: #0a0a0a;
     --bg-secondary: #111111;
     --card-bg: #0f0f0f;
     --border-color: #272727;
-    --shadow-color: rgba(0, 0, 0, 0.3);
     --note-bg: #0f0f0f;
     --note-text: #ffffff;
     --note-border: #272727;
@@ -27,7 +44,6 @@ body.modal-open { overflow: hidden; }
     --button-text: #ffffff;
     --button-hover: #272727;
     --modal-bg: #1a1a1a;
-    --primary-color: #ffffff;
     --modal-border: #272727;
     --header-bg: #080808;
     --footer-bg: #0f0f0f;
@@ -47,8 +63,6 @@ body.modal-open { overflow: hidden; }
     --transition-fast: 0.2s ease;
     --transition-medium: 0.3s ease;
 }
-
-/* Темная тема */
 [data-theme="dark"] {
     --note-text: #ffffff;
     --primary-color: #28a745;
@@ -68,8 +82,6 @@ body.modal-open { overflow: hidden; }
     --gradient-primary: linear-gradient(135deg, #aefc6e 0%, #7dd87d 100%);
     --note-footer-bg: #0f0f0f;
 }
-
-/* Светлая тема */
 [data-theme="light"] {
     --button-text: #111111;
     --header-bg: #fff;
@@ -94,22 +106,15 @@ body.modal-open { overflow: hidden; }
     --gradient-primary: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     --note-footer-bg: #ffffff;
 }
-
 [data-theme="light"] .logo { filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%); }
-
-/* ===== СКРОЛЛБАРЫ ===== */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
 ::-webkit-scrollbar-thumb { background-color: var(--scrollbar-thumb); border-radius: 10px; border: none; }
 * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
-
-/* На тач-устройствах скроллбары скрываем полностью */
 @media (hover: none) and (pointer: coarse) {
     ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
     * { scrollbar-width: none !important; }
 }
-
-/* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
 * { margin: 0; padding: 0; -webkit-tap-highlight-color: #0000; }
 html { scroll-behavior: smooth; }
 body {
@@ -119,9 +124,6 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
     overflow-x: hidden;
 }
-
-
-/* Стили для подсветки найденного текста */
     .search-highlight {
         background-color: rgba(174, 252, 110, 0.3) !important;
         color: var(--text-color) !important;
@@ -131,19 +133,14 @@ body {
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
         animation: highlightPulse 0.3s ease-in-out !important;
     }
-    
     @keyframes highlightPulse {
         0% { background-color: rgba(174, 252, 110, 0.1) !important; }
         50% { background-color: rgba(174, 252, 110, 0.5) !important; }
         100% { background-color: rgba(174, 252, 110, 0.3) !important; }
     }
-    
-    /* Стили для скрытых заметок */
     .note.hidden {
         display: none !important;
     }
-
-/* ===== ХЕДЕР ===== */
 .info-app {
     display: flex;
     justify-content: center;
@@ -164,8 +161,6 @@ body {
     font-weight: 600;
     letter-spacing: 0.02em;
 }
-
-/* ===== BETA BADGE ===== */
 .beta-badge {
     display: inline-flex;
     align-items: center;
@@ -198,8 +193,6 @@ body {
 @media (max-width: 768px) {
     .beta-badge { font-size: 0.65rem; padding: 3px 7px; }
 }
-
-/* ===== ОСНОВНЫЕ КОНТЕЙНЕРЫ ===== */
 .app-notes-center {
     display: flex;
     flex-direction: column;
@@ -217,11 +210,9 @@ body {
     gap: 10px;
     width: 100%;
     padding: 12px 20px;
-    align-items: stretch; /* поиск и кнопки одной высоты */
+    align-items: stretch; 
     box-sizing: border-box;
 }
-
-/* ===== ПОИСК ===== */
 #searchInput {
     flex: 0.20;
     min-width: 0;
@@ -238,8 +229,6 @@ body {
     transition: background 0.2s ease, border-color 0.2s ease;
 }
 #searchInput:focus { border-color: var(--primary-color); background: var(--button-hover); }
-
-/* Search stats badge — float below search input */
 .search-stats {
     display: none;
     position: absolute;
@@ -255,8 +244,6 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     white-space: nowrap;
 }
-
-/* Tag autocomplete dropdown */
 .search-tag-dropdown {
     background: var(--modal-bg, #1e1e1e);
     border: 1px solid var(--button-border);
@@ -265,7 +252,6 @@ body {
     overflow: hidden;
     max-height: 260px;
     overflow-y: auto;
-    /* Анимация появления от инпута */
     transform-origin: top center;
     opacity: 0;
     transform: scaleY(0.88) translateY(-6px);
@@ -304,8 +290,6 @@ body {
     border-radius: 50%;
     flex-shrink: 0;
 }
-
-/* Search hint dropdown (shown on focus) */
 .search-hint-dropdown {
     max-height: 360px;
     padding-bottom: 6px;
@@ -389,8 +373,6 @@ body {
     background: color-mix(in srgb, var(--tag-color) 25%, transparent);
     transform: translateY(-1px);
 }
-
-/* ===== ЗАМЕТКИ ===== */
 #notesContainer {
     width: 100%;
     box-sizing: border-box;
@@ -398,26 +380,19 @@ body {
     margin-bottom: 5%;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .notes_center {
     width: 100%;
 }
-
-/* Режим сетки (по умолчанию) */
 #notesContainer.default-view {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
 }
-
-/* Режим списка (полная ширина) */
 #notesContainer.full-width-view {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
-
-/* Базовые стили заметки */
 .note {
     background: var(--note-bg);
     border: 1px solid var(--note-border);
@@ -428,34 +403,23 @@ body {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: clip;
 }
-
-/* List mode — allow full height, no clip */
 #notesContainer.full-width-view .note {
     overflow: visible;
 }
-
-/* Color accent on note (tags/color feature) */
 .note[data-color] { border-left: 3px solid var(--note-accent, var(--note-border)); }
 .note[data-color=""] { border-left: 1px solid var(--note-border); }
-
-/* Заметка в режиме сетки - фиксированная высота, flex layout */
 #notesContainer.default-view .note {
     height: 450px;
     overflow: hidden;
 }
-
-/* Notes with video — same fixed height as regular notes on desktop */
 #notesContainer.default-view .note.has-video {
     height: 450px;
     overflow: hidden;
 }
-
 #notesContainer.default-view .note.has-video .noteContent {
     overflow-y: auto;
     flex: 1;
 }
-
-/* Collapse empty paragraphs around video wrappers */
 .noteContent .lne-video-wrapper + p:empty,
 .noteContent .video-embed-wrapper + p:empty,
 .noteContent p:empty:first-child {
@@ -464,7 +428,6 @@ body {
     line-height: 0;
     min-height: 0;
 }
-/* Заметка в режиме списка - полная высота содержимого */
 #notesContainer.full-width-view .note {
     height: auto;
     min-height: 150px;
@@ -472,15 +435,11 @@ body {
     border-radius: 8px;
     margin-bottom: 5px;
 }
-
-/* Hover эффекты для режима сетки */
 @media (hover: hover) {
     #notesContainer.default-view .note:hover {
         transform: translateY(-3px);
         box-shadow: var(--shadow-medium);
     }
-
-    /* Hover эффекты для режима списка */
     #notesContainer.full-width-view .note:hover {
         transform: translateX(5px);
         box-shadow: var(--shadow-soft);
@@ -497,8 +456,6 @@ body {
     transition: all 0.3s ease;
     min-height: 0;
 }
-
-/* Содержимое в режиме сетки - flex:1 + scroll */
 #notesContainer.default-view .noteContent {
     flex: 1;
     overflow-y: auto;
@@ -506,15 +463,11 @@ body {
     min-height: 0;
     max-height: none;
 }
-
-/* Содержимое в режиме списка - полная высота без прокрутки */
 #notesContainer.full-width-view .noteContent {
     overflow-y: visible;
     max-height: none;
     height: auto;
 }
-
-/* ── Note footer — flex row with date + pin + badge ── */
 .note-footer {
     display: flex;
     align-items: center;
@@ -528,7 +481,6 @@ body {
     line-height: 1.3;
     flex-shrink: 0;
 }
-
 .note-footer-date {
     flex: 1;
     min-width: 0;
@@ -536,7 +488,6 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
 .note-buttons {
     display: flex;
     flex-direction: column;
@@ -547,8 +498,6 @@ body {
     position: relative;
     z-index: 1;
 }
-
-/* Tags row inside footer */
 .note-buttons .note-tags {
     display: flex;
     flex-wrap: wrap;
@@ -557,21 +506,16 @@ body {
     border-bottom: 1px solid var(--border-color);
     min-height: 0;
 }
-
-/* Buttons row */
 .note-btn-row {
     display: flex;
     gap: 5px;
     padding: 5px 10px;
     flex-shrink: 0;
 }
-
-/* List mode */
 #notesContainer.full-width-view .note-btn-row {
     padding: 4px 10px;
     gap: 5px;
 }
-
 .editBtn, .deleteBtn, .exportBtn {
     flex: 1;
     height: 36px;
@@ -585,8 +529,6 @@ body {
     justify-content: center;
     transition: all 0.2s ease;
 }
-
-/* Кнопки в режиме списка - более компактные */
 #notesContainer.full-width-view .editBtn,
 #notesContainer.full-width-view .deleteBtn,
 #notesContainer.full-width-view .exportBtn {
@@ -594,19 +536,16 @@ body {
     font-size: 13px;
     border-radius: 6px;
 }
-
 .editBtn:hover, .deleteBtn:hover, .exportBtn:hover { 
     background: var(--button-hover); 
     transform: translateY(-1px);
 }
-
-/* ===== КНОПКИ УПРАВЛЕНИЯ ===== */
 .block_btn {
     display: flex;
     gap: 10px;
     flex: 1;
     min-width: 0;
-    align-items: stretch; /* все дети одной высоты */
+    align-items: stretch; 
 }
 #addNoteButton, #importButton, #clearAllButton, #calendarBtn, #quickEditToggle {
     flex: 1;
@@ -632,8 +571,6 @@ body {
     line-height: 1.2;
 }
 #addNoteButton:hover, #importButton:hover, #clearAllButton:hover { background: var(--button-hover); }
-
-/* ===== КНОПКА ПЕРЕКЛЮЧЕНИЯ ВИДА ===== */
 .btn_view_div {
     position: fixed;
     bottom: 0;
@@ -651,7 +588,6 @@ body {
     box-sizing: border-box;
     min-height: 80px;
 }
-
 #toggleViewButton {
     width: 400px;
     max-width: calc(100% - 60px);
@@ -673,10 +609,8 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin: 0 auto;
-    /* Создаем визуальное отделение от фона */
     transform: translateY(-5px);
 }
-
 #toggleViewButton::before {
     content: '';
     position: absolute;
@@ -687,29 +621,24 @@ body {
     background: linear-gradient(90deg, transparent, rgba(174, 252, 110, 0.2), transparent);
     transition: left 0.6s ease;
 }
-
 #toggleViewButton:hover {
     transform: translateY(-8px);
     border-color: rgba(174, 252, 110, 0.6);
     box-shadow: 0 8px 30px rgba(174, 252, 110, 0.2);
     background: linear-gradient(135deg, var(--button-bg) 0%, rgba(174, 252, 110, 0.1) 100%);
 }
-
 #toggleViewButton:hover::before { 
     left: 100%; 
 }
-
 #toggleViewButton:active {
     transform: translateY(-2px);
     transition: transform 0.1s;
 }
-
 @media (max-width: 700px) {
     .btn_view_div {
         padding: 20px 20px 15px 20px;
         min-height: 70px;
     }
-    
     #toggleViewButton {
         width: calc(100% - 60px);
         max-width: 300px;
@@ -718,18 +647,15 @@ body {
         border-radius: 12px;
         transform: translateY(-3px);
     }
-    
     #toggleViewButton:hover {
         transform: translateY(-6px);
     }
 }
-
 @media (max-width: 480px) {
     .btn_view_div {
         padding: 18px 20px 12px 20px;
         min-height: 65px;
     }
-    
     #toggleViewButton {
         width: calc(100% - 50px);
         height: 42px;
@@ -738,54 +664,41 @@ body {
         letter-spacing: 0.3px;
         transform: translateY(-2px);
     }
-    
     #toggleViewButton:hover {
         transform: translateY(-5px);
     }
 }
-
-/* Темная тема для кнопки переключения вида */
 [data-theme="dark"] #toggleViewButton {
     background: linear-gradient(135deg, #1a1a1a 0%, rgba(174, 252, 110, 0.08) 100%);
     border-color: rgba(174, 252, 110, 0.4);
     color: #ffffff;
 }
-
 [data-theme="dark"] #toggleViewButton:hover {
     background: linear-gradient(135deg, #2a2a2a 0%, rgba(174, 252, 110, 0.15) 100%);
     border-color: rgba(174, 252, 110, 0.7);
     box-shadow: 0 8px 30px rgba(174, 252, 110, 0.25);
 }
-
 [data-theme="dark"] .btn_view_div {
     background: rgba(15, 15, 15, 0.85);
     border-top-color: rgba(174, 252, 110, 0.15);
 }
-
-/* Светлая тема для кнопки переключения вида */
 [data-theme="light"] #toggleViewButton {
     background: linear-gradient(135deg, #ffffff 0%, rgba(40, 167, 69, 0.08) 100%);
     border-color: rgba(40, 167, 69, 0.4);
     color: #212529;
 }
-
 [data-theme="light"] #toggleViewButton:hover {
     background: linear-gradient(135deg, #f8f9fa 0%, rgba(40, 167, 69, 0.15) 100%);
     border-color: rgba(40, 167, 69, 0.7);
     box-shadow: 0 8px 30px rgba(40, 167, 69, 0.25);
 }
-
 [data-theme="light"] .btn_view_div {
     background: rgba(248, 249, 250, 0.85);
     border-top-color: rgba(40, 167, 69, 0.15);
 }
-
 [data-theme="light"] #toggleViewButton::before {
     background: linear-gradient(90deg, transparent, rgba(40, 167, 69, 0.2), transparent);
 }
-
-/* ===== СТИЛИ ДЛЯ ПРИВЕТСТВЕННОГО СООБЩЕНИЯ (WELCOME MESSAGE) ===== */
-
 .welcome-message {
     max-width: 900px;
     margin: 30px auto;
@@ -800,8 +713,6 @@ body {
     overflow: hidden;
     transition: all 0.3s ease;
 }
-
-/* Декоративная полоска слева */
 .welcome-message::before {
     content: '';
     position: absolute;
@@ -812,47 +723,18 @@ body {
     background: var(--gradient-primary);
     transition: width 0.3s ease;
 }
-
 .welcome-message:hover::before {
     width: 6px;
 }
-
-/* Анимация появления */
-@keyframes welcomeFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Контент */
 .welcome-content {
     position: relative;
     z-index: 1;
     padding: 40px 35px;
 }
-
-/* ===== ХЕДЕР ПРИВЕТСТВИЯ ===== */
 .welcome-header {
     text-align: center;
     margin-bottom: 35px;
 }
-
-@keyframes welcomeTextFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .welcome-title {
     font-size: 2.5rem;
     font-weight: 700;
@@ -864,7 +746,6 @@ body {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     letter-spacing: -0.02em;
 }
-
 .welcome-subtitle {
     font-size: 1.2rem;
     margin: 0;
@@ -872,8 +753,6 @@ body {
     font-weight: 400;
     color: var(--text-secondary);
 }
-
-/* ===== СЕКЦИИ ===== */
 .welcome-section {
     margin-bottom: 28px;
     background: var(--bg-secondary);
@@ -882,20 +761,11 @@ body {
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
 }
-
-.welcome-section:nth-child(2) { }
-.welcome-section:nth-child(3) { }
-.welcome-section:nth-child(4) { }
-.welcome-section:nth-child(5) { }
-.welcome-section:nth-child(6) { }
-.welcome-section:nth-child(7) { }
-
 .welcome-section:hover {
     border-color: var(--primary-color);
     transform: translateX(5px);
     box-shadow: var(--shadow-soft);
 }
-
 .welcome-section-title {
     font-size: 1.3rem;
     font-weight: 600;
@@ -905,14 +775,11 @@ body {
     align-items: center;
     gap: 10px;
 }
-
 .welcome-section-title::before {
     content: '✦';
     font-size: 1.2rem;
     color: var(--primary-color);
 }
-
-/* ===== ТЕКСТ В СЕКЦИЯХ ===== */
 .welcome-description,
 .welcome-developer-info,
 .welcome-get-started {
@@ -921,8 +788,6 @@ body {
     margin: 0;
     color: var(--text-color);
 }
-
-/* ===== СПИСКИ ===== */
 .welcome-features,
 .welcome-goals {
     list-style: none;
@@ -932,7 +797,6 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 8px;
 }
-
 .welcome-features li,
 .welcome-goals li {
     padding: 8px 0 8px 28px;
@@ -942,12 +806,10 @@ body {
     position: relative;
     transition: transform 0.2s ease;
 }
-
 .welcome-features li:hover,
 .welcome-goals li:hover {
     transform: translateX(3px);
 }
-
 .welcome-features li::before,
 .welcome-goals li::before {
     content: '✓';
@@ -957,13 +819,10 @@ body {
     font-weight: bold;
     font-size: 1rem;
 }
-
-/* ===== КНОПКА ДЕЙСТВИЯ ===== */
 .welcome-actions {
     text-align: center;
     margin-top: 35px;
 }
-
 .welcome-dismiss-btn {
     background: var(--gradient-primary);
     color: #000;
@@ -983,7 +842,6 @@ body {
     position: relative;
     overflow: hidden;
 }
-
 .welcome-dismiss-btn::before {
     content: '';
     position: absolute;
@@ -994,205 +852,160 @@ body {
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
     transition: left 0.5s;
 }
-
 .welcome-dismiss-btn:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-medium);
 }
-
 .welcome-dismiss-btn:hover::before {
     left: 100%;
 }
-
 .welcome-dismiss-btn:active {
     transform: translateY(0);
 }
-
-/* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 1024px) {
     .welcome-message {
         max-width: 95%;
         margin: 20px auto;
     }
-    
     .welcome-content {
         padding: 30px 25px;
     }
-    
     .welcome-title {
         font-size: 2.2rem;
     }
-    
     .welcome-features,
     .welcome-goals {
         grid-template-columns: 1fr;
     }
 }
-
 @media (max-width: 768px) {
     .welcome-message {
         margin: 15px;
         border-radius: var(--border-radius-medium);
     }
-    
     .welcome-content {
         padding: 25px 20px;
     }
-    
     .welcome-title {
         font-size: 1.8rem;
     }
-    
     .welcome-subtitle {
         font-size: 1rem;
     }
-    
     .welcome-section {
         padding: 18px 20px;
         margin-bottom: 20px;
     }
-    
     .welcome-section-title {
         font-size: 1.2rem;
         margin-bottom: 12px;
     }
-    
     .welcome-section-title::before {
         font-size: 1rem;
     }
-    
     .welcome-description,
     .welcome-developer-info,
     .welcome-get-started {
         font-size: 0.9rem;
         line-height: 1.55;
     }
-    
     .welcome-features li,
     .welcome-goals li {
         font-size: 0.85rem;
         padding: 6px 0 6px 24px;
     }
-    
     .welcome-features li::before,
     .welcome-goals li::before {
         font-size: 0.9rem;
     }
-    
     .welcome-dismiss-btn {
         padding: 12px 24px;
         font-size: 0.9rem;
     }
 }
-
 @media (max-width: 480px) {
     .welcome-message {
         margin: 10px;
         border-radius: var(--border-radius-small);
     }
-    
     .welcome-content {
         padding: 20px 15px;
     }
-    
     .welcome-title {
         font-size: 1.5rem;
     }
-    
     .welcome-subtitle {
         font-size: 0.85rem;
     }
-    
     .welcome-section {
         padding: 14px 16px;
         margin-bottom: 16px;
     }
-    
     .welcome-section-title {
         font-size: 1.1rem;
     }
-    
     .welcome-description,
     .welcome-developer-info,
     .welcome-get-started {
         font-size: 0.85rem;
     }
-    
     .welcome-features li,
     .welcome-goals li {
         font-size: 0.8rem;
         padding: 5px 0 5px 22px;
     }
-    
     .welcome-dismiss-btn {
         padding: 10px 20px;
         font-size: 0.85rem;
         width: 100%;
     }
 }
-
-/* ===== ТЕМНАЯ ТЕМА ===== */
 [data-theme="dark"] .welcome-message {
     background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
     border-color: #272727;
 }
-
 [data-theme="dark"] .welcome-section {
     background: rgba(255, 255, 255, 0.03);
     border-color: #2a2a2a;
 }
-
 [data-theme="dark"] .welcome-section:hover {
     border-color: #aefc6e;
 }
-
-/* ===== СВЕТЛАЯ ТЕМА ===== */
 [data-theme="light"] .info-app {
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border-color: #dee2e6;
 }
-
-[data-theme="light"] .noteContent, .btn {
+[data-theme="light"] .noteContent {
     background: #fcfcfc;
     border-color: #dee2e6;
     color: var(--note-text);
 }
-
 [data-theme="dark"] .noteContent {
     background: #1a1a1a;
     border-color: #dee2e6;
     color: var(--note-text);
 }
-
 [data-theme="light"] #importButton {
     color: var(--button-text);
     border-color: var(--primary-color);
 }
-
 [data-theme="light"] #importButton:hover {
     color: var(--button-hover);
 }
-
-
 [data-theme="light"] .welcome-message {
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     border-color: #dee2e6;
 }
-
 [data-theme="light"] .welcome-section {
     background: rgba(0, 0, 0, 0.02);
     border-color: #e9ecef;
 }
-
 [data-theme="light"] .welcome-section:hover {
     border-color: #28a745;
 }
-
-/* ===== АНИМАЦИЯ ПРИ ЗАКРЫТИИ ===== */
 .welcome-message.closing {
     animation: welcomeFadeOut 0.4s ease forwards;
 }
-
 @keyframes welcomeFadeOut {
     from {
         opacity: 1;
@@ -1204,52 +1017,27 @@ body {
         visibility: hidden;
     }
 }
-
-/* ===== ДОПОЛНИТЕЛЬНЫЕ ЭФФЕКТЫ ===== */
-
-/* Эффект градиента для заголовка */
-.welcome-title {
-    background-size: 200% auto;
-    animation: gradientShift 3s ease infinite;
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Иконки для секций (опционально) */
 .welcome-section[data-icon] .welcome-section-title::before {
     content: attr(data-icon);
 }
-
-/* Стиль для ссылок внутри приветствия */
 .welcome-content a {
     color: var(--primary-color);
     text-decoration: none;
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s;
 }
-
 .welcome-content a:hover {
     border-bottom-color: var(--primary-color);
 }
-
-/* Подсветка важных элементов */
 .welcome-features li:first-child,
 .welcome-goals li:first-child {
     font-weight: 500;
     color: var(--primary-color);
 }
-
-/* Стиль для выделения текста */
 .welcome-content ::selection {
     background: var(--primary-color);
     color: #000;
 }
-
-/* Для reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .welcome-message,
     .welcome-header,
@@ -1257,17 +1045,13 @@ body {
     .welcome-dismiss-btn {
         animation: none;
     }
-    
     .welcome-message:hover::before {
         width: 4px;
     }
-    
     .welcome-section:hover {
         transform: none;
     }
 }
-
-/* ===== ФУТЕР ===== */
 footer {
     background-color: var(--header-bg);
     width: 100%;
@@ -1299,8 +1083,6 @@ footer a:hover { color: var(--primary-color); }
 }
 .info-about-project, .footer-content { width: 90%; text-align: left; padding: 20px; line-height: 1.6;}
 .footer-content { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-
-/* ══════════════════ NETWORK MODE TOGGLE ══════════════════ */
 .ln-net-toggle {
   display: inline-flex;
   align-items: center;
@@ -1313,8 +1095,6 @@ footer a:hover { color: var(--primary-color); }
   transition: background 0.25s;
 }
 .ln-net-toggle:hover { background: rgba(255,255,255,0.07); }
-
-/* labels */
 .ln-net-label {
   display: flex;
   align-items: center;
@@ -1327,12 +1107,8 @@ footer a:hover { color: var(--primary-color); }
   opacity: 0.4;
 }
 .ln-net-label svg { flex-shrink: 0; }
-
-/* active label highlight */
 .ln-net-toggle[data-mode="offline"] .ln-net-label--offline { opacity: 1; color: #f87171; }
 .ln-net-toggle[data-mode="online"]  .ln-net-label--online  { opacity: 1; color: var(--primary-color, #aefc6e); }
-
-/* switch track */
 .ln-net-switch {
   position: relative;
   display: flex;
@@ -1352,8 +1128,6 @@ footer a:hover { color: var(--primary-color); }
   background: var(--primary-color, #aefc6e);
   justify-content: flex-end;
 }
-
-/* thumb */
 .ln-net-thumb {
   width: 18px;
   height: 18px;
@@ -1368,13 +1142,9 @@ footer a:hover { color: var(--primary-color); }
 .ln-net-switch[aria-checked="true"] .ln-net-thumb {
   box-shadow: 0 1px 6px rgba(0,0,0,0.25);
 }
-
-/* ripple on click */
 .ln-net-switch:active .ln-net-thumb {
   width: 22px;
 }
-
-/* light theme */
 [data-theme="light"] .ln-net-toggle {
   background: rgba(0,0,0,0.04);
   border-color: rgba(0,0,0,0.1);
@@ -1383,8 +1153,6 @@ footer a:hover { color: var(--primary-color); }
 [data-theme="light"] .ln-net-label { color: #444; }
 [data-theme="light"] .ln-net-switch { box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
 [data-theme="light"] .ln-net-thumb { background: #fff; }
-
-/* ── Offline banner (real connectivity indicator) ─────────── */
 #lnOfflineBanner {
   position: fixed;
   top: 0;
@@ -1415,15 +1183,7 @@ footer a:hover { color: var(--primary-color); }
   border-bottom-color: #f87171;
   color: #c0392b;
 }
-/* ═══════════════════════════════════════════════════════════ */
-
-
-/* ===== МОБИЛЬНЫЕ СТИЛИ ДЛЯ ХЕДЕРА И НАВИГАЦИИ ===== */
-
-/* Мобильные устройства (до 768px) */
 @media (max-width: 768px) {
-
-    /* === ХЕДЕР (info-app) === */
     .info-app {
         flex-direction: row !important;
         align-items: center;
@@ -1437,13 +1197,11 @@ footer a:hover { color: var(--primary-color); }
         position: relative;
         z-index: 10;
     }
-
     .info-app .logo {
         width: 34px !important;
         height: 34px !important;
         flex-shrink: 0;
     }
-
     .info-app .name-app {
         font-size: 1.3rem !important;
         margin: 0 !important;
@@ -1452,8 +1210,6 @@ footer a:hover { color: var(--primary-color); }
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
-    /* === НАВИГАЦИЯ (center_nav) === */
     .center_nav {
         position: sticky;
         top: 0;
@@ -1462,7 +1218,6 @@ footer a:hover { color: var(--primary-color); }
         z-index: 20;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
-
     .center_nav .sticky {
         display: flex;
         flex-direction: column !important;
@@ -1471,8 +1226,6 @@ footer a:hover { color: var(--primary-color); }
         width: 100%;
         box-sizing: border-box;
     }
-
-    /* === БЛОК КНОПОК — горизонтальный скролл === */
     .block_btn {
         display: flex !important;
         flex-direction: row !important;
@@ -1482,15 +1235,12 @@ footer a:hover { color: var(--primary-color); }
         overflow-x: auto !important;
         overflow-y: hidden !important;
         -webkit-overflow-scrolling: touch;
-        scrollbar-width: none; /* Firefox */
+        scrollbar-width: none; 
         scroll-snap-type: x mandatory;
     }
-
     .block_btn::-webkit-scrollbar {
-        display: none; /* Chrome/Safari — скрываем скроллбар, но скролл работает */
+        display: none; 
     }
-
-    /* Кнопки — фиксированная ширина, не сжимаются */
     .block_btn button {
         flex: 0 0 auto !important;
         width: auto !important;
@@ -1515,29 +1265,23 @@ footer a:hover { color: var(--primary-color); }
         box-sizing: border-box !important;
         scroll-snap-align: start;
     }
-
     .block_btn button:active {
         transform: scale(0.95) !important;
         opacity: 0.85 !important;
     }
-
     #addNoteButton {
         background: var(--primary-color) !important;
         color: #000 !important;
         border-color: var(--primary-color) !important;
     }
-
     #clearAllButton {
         background: rgba(220, 53, 69, 0.1) !important;
         border-color: rgba(220, 53, 69, 0.4) !important;
         color: #dc3545 !important;
     }
-
     #importInput {
         display: none !important;
     }
-
-    /* === ПОИСК — нормальная высота === */
     #searchInput {
         width: 100% !important;
         min-height: 45px;
@@ -1551,57 +1295,46 @@ footer a:hover { color: var(--primary-color); }
         box-sizing: border-box;
         transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-
     #searchInput:focus {
         border-color: var(--primary-color);
         outline: none;
         box-shadow: 0 0 0 3px rgba(174, 252, 110, 0.15);
     }
-
     #searchInput::placeholder {
         font-size: 14px;
         color: var(--text-secondary);
         opacity: 0.75;
     }
-
-    /* === ЗАМЕТКИ — минимальные отступы от краёв === */
     #notesContainer.default-view {
         grid-template-columns: 1fr !important;
         gap: 10px !important;
         padding: 0 6px !important;
     }
-
     #notesContainer.full-width-view {
         gap: 8px !important;
         padding: 0 6px !important;
     }
-
     #notesContainer.default-view .note {
         height: 400px !important;
         border-radius: 12px !important;
     }
-
     #notesContainer.default-view .note.has-video {
         height: 400px !important;
         overflow: hidden !important;
     }
-
     #notesContainer.default-view .note.has-video .noteContent {
         overflow-y: auto !important;
         flex: 1 !important;
         margin-top: 0 !important;
     }
-
     #notesContainer.full-width-view .note.has-video .noteContent {
         margin-top: 0 !important;
     }
-
     #notesContainer.full-width-view .note {
         min-height: 100px !important;
         border-radius: 12px !important;
         margin-bottom: 0 !important;
     }
-
     #notesContainer.default-view .noteContent {
         flex: 1 !important;
         min-height: 0 !important;
@@ -1611,26 +1344,20 @@ footer a:hover { color: var(--primary-color); }
         font-size: 13.5px !important;
         margin-top: 38px !important;
     }
-
     #notesContainer.full-width-view .noteContent {
         padding: 10px 12px !important;
         font-size: 13.5px !important;
         margin-top: 38px !important;
     }
-
-    /* Футер заметки (дата/время) — компактный */
     .note-footer {
         padding: 5px 10px !important;
         font-size: 0.65rem !important;
         line-height: 1.3 !important;
     }
-
-    /* Кнопки заметок */
     #notesContainer .note-buttons {
         padding: 5px 10px !important;
         gap: 5px !important;
     }
-
     #notesContainer .editBtn,
     #notesContainer .deleteBtn,
     #notesContainer .exportBtn {
@@ -1640,13 +1367,10 @@ footer a:hover { color: var(--primary-color); }
         padding: 0 8px !important;
         white-space: nowrap !important;
     }
-
-    /* === КНОПКА ПЕРЕКЛЮЧЕНИЯ ВИДА === */
     .btn_view_div {
         padding: 8px 14px 12px !important;
         min-height: 58px !important;
     }
-
     #toggleViewButton {
         width: calc(100% - 28px) !important;
         max-width: 360px !important;
@@ -1657,39 +1381,31 @@ footer a:hover { color: var(--primary-color); }
         margin: 0 auto !important;
         transform: none !important;
     }
-
     #toggleViewButton:hover,
     #toggleViewButton:active {
         transform: none !important;
     }
 }
-
-/* ===== ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ (до 480px) ===== */
 @media (max-width: 480px) {
     .info-app {
         padding: 8px 10px !important;
         min-height: 50px;
         gap: 8px !important;
     }
-
     .info-app .logo {
         width: 28px !important;
         height: 28px !important;
     }
-
     .info-app .name-app {
         font-size: 1.15rem !important;
     }
-
     .center_nav .sticky {
         padding: 7px 8px !important;
         gap: 7px !important;
     }
-
     .block_btn {
         gap: 6px !important;
     }
-
     .block_btn button {
         min-width: 96px !important;
         height: 40px !important;
@@ -1697,22 +1413,18 @@ footer a:hover { color: var(--primary-color); }
         font-size: 12px !important;
         border-radius: 9px !important;
     }
-
     #searchInput {
         height: 40px !important;
         font-size: 14px !important;
     }
-
     #notesContainer.default-view,
     #notesContainer.full-width-view {
         padding: 0 4px !important;
     }
-
     .btn_view_div {
         padding: 6px 10px 10px !important;
         min-height: 54px !important;
     }
-
     #toggleViewButton {
         width: calc(100% - 20px) !important;
         height: 38px !important;
@@ -1720,8 +1432,6 @@ footer a:hover { color: var(--primary-color); }
         border-radius: 10px !important;
     }
 }
-
-/* ===== ПЛАНШЕТЫ (768px - 1024px) ===== */
 @media (min-width: 769px) and (max-width: 1024px) {
     .info-app {
         flex-direction: row !important;
@@ -1730,16 +1440,13 @@ footer a:hover { color: var(--primary-color); }
         height: 72px;
         padding: 0 20px;
     }
-
     .info-app .logo {
         width: 42px;
         height: 42px;
     }
-
     .info-app .name-app {
         font-size: 1.7rem;
     }
-
     .center_nav .sticky {
         flex-direction: row !important;
         align-items: center;
@@ -1747,8 +1454,6 @@ footer a:hover { color: var(--primary-color); }
         padding: 10px 16px;
         flex-wrap: nowrap;
     }
-
-    /* Горизонтальный скролл кнопок */
     .block_btn {
         display: flex !important;
         flex-direction: row !important;
@@ -1763,11 +1468,9 @@ footer a:hover { color: var(--primary-color); }
         min-width: 0;
         padding-bottom: 4px;
     }
-
     .block_btn::-webkit-scrollbar {
         display: none;
     }
-
     .block_btn button {
         flex: 0 0 auto !important;
         min-width: 0;
@@ -1779,37 +1482,29 @@ footer a:hover { color: var(--primary-color); }
         text-overflow: unset;
         scroll-snap-align: start;
     }
-
     #searchInput {
         flex: 0 0 200px;
         height: 44px;
         font-size: 14px;
     }
 }
-
-/* ===== БОЛЬШИЕ ПЛАНШЕТЫ (1025px - 1366px) ===== */
 @media (min-width: 1025px) and (max-width: 1366px) {
     .info-app {
         gap: 30px;
         height: 88px;
     }
-
     .info-app .logo {
         width: 46px;
         height: 46px;
     }
-
     .info-app .name-app {
         font-size: 1.95rem;
     }
-
     .center_nav .sticky {
         padding: 10px 20px;
         align-items: stretch;
         flex-wrap: nowrap;
     }
-
-    /* Горизонтальный скролл кнопок как на мобильных */
     .block_btn {
         display: flex !important;
         flex-direction: row !important;
@@ -1823,11 +1518,9 @@ footer a:hover { color: var(--primary-color); }
         padding-bottom: 4px;
         align-items: center;
     }
-
     .block_btn::-webkit-scrollbar {
         display: none;
     }
-
     .block_btn button {
         flex: 0 0 auto !important;
         height: 44px;
@@ -1838,15 +1531,12 @@ footer a:hover { color: var(--primary-color); }
         text-overflow: unset;
         scroll-snap-align: start;
     }
-
     #searchInput {
         height: 44px;
         font-size: 15px;
         flex: 0 0 220px;
     }
 }
-
-/* ===== АЛЬБОМНАЯ ОРИЕНТАЦИЯ НА МОБИЛЬНЫХ ===== */
 @media (max-width: 768px) and (orientation: landscape) {
     .info-app {
         flex-direction: row !important;
@@ -1855,108 +1545,80 @@ footer a:hover { color: var(--primary-color); }
         min-height: 48px;
         gap: 10px !important;
     }
-
     .info-app .logo {
         width: 26px !important;
         height: 26px !important;
     }
-
     .info-app .name-app {
         font-size: 1.05rem !important;
     }
-
     .center_nav .sticky {
         padding: 5px 10px !important;
         gap: 6px !important;
     }
-
     .block_btn button {
         height: 36px !important;
         font-size: 11px !important;
         min-width: 88px !important;
     }
-
     #searchInput {
         height: 36px !important;
         font-size: 13px !important;
     }
-
     .btn_view_div {
         padding: 5px 12px 8px !important;
         min-height: 48px !important;
     }
-
     #toggleViewButton {
         height: 34px !important;
         font-size: 11px !important;
     }
 }
-
-/* ===== ТЕМНЫЕ И СВЕТЛЫЕ ТЕМЫ ДЛЯ МОБИЛЬНЫХ ===== */
 [data-theme="dark"] .block_btn button {
     background: #2d2d2d;
     border-color: #404040;
 }
-
 [data-theme="dark"] #addNoteButton {
     background: #aefc6e !important;
     color: #000 !important;
 }
-
 [data-theme="light"] .block_btn button {
     background: #f8f9fa;
     border-color: #dee2e6;
 }
-
 [data-theme="light"] #addNoteButton {
     background: #28a745 !important;
     border-color: var(--primary-color);
     color: #fff !important;
 }
-
 [data-theme="light"] #clearAllButton {
     background: rgba(220, 53, 69, 0.15) !important;
        border-color: #ff0000;
         color: #dc3545 !important;
 }
-
-
-/* ===== ДОПОЛНИТЕЛЬНЫЕ УЛУЧШЕНИЯ ===== */
-
-/* Скрытие скроллбара для кнопок на некоторых браузерах */
 .block_btn {
     scrollbar-width: thin;
 }
-
-/* Плавная прокрутка для кнопок */
 .block_btn {
     scroll-behavior: smooth;
 }
-
-/* Индикатор прокрутки для кнопок (если нужно) */
 .block_btn::after {
     content: '';
     display: none;
 }
-
-/* Улучшенный touch-отклик для кнопок */
 @media (hover: none) and (pointer: coarse) {
     .block_btn button:active {
         transform: scale(0.96);
         transition: transform 0.05s;
     }
-    
     #searchInput:active {
         background: var(--button-hover);
     }
 }
-
-/* Анимация для появления элементов на мобильных */
 @media (max-width: 768px) {
     .info-app, .center_nav {
         animation: mobileSlideDown 0.3s ease-out;
     }
-    
     @keyframes mobileSlideDown {
         from {
             opacity: 0;
@@ -1968,57 +1630,40 @@ footer a:hover { color: var(--primary-color); }
         }
     }
 }
-
-/* Подсветка активной кнопки при нажатии */
 .block_btn button:active {
     opacity: 0.8;
 }
-
-/* Улучшенная читаемость на мобильных */
 @media (max-width: 768px) {
     .info-app .name-app {
         font-weight: 700;
         letter-spacing: 0;
     }
-    
     #searchInput::placeholder {
         font-weight: 400;
     }
 }
-
-/* Для очень узких экранов (до 360px) */
 @media (max-width: 360px) {
     .info-app .logo {
         width: 38px !important;
         height: 38px !important;
     }
-    
     .info-app .name-app {
         font-size: 1.1rem !important;
     }
-    
     .block_btn button {
         min-width: 200px !important;
         height: 40px !important;
         font-size: 11px !important;
         padding: 8px 12px !important;
     }
-    
     .block_btn button i {
         font-size: 11px !important;
     }
-    
     #searchInput {
         height: 40px !important;
         font-size: 13px !important;
     }
 }
-
-
-
-
-
-/* ===== МОДАЛЬНЫЕ ОКНА ===== */
 .modal {
     display: none;
     position: fixed;
@@ -2036,8 +1681,6 @@ footer a:hover { color: var(--primary-color); }
     from { opacity: 0; backdrop-filter: blur(0px); }
     to { opacity: 1; backdrop-filter: blur(10px); }
 }
-
-/* Модальное окно редактора */
 .modal-content {
     background: var(--modal-bg);
     margin: 4vh auto;
@@ -2072,8 +1715,6 @@ footer a:hover { color: var(--primary-color); }
     pointer-events: none;
 }
 .modal_h2 { display: none; }
-
-/* Модальные окна предупреждений */
 .modal-content-error, .modal-content-warning {
     background: var(--modal-bg);
     border: 1px solid var(--modal-border);
@@ -2125,8 +1766,6 @@ footer a:hover { color: var(--primary-color); }
 #ok:hover, #confirmYes:hover { background: var(--primary-hover); transform: translateY(-2px); }
 #confirmNo, .cancel-btn { background: #6c757d; color: white; }
 #confirmNo:hover, .cancel-btn:hover { background: #5a6268; transform: translateY(-2px); }
-
-/* Кнопки модального окна */
 .modal-buttons-container {
     display: flex;
     gap: 12px;
@@ -2149,8 +1788,6 @@ footer a:hover { color: var(--primary-color); }
 .modal-buttons-container button:hover { background: var(--button-hover); transform: translateY(-1px); }
 .modal-buttons-container button.save { background: var(--primary-color); color: #ffffff; border-color: var(--primary-color); }
 .modal-buttons-container button.cancel { background: #dc3545; color: white; border-color: #dc3545; }
-
-/* ===== IMPORT LOADING OVERLAY ===== */
 #import-loading-ov {
     position: fixed;
     inset: 0;
@@ -2183,8 +1820,6 @@ footer a:hover { color: var(--primary-color); }
 @keyframes importSpin {
     to { transform: rotate(360deg); }
 }
-
-/* ===== ЭКСПОРТ МОДАЛЬНОЕ ОКНО ===== */
 .export-modal {
     position: fixed;
     top: 0;
@@ -2252,8 +1887,6 @@ footer a:hover { color: var(--primary-color); }
     transition: all 0.2s;
 }
 .export-close:hover { background: var(--button-hover); }
-
-/* ===== ПЕРЕКЛЮЧАТЕЛЬ ТЕМ ===== */
 .theme-toggle {
     position: fixed;
     bottom: 20px;
@@ -2274,7 +1907,6 @@ footer a:hover { color: var(--primary-color); }
     box-shadow: var(--shadow-medium);
 }
 .theme-toggle:hover { transform: scale(1.05); background: var(--button-hover); }
-
 .theme-modal {
     display: none;
     position: fixed;
@@ -2328,8 +1960,6 @@ footer a:hover { color: var(--primary-color); }
 .theme-option .theme-icon { font-size: 24px; width: 36px; text-align: center; }
 .theme-option .theme-name { font-weight: 600; flex: 1; text-align: left; color: var(--primary-color); }
 .theme-option .theme-description { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
-
-/* ===== ПРОГРЕСС-БАР ===== */
 .progress-modal {
     position: fixed;
     top: 0;
@@ -2366,8 +1996,6 @@ footer a:hover { color: var(--primary-color); }
 }
 .progress-text { color: var(--text-color); font-size: 1rem; margin: 10px 0 5px; }
 .progress-details { color: var(--text-secondary); font-size: 0.85rem; }
-
-/* ===== TINYMCE СТИЛИ ===== */
 .tox .tox-edit-area iframe body {
     font-family: 'Golos Text', sans-serif !important;
     font-size: 16px !important;
@@ -2412,13 +2040,10 @@ footer a:hover { color: var(--primary-color); }
     padding: 10px 14px;
 }
 .tox .tox-edit-area iframe body th { background: var(--primary-color); color: #000; }
-
-/* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 768px) {
     .modal-content {
         margin: 0;
         width: 100%;
-        /* height управляется editor-modal.css с учётом safe-area */
         border-radius: 0;
         animation: modalContentSlideUp 0.3s;
     }
@@ -2434,39 +2059,27 @@ footer a:hover { color: var(--primary-color); }
         from { opacity: 0; transform: translate(-50%, -60%); }
         to { opacity: 1; transform: translate(-50%, -50%); }
     }
-
-    /* Navigation */
     .sticky { flex-direction: column; gap: 8px; }
     .block_btn { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
     .block_btn button { min-width: 0; height: 40px; font-size: 13px; padding: 0 10px; flex-shrink: 0; }
     #searchInput { height: 40px; font-size: 15px; }
-
-    /* Note cards — auto height on mobile */
     .note { height: auto !important; min-height: 120px; }
     #notesContainer.default-view { grid-template-columns: 1fr; }
     .noteContent { max-height: none !important; overflow-y: visible !important; }
-
-    /* Note buttons compact — not cut off */
     .note-buttons { padding: 0; overflow: visible; }
     .note-btn-row { padding: 4px 8px; gap: 4px; flex-shrink: 0; }
     .note-buttons .note-tags { padding: 4px 8px 3px; gap: 3px; }
     .editBtn, .deleteBtn, .exportBtn { height: 30px; font-size: 11px; padding: 0 6px; min-width: 0; }
-
-    /* Modal buttons */
     .modal-buttons-container { flex-direction: row; flex-wrap: wrap; gap: 6px; padding: 8px; }
     .modal-buttons-container button { flex: 1; min-width: 0; height: 40px; }
     .btn-settings { width: 40px; height: 40px; flex-shrink: 0; }
-
-    /* Context toolbar on mobile — bigger */
     .lne-ctx-toolbar-float { padding: 5px; gap: 3px; }
-
     .export-options { gap: 10px; }
     .export-option { padding: 12px 16px; }
     .theme-toggle { width: 42px; height: 42px; bottom: 15px; right: 15px; }
     .theme-modal-content { margin: 30% auto; width: 280px; }
     .footer-content { flex-direction: column; gap: 10px; }
 }
-
 @media (max-width: 480px) {
     .modal-content-error .modal-buttons { flex-direction: column; }
     .modal-content-error button { width: 100%; }
@@ -2474,8 +2087,6 @@ footer a:hover { color: var(--primary-color); }
     .export-text { font-size: 14px; }
     .theme-option { padding: 10px 14px; }
 }
-
-/* ===== АНИМАЦИИ ===== */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -2489,10 +2100,6 @@ footer a:hover { color: var(--primary-color); }
     to { opacity: 0; transform: translateY(20px); }
 }
 .note.removing { animation: fadeOutDown 0.5s ease-in-out; }
-
-/* ─── Due date visual highlights ─────────────────────── */
-
-/* Overdue — red left border + subtle red tint */
 .note.note-overdue {
     border-left: 3px solid #e74c3c !important;
     box-shadow: inset 3px 0 0 #e74c3c, 0 0 0 1px rgba(231,76,60,.2);
@@ -2500,8 +2107,6 @@ footer a:hover { color: var(--primary-color); }
 .note.note-overdue .note-footer {
     color: #e74c3c;
 }
-
-/* Due today — amber/yellow left border */
 .note.note-due-today {
     border-left: 3px solid #f1c40f !important;
     box-shadow: inset 3px 0 0 #f1c40f, 0 0 0 1px rgba(241,196,15,.2);
@@ -2509,13 +2114,9 @@ footer a:hover { color: var(--primary-color); }
 .note.note-due-today .note-footer {
     color: #d4a017;
 }
-
-/* Due soon (within 48h) — orange left border */
 .note.note-due-soon {
     border-left: 3px solid #f39c12 !important;
 }
-
-/* Overdue pulsing badge */
 .note.note-overdue .note-due-badge {
     animation: duePulse 2s ease-in-out infinite;
 }
@@ -2523,19 +2124,11 @@ footer a:hover { color: var(--primary-color); }
     0%, 100% { opacity: 1; }
     50%       { opacity: .55; }
 }
-
-/* Hover эффекты */
 @media (hover:hover) {
     #addNoteButton:hover, #importButton:hover, #clearAllButton:hover,
     #toggleViewButton:hover { background-color: #202020; }
     .editBtn:hover, .deleteBtn:hover, .exportBtn:hover { background: var(--button-hover); }
 }
-
-
-
-/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ TINYMCE (РЕДАКТОР) ===== */
-
-/* Базовые стили для тела редактора */
 .tox .tox-edit-area iframe body {
     font-family: 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     font-size: 16px !important;
@@ -2545,8 +2138,6 @@ footer a:hover { color: var(--primary-color); }
     padding: 20px !important;
     margin: 0 !important;
 }
-
-/* Стили для заголовков в редакторе */
 .tox .tox-edit-area iframe body h1 {
     font-size: 2.2em !important;
     font-weight: 700 !important;
@@ -2587,15 +2178,11 @@ footer a:hover { color: var(--primary-color); }
     margin: 12px 0 8px 0 !important;
     color: var(--primary-color) !important;
 }
-
-/* Стили для параграфов */
 .tox .tox-edit-area iframe body p {
     margin-bottom: 16px !important;
     line-height: 1.7 !important;
     color: var(--editor-text, #ffffff) !important;
 }
-
-/* Стили для списков */
 .tox .tox-edit-area iframe body ul,
 .tox .tox-edit-area iframe body ol {
     margin: 12px 0 16px 24px !important;
@@ -2610,8 +2197,6 @@ footer a:hover { color: var(--primary-color); }
 .tox .tox-edit-area iframe body ol ol {
     margin: 4px 0 4px 24px !important;
 }
-
-/* Стили для ссылок */
 .tox .tox-edit-area iframe body a {
     color: var(--primary-color) !important;
     text-decoration: underline !important;
@@ -2620,8 +2205,6 @@ footer a:hover { color: var(--primary-color); }
 .tox .tox-edit-area iframe body a:hover {
     color: var(--primary-hover, #9ee85d) !important;
 }
-
-/* Стили для жирного и курсивного текста */
 .tox .tox-edit-area iframe body strong,
 .tox .tox-edit-area iframe body b {
     font-weight: 700 !important;
@@ -2632,8 +2215,6 @@ footer a:hover { color: var(--primary-color); }
     font-style: italic !important;
     color: var(--editor-text, #ffffff) !important;
 }
-
-/* Стили для подчеркнутого и зачеркнутого текста */
 .tox .tox-edit-area iframe body u {
     text-decoration: underline !important;
     color: var(--primary-color) !important;
@@ -2643,8 +2224,6 @@ footer a:hover { color: var(--primary-color); }
     text-decoration: line-through !important;
     opacity: 0.7 !important;
 }
-
-/* Стили для кода */
 .tox .tox-edit-area iframe body code {
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
     font-size: 0.9em !important;
@@ -2670,8 +2249,6 @@ footer a:hover { color: var(--primary-color); }
     border: none !important;
     color: inherit !important;
 }
-
-/* Стили для цитат */
 .tox .tox-edit-area iframe body blockquote {
     border-left: 4px solid var(--primary-color) !important;
     background: rgba(255, 255, 255, 0.05) !important;
@@ -2681,8 +2258,6 @@ footer a:hover { color: var(--primary-color); }
     font-style: italic !important;
     color: var(--editor-text, #ffffff) !important;
 }
-
-/* Стили для таблиц в редакторе */
 .tox .tox-edit-area iframe body table {
     border-collapse: collapse !important;
     width: 100% !important;
@@ -2705,8 +2280,6 @@ footer a:hover { color: var(--primary-color); }
 .tox .tox-edit-area iframe body tr:hover td {
     background: rgba(174, 252, 110, 0.1) !important;
 }
-
-/* Стили для изображений */
 .tox .tox-edit-area iframe body img {
     max-width: 100% !important;
     height: auto !important;
@@ -2714,23 +2287,17 @@ footer a:hover { color: var(--primary-color); }
     margin: 12px 0 !important;
     display: block !important;
 }
-
-/* Стили для видео */
 .tox .tox-edit-area iframe body video {
     max-width: 100% !important;
     height: auto !important;
     border-radius: 8px !important;
     margin: 12px 0 !important;
 }
-
-/* Стили для iframe */
 .tox .tox-edit-area iframe body iframe {
     max-width: 100% !important;
     border-radius: 8px !important;
     margin: 12px 0 !important;
 }
-
-/* Адаптивная обёртка 16:9 для вставленных видео — в редакторе */
 .tox .tox-edit-area iframe body .video-embed-wrapper {
     position: relative !important;
     width: 100% !important;
@@ -2740,7 +2307,6 @@ footer a:hover { color: var(--primary-color); }
     border-radius: 8px !important;
     margin: 16px 0 !important;
 }
-
 .tox .tox-edit-area iframe body .video-embed-wrapper iframe {
     position: absolute !important;
     top: 0 !important;
@@ -2750,8 +2316,6 @@ footer a:hover { color: var(--primary-color); }
     margin: 0 !important;
     border-radius: 8px !important;
 }
-
-/* Адаптивная обёртка 16:9 — в карточках заметок */
 .noteContent .video-embed-wrapper {
     position: relative;
     width: 100%;
@@ -2760,15 +2324,12 @@ footer a:hover { color: var(--primary-color); }
     border-radius: 8px;
     margin: 12px 0;
 }
-
-/* Fallback для браузеров без aspect-ratio */
 @supports not (aspect-ratio: 16/9) {
     .noteContent .video-embed-wrapper {
         height: 0;
         padding-bottom: 56.25%;
     }
 }
-
 .noteContent .video-embed-wrapper iframe {
     position: absolute;
     top: 0;
@@ -2778,29 +2339,21 @@ footer a:hover { color: var(--primary-color); }
     margin: 0;
     border-radius: 8px;
 }
-
-/* В режиме сетки — фиксированная высота, плеер не выходит за карточку */
 #notesContainer.default-view .noteContent .video-embed-wrapper {
     aspect-ratio: unset;
     height: 180px;
     width: 100%;
 }
-
-/* В режиме списка — честное 16:9 */
 #notesContainer.full-width-view .noteContent .video-embed-wrapper {
     aspect-ratio: 16 / 9;
     height: auto;
 }
-
-/* Стили для горизонтальной линии */
 .tox .tox-edit-area iframe body hr {
     border: none !important;
     height: 2px !important;
     background: linear-gradient(90deg, transparent, var(--primary-color), transparent) !important;
     margin: 24px 0 !important;
 }
-
-/* Стили для выравнивания текста */
 .tox .tox-edit-area iframe body .ql-align-center {
     text-align: center !important;
 }
@@ -2810,8 +2363,6 @@ footer a:hover { color: var(--primary-color); }
 .tox .tox-edit-area iframe body .ql-align-justify {
     text-align: justify !important;
 }
-
-/* Стили для верхнего и нижнего индекса */
 .tox .tox-edit-area iframe body sup {
     vertical-align: super !important;
     font-size: 0.75em !important;
@@ -2820,21 +2371,12 @@ footer a:hover { color: var(--primary-color); }
     vertical-align: sub !important;
     font-size: 0.75em !important;
 }
-
-/* Стили для выделенного текста (mark) */
 .tox .tox-edit-area iframe body mark {
     background: rgba(174, 252, 110, 0.3) !important;
     padding: 2px 4px !important;
     border-radius: 4px !important;
     color: inherit !important;
 }
-
-/* ===== СТИЛИ ДЛЯ ЗАМЕТОК (ОТОБРАЖЕНИЕ) ===== */
-
-/* ═══════════════════════════════════════════════════════════════════
-   CONTENT STYLES — Note cards & quick-edit content
-   ═══════════════════════════════════════════════════════════════════ */
-
 .noteContent {
     font-family: 'Montserrat', 'Golos Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 15px;
@@ -2843,8 +2385,6 @@ footer a:hover { color: var(--primary-color); }
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
-
-/* ── Headings ─────────────────────────────────────────────────────── */
 .noteContent h1, .noteContent h2,
 .noteContent h3, .noteContent h4,
 .noteContent h5, .noteContent h6 {
@@ -2869,11 +2409,7 @@ footer a:hover { color: var(--primary-color); }
 .noteContent h4 { font-size: 1.15em; }
 .noteContent h5 { font-size: 1.05em; opacity: .9; }
 .noteContent h6 { font-size: .95em; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; }
-
-/* ── Paragraphs ───────────────────────────────────────────────────── */
 .noteContent p { margin: 0 0 12px; line-height: 1.75; }
-
-/* ── Inline text ──────────────────────────────────────────────────── */
 .noteContent strong, .noteContent b { font-weight: 700; }
 .noteContent em,     .noteContent i { font-style: italic; }
 .noteContent u  { text-decoration: underline; text-underline-offset: 3px; }
@@ -2886,8 +2422,6 @@ footer a:hover { color: var(--primary-color); }
     padding: 1px 4px;
     border-radius: 3px;
 }
-
-/* ── Links ────────────────────────────────────────────────────────── */
 .noteContent a {
     color: var(--primary-color);
     text-decoration: underline;
@@ -2895,8 +2429,6 @@ footer a:hover { color: var(--primary-color); }
     transition: opacity .15s;
 }
 .noteContent a:hover { opacity: .75; }
-
-/* ── Lists ────────────────────────────────────────────────────────── */
 .noteContent ul,
 .noteContent ol {
     margin: 8px 0 14px;
@@ -2905,8 +2437,6 @@ footer a:hover { color: var(--primary-color); }
 .noteContent li { margin: 4px 0; line-height: 1.65; }
 .noteContent ul ul, .noteContent ul ol,
 .noteContent ol ul, .noteContent ol ol { margin: 3px 0 3px 20px; }
-
-/* ── Blockquote ───────────────────────────────────────────────────── */
 .noteContent blockquote {
     border-left: 4px solid var(--primary-color);
     background: rgba(40,167,69,.06);
@@ -2920,8 +2450,6 @@ footer a:hover { color: var(--primary-color); }
     background: rgba(40,167,69,.08);
     color: #495057;
 }
-
-/* ── Code ─────────────────────────────────────────────────────────── */
 .noteContent code {
     font-family: 'Courier New', Consolas, monospace;
     font-size: .88em;
@@ -2946,7 +2474,6 @@ footer a:hover { color: var(--primary-color); }
     line-height: 1.6;
     position: relative;
 }
-/* Standalone pre (not wrapped) */
 .noteContent pre:not(.lne-code-wrapper pre),
 .noteContent .lne-code:not(.lne-code-wrapper .lne-code) {
     border-radius: 8px;
@@ -2971,8 +2498,6 @@ footer a:hover { color: var(--primary-color); }
     color: #aefc6e;
     border-color: #333;
 }
-
-/* ── Tables ───────────────────────────────────────────────────────── */
 .noteContent table {
     border-collapse: collapse;
     width: 100%;
@@ -2999,14 +2524,10 @@ footer a:hover { color: var(--primary-color); }
 [data-theme="light"] .noteContent th,
 [data-theme="light"] .noteContent td { border-color: #dee2e6; }
 [data-theme="light"] .noteContent tr:nth-child(even) td { background: rgba(0,0,0,.025); }
-
-/* Responsive tables */
 .noteContent .table-responsive,
 .noteContent .table-container { overflow-x: auto; margin: 14px 0; border-radius: 8px; }
 .noteContent .table-responsive table,
 .noteContent .table-container table { margin: 0; }
-
-/* ── Images ───────────────────────────────────────────────────────── */
 .noteContent img {
     max-width: 100%;
     height: auto;
@@ -3014,16 +2535,12 @@ footer a:hover { color: var(--primary-color); }
     margin: 10px 0;
     display: block;
 }
-/* Floated images */
 .noteContent img[style*="float:left"],
 .noteContent img[style*="float: left"]  { margin: 4px 14px 8px 0; }
 .noteContent img[style*="float:right"],
 .noteContent img[style*="float: right"] { margin: 4px 0 8px 14px; }
-/* Center */
 .noteContent img[style*="margin:auto"],
 .noteContent img[style*="margin: auto"] { display: block; margin: 10px auto; }
-
-/* ── Video / iframe ───────────────────────────────────────────────── */
 .noteContent video {
     max-width: 100%;
     height: auto;
@@ -3046,7 +2563,6 @@ footer a:hover { color: var(--primary-color); }
     width: 100%;
     max-width: 100% !important;
 }
-/* Враппер с inline style (aspect-ratio + max-width) — iframe заполняет его */
 .noteContent .lne-video-wrapper[style],
 .noteContent .video-embed-wrapper[style] {
     height: auto;
@@ -3061,7 +2577,6 @@ footer a:hover { color: var(--primary-color); }
     height: 100%;
     border-radius: 0;
 }
-/* Старые заметки без inline style — fallback */
 #notesContainer.default-view .noteContent .lne-video-wrapper:not([style]),
 #notesContainer.default-view .noteContent .video-embed-wrapper:not([style]) {
     height: 175px;
@@ -3088,8 +2603,6 @@ footer a:hover { color: var(--primary-color); }
     width: 100%;
     height: 100%;
 }
-
-/* ── Horizontal rule ──────────────────────────────────────────────── */
 .noteContent hr {
     border: none;
     height: 2px;
@@ -3097,8 +2610,6 @@ footer a:hover { color: var(--primary-color); }
     margin: 20px 0;
     border-radius: 2px;
 }
-
-/* ── Checklists in notes ──────────────────────────────────────────── */
 .noteContent .checklist-item-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -3134,7 +2645,6 @@ footer a:hover { color: var(--primary-color); }
     flex: 1; color: var(--note-text);
     outline: none; line-height: 1.5; min-width: 60px;
 }
-/* Strikethrough — explicit !important to override inherited styles */
 .noteContent .checklist-done,
 .noteContent .checklist-text-content.checklist-done,
 .noteContent .checklist-text-ios.checklist-done {
@@ -3143,7 +2653,6 @@ footer a:hover { color: var(--primary-color); }
     text-decoration-thickness: 2px !important;
     opacity: .48 !important;
 }
-/* Description in note cards — read-only display */
 .noteContent .checklist-desc-wrap {
     width: 100%;
     overflow: hidden;
@@ -3156,10 +2665,7 @@ footer a:hover { color: var(--primary-color); }
     border-left: 2px solid rgba(174,252,110,.2); padding-left: 8px;
 }
 .noteContent .checklist-item-done .checklist-desc { opacity: .4; }
-/* Hide add-desc button in note cards (not editable) */
 .noteContent .checklist-add-desc { display: none; }
-
-/* ── Checklist progress bar ───────────────────────────────────────── */
 .checklist-progress {
     padding: 5px 12px 7px;
     background: var(--note-footer-bg);
@@ -3186,10 +2692,6 @@ footer a:hover { color: var(--primary-color); }
     transition: width .35s ease;
     min-width: 4px;
 }
-
-/* ══════════════════════════════════════════════════════════════════
-   LIGHT THEME overrides for note content
-   ════════════════════════════════════════════════════════════════ */
 [data-theme="light"] .noteContent { color: #212529; }
 [data-theme="light"] .noteContent h1,
 [data-theme="light"] .noteContent h2 { border-bottom-color: rgba(40,167,69,.4); }
@@ -3199,10 +2701,6 @@ footer a:hover { color: var(--primary-color); }
 [data-theme="light"] .noteContent .checklist-text-ios { color: #212529; }
 [data-theme="light"] .noteContent .checklist-checkbox-ios { background: #fff; }
 [data-theme="light"] .noteContent mark { background: rgba(255,200,0,.3); }
-
-/* ===== СТИЛИ ДЛЯ ФАЙЛОВОГО ИНПУТА И ИМПОРТА ===== */
-
-/* Скрытый input для выбора файла - НЕ display: none, а более правильный способ */
 #importInput {
     position: absolute;
     width: 0;
@@ -3211,8 +2709,6 @@ footer a:hover { color: var(--primary-color); }
     visibility: hidden;
     pointer-events: none;
 }
-
-/* Альтернативный способ - полностью скрытый, но функциональный */
 .file-input-hidden {
     position: absolute;
     top: -9999px;
@@ -3223,8 +2719,6 @@ footer a:hover { color: var(--primary-color); }
     visibility: hidden;
     z-index: -1;
 }
-
-/* Стили для статуса загрузки файла */
 .file-status {
     margin-top: 10px;
     padding: 8px 12px;
@@ -3235,29 +2729,24 @@ footer a:hover { color: var(--primary-color); }
     gap: 8px;
     transition: all 0.3s ease;
 }
-
 .file-status.success {
     background: rgba(76, 175, 80, 0.15);
     border: 1px solid rgba(76, 175, 80, 0.3);
     color: #4caf50;
 }
-
 .file-status.error {
     background: rgba(244, 67, 54, 0.15);
     border: 1px solid rgba(244, 67, 54, 0.3);
     color: #f44336;
 }
-
 .file-status.info {
     background: rgba(33, 150, 243, 0.15);
     border: 1px solid rgba(33, 150, 243, 0.3);
     color: #2196f3;
 }
-
 .file-status i {
     font-size: 14px;
 }
-
 .file-status .file-name {
     font-weight: 600;
     max-width: 200px;
@@ -3265,8 +2754,6 @@ footer a:hover { color: var(--primary-color); }
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
-/* Стили для прогресса загрузки файла */
 .file-progress {
     margin-top: 10px;
     width: 100%;
@@ -3275,7 +2762,6 @@ footer a:hover { color: var(--primary-color); }
     border-radius: 4px;
     overflow: hidden;
 }
-
 .file-progress-fill {
     height: 100%;
     background: var(--gradient-primary);
@@ -3283,8 +2769,6 @@ footer a:hover { color: var(--primary-color); }
     transition: width 0.3s ease;
     border-radius: 4px;
 }
-
-/* Стили для drag & drop области */
 .drop-zone {
     border: 2px dashed var(--border-color);
     border-radius: 12px;
@@ -3295,36 +2779,29 @@ footer a:hover { color: var(--primary-color); }
     background: var(--bg-secondary);
     margin: 20px 0;
 }
-
 .drop-zone:hover {
     border-color: var(--primary-color);
     background: var(--button-hover);
 }
-
 .drop-zone.drag-over {
     border-color: var(--primary-color);
     background: rgba(174, 252, 110, 0.1);
     transform: scale(1.02);
 }
-
 .drop-zone-icon {
     font-size: 48px;
     color: var(--primary-color);
     margin-bottom: 15px;
 }
-
 .drop-zone-text {
     color: var(--text-color);
     font-size: 14px;
     margin-bottom: 8px;
 }
-
 .drop-zone-subtext {
     color: var(--text-secondary);
     font-size: 12px;
 }
-
-/* Модальное окно импорта */
 .import-modal {
     position: fixed;
     top: 0;
@@ -3339,7 +2816,6 @@ footer a:hover { color: var(--primary-color); }
     justify-content: center;
     animation: fadeIn 0.3s;
 }
-
 .import-modal-content {
     background: var(--modal-bg);
     border-radius: 20px;
@@ -3349,21 +2825,18 @@ footer a:hover { color: var(--primary-color); }
     text-align: center;
     border: 1px solid var(--border-color);
 }
-
 .import-modal-content h3 {
     color: var(--primary-color);
     margin-bottom: 20px;
     font-size: 1.5em;
     font-family: 'Intro', sans-serif;
 }
-
 .import-options {
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-bottom: 25px;
 }
-
 .import-option {
     display: flex;
     align-items: center;
@@ -3376,33 +2849,27 @@ footer a:hover { color: var(--primary-color); }
     transition: all 0.2s;
     text-align: left;
 }
-
 .import-option:hover {
     background: var(--button-hover);
     border-color: var(--primary-color);
     transform: translateY(-2px);
 }
-
 .import-icon {
     font-size: 24px;
     width: 40px;
     text-align: center;
 }
-
 .import-text {
     font-weight: 600;
     font-size: 16px;
     flex: 1;
     color: var(--primary-color);
 }
-
 .import-desc {
     font-size: 12px;
     color: var(--text-secondary);
     margin-top: 4px;
 }
-
-/* Стили для выбранного файла */
 .selected-file {
     display: flex;
     align-items: center;
@@ -3413,7 +2880,6 @@ footer a:hover { color: var(--primary-color); }
     margin-top: 15px;
     border: 1px solid var(--border-color);
 }
-
 .selected-file-info {
     display: flex;
     align-items: center;
@@ -3421,12 +2887,10 @@ footer a:hover { color: var(--primary-color); }
     flex: 1;
     overflow: hidden;
 }
-
 .selected-file-info i {
     font-size: 20px;
     color: var(--primary-color);
 }
-
 .selected-file-name {
     font-size: 14px;
     font-weight: 500;
@@ -3435,13 +2899,11 @@ footer a:hover { color: var(--primary-color); }
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
 .selected-file-size {
     font-size: 12px;
     color: var(--text-secondary);
     margin-left: 10px;
 }
-
 .remove-file {
     background: none;
     border: none;
@@ -3451,21 +2913,16 @@ footer a:hover { color: var(--primary-color); }
     padding: 5px;
     transition: color 0.2s;
 }
-
 .remove-file:hover {
     color: #f44336;
 }
-
-/* Кнопка импорта с индикатором загрузки */
 #importButton {
     position: relative;
 }
-
 #importButton.loading {
     pointer-events: none;
     opacity: 0.7;
 }
-
 #importButton .spinner {
     display: none;
     width: 16px;
@@ -3476,20 +2933,15 @@ footer a:hover { color: var(--primary-color); }
     animation: spin 0.8s linear infinite;
     margin-right: 8px;
 }
-
 #importButton.loading .spinner {
     display: inline-block;
 }
-
 #importButton.loading .button-text {
     opacity: 0.7;
 }
-
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
-
-/* Уведомления */
 .import-notification {
     position: fixed;
     bottom: 20px;
@@ -3506,7 +2958,6 @@ footer a:hover { color: var(--primary-color); }
     animation: slideInRight 0.3s ease;
     max-width: 350px;
 }
-
 .import-notification.success {
     border-left: 4px solid #4caf50;
 }
@@ -3535,7 +2986,6 @@ footer a:hover { color: var(--primary-color); }
     font-size: 14px;
     padding: 0 5px;
 }
-
 @keyframes slideInRight {
     from {
         opacity: 0;
@@ -3546,8 +2996,6 @@ footer a:hover { color: var(--primary-color); }
         transform: translateX(0);
     }
 }
-
-/* Стили для preview файла перед импортом */
 .file-preview {
     margin-top: 20px;
     padding: 15px;
@@ -3555,7 +3003,6 @@ footer a:hover { color: var(--primary-color); }
     border-radius: 12px;
     border: 1px solid var(--border-color);
 }
-
 .file-preview-title {
     font-size: 14px;
     font-weight: 600;
@@ -3565,7 +3012,6 @@ footer a:hover { color: var(--primary-color); }
     align-items: center;
     gap: 8px;
 }
-
 .file-preview-content {
     font-size: 12px;
     color: var(--text-secondary);
@@ -3578,71 +3024,52 @@ footer a:hover { color: var(--primary-color); }
     white-space: pre-wrap;
     word-break: break-word;
 }
-
-/* Адаптивность для мобильных */
 @media (max-width: 768px) {
     .import-modal-content {
         padding: 20px;
         width: 95%;
     }
-    
     .import-option {
         padding: 12px 16px;
     }
-    
     .import-icon {
         font-size: 20px;
         width: 32px;
     }
-    
     .import-text {
         font-size: 14px;
     }
-    
     .drop-zone {
         padding: 20px;
     }
-    
     .drop-zone-icon {
         font-size: 36px;
     }
-    
     .import-notification {
         left: 20px;
         right: 20px;
         max-width: none;
     }
-    
     .selected-file {
         flex-wrap: wrap;
         gap: 10px;
     }
-    
     .selected-file-info {
         width: 100%;
     }
 }
-
 @media (max-width: 480px) {
     .import-options {
         gap: 10px;
     }
-    
     .import-option {
         padding: 10px 14px;
     }
-    
     .file-preview-content {
         max-height: 150px;
         font-size: 11px;
     }
 }
-
-
-
-/* ===== СТИЛИ ДЛЯ РАСШИФРОВКИ ЗАМЕТКИ (ВАША СТРУКТУРА) ===== */
-
-/* Модальное окно расшифровки - переопределяем стили для вашей структуры */
 .modal-content-error {
     background-color: var(--modal-bg);
     border: 1px solid var(--modal-border);
@@ -3659,19 +3086,6 @@ footer a:hover { color: var(--primary-color); }
     animation: modalWarningSlideDown 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
     overflow: hidden;
 }
-
-@keyframes modalWarningSlideDown {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -70%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
-/* Декоративная полоска сверху */
 .modal-content-error::before {
     content: '';
     position: absolute;
@@ -3682,13 +3096,9 @@ footer a:hover { color: var(--primary-color); }
     background: var(--gradient-primary);
     z-index: 10;
 }
-
-/* Внутренний контейнер */
 .modal-content-error .modal-content-inner {
     padding: 28px 30px 20px;
 }
-
-/* Заголовок */
 .modal-content-error h3 {
     margin: 0 0 16px 0;
     font-size: 1.5rem;
@@ -3699,20 +3109,16 @@ footer a:hover { color: var(--primary-color); }
     align-items: center;
     gap: 10px;
 }
-
 .modal-content-error h3::before {
     content: '🔒';
     font-size: 1.3rem;
 }
-
-/* Текст с именем файла */
 .modal-content-error p {
     margin: 0 0 20px 0;
     line-height: 1.6;
     color: var(--primary-color);
     font-size: 14px;
 }
-
 .modal-content-error p strong {
     display: inline-block;
     background: var(--bg-secondary);
@@ -3724,8 +3130,6 @@ footer a:hover { color: var(--primary-color); }
     word-break: break-all;
     color: var(--primary-color);
 }
-
-/* Поле ввода пароля */
 #passwordInput {
     width: 100%;
     padding: 14px 16px;
@@ -3738,25 +3142,20 @@ footer a:hover { color: var(--primary-color); }
     transition: all 0.2s ease;
     box-sizing: border-box;
 }
-
 #passwordInput:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(174, 252, 110, 0.2);
 }
-
 #passwordInput.error {
     border-color: #f44336;
     animation: passwordShake 0.3s ease;
 }
-
 @keyframes passwordShake {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-5px); }
     75% { transform: translateX(5px); }
 }
-
-/* Контейнер валидации пароля */
 .password-validation {
     margin-top: 16px;
     padding: 12px;
@@ -3765,7 +3164,6 @@ footer a:hover { color: var(--primary-color); }
     border: 1px solid var(--border-color);
     animation: fadeInUp 0.3s ease;
 }
-
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -3776,7 +3174,6 @@ footer a:hover { color: var(--primary-color); }
         transform: translateY(0);
     }
 }
-
 .validation-message {
     margin-bottom: 12px;
     font-size: 13px;
@@ -3785,30 +3182,23 @@ footer a:hover { color: var(--primary-color); }
     gap: 8px;
     color: var(--text-secondary);
 }
-
 .validation-message i {
     font-size: 14px;
 }
-
 .validation-message.error {
     color: #f44336;
 }
-
 .validation-message.success {
     color: #4caf50;
 }
-
 .validation-message.warning {
     color: #ff9800;
 }
-
-/* Кнопки валидации */
 .validation-actions {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
 }
-
 .validate-btn, .skip-btn {
     padding: 8px 16px;
     border-radius: 8px;
@@ -3821,36 +3211,28 @@ footer a:hover { color: var(--primary-color); }
     gap: 6px;
     border: none;
 }
-
 .validate-btn {
     background: var(--primary-color);
     color: #000;
 }
-
 .validate-btn:hover {
     background: var(--primary-hover);
     transform: translateY(-1px);
 }
-
 .validate-btn:active {
     transform: translateY(0);
 }
-
 .skip-btn {
     background: #6c757d;
     color: white;
 }
-
 .skip-btn:hover {
     background: #5a6268;
     transform: translateY(-1px);
 }
-
 .skip-btn:active {
     transform: translateY(0);
 }
-
-/* Контейнер кнопок внизу */
 .modal-content-error .modal-buttons-container {
     display: flex;
     gap: 12px;
@@ -3858,7 +3240,6 @@ footer a:hover { color: var(--primary-color); }
     border-top: 1px solid var(--modal-border);
     background: var(--modal-bg);
 }
-
 .modal-content-error .modal-buttons-container .btn {
     flex: 1;
     padding: 12px 20px;
@@ -3873,48 +3254,38 @@ footer a:hover { color: var(--primary-color); }
     gap: 8px;
     border: none;
 }
-
 .modal-content-error .modal-buttons-container .btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
 }
-
 #passwordOk {
     background: var(--primary-color);
     color: #000;
 }
-
 #passwordOk:hover:not(:disabled) {
     background: var(--primary-hover);
     transform: translateY(-2px);
 }
-
 #passwordOk:active:not(:disabled) {
     transform: translateY(0);
 }
-
 #passwordCancel {
     background: #6c757d;
     color: white;
 }
-
 #passwordCancel:hover {
     background: #5a6268;
     transform: translateY(-2px);
 }
-
 #passwordCancel:active {
     transform: translateY(0);
 }
-
-/* Индикатор загрузки */
 .password-loading {
     display: inline-flex;
     align-items: center;
     gap: 8px;
 }
-
 .password-loading .spinner {
     width: 16px;
     height: 16px;
@@ -3923,146 +3294,111 @@ footer a:hover { color: var(--primary-color); }
     border-radius: 50%;
     animation: passwordSpin 0.6s linear infinite;
 }
-
 @keyframes passwordSpin {
     to { transform: rotate(360deg); }
 }
-
-/* Анимация для кнопки при загрузке */
 #passwordOk.loading {
     pointer-events: none;
     opacity: 0.7;
 }
-
-/* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 768px) {
     .modal-content-error {
         width: 92%;
         border-radius: 18px;
     }
-    
     .modal-content-error .modal-content-inner {
         padding: 20px 22px 16px;
     }
-    
     .modal-content-error h3 {
         font-size: 1.3rem;
     }
-    
     .modal-content-error p {
         font-size: 13px;
     }
-    
     #passwordInput {
         padding: 12px 14px;
         font-size: 15px;
     }
-    
     .modal-content-error .modal-buttons-container {
         padding: 14px 20px 20px;
         gap: 10px;
     }
-    
     .modal-content-error .modal-buttons-container .btn {
         padding: 10px 16px;
         font-size: 13px;
     }
-    
     .validation-actions {
         flex-direction: column;
     }
-    
     .validate-btn, .skip-btn {
         justify-content: center;
         width: 100%;
     }
 }
-
 @media (max-width: 480px) {
     .modal-content-error {
         width: 95%;
         border-radius: 16px;
     }
-    
     .modal-content-error .modal-content-inner {
         padding: 18px 18px 14px;
     }
-    
     .modal-content-error h3 {
         font-size: 1.2rem;
     }
-    
     .modal-content-error p strong {
         font-size: 11px;
         padding: 4px 8px;
     }
-    
     #passwordInput {
         padding: 10px 12px;
         font-size: 14px;
     }
-    
     .validation-message {
         font-size: 12px;
     }
-    
     .modal-content-error .modal-buttons-container {
         flex-direction: column;
         gap: 8px;
     }
-    
     .modal-content-error .modal-buttons-container .btn {
         width: 100%;
     }
 }
-
-/* Альбомная ориентация */
 @media (max-width: 768px) and (orientation: landscape) {
     .modal-content-error {
         max-height: 90vh;
         overflow-y: auto;
     }
-    
     .modal-content-error .modal-content-inner {
         padding: 16px 20px;
     }
-    
     .password-validation {
         margin-top: 12px;
     }
 }
-
-/* Стили для темной темы */
 [data-theme="dark"] .modal-content-error {
     background: #1a1a1a;
 }
-
 [data-theme="dark"] #passwordInput {
     background: #2d2d2d;
     border-color: #404040;
     color: #ffffff;
 }
-
 [data-theme="dark"] .password-validation {
     background: #2d2d2d;
 }
-
-/* Стили для светлой темы */
 [data-theme="light"] .modal-content-error {
     background: #ffffff;
 }
-
 [data-theme="light"] #passwordInput {
     background: #ffffff;
     border-color: #dee2e6;
     color: #212529;
 }
-
 [data-theme="light"] .password-validation {
     background: #f8f9fa;
 }
-
-/* Анимация успешной расшифровки */
 @keyframes decryptSuccessFlash {
     0% {
         opacity: 1;
@@ -4074,25 +3410,15 @@ footer a:hover { color: var(--primary-color); }
         opacity: 1;
     }
 }
-
 .decrypt-success {
     animation: decryptSuccessFlash 0.3s ease;
 }
-
-/* Стили для disabled кнопки ОК */
 #passwordOk:disabled {
     background: var(--border-color);
     color: var(--text-secondary);
     cursor: not-allowed;
     transform: none;
 }
-
-
-
-
-/* ===== СТИЛИ ДЛЯ ШИФРОВАНИЯ ЗАМЕТКИ ===== */
-
-/* Модальное окно шифрования */
 .modal-content-error {
     background-color: var(--modal-bg);
     border: 1px solid var(--modal-border);
@@ -4109,7 +3435,6 @@ footer a:hover { color: var(--primary-color); }
     animation: modalSlideDown 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
     overflow: hidden;
 }
-
 @keyframes modalSlideDown {
     from {
         opacity: 0;
@@ -4120,8 +3445,6 @@ footer a:hover { color: var(--primary-color); }
         transform: translate(-50%, -50%);
     }
 }
-
-/* Декоративная полоска сверху */
 .modal-content-error::before {
     content: '';
     position: absolute;
@@ -4132,13 +3455,9 @@ footer a:hover { color: var(--primary-color); }
     background: var(--gradient-primary);
     z-index: 10;
 }
-
-/* Внутренний контейнер */
 .modal-content-error .modal-content-inner {
     padding: 28px 30px 20px;
 }
-
-/* Заголовок */
 .modal-content-error h3 {
     margin: 0 0 16px 0;
     font-size: 1.5rem;
@@ -4149,21 +3468,16 @@ footer a:hover { color: var(--primary-color); }
     align-items: center;
     gap: 10px;
 }
-
 .modal-content-error h3::before {
-    content: '🔐';
+    content: '🔑';
     font-size: 1.3rem;
 }
-
-/* Текст описания */
 .modal-content-error p {
     margin: 0 0 20px 0;
     line-height: 1.6;
     color: var(--primary-color);
     font-size: 14px;
 }
-
-/* Поле ввода пароля */
 #customPromptInput {
     width: 100%;
     padding: 14px 16px;
@@ -4176,24 +3490,19 @@ footer a:hover { color: var(--primary-color); }
     transition: all 0.2s ease;
     box-sizing: border-box;
 }
-
 #customPromptInput:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(174, 252, 110, 0.2);
 }
-
 #customPromptInput.error {
     border-color: #f44336;
     animation: inputShake 0.3s ease;
 }
-
-/* Индикатор сложности пароля */
 .password-strength-container {
     margin-top: 12px;
     animation: fadeInUp 0.3s ease;
 }
-
 .password-strength-label {
     display: flex;
     justify-content: space-between;
@@ -4202,13 +3511,11 @@ footer a:hover { color: var(--primary-color); }
     font-size: 11px;
     color: var(--text-secondary);
 }
-
 .strength-bars {
     display: flex;
     gap: 6px;
     margin-bottom: 8px;
 }
-
 .strength-bar-item {
     flex: 1;
     height: 4px;
@@ -4216,26 +3523,20 @@ footer a:hover { color: var(--primary-color); }
     border-radius: 2px;
     transition: all 0.3s ease;
 }
-
 .strength-bar-item.active {
     background: var(--primary-color);
     box-shadow: 0 0 4px var(--primary-color);
 }
-
 .strength-bar-item.weak.active { background: #f44336; }
 .strength-bar-item.medium.active { background: #ff9800; }
 .strength-bar-item.strong.active { background: #4caf50; }
-
 .strength-text {
     font-size: 11px;
     color: var(--text-secondary);
 }
-
 .strength-text.weak { color: #f44336; }
 .strength-text.medium { color: #ff9800; }
 .strength-text.strong { color: #4caf50; }
-
-/* Требования к паролю */
 .password-requirements {
     margin-top: 12px;
     padding: 10px 12px;
@@ -4244,20 +3545,17 @@ footer a:hover { color: var(--primary-color); }
     border: 1px solid var(--border-color);
     font-size: 11px;
 }
-
 .password-requirements-title {
     font-weight: 600;
     margin-bottom: 8px;
     color: var(--text-color);
     font-size: 11px;
 }
-
 .password-requirements-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-
 .password-requirements-list li {
     display: flex;
     align-items: center;
@@ -4266,21 +3564,16 @@ footer a:hover { color: var(--primary-color); }
     color: var(--text-secondary);
     font-size: 10px;
 }
-
 .password-requirements-list li i {
     font-size: 10px;
     width: 14px;
 }
-
 .password-requirements-list li.valid {
     color: #4caf50;
 }
-
 .password-requirements-list li.invalid {
     color: var(--text-secondary);
 }
-
-/* Предупреждение о потере пароля */
 .password-warning {
     margin-top: 16px;
     padding: 10px 12px;
@@ -4293,17 +3586,13 @@ footer a:hover { color: var(--primary-color); }
     font-size: 12px;
     color: #ff9800;
 }
-
 .password-warning i {
     font-size: 14px;
 }
-
 .password-warning span {
     flex: 1;
     line-height: 1.4;
 }
-
-/* Контейнер кнопок */
 .modal-content-error .modal-buttons-container {
     display: flex;
     gap: 12px;
@@ -4311,7 +3600,6 @@ footer a:hover { color: var(--primary-color); }
     border-top: 1px solid var(--modal-border);
     background: var(--modal-bg);
 }
-
 .modal-content-error .modal-buttons-container .btn {
     flex: 1;
     padding: 12px 20px;
@@ -4326,48 +3614,38 @@ footer a:hover { color: var(--primary-color); }
     gap: 8px;
     border: none;
 }
-
 .modal-content-error .modal-buttons-container .btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
 }
-
 #customPromptOk {
     background: var(--primary-color);
     color: #000;
 }
-
 #customPromptOk:hover:not(:disabled) {
     background: var(--primary-hover);
     transform: translateY(-2px);
 }
-
 #customPromptOk:active:not(:disabled) {
     transform: translateY(0);
 }
-
 #customPromptCancel {
     background: #6c757d;
     color: white;
 }
-
 #customPromptCancel:hover {
     background: #5a6268;
     transform: translateY(-2px);
 }
-
 #customPromptCancel:active {
     transform: translateY(0);
 }
-
-/* Индикатор загрузки при шифровании */
 .encrypt-loading {
     display: inline-flex;
     align-items: center;
     gap: 8px;
 }
-
 .encrypt-loading .spinner {
     width: 16px;
     height: 16px;
@@ -4376,183 +3654,127 @@ footer a:hover { color: var(--primary-color); }
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
 }
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
 #customPromptOk.loading {
     pointer-events: none;
     opacity: 0.7;
 }
-
-/* Анимация для поля ввода при ошибке */
 @keyframes inputShake {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-5px); }
     75% { transform: translateX(5px); }
 }
-
-/* Анимация появления */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 768px) {
     .modal-content-error {
         width: 92%;
         border-radius: 18px;
     }
-    
     .modal-content-error .modal-content-inner {
         padding: 20px 22px 16px;
     }
-    
     .modal-content-error h3 {
         font-size: 1.3rem;
     }
-    
     .modal-content-error p {
         font-size: 13px;
     }
-    
     #customPromptInput {
         padding: 12px 14px;
         font-size: 15px;
     }
-    
     .modal-content-error .modal-buttons-container {
         padding: 14px 20px 20px;
         gap: 10px;
     }
-    
     .modal-content-error .modal-buttons-container .btn {
         padding: 10px 16px;
         font-size: 13px;
     }
-    
     .password-requirements-list li {
         font-size: 9px;
     }
-    
     .password-warning {
         font-size: 11px;
         padding: 8px 10px;
     }
 }
-
 @media (max-width: 480px) {
     .modal-content-error {
         width: 95%;
         border-radius: 16px;
     }
-    
     .modal-content-error .modal-content-inner {
         padding: 18px 18px 14px;
     }
-    
     .modal-content-error h3 {
         font-size: 1.2rem;
     }
-    
     #customPromptInput {
         padding: 10px 12px;
         font-size: 14px;
     }
-    
     .modal-content-error .modal-buttons-container {
         flex-direction: column;
         gap: 8px;
     }
-    
     .modal-content-error .modal-buttons-container .btn {
         width: 100%;
     }
-    
     .password-requirements {
         padding: 8px 10px;
     }
-    
     .password-strength-label {
         font-size: 10px;
     }
 }
-
-/* Альбомная ориентация */
 @media (max-width: 768px) and (orientation: landscape) {
     .modal-content-error {
         max-height: 90vh;
         overflow-y: auto;
     }
-    
     .modal-content-error .modal-content-inner {
         padding: 16px 20px;
     }
-    
     .password-requirements {
         margin-top: 8px;
     }
 }
-
-/* ===== ТЕМНАЯ ТЕМА ===== */
 [data-theme="dark"] .modal-content-error {
     background: #1a1a1a;
 }
-
 [data-theme="dark"] #customPromptInput {
     background: #2d2d2d;
     border-color: #404040;
     color: #ffffff;
 }
-
 [data-theme="dark"] .password-requirements {
     background: #2d2d2d;
 }
-
 [data-theme="dark"] .password-warning {
     background: rgba(255, 152, 0, 0.15);
 }
-
-/* ===== СВЕТЛАЯ ТЕМА ===== */
 [data-theme="light"] .modal-content-error {
     background: #ffffff;
 }
-
 [data-theme="light"] #customPromptInput {
     background: #ffffff;
     border-color: #dee2e6;
     color: #212529;
 }
-
 [data-theme="light"] .password-requirements {
     background: #f8f9fa;
 }
-
 [data-theme="light"] .password-warning {
     background: rgba(255, 152, 0, 0.08);
 }
-
-/* Стили для disabled кнопки */
 #customPromptOk:disabled {
     background: var(--border-color);
     color: var(--text-secondary);
     cursor: not-allowed;
     transform: none;
 }
-
-/* Эффект при успешном шифровании */
 .encrypt-success {
     animation: successPulse 0.4s ease;
 }
-
 @keyframes successPulse {
     0% {
         transform: scale(1);
@@ -4567,10 +3789,6 @@ footer a:hover { color: var(--primary-color); }
         opacity: 1;
     }
 }
-
-/* ===== ЧЕКЛИСТ: ПРОГРЕСС-БАР В КАРТОЧКЕ ЗАМЕТКИ ===== */
-/* (styles defined above in ── Checklist progress bar section) */
-
 .checklist-progress-header {
     display: flex;
     justify-content: space-between;
@@ -4579,16 +3797,13 @@ footer a:hover { color: var(--primary-color); }
     font-size: 0.78rem;
     color: var(--text-secondary);
 }
-
 .checklist-progress-label {
     font-weight: 500;
 }
-
 .checklist-progress-pct {
     font-weight: 600;
     color: var(--primary-color);
 }
-
 .checklist-progress-bar-track {
     width: 100%;
     height: 5px;
@@ -4596,7 +3811,6 @@ footer a:hover { color: var(--primary-color); }
     border-radius: 3px;
     overflow: hidden;
 }
-
 .checklist-progress-bar-fill {
     height: 100%;
     background: var(--gradient-primary);
@@ -4604,14 +3818,10 @@ footer a:hover { color: var(--primary-color); }
     transition: width 0.35s ease;
     min-width: 0;
 }
-
-/* Когда 100% — зелёный акцент */
 .checklist-progress-bar-fill[style*="width:100%"],
 .checklist-progress-bar-fill[style*="width: 100%"] {
     background: var(--primary-color);
 }
-
-/* ===== ЧЕКЛИСТ: СТИЛИ ПУНКТОВ В КАРТОЧКЕ И РЕДАКТОРЕ ===== */
 .noteContent .checklist-item,
 .checklist-item {
     display: flex !important;
@@ -4621,7 +3831,6 @@ footer a:hover { color: var(--primary-color); }
     padding: 4px 0 !important;
     list-style: none !important;
 }
-
 .noteContent .checklist-checkbox,
 .checklist-checkbox {
     width: 16px !important;
@@ -4632,7 +3841,6 @@ footer a:hover { color: var(--primary-color); }
     accent-color: var(--primary-color) !important;
     border-radius: 3px !important;
 }
-
 .noteContent .checklist-text,
 .checklist-text {
     flex: 1 !important;
@@ -4640,30 +3848,21 @@ footer a:hover { color: var(--primary-color); }
     color: var(--note-text) !important;
     transition: color 0.2s, text-decoration 0.2s !important;
 }
-
 .noteContent .checklist-text.checklist-done,
 .checklist-text.checklist-done {
     text-decoration: line-through !important;
     color: var(--text-muted) !important;
     opacity: 0.7 !important;
 }
-
-/* Кнопка чеклиста в тулбаре TinyMCE — текстовая */
 .tox .tox-tbtn[aria-label*="Checklist"],
-.tox .tox-tbtn[aria-label*="Список"] {
+.tox .tox-tbtn[aria-label*="РЎРїРёСЃРѕРє"] {
     font-size: 12px !important;
     padding: 0 8px !important;
     white-space: nowrap !important;
 }
-
-/* Content after checklist progress — no extra margin needed */
 .note:has(.checklist-progress) .noteContent {
     margin-top: 0;
 }
-
-/* ===== РЕЖИМ БЫСТРОГО РЕДАКТИРОВАНИЯ ===== */
-
-/* Кнопка активации в навбаре */
 #quickEditToggle {
     flex: 1;
     height: 48px;
@@ -4687,8 +3886,6 @@ footer a:hover { color: var(--primary-color); }
     border-color: transparent;
     font-weight: 600;
 }
-
-/* Глобальный индикатор режима */
 body.quick-edit-active .center_nav::after {
     content: '';
     display: block;
@@ -4704,32 +3901,23 @@ body.quick-edit-active .center_nav::after {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.4; }
 }
-
-/* Заметка в режиме быстрого редактирования */
 .note.quick-edit-note {
     border-color: var(--primary-color) !important;
     box-shadow: 0 0 0 1px var(--primary-color) !important;
 }
-
-/* Сетка: фиксированная высота, контент скроллится */
 #notesContainer.default-view .note.quick-edit-note {
     height: 450px !important;
     overflow: hidden;
 }
-
 #notesContainer.default-view .note.quick-edit-note .noteContent[contenteditable="true"] {
     overflow-y: auto !important;
     max-height: none !important;
     height: 100%;
 }
-
-/* Список: авто высота */
 #notesContainer.full-width-view .note.quick-edit-note {
     height: auto !important;
     min-height: 150px;
 }
-
-/* Контент заметки — редактируемый */
 .note.quick-edit-note .noteContent[contenteditable="true"] {
     outline: none;
     cursor: text;
@@ -4741,18 +3929,14 @@ body.quick-edit-active .center_nav::after {
 .note.quick-edit-note .noteContent[contenteditable="true"]:focus {
     background: color-mix(in srgb, var(--input-bg) 85%, var(--primary-color) 15%);
 }
-
-/* Индикатор несохранённых изменений */
 .note.quick-edit-dirty .noteContent[contenteditable="true"] {
     background: color-mix(in srgb, var(--input-bg) 80%, #f59e0b 20%) !important;
 }
 .note.quick-edit-dirty .note-footer::after {
-    content: ' ●';
+    content: ' 📌';
     color: #f59e0b;
     font-size: 0.9em;
 }
-
-/* Анимация успешного сохранения */
 .note.quick-edit-saved {
     animation: qeSaved 1.2s ease;
 }
@@ -4761,8 +3945,6 @@ body.quick-edit-active .center_nav::after {
     30%  { box-shadow: 0 0 0 3px var(--primary-color), 0 0 12px rgba(174,252,110,0.4); }
     100% { box-shadow: 0 0 0 1px var(--primary-color); }
 }
-
-/* Мини-тулбар быстрого редактирования */
 .quick-edit-bar {
     display: flex;
     align-items: center;
@@ -4809,8 +3991,6 @@ body.quick-edit-active .center_nav::after {
     color: var(--button-text);
 }
 .quick-edit-cancel:hover { background: var(--button-hover); }
-
-/* Светлая тема */
 [data-theme="light"] .note.quick-edit-dirty .noteContent[contenteditable="true"] {
     background: #fffbeb !important;
 }
@@ -4818,8 +3998,6 @@ body.quick-edit-active .center_nav::after {
     color: #fff;
     background: #28a745;
 }
-
-/* ===== УВЕДОМЛЕНИЯ БЫСТРОГО РЕДАКТИРОВАНИЯ ===== */
 .quick-edit-notification {
     position: fixed;
     top: 20px;
@@ -4837,19 +4015,16 @@ body.quick-edit-active .center_nav::after {
     max-width: 300px;
     min-width: 200px;
 }
-
 .quick-edit-notification.show {
     transform: translateX(0);
     opacity: 1;
 }
-
 .quick-edit-notification-content {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 12px 16px;
 }
-
 .quick-edit-notification-icon {
     width: 20px;
     height: 20px;
@@ -4861,31 +4036,24 @@ body.quick-edit-active .center_nav::after {
     font-weight: bold;
     flex-shrink: 0;
 }
-
 .quick-edit-notification-text {
     font-size: 14px;
     font-weight: 500;
     color: var(--text-color);
     line-height: 1.3;
 }
-
-/* Типы уведомлений */
 .quick-edit-notification-success .quick-edit-notification-icon {
     background: #28a745;
     color: white;
 }
-
 .quick-edit-notification-error .quick-edit-notification-icon {
     background: #dc3545;
     color: white;
 }
-
 .quick-edit-notification-info .quick-edit-notification-icon {
     background: #17a2b8;
     color: white;
 }
-
-/* Мобильные стили для уведомлений */
 @media (max-width: 768px) {
     .quick-edit-notification {
         top: 10px;
@@ -4894,84 +4062,55 @@ body.quick-edit-active .center_nav::after {
         max-width: none;
         transform: translateY(-100%);
     }
-    
     .quick-edit-notification.show {
         transform: translateY(0);
     }
-    
     .quick-edit-notification-content {
         padding: 10px 14px;
     }
-    
     .quick-edit-notification-text {
         font-size: 13px;
     }
 }
-
-/* ============================================================
-   iOS PWA — ПОЛНОЭКРАННЫЙ РЕЖИМ И SAFE-AREA INSETS
-   Применяется когда приложение добавлено на домашний экран
-   ============================================================ */
-
-/* ── 1. Базовые переменные safe-area ── */
 :root {
     --sat: env(safe-area-inset-top, 0px);
     --sar: env(safe-area-inset-right, 0px);
     --sab: env(safe-area-inset-bottom, 0px);
     --sal: env(safe-area-inset-left, 0px);
 }
-
-/* ── 2. html/body — занимаем весь экран, убираем резиновый скролл ── */
 html {
-    /* Фиксируем высоту на весь экран включая notch */
     height: -webkit-fill-available;
     height: 100%;
 }
 body {
     min-height: 100vh;
     min-height: -webkit-fill-available;
-    /* Предотвращаем резиновый скролл Safari */
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
 }
-
-/* ── 3. Standalone-режим (добавлено на домашний экран) ── */
 @media all and (display-mode: standalone) {
-    /* Хедер: добавляем отступ сверху под статус-бар / Dynamic Island */
     .info-app {
         padding-top: max(var(--sat), 20px);
         height: calc(100px + max(var(--sat), 0px));
     }
-
-    /* Sticky nav: учитываем высоту хедера с safe-area */
     .center_nav {
         top: 0;
     }
-
-    /* Нижний фиксированный элемент (кнопка переключения вида) */
     .btn_view_div {
         padding-bottom: max(var(--sab), 20px);
     }
-
-    /* Футер: отступ снизу под home indicator */
     footer {
         padding-bottom: max(var(--sab), 20px);
     }
-
-    /* Модальные окна: полный экран с учётом safe-area */
     .modal-content {
         padding-top: max(var(--sat), 16px);
         padding-bottom: max(var(--sab), 16px);
         padding-left: max(var(--sal), 16px);
         padding-right: max(var(--sar), 16px);
     }
-
-    /* Кнопки модального окна не перекрываются home indicator */
     .modal-buttons-container {
         padding-bottom: max(var(--sab), 12px);
     }
-
-    /* Убираем лишний скролл на body когда открыта модалка */
     body.modal-open {
         overflow: hidden;
         position: fixed;
@@ -4982,15 +4121,11 @@ body {
         bottom: 0;
     }
 }
-
-/* ── 4. iOS Safari (в браузере) — тоже применяем safe-area ── */
-/* Используем @supports чтобы не сломать другие браузеры */
 @supports (padding-top: env(safe-area-inset-top)) {
     .info-app {
         padding-top: env(safe-area-inset-top, 0px);
     }
     .center_nav {
-        /* Sticky nav не уходит под статус-бар */
         padding-top: 0;
     }
     .btn_view_div {
@@ -4999,7 +4134,6 @@ body {
     footer {
         padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     }
-    /* Горизонтальные отступы для notch в landscape */
     .sticky {
         padding-left: calc(20px + env(safe-area-inset-left, 0px));
         padding-right: calc(20px + env(safe-area-inset-right, 0px));
@@ -5009,33 +4143,24 @@ body {
         padding-right: calc(20px + env(safe-area-inset-right, 0px));
     }
 }
-
-/* ── 5. Предотвращаем выделение текста при тапе (iOS) ── */
 button, .note-buttons button, .editBtn, .deleteBtn, .exportBtn,
 #addNoteButton, #importButton, #clearAllButton, #quickEditToggle,
 #toggleViewButton {
     -webkit-user-select: none;
     user-select: none;
-    /* Убираем задержку 300ms на тап */
     touch-action: manipulation;
 }
-
-/* ── 6. Плавный скролл в заметках на iOS ── */
 .noteContent,
 #notesContainer,
 .app-notes-center {
     -webkit-overflow-scrolling: touch;
 }
-
-/* ── 7. Фикс для input/textarea на iOS (zoom при фокусе) ── */
 input[type="text"],
 input[type="search"],
 textarea,
 select {
-    font-size: 16px; /* iOS не зумит если font-size >= 16px */
+    font-size: 16px; 
 }
-
-/* ── 8. Баннер "Добавить на домашний экран" ── */
 .ln-install-banner {
     position: fixed;
     bottom: 0;
@@ -5051,15 +4176,12 @@ select {
     border-top: 1px solid var(--border-color);
     box-shadow: 0 -4px 24px rgba(0,0,0,0.35);
     animation: bannerSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    /* Скрыт по умолчанию через атрибут hidden */
 }
 .ln-install-banner[hidden] { display: none !important; }
-
 @keyframes bannerSlideUp {
     from { transform: translateY(100%); opacity: 0; }
     to   { transform: translateY(0);    opacity: 1; }
 }
-
 .ln-install-banner-icon img {
     width: 44px;
     height: 44px;
@@ -5102,13 +4224,9 @@ select {
     -webkit-tap-highlight-color: transparent;
 }
 .ln-install-banner-close:hover { color: var(--text-color); }
-
-/* ── 9. Standalone: скрываем баннер (уже установлено) ── */
 @media all and (display-mode: standalone) {
     .ln-install-banner { display: none !important; }
 }
-
-/* ── 10. Landscape на iPhone с notch ── */
 @media screen and (orientation: landscape) and (max-height: 500px) {
     .info-app {
         height: 60px;
@@ -5120,10 +4238,6 @@ select {
     #addNoteButton, #importButton, #clearAllButton, #quickEditToggle { height: 40px; font-size: 13px; }
     #searchInput { height: 40px; }
 }
-
-
-/* ===== iOS-ПОДОБНЫЕ ЧЕКБОКСЫ В ЧЕКЛИСТЕ ===== */
-
 .checklist-item-wrapper {
     display: flex !important;
     justify-content: flex-start !important;
@@ -5141,12 +4255,10 @@ select {
     direction: ltr !important;
     text-align: left !important;
 }
-
 .checklist-item-wrapper:hover {
     background: rgba(174, 252, 110, 0.08) !important;
     border-color: rgba(174, 252, 110, 0.25) !important;
 }
-
 .ln-check-box {
     width: 20px !important;
     height: 20px !important;
@@ -5165,21 +4277,17 @@ select {
     margin: 0 !important;
     padding: 0 !important;
 }
-
 .ln-check-box:hover {
     transform: scale(1.1) !important;
     box-shadow: 0 0 8px rgba(174, 252, 110, 0.3) !important;
 }
-
 .ln-check-box:active {
     transform: scale(0.95) !important;
 }
-
 .ln-check-box:checked {
     background: #aefc6e !important;
     border-color: #aefc6e !important;
 }
-
 .ln-check-box:checked::after {
     content: '✓' !important;
     position: absolute !important;
@@ -5191,7 +4299,6 @@ select {
     font-size: 12px !important;
     line-height: 1 !important;
 }
-
 .checklist-text {
     flex: 1 !important;
     line-height: 1.5 !important;
@@ -5201,7 +4308,6 @@ select {
     padding: 0 !important;
     word-break: break-word !important;
 }
-
 .checklist-text-content {
     flex: 0 1 auto !important;
     line-height: 1.5 !important;
@@ -5216,15 +4322,11 @@ select {
     unicode-bidi: normal !important;
     writing-mode: horizontal-tb !important;
 }
-
-/* Улучшения скролла */
 html, body {
     scroll-behavior: smooth !important;
     -webkit-overflow-scrolling: touch !important;
     overscroll-behavior: auto !important;
 }
-
-/* Специальные правила для TinyMCE */
 .mce-content-body .checklist-item-wrapper {
     display: flex !important;
     justify-content: flex-start !important;
@@ -5238,126 +4340,97 @@ html, body {
     direction: ltr !important;
     text-align: left !important;
 }
-
 .mce-content-body .checklist-text-content {
     flex: 0 1 auto !important;
     direction: ltr !important;
     text-align: left !important;
     unicode-bidi: normal !important;
 }
-
 .ln-check-box:checked ~ .checklist-text {
     text-decoration: line-through !important;
     opacity: 0.6 !important;
 }
-
 .ln-check-box:checked ~ .checklist-text-content {
     text-decoration: line-through !important;
     opacity: 0.6 !important;
 }
-
-/* Фокус для доступности */
 .ln-check-box:focus {
     outline: 2px solid #aefc6e !important;
     outline-offset: 2px !important;
 }
-
-/* Темная тема */
 [data-theme="dark"] .checklist-item-wrapper {
     background: rgba(174, 252, 110, 0.05) !important;
     border: 1px solid rgba(174, 252, 110, 0.15) !important;
     color: #ffffff !important;
 }
-
 [data-theme="dark"] .checklist-item-wrapper:hover {
     background: rgba(174, 252, 110, 0.08) !important;
     border-color: rgba(174, 252, 110, 0.25) !important;
 }
-
 [data-theme="dark"] .ln-check-box {
     background: #1a1a1a !important;
     border: 2px solid #aefc6e !important;
 }
-
 [data-theme="dark"] .ln-check-box:checked {
     background: #aefc6e !important;
     border-color: #aefc6e !important;
 }
-
 [data-theme="dark"] .checklist-text {
     color: #ffffff !important;
 }
-
 [data-theme="dark"] .ln-check-box:checked ~ .checklist-text {
     color: #999 !important;
 }
-
-/* Светлая тема */
 [data-theme="light"] .checklist-item-wrapper {
     background: rgba(40, 167, 69, 0.05) !important;
     border: 1px solid rgba(40, 167, 69, 0.15) !important;
     color: #212529 !important;
 }
-
 [data-theme="light"] .checklist-item-wrapper:hover {
     background: rgba(40, 167, 69, 0.08) !important;
     border-color: rgba(40, 167, 69, 0.25) !important;
 }
-
 [data-theme="light"] .ln-check-box {
     background: #ffffff !important;
     border: 2px solid #28a745 !important;
 }
-
 [data-theme="light"] .ln-check-box:checked {
     background: #28a745 !important;
     border-color: #28a745 !important;
 }
-
 [data-theme="light"] .ln-check-box:checked::after {
     color: #ffffff !important;
 }
-
 [data-theme="light"] .checklist-text {
     color: #212529 !important;
 }
-
 [data-theme="light"] .ln-check-box:checked ~ .checklist-text {
     color: #666 !important;
 }
-
 [data-theme="light"] .ln-check-box:focus {
     outline: 2px solid #28a745 !important;
 }
-
-/* Мобильные устройства */
 @media (max-width: 768px) {
     .checklist-item-wrapper {
         padding: 12px 14px !important;
         gap: 14px !important;
         margin: 10px 0 !important;
     }
-    
     .ln-check-box {
         width: 22px !important;
         height: 22px !important;
         min-width: 22px !important;
         max-width: 22px !important;
     }
-    
     .checklist-text {
         font-size: 15px !important;
     }
-
 }
-
-/* Планшеты */
 @media (min-width: 769px) and (max-width: 1024px) {
     .checklist-item-wrapper {
         padding: 11px 13px !important;
         gap: 13px !important;
     }
-    
     .ln-check-box {
         width: 21px !important;
         height: 21px !important;
@@ -5365,26 +4438,18 @@ html, body {
         max-width: 21px !important;
     }
 }
-
-/* Поддержка reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .ln-check-box,
     .checklist-item-wrapper {
         transition: none !important;
     }
-    
     .ln-check-box:hover {
         transform: none !important;
     }
-    
     .ln-check-box:active {
         transform: none !important;
     }
 }
-
-/* ===== ДОСТУПНОСТЬ (ACCESSIBILITY) ===== */
-
-/* ── Skip-link: позволяет пользователям клавиатуры перепрыгнуть к основному контенту ── */
 .skip-link {
     position: absolute;
     top: -100%;
@@ -5405,20 +4470,14 @@ html, body {
     outline: 3px solid #000;
     outline-offset: 2px;
 }
-
-/* ── Видимый фокус для всех интерактивных элементов ── */
 :focus-visible {
     outline: 2px solid var(--primary-color) !important;
     outline-offset: 3px !important;
     border-radius: 4px;
 }
-
-/* Убираем outline только там, где есть :focus-visible */
 :focus:not(:focus-visible) {
     outline: none;
 }
-
-/* contentEditable (редактор) — никогда не показываем outline */
 [contenteditable]:focus,
 [contenteditable]:focus-visible,
 .lne-editor:focus,
@@ -5432,8 +4491,6 @@ html, body {
     outline: none !important;
     box-shadow: none !important;
 }
-
-/* Кнопки — минимальный размер касания 44×44px (WCAG 2.5.5) */
 button,
 [role="button"],
 .editBtn,
@@ -5447,37 +4504,27 @@ button,
     min-height: 44px;
     min-width: 44px;
 }
-
-/* Чекбоксы чеклиста — увеличенная зона касания */
 .ln-check-box {
     min-width: 24px !important;
     min-height: 24px !important;
     width: 24px !important;
     height: 24px !important;
 }
-
-/* Фокус на чекбоксах чеклиста */
 .ln-check-box:focus-visible {
     outline: 2px solid var(--primary-color) !important;
     outline-offset: 2px !important;
     box-shadow: 0 0 0 4px rgba(174, 252, 110, 0.25) !important;
 }
-
-/* Ссылки — видимый фокус */
 a:focus-visible {
     outline: 2px solid var(--primary-color) !important;
     outline-offset: 2px !important;
     border-radius: 2px;
 }
-
-/* Поле поиска — видимый фокус */
 #searchInput:focus-visible {
     outline: 2px solid var(--primary-color) !important;
     outline-offset: 0 !important;
     box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.2) !important;
 }
-
-/* ── Режим высокого контраста (Windows / системный) ── */
 @media (forced-colors: active) {
     button,
     .editBtn,
@@ -5489,23 +4536,18 @@ a:focus-visible {
         border: 2px solid ButtonText;
         forced-color-adjust: none;
     }
-
     .ln-check-box {
         forced-color-adjust: none;
         border: 2px solid ButtonText !important;
     }
-
     .ln-check-box:checked {
         background: Highlight !important;
         border-color: Highlight !important;
     }
-
     :focus-visible {
         outline: 3px solid Highlight !important;
     }
 }
-
-/* ── Уменьшение анимаций для пользователей с вестибулярными нарушениями ── */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -5515,25 +4557,18 @@ a:focus-visible {
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
     }
-
     .ln-check-box {
         transition: none !important;
     }
-
     .quick-edit-notification {
         transition: opacity 0.15ms ease !important;
     }
 }
-
-/* ── Увеличенный шрифт (системные настройки) ── */
 @media (prefers-reduced-data: reduce) {
-    /* Не загружаем тяжёлые шрифты при экономии трафика */
     body {
         font-family: system-ui, -apple-system, sans-serif;
     }
 }
-
-/* ── Скрытый текст только для скринридеров (sr-only) ── */
 .sr-only {
     position: absolute !important;
     width: 1px !important;
@@ -5545,8 +4580,6 @@ a:focus-visible {
     white-space: nowrap !important;
     border: 0 !important;
 }
-
-/* Видимый при фокусе (для skip-links и подобного) */
 .sr-only-focusable:focus,
 .sr-only-focusable:active {
     position: static !important;
@@ -5556,210 +4589,146 @@ a:focus-visible {
     clip: auto !important;
     white-space: normal !important;
 }
-
-/* ── Улучшение читаемости текста ── */
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
 }
-
-/* Минимальный межстрочный интервал для читаемости (WCAG 1.4.12) */
 p, li, .noteContent {
     line-height: max(1.5, 1.5em);
 }
-
-/* ── Цвет placeholder — достаточный контраст ── */
 ::placeholder {
     color: var(--text-secondary);
-    opacity: 1; /* Firefox снижает opacity по умолчанию */
+    opacity: 1; 
 }
-
-/* ── Стили для состояния aria-disabled ── */
 [aria-disabled="true"],
 button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
 }
-
-/* ── Индикатор загрузки — доступный спиннер ── */
 [aria-busy="true"] {
     cursor: wait;
 }
-
-/* ===== ОТКЛЮЧЕНИЕ HOVER НА ТАЧСКРИНАХ ===== */
-/* На устройствах без мыши (смартфоны, планшеты) hover не работает —
-   браузер эмулирует его при тапе, что выглядит как залипание.
-   @media (hover: none) отключает все hover-эффекты на таких устройствах. */
-
 @media (hover: none) {
-    /* Карточки заметок */
     #notesContainer.default-view .note:hover,
     #notesContainer.full-width-view .note:hover {
         transform: none !important;
         box-shadow: none !important;
         border-color: var(--note-border) !important;
     }
-
-    /* Кнопки заметок */
     .editBtn:hover, .deleteBtn:hover, .exportBtn:hover {
         background: var(--button-bg) !important;
         transform: none !important;
     }
-
-    /* Кнопки управления */
     #addNoteButton:hover, #importButton:hover, #clearAllButton:hover {
         background: var(--button-bg) !important;
     }
-
     #addNoteButton:hover {
         background: var(--primary-color) !important;
     }
-
-    /* Кнопка переключения вида */
     #toggleViewButton:hover {
         transform: none !important;
         box-shadow: none !important;
         border-color: rgba(174, 252, 110, 0.3) !important;
         background: linear-gradient(135deg, var(--button-bg) 0%, rgba(174, 252, 110, 0.05) 100%) !important;
     }
-
     [data-theme="dark"] #toggleViewButton:hover {
         background: linear-gradient(135deg, #1a1a1a 0%, rgba(174, 252, 110, 0.08) 100%) !important;
         border-color: rgba(174, 252, 110, 0.4) !important;
         box-shadow: none !important;
     }
-
     [data-theme="light"] #toggleViewButton:hover {
         background: linear-gradient(135deg, #ffffff 0%, rgba(40, 167, 69, 0.08) 100%) !important;
         border-color: rgba(40, 167, 69, 0.4) !important;
         box-shadow: none !important;
     }
-
-    /* Секции welcome */
     .welcome-section:hover,
     [data-theme="dark"] .welcome-section:hover,
     [data-theme="light"] .welcome-section:hover {
         transform: none !important;
         border-color: var(--border-color) !important;
     }
-
     .welcome-features li:hover,
     .welcome-goals li:hover {
         transform: none !important;
     }
-
     .welcome-dismiss-btn:hover {
         transform: none !important;
         box-shadow: none !important;
     }
-
-    /* Кнопки модальных окон */
     #ok:hover, #confirmYes:hover {
         transform: none !important;
     }
-
     #confirmNo:hover, .cancel-btn:hover {
         transform: none !important;
     }
-
     .modal-buttons-container button:hover {
         transform: none !important;
     }
-
     .validate-btn:hover,
     .skip-btn:hover,
     #passwordCancel:hover,
     #customPromptCancel:hover {
         transform: none !important;
     }
-
-    /* Переключатель темы */
     .theme-toggle:hover {
         transform: none !important;
     }
-
     .theme-option:hover {
         border-color: var(--border-color) !important;
         background: var(--button-bg) !important;
     }
-
-    /* Экспорт */
     .export-option:hover {
         background: var(--button-bg) !important;
         border-color: var(--border-color) !important;
     }
-
     .export-close:hover {
         background: transparent !important;
     }
-
-    /* Быстрое редактирование */
     #quickEditToggle:hover {
         background: var(--button-bg) !important;
     }
-
     .quick-edit-save:hover {
         filter: none !important;
     }
-
     .quick-edit-cancel:hover {
         background: var(--button-bg) !important;
     }
-
-    /* Чеклист */
     .checklist-item-wrapper:hover,
     [data-theme="dark"] .checklist-item-wrapper:hover,
     [data-theme="light"] .checklist-item-wrapper:hover {
         background: rgba(174, 252, 110, 0.05) !important;
         border-color: rgba(174, 252, 110, 0.15) !important;
     }
-
     .ln-check-box:hover {
         transform: none !important;
         box-shadow: none !important;
     }
-
-    /* Ссылки */
     .welcome-content a:hover {
         border-bottom-color: transparent !important;
     }
-
     footer a:hover {
         color: inherit !important;
     }
-
     .footer-selector:hover {
         opacity: 0.5 !important;
     }
-
-    /* Mobile баннер */
     .ln-install-banner-close:hover {
         color: var(--text-secondary) !important;
     }
-
-    /* Импорт */
     .drop-zone:hover {
         border-color: var(--border-color) !important;
         background: var(--button-bg) !important;
     }
-
     .import-option:hover {
         background: var(--button-bg) !important;
         border-color: var(--border-color) !important;
     }
-
     .remove-file:hover {
         color: inherit !important;
     }
 }
-
-
-/* ============================================================
-   PWA MODAL
-   ============================================================ */
-
 .pwa-modal-overlay {
     position: fixed;
     inset: 0;
@@ -5775,12 +4744,10 @@ button:disabled {
     transition: opacity 0.25s ease;
     pointer-events: none;
 }
-
 .pwa-modal-overlay.pwa-modal-visible {
     opacity: 1;
     pointer-events: all;
 }
-
 .pwa-modal {
     background: var(--modal-bg, #1a1a1a);
     border: 1px solid rgba(174, 252, 110, 0.15);
@@ -5793,12 +4760,9 @@ button:disabled {
     transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
     position: relative;
 }
-
 .pwa-modal-overlay.pwa-modal-visible .pwa-modal {
     transform: translateY(0) scale(1);
 }
-
-/* Accent top line */
 .pwa-modal::before {
     content: '';
     position: absolute;
@@ -5808,12 +4772,10 @@ button:disabled {
     background-size: 200% 100%;
     animation: pwaGradientShift 3s linear infinite;
 }
-
 @keyframes pwaGradientShift {
     0% { background-position: 0% 0%; }
     100% { background-position: 200% 0%; }
 }
-
 .pwa-modal-close {
     position: absolute;
     top: 16px; right: 16px;
@@ -5832,24 +4794,19 @@ button:disabled {
     background: rgba(255,255,255,0.15);
     color: #fff;
 }
-
-/* Header */
 .pwa-modal-header {
     display: flex;
     align-items: center;
     gap: 14px;
     padding: 24px 24px 16px;
 }
-
 .pwa-modal-icon img {
     border-radius: 14px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.3);
 }
-
 .pwa-modal-title-block {
     flex: 1;
 }
-
 .pwa-modal-title {
     font-size: 1.25rem;
     font-weight: 700;
@@ -5857,7 +4814,6 @@ button:disabled {
     margin: 0 0 2px;
     line-height: 1.2;
 }
-
 .pwa-modal-version {
     font-size: 0.75rem;
     color: #aefc6e;
@@ -5867,7 +4823,6 @@ button:disabled {
     border-radius: 20px;
     display: inline-block;
 }
-
 .pwa-modal-status {
     display: flex;
     align-items: center;
@@ -5875,7 +4830,6 @@ button:disabled {
     font-size: 0.75rem;
     color: var(--text-secondary, #888);
 }
-
 .pwa-status-dot {
     width: 8px; height: 8px;
     border-radius: 50%;
@@ -5884,8 +4838,6 @@ button:disabled {
 }
 .pwa-dot-green { background: #aefc6e; box-shadow: 0 0 6px rgba(174,252,110,0.6); }
 .pwa-dot-red   { background: #ff5555; box-shadow: 0 0 6px rgba(255,85,85,0.6); }
-
-/* Update banner */
 .pwa-update-banner {
     margin: 0 16px 12px;
     background: linear-gradient(135deg, rgba(174,252,110,0.12), rgba(110,231,252,0.08));
@@ -5897,35 +4849,29 @@ button:disabled {
     gap: 12px;
     animation: pwaUpdatePulse 2s ease-in-out infinite;
 }
-
 @keyframes pwaUpdatePulse {
     0%, 100% { border-color: rgba(174,252,110,0.3); }
     50%       { border-color: rgba(174,252,110,0.7); }
 }
-
 .pwa-update-icon {
     font-size: 22px;
     color: #aefc6e;
     flex-shrink: 0;
 }
-
 .pwa-update-text {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
-
 .pwa-update-text strong {
     font-size: 0.85rem;
     color: var(--text-primary, #fff);
 }
-
 .pwa-update-text span {
     font-size: 0.75rem;
     color: var(--text-secondary, #888);
 }
-
 .pwa-update-btn {
     background: #aefc6e;
     color: #000;
@@ -5943,8 +4889,6 @@ button:disabled {
     background: #c8ff8a;
     transform: scale(1.04);
 }
-
-/* Changelog */
 .pwa-changelog {
     margin: 0 16px 12px;
     background: rgba(255,255,255,0.03);
@@ -5952,7 +4896,6 @@ button:disabled {
     border-radius: 14px;
     overflow: hidden;
 }
-
 .pwa-changelog-header {
     display: flex;
     align-items: center;
@@ -5963,17 +4906,14 @@ button:disabled {
     color: var(--text-secondary, #888);
     border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-
 .pwa-changelog-header i {
     color: #aefc6e;
 }
-
 .pwa-changelog-list {
     list-style: none;
     margin: 0;
     padding: 8px 0;
 }
-
 .pwa-changelog-list li {
     display: flex;
     align-items: flex-start;
@@ -5983,7 +4923,6 @@ button:disabled {
     color: var(--text-primary, #ddd);
     line-height: 1.4;
 }
-
 .pwa-changelog-list li i {
     color: #aefc6e;
     font-size: 0.75rem;
@@ -5992,15 +4931,12 @@ button:disabled {
     width: 14px;
     text-align: center;
 }
-
-/* Features */
 .pwa-features {
     margin: 0 16px 12px;
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
-
 .pwa-feature-item {
     display: flex;
     align-items: center;
@@ -6009,11 +4945,9 @@ button:disabled {
     border-radius: 12px;
     transition: background 0.15s;
 }
-
 .pwa-feature-item:hover {
     background: rgba(255,255,255,0.04);
 }
-
 .pwa-feature-icon {
     width: 36px; height: 36px;
     border-radius: 10px;
@@ -6023,26 +4957,22 @@ button:disabled {
     font-size: 15px;
     flex-shrink: 0;
 }
-
 .pwa-feature-text {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 1px;
 }
-
 .pwa-feature-text strong {
     font-size: 0.82rem;
     color: var(--text-primary, #fff);
     font-weight: 600;
 }
-
 .pwa-feature-text span {
     font-size: 0.72rem;
     color: var(--text-secondary, #888);
     line-height: 1.3;
 }
-
 .pwa-feature-btn {
     width: 32px; height: 32px;
     border-radius: 50%;
@@ -6057,7 +4987,6 @@ button:disabled {
     flex-shrink: 0;
 }
 .pwa-feature-btn:hover { transform: scale(1.1); background: #c8ff8a; }
-
 .pwa-btn-secondary {
     background: rgba(255,255,255,0.08) !important;
     color: var(--text-secondary, #888) !important;
@@ -6066,7 +4995,6 @@ button:disabled {
     background: rgba(255,85,85,0.2) !important;
     color: #ff5555 !important;
 }
-
 .pwa-feature-badge {
     width: 28px; height: 28px;
     border-radius: 50%;
@@ -6078,8 +5006,6 @@ button:disabled {
     background: rgba(174,252,110,0.15);
     color: #aefc6e;
 }
-
-/* Footer */
 .pwa-modal-footer {
     display: flex;
     align-items: center;
@@ -6089,7 +5015,6 @@ button:disabled {
     border-top: 1px solid rgba(255,255,255,0.06);
     flex-wrap: wrap;
 }
-
 .pwa-footer-link {
     font-size: 0.75rem;
     color: var(--text-secondary, #888);
@@ -6098,18 +5023,14 @@ button:disabled {
     transition: color 0.15s;
 }
 .pwa-footer-link:hover { color: #aefc6e; }
-
 .pwa-footer-sep {
     color: rgba(255,255,255,0.2);
     font-size: 0.75rem;
 }
-
 .pwa-footer-copy {
     font-size: 0.72rem;
     color: rgba(255,255,255,0.25);
 }
-
-/* Light theme overrides */
 [data-theme="light"] .pwa-modal {
     background: #ffffff;
     border-color: rgba(0,0,0,0.08);
@@ -6125,14 +5046,10 @@ button:disabled {
 [data-theme="light"] .pwa-feature-item:hover { background: rgba(0,0,0,0.03); }
 [data-theme="light"] .pwa-modal-footer { border-color: rgba(0,0,0,0.06); }
 [data-theme="light"] .pwa-btn-secondary { background: rgba(0,0,0,0.06) !important; }
-
-/* PWA info button in toolbar */
 #pwaInfoButton {
     padding: 8px 12px !important;
     min-width: auto !important;
 }
-
-/* Mobile */
 @media (max-width: 480px) {
     .pwa-modal {
         border-radius: 20px 20px 0 0;
@@ -6144,8 +5061,6 @@ button:disabled {
         padding: 0;
     }
 }
-
-/* PWA footer button */
 .pwa-footer-open-btn {
     background: transparent;
     border: 1px solid var(--border-color, rgba(255,255,255,0.15));
@@ -6160,10 +5075,6 @@ button:disabled {
     color: var(--primary-color, #aefc6e);
     border-color: var(--primary-color, #aefc6e);
 }
-
-/* ============================================================
-   PWA UPDATE TOAST
-   ============================================================ */
 #pwaUpdateToast {
     position: fixed;
     bottom: 24px;
@@ -6186,13 +5097,11 @@ button:disabled {
                 opacity 0.3s ease;
     pointer-events: none;
 }
-
 #pwaUpdateToast.pwa-toast-visible {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
     pointer-events: all;
 }
-
 #pwaToastUpdate {
     background: #aefc6e;
     color: #000;
@@ -6208,7 +5117,6 @@ button:disabled {
     background: #c8ff8a;
     transform: scale(1.04);
 }
-
 #pwaToastDismiss {
     background: transparent;
     border: none;
@@ -6222,55 +5130,33 @@ button:disabled {
 #pwaToastDismiss:hover {
     color: var(--text-primary, #fff);
 }
-
 [data-theme="light"] #pwaUpdateToast {
     background: #ffffff;
     border-color: rgba(0, 0, 0, 0.1);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
-
-/* ============================================================
-   iOS INPUT ZOOM FIX
-   iOS Safari зумит страницу если font-size < 16px на input в фокусе.
-   Принудительно ставим 16px на все inputs на iOS.
-   ============================================================ */
 @supports (-webkit-touch-callout: none) {
     input, textarea, select {
         font-size: 16px !important;
     }
-    /* Возвращаем нормальный размер после фокуса через transform */
     input:not(:focus), textarea:not(:focus), select:not(:focus) {
         font-size: max(16px, 1em) !important;
     }
 }
-
-/* ============================================================
-   iOS TOUCH IMPROVEMENTS
-   ============================================================ */
-
-/* Убираем 300ms задержку тапа на всех интерактивных элементах */
 a, button, input, select, textarea, label,
 [role="button"], [tabindex] {
     touch-action: manipulation;
 }
-
-/* Убираем highlight при тапе на iOS */
 a, button, input, select, textarea {
     -webkit-tap-highlight-color: transparent;
 }
-
-/* Предотвращаем выделение текста при долгом тапе на кнопках */
 button, [role="button"] {
     -webkit-user-select: none;
     user-select: none;
 }
-
-/* iOS: предотвращаем резиновый скролл на body */
 body {
     overscroll-behavior-y: none;
 }
-
-/* Скроллируемые контейнеры — разрешаем momentum scrolling */
 #notesContainer,
 .modal-content,
 .tox-edit-area,
@@ -6279,20 +5165,12 @@ body {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
 }
-
-/* ============================================================
-   VIDEO WRAPPER — MOBILE FIX
-   На смартфонах враппер с inline max-width (напр. 560px) выходит
-   за экран. Принудительно ограничиваем и сбрасываем overflow
-   чтобы не обрезались элементы управления плеера.
-   ============================================================ */
 @media (max-width: 768px) {
     .noteContent .lne-video-wrapper,
     .noteContent .video-embed-wrapper {
         max-width: 100% !important;
         overflow: visible !important;
     }
-    /* iframe/video внутри враппера — заполняют 100% */
     .noteContent .lne-video-wrapper iframe,
     .noteContent .lne-video-wrapper video,
     .noteContent .video-embed-wrapper iframe,
@@ -6300,7 +5178,6 @@ body {
         width: 100% !important;
         max-width: 100% !important;
     }
-    /* Враппер с inline style — высота по aspect-ratio от реальной ширины */
     .noteContent .lne-video-wrapper[style],
     .noteContent .video-embed-wrapper[style] {
         width: 100% !important;

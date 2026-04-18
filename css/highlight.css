@@ -1,7 +1,4 @@
-/* Highlight.js styles for code blocks — theme-aware */
-
-/* ── Dark theme (default) ─────────────────────────────────────────── */
-.hljs {
+﻿.hljs {
     background: #0d0d0d !important;
     color: #aefc6e !important;
     padding: 14px 16px !important;
@@ -14,8 +11,6 @@
     border: 1px solid var(--border-color, #272727) !important;
     display: block !important;
 }
-
-/* Token colors for dark */
 .hljs-keyword, .hljs-selector-tag, .hljs-deletion { color: #ff7b7b !important; }
 .hljs-string, .hljs-attribute, .hljs-addition      { color: #aefc6e !important; }
 .hljs-comment, .hljs-quote                         { color: #6a9955 !important; font-style: italic !important; }
@@ -29,16 +24,12 @@
 .hljs-meta                                         { color: #c586c0 !important; }
 .hljs-emphasis  { font-style: italic !important; }
 .hljs-strong    { font-weight: bold !important; }
-
-/* ── Light theme ──────────────────────────────────────────────────── */
 [data-theme="light"] .hljs {
     background: #f6f8fa !important;
     color: #24292e !important;
     border-color: #e1e4e8 !important;
     box-shadow: inset 0 1px 3px rgba(0,0,0,.06) !important;
 }
-
-/* Code blocks inside lne-code-wrapper always stay dark regardless of theme */
 .lne-code-wrapper .hljs,
 .lne-code-wrapper pre,
 .lne-code-wrapper .lne-code,
@@ -49,21 +40,16 @@
     border-color: #222 !important;
     box-shadow: none !important;
 }
-
-/* Force inline styles to be overridden for spans inside lne-code-wrapper */
 .lne-code-wrapper pre span,
 .lne-code-wrapper .lne-code span {
     color: inherit;
 }
-
-/* Header always dark */
 .lne-code-header,
 [data-theme="light"] .lne-code-header {
     background: #0d0d0d !important;
     border-color: #222 !important;
     color: #aefc6e !important;
 }
-
 [data-theme="light"] .hljs-keyword, [data-theme="light"] .hljs-selector-tag { color: #d73a49 !important; }
 [data-theme="light"] .hljs-string, [data-theme="light"] .hljs-addition       { color: #28a745 !important; }
 [data-theme="light"] .hljs-comment, [data-theme="light"] .hljs-quote         { color: #6a737d !important; }
@@ -72,4 +58,4 @@
 [data-theme="light"] .hljs-type, [data-theme="light"] .hljs-built_in         { color: #e36209 !important; }
 [data-theme="light"] .hljs-variable, [data-theme="light"] .hljs-template-variable { color: #24292e !important; }
 [data-theme="light"] .hljs-tag, [data-theme="light"] .hljs-name              { color: #22863a !important; }
-[data-theme="light"] .hljs-meta                                               { color: #e36209 !important; }
+[data-theme="light"] .hljs-meta                                               { color: #e36209 !important; }

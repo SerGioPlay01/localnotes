@@ -531,17 +531,18 @@
 
     <!-- Critical CSS -->
     <link rel="stylesheet" href="../css/index.css?v=1.1.4">
-    <link rel="stylesheet" href="../css/img.css?v=1.1.4">
-    <link rel="stylesheet" href="../fonts/local-fonts.css?v=1.1.4">
-    <link rel="stylesheet" href="/localnoteseditor/bootstrap-icons/font/bootstrap-icons.min.css">
 
     <!-- Non-critical CSS — loaded async to avoid render blocking -->
+    <link rel="stylesheet" href="../css/img.css?v=1.1.4" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="/localnoteseditor/bootstrap-icons/font/bootstrap-icons.min.css" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="../css/highlight.css?v=1.1.4" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.1.4" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="../css/editor-modal.css?v=1.1.4" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="../css/apple.css?v=1.1.4" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="../css/tags-calendar.css?v=1.1.4" media="print" onload="this.media='all'">
     <noscript>
+        <link rel="stylesheet" href="../css/img.css?v=1.1.4">
+        <link rel="stylesheet" href="/localnoteseditor/bootstrap-icons/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="../css/highlight.css?v=1.1.4">
         <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.1.4">
         <link rel="stylesheet" href="../css/editor-modal.css?v=1.1.4">
@@ -658,6 +659,7 @@
     <div id="tagPanel" style="display:none"></div>
 
     <!-- Main content section -->
+    <main>
     <section class="app-notes-center">
         <section class="app-notes">
             <div class="btn_view_div">
@@ -720,6 +722,7 @@
             </div>
         </footer>
     </section>
+    </main>
 
 
     <!-- Critical JavaScript loaded first with cache busting -->

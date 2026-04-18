@@ -1,9 +1,4 @@
-/* ═══════════════════════════════════════════════
-   TAGS & CALENDAR STYLES
-   ═══════════════════════════════════════════════ */
-
-/* ─── Tag panel (sidebar) ─────────────────────── */
-.tag-panel {
+﻿.tag-panel {
     width: 200px;
     min-width: 160px;
     background: var(--bg-secondary, #111);
@@ -14,7 +9,6 @@
     flex-shrink: 0;
     padding: 8px 0;
 }
-
 .tag-panel-header {
     display: flex;
     align-items: center;
@@ -26,10 +20,8 @@
     letter-spacing: .05em;
     color: var(--text-secondary, #999);
 }
-
 .tag-panel-title { display: flex; align-items: center; gap: 6px; }
 .tag-panel-title i { font-size: 14px; }
-
 .tag-add-btn {
     width: 22px; height: 22px;
     background: transparent; border: 1px solid var(--border-color, #333);
@@ -39,11 +31,8 @@
 }
 .tag-add-btn:hover { background: var(--primary-color, #28a745); color: #fff; border-color: var(--primary-color, #28a745); }
 .tag-add-btn i { font-size: 12px; pointer-events: none; }
-
 .tag-list { display: flex; flex-direction: column; gap: 1px; padding: 4px 6px; }
-
 .tag-filter-row { display: flex; align-items: center; gap: 2px; }
-
 .tag-filter-btn {
     flex: 1;
     display: flex; align-items: center; gap: 7px;
@@ -67,7 +56,6 @@
     color: var(--text-secondary, #999);
 }
 .tag-filter-btn.active .tag-count { background: rgba(40,167,69,.2); color: var(--primary-color, #28a745); }
-
 .tag-action-btn {
     width: 22px; height: 22px; border: none; background: transparent;
     color: var(--text-muted, #555); cursor: pointer; border-radius: 4px;
@@ -78,8 +66,6 @@
 .tag-action-btn:hover { background: var(--button-hover, #2d2d2d); color: var(--text-color, #e0e0e0); }
 .tag-del-btn:hover { color: #e74c3c; }
 .tag-action-btn i { font-size: 12px; pointer-events: none; }
-
-/* ─── Tag pills on note cards ─────────────────── */
 .note-tags {
     display: flex;
     flex-wrap: wrap;
@@ -88,14 +74,11 @@
     border-top: 1px solid var(--border-color, #272727);
     background: var(--note-footer-bg, #0f0f0f);
 }
-
 [data-theme="light"] .note-tags { background: var(--note-footer-bg, #f8f9fa); border-top-color: #dee2e6; }
-
 [data-theme="light"] .note-tag-pill {
     background: color-mix(in srgb, var(--tag-color, #28a745) 14%, #fff);
     border-color: color-mix(in srgb, var(--tag-color, #28a745) 50%, transparent);
 }
-
 .note-tag-pill {
     display: inline-flex; align-items: center; gap: 3px;
     padding: 3px 10px; border-radius: 999px;
@@ -106,8 +89,6 @@
     white-space: nowrap; cursor: default;
     letter-spacing: .01em;
 }
-
-/* ─── Tag color swatches in create modal ─────── */
 .tc-swatches { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 0; }
 .tc-swatch {
     width: 24px; height: 24px; border-radius: 50%;
@@ -115,8 +96,6 @@
 }
 .tc-swatch:hover { transform: scale(1.15); }
 .tc-swatch.selected { border-color: var(--text-color, #fff); box-shadow: 0 0 0 2px var(--border-color, #333); }
-
-/* ─── Note tag editor in save modal ──────────── */
 #note-tag-editor {
     display: flex;
     align-items: center;
@@ -127,11 +106,9 @@
     border-bottom: 1px solid var(--border-color, #272727);
     margin: 10px 0;
 }
-
 .nte-label { font-size: 12px; color: var(--text-secondary, #999); font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 4px; }
 .nte-label i { font-size: 14px; }
 .nte-tags { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; }
-
 .nte-tag-pill {
     display: inline-flex; align-items: center; gap: 4px;
     padding: 2px 8px 2px 10px; border-radius: 999px;
@@ -146,7 +123,6 @@
 }
 .nte-remove-tag:hover { opacity: 1; }
 .nte-remove-tag i { font-size: 11px; pointer-events: none; }
-
 .nte-add-btn {
     width: 26px; height: 26px; border-radius: 50%;
     background: transparent; border: 1px dashed var(--border-color, #444);
@@ -156,8 +132,6 @@
 }
 .nte-add-btn:hover { background: var(--primary-color, #28a745); color: #fff; border-color: var(--primary-color, #28a745); }
 .nte-add-btn i { font-size: 14px; pointer-events: none; }
-
-/* ─── Dropdown ────────────────────────────────── */
 .nte-dropdown {
     background: var(--modal-bg, #1a1a1a);
     border: 1px solid var(--border-color, #272727);
@@ -179,8 +153,6 @@
 .nte-drop-sep { height: 1px; background: var(--border-color, #272727); margin: 2px 0; }
 .nte-drop-empty { padding: 10px 14px; font-size: 13px; color: var(--text-secondary, #999); }
 .nte-drop-empty a { color: var(--primary-color, #28a745); }
-
-/* ─── Note color & pin ────────────────────────── */
 .note-color-swatches { display: flex; gap: 5px; flex-wrap: wrap; padding: 4px 0; }
 .nc-swatch {
     width: 22px; height: 22px; border-radius: 50%;
@@ -189,7 +161,6 @@
 .nc-swatch[data-c=""] { background: repeating-linear-gradient(45deg,var(--border-color,#333) 0,var(--border-color,#333) 2px,transparent 2px,transparent 6px); }
 .nc-swatch:hover { transform: scale(1.15); }
 .nc-swatch.selected { border-color: var(--text-color, #fff); }
-
 .note-pin-btn {
     width: 34px; height: 34px; border-radius: 6px;
     background: var(--bg-secondary, #111); border: 1px solid var(--border-color, #272727);
@@ -198,18 +169,13 @@
 }
 .note-pin-btn.active { background: rgba(40,167,69,.15); color: var(--primary-color, #28a745); border-color: var(--primary-color, #28a745); }
 .note-pin-btn:hover { background: var(--button-hover, #2d2d2d); }
-
-/* Note card color accent */
 .note[data-color] { border-left: 3px solid var(--note-accent, var(--border-color, #272727)); }
 .note[data-color=""] { border-left-color: var(--border-color, #272727); }
-
-/* ─── Calendar overlay ────────────────────────── */
 .cal-overlay {
     position: fixed; inset: 0; background: rgba(0,0,0,.65);
     z-index: 99998; display: flex; align-items: flex-start;
     justify-content: center; padding: 20px; overflow: auto;
 }
-
 .cal-modal {
     background: var(--modal-bg, #1a1a1a);
     border: 1px solid var(--border-color, #272727);
@@ -220,16 +186,13 @@
     animation: lneIn .2s ease;
     overflow: hidden;
 }
-
 .cal-header {
     display: flex; align-items: center; justify-content: space-between;
     padding: 14px 18px; border-bottom: 1px solid var(--border-color, #272727);
     gap: 12px; flex-wrap: wrap;
 }
-
 .cal-nav { display: flex; align-items: center; gap: 8px; }
 .cal-title { font-size: 18px; font-weight: 700; color: var(--text-color, #e0e0e0); margin: 0; min-width: 200px; text-align: center; }
-
 .cal-nav-btn, .cal-today-btn, .cal-close-btn {
     height: 32px; border: 1px solid var(--border-color, #272727);
     background: var(--bg-secondary, #111); color: var(--text-color, #e0e0e0);
@@ -242,7 +205,6 @@
 .cal-nav-btn:hover, .cal-today-btn:hover, .cal-close-btn:hover { background: var(--button-hover, #2d2d2d); }
 .cal-close-btn:hover { color: #e74c3c; }
 .cal-nav-btn i, .cal-close-btn i { font-size: 14px; pointer-events: none; }
-
 .cal-view-btns { display: flex; gap: 3px; }
 .cal-view-btn {
     padding: 6px 14px; border: 1px solid var(--border-color, #272727);
@@ -251,10 +213,7 @@
 }
 .cal-view-btn.active { background: var(--primary-color, #28a745); color: #fff; border-color: var(--primary-color, #28a745); }
 .cal-view-btn:hover:not(.active) { background: var(--button-hover, #2d2d2d); color: var(--text-color, #e0e0e0); }
-
 .cal-body { flex: 1; overflow: auto; padding: 12px; }
-
-/* Month grid */
 .cal-month { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--border-color, #272727); border: 1px solid var(--border-color, #272727); border-radius: 8px; overflow: hidden; }
 .cal-dow { padding: 6px; font-size: 11px; font-weight: 700; text-align: center; text-transform: uppercase; color: var(--text-secondary, #999); background: var(--bg-secondary, #111); letter-spacing: .04em; }
 .cal-day { background: var(--modal-bg, #1a1a1a); padding: 6px; min-height: 90px; cursor: pointer; transition: background .12s; position: relative; }
@@ -263,8 +222,6 @@
 .cal-today { background: rgba(40,167,69,.08) !important; }
 .cal-today .cal-day-num { background: var(--primary-color, #28a745); color: #000 !important; }
 .cal-day-num { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-size: 13px; font-weight: 600; color: var(--text-secondary, #999); margin-bottom: 4px; }
-
-/* Note chips */
 .cal-note-chip {
     display: block; font-size: 11px; padding: 2px 6px; border-radius: 4px;
     background: color-mix(in srgb, var(--chip-color, #aefc6e) 18%, transparent);
@@ -277,8 +234,6 @@
 .cal-note-chip.cal-overdue { border-left-color: #e74c3c; background: rgba(231,76,60,.15); color: #e74c3c; }
 .cal-note-chip.cal-due-today { border-left-color: #f1c40f; background: rgba(241,196,15,.15); color: #f1c40f; }
 .cal-more { font-size: 10px; color: var(--text-muted, #666); padding: 1px 4px; }
-
-/* Week view */
 .cal-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--border-color, #272727); border: 1px solid var(--border-color, #272727); border-radius: 8px; overflow: hidden; min-height: 400px; }
 .cal-week-col { background: var(--modal-bg, #1a1a1a); display: flex; flex-direction: column; }
 .cal-week-col.cal-today { background: rgba(40,167,69,.06); }
@@ -287,8 +242,6 @@
 .cal-week-col.cal-today .cal-week-hd strong { color: var(--primary-color, #28a745); }
 .cal-week-notes { padding: 6px; flex: 1; display: flex; flex-direction: column; gap: 3px; }
 .cal-empty-day { font-size: 11px; color: var(--text-muted, #444); text-align: center; padding: 8px 0; }
-
-/* Agenda view */
 .cal-agenda { display: flex; flex-direction: column; gap: 8px; }
 .cal-agenda-item {
     display: flex; gap: 12px; align-items: stretch;
@@ -307,15 +260,12 @@
 .cal-agenda-item.cal-due-soon .cal-ai-bar { background: #f39c12; }
 .cal-agenda-empty { text-align: center; padding: 40px 20px; color: var(--text-muted, #555); }
 .cal-agenda-empty i { font-size: 40px; display: block; margin-bottom: 12px; }
-
-/* ─── App layout with tag panel ───────────────── */
 .app-layout {
     display: flex;
     min-height: 0;
     flex: 1;
     overflow: hidden;
 }
-
 #tagPanel {
     width: 200px;
     min-width: 160px;
@@ -326,14 +276,9 @@
     flex-shrink: 0;
     transition: width .25s ease;
 }
-
 #tagPanel.collapsed { width: 0; min-width: 0; overflow: hidden; }
-
 .app-notes-center { flex: 1; overflow: auto; min-width: 0; }
-
-/* ─── Calendar button — inherits block_btn button styles ─── */
 #calendarBtn:hover { background: var(--primary-color, #28a745); color: #fff; border-color: var(--primary-color, #28a745); }
-
 #tagPanelToggle {
     background: transparent; border: 1px solid var(--border-color, #272727);
     border-radius: 6px; color: var(--text-secondary, #999);
@@ -343,8 +288,6 @@
 }
 #tagPanelToggle:hover { background: var(--button-hover, #2d2d2d); color: var(--text-color, #e0e0e0); }
 #tagPanelToggle i { font-size: 14px; pointer-events: none; }
-
-/* ─── Due date badge — inline in footer ─────────── */
 .note-due-badge {
     display: inline-flex; align-items: center; gap: 3px;
     font-size: 10px; padding: 1px 6px; border-radius: 999px;
@@ -354,28 +297,21 @@
 .note-due-badge.due-today   { color: #f1c40f; border-color: rgba(241,196,15,.4); background: rgba(241,196,15,.08); }
 .note-due-badge.due-soon    { color: #f39c12; border-color: rgba(243,156,18,.4); background: rgba(243,156,18,.08); }
 .note-due-badge.due-overdue { color: #e74c3c; border-color: rgba(231,76,60,.4); background: rgba(231,76,60,.1); }
-
-/* ─── Pinned note indicator — inline in footer ─── */
 .note.pinned { border-top: 2px solid var(--primary-color, #28a745) !important; }
 .note-pin-indicator {
     display: inline-flex; align-items: center;
     color: var(--primary-color, #28a745);
     font-size: 13px; opacity: .85; flex-shrink: 0;
 }
-
-/* Light theme */
 [data-theme="light"] #tagPanel { background: #f8f9fa; border-right-color: #dee2e6; }
 [data-theme="light"] .tag-filter-btn { color: #212529; }
 [data-theme="light"] .tag-filter-btn.active { background: rgba(40,167,69,.1); }
 [data-theme="light"] .tag-filter-btn .tag-count { background: #fff; color: #6c757d; }
-
-/* ─── Calendar light theme ─────────────────────── */
 [data-theme="light"] .cal-overlay { background: rgba(0,0,0,.4); }
 [data-theme="light"] .cal-modal { background: #fff; border-color: #dee2e6; }
 [data-theme="light"] .cal-header { background: #fff; border-bottom-color: #dee2e6; }
 [data-theme="light"] .cal-title { color: #212529; }
 [data-theme="light"] .cal-body { background: #fff; }
-
 [data-theme="light"] .cal-nav-btn,
 [data-theme="light"] .cal-today-btn,
 [data-theme="light"] .cal-close-btn {
@@ -389,7 +325,6 @@
 [data-theme="light"] .cal-view-btn { background: #f8f9fa !important; border-color: #dee2e6 !important; color: #495057 !important; }
 [data-theme="light"] .cal-view-btn:hover:not(.active) { background: #e9ecef !important; color: #212529 !important; }
 [data-theme="light"] .cal-view-btn.active { background: var(--primary-color,#28a745) !important; color: #fff !important; border-color: var(--primary-color,#28a745) !important; }
-
 [data-theme="light"] .cal-day { background: #fff; }
 [data-theme="light"] .cal-day:hover { background: rgba(40,167,69,.05) !important; }
 [data-theme="light"] .cal-day-empty { background: #f8f9fa; }
@@ -403,14 +338,7 @@
 [data-theme="light"] .cal-agenda-item:hover { border-color: var(--chip-color, #28a745); background: color-mix(in srgb, var(--chip-color,#28a745) 5%, #f8f9fa); }
 [data-theme="light"] .cal-ai-title { color: #212529; }
 [data-theme="light"] .cal-empty-day { color: #adb5bd; }
-
-/* ─── Note tag editor due date section ────────── */
 #note-due-editor { padding: 8px 0; }
-
-/* ═══════════════════════════════════════════════
-   NOTE SETTINGS MODAL
-   ═══════════════════════════════════════════════ */
-
 .nsm-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,.6);
@@ -419,7 +347,6 @@
     padding: 16px;
     animation: lneIn .18s ease;
 }
-
 .nsm-panel {
     background: var(--modal-bg, #1a1a1a);
     border: 1px solid var(--border-color, #272727);
@@ -430,7 +357,6 @@
     overflow: hidden;
     max-height: 90vh;
 }
-
 .nsm-header {
     display: flex; align-items: center; justify-content: space-between;
     padding: 12px 16px;
@@ -450,18 +376,15 @@
     transition: all .12s;
 }
 .nsm-close:hover { background: var(--button-hover, #2d2d2d); color: var(--text-color, #e0e0e0); }
-
 .nsm-body {
     overflow-y: auto; padding: 8px 0;
     flex: 1;
 }
-
 .nsm-section {
     padding: 10px 16px;
     border-bottom: 1px solid var(--border-color, #1e1e1e);
 }
 .nsm-section:last-child { border-bottom: none; }
-
 .nsm-section-title {
     font-size: 11px; font-weight: 700; text-transform: uppercase;
     letter-spacing: .06em; color: var(--text-secondary, #888);
@@ -469,8 +392,6 @@
     margin-bottom: 8px;
 }
 .nsm-section-title i { font-size: 13px; }
-
-/* Tags */
 .nsm-tags-row {
     display: flex; flex-wrap: wrap; gap: 5px; min-height: 26px;
     margin-bottom: 8px;
@@ -490,7 +411,6 @@
 }
 .nsm-tag-remove:hover { opacity: 1; }
 .nsm-tag-remove i { font-size: 11px; pointer-events: none; }
-
 .nsm-tags-add {
     display: flex; flex-wrap: wrap; gap: 4px;
 }
@@ -522,8 +442,6 @@
     cursor: pointer; transition: all .12s;
 }
 .nsm-new-tag-btn:hover { background: rgba(40,167,69,.1); }
-
-/* Tag manager */
 .nsm-mgr-toggle {
     display: inline-flex; align-items: center; gap: 5px;
     margin-top: 8px; padding: 3px 10px; border-radius: 999px;
@@ -536,7 +454,6 @@
 .nsm-mgr-toggle:hover { color: var(--text-color, #e0e0e0); border-color: var(--text-secondary, #888); }
 .nsm-mgr-chevron { font-size: 10px; transition: transform .18s; }
 .nsm-mgr-chevron-open { transform: rotate(180deg); }
-
 .nsm-mgr-list {
     margin-top: 6px;
     border: 1px solid var(--border-color, #272727);
@@ -567,15 +484,12 @@
 }
 .nsm-mgr-edit:hover { color: var(--text-color, #e0e0e0); background: var(--bg-secondary, #111); }
 .nsm-mgr-del:hover { color: #e74c3c; background: rgba(231,76,60,.1); }
-
 [data-theme="light"] .nsm-mgr-toggle { border-color: #dee2e6; color: #6c757d; }
 [data-theme="light"] .nsm-mgr-list { border-color: #dee2e6; }
 [data-theme="light"] .nsm-mgr-row { border-bottom-color: #f0f0f0; }
 [data-theme="light"] .nsm-mgr-row:hover { background: #f8f9fa; }
 [data-theme="light"] .nsm-mgr-name { color: #212529; }
 [data-theme="light"] .nsm-mgr-edit:hover { background: #f0f0f0; color: #212529; }
-
-/* Due date */
 .nsm-input {
     width: 100%; padding: 7px 10px;
     background: var(--bg-secondary, #111);
@@ -595,8 +509,6 @@
     transition: all .12s;
 }
 .nsm-clear-date:hover { color: #e74c3c; border-color: #e74c3c; }
-
-/* Colors */
 .nsm-colors { display: flex; gap: 7px; flex-wrap: wrap; }
 .nsm-color-sw {
     width: 26px; height: 26px; border-radius: 50%;
@@ -609,8 +521,6 @@
 }
 .nsm-color-sw:hover { transform: scale(1.15); }
 .nsm-color-sw.active { border-color: var(--text-color, #fff) !important; box-shadow: 0 0 0 2px var(--border-color, #444); }
-
-/* Pin */
 .nsm-pin-section { display: flex; align-items: center; justify-content: space-between; }
 .nsm-pin-section .nsm-section-title { margin-bottom: 0; }
 .nsm-pin-btn {
@@ -623,7 +533,6 @@
 }
 .nsm-pin-btn:hover { background: var(--button-hover, #2d2d2d); }
 .nsm-pin-btn.active { background: rgba(40,167,69,.15); color: var(--primary-color, #28a745); border-color: rgba(40,167,69,.4); }
-
 .nsm-footer {
     display: flex; gap: 8px; justify-content: flex-end;
     padding: 10px 16px; border-top: 1px solid var(--border-color, #272727);
@@ -641,8 +550,6 @@
 .nsm-btn-pri:hover { background: var(--primary-hover, #218838); }
 .nsm-btn-sec { background: var(--bg-secondary, #111); color: var(--text-color, #e0e0e0); }
 .nsm-btn-sec:hover { background: var(--button-hover, #2d2d2d); }
-
-/* Settings button in editor modal */
 .btn-settings {
     display: inline-flex; align-items: center; justify-content: center;
     width: 36px; height: 36px; padding: 0;
@@ -653,7 +560,6 @@
     flex-shrink: 0;
 }
 .btn-settings:hover { background: var(--primary-color, #28a745); color: #fff !important; border-color: var(--primary-color, #28a745); }
-
 [data-theme="light"] .btn-settings {
     background: #f8f9fa;
     border-color: #dee2e6;
@@ -664,8 +570,6 @@
     color: #fff !important;
     border-color: var(--primary-color, #28a745);
 }
-
-/* Light theme */
 [data-theme="light"] .nsm-panel { background: #fff; border-color: #dee2e6; }
 [data-theme="light"] .nsm-header { border-bottom-color: #dee2e6; }
 [data-theme="light"] .nsm-header h3 { color: #212529; }
@@ -676,11 +580,6 @@
 [data-theme="light"] .nsm-pin-btn { background: #f8f9fa; color: #6c757d; border-color: #dee2e6; }
 [data-theme="light"] .nsm-btn-sec { background: #f8f9fa; color: #212529; border-color: #dee2e6; }
 [data-theme="light"] .nsm-footer { background: #fff; border-top-color: #dee2e6; }
-
-/* ═══════════════════════════════════════════════
-   DECRYPT NOTE MODAL (dcm)
-   ═══════════════════════════════════════════════ */
-
 .dcm-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,.6);
@@ -689,7 +588,6 @@
     padding: 16px;
     animation: lneIn .18s ease;
 }
-
 .dcm-panel {
     background: var(--modal-bg, #1a1a1a);
     border: 1px solid var(--border-color, #272727);
@@ -698,7 +596,6 @@
     box-shadow: 0 20px 60px rgba(0,0,0,.7);
     overflow: hidden;
 }
-
 .dcm-header {
     display: flex; align-items: center; gap: 14px;
     padding: 16px 18px 14px;
@@ -715,11 +612,8 @@
 .dcm-title { font-size: 15px; font-weight: 700; color: var(--text-color, #e0e0e0); }
 .dcm-file  { font-size: 12px; color: var(--text-secondary, #888); margin-top: 2px; word-break: break-all; }
 .dcm-progress { font-size: 11px; color: var(--text-muted, #666); margin-top: 2px; }
-
 .dcm-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
-
 .dcm-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text-secondary, #888); display: block; margin-bottom: 5px; }
-
 .dcm-input-wrap { position: relative; }
 .dcm-input {
     width: 100%; padding: 9px 40px 9px 12px;
@@ -733,7 +627,6 @@
     letter-spacing: .05em;
 }
 .dcm-input:focus { outline: none; border-color: var(--primary-color, #28a745); box-shadow: 0 0 0 2px rgba(40,167,69,.15); }
-
 .dcm-toggle-pw {
     position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
     background: transparent; border: none; color: var(--text-muted, #666);
@@ -741,7 +634,6 @@
     transition: color .12s;
 }
 .dcm-toggle-pw:hover { color: var(--text-color, #e0e0e0); }
-
 .dcm-status {
     min-height: 22px; font-size: 13px; font-weight: 500;
     display: flex; align-items: center; gap: 6px;
@@ -749,11 +641,8 @@
 .dcm-checking { color: var(--text-secondary, #888); display: flex; align-items: center; gap: 5px; }
 .dcm-valid    { color: #28a745; display: flex; align-items: center; gap: 5px; }
 .dcm-invalid  { color: #e74c3c; display: flex; align-items: center; gap: 5px; }
-
-/* Animate status icons */
 .dcm-checking i { animation: dcm-spin .8s linear infinite; }
 @keyframes dcm-spin { to { transform: rotate(360deg); } }
-
 .dcm-footer {
     display: flex; gap: 8px; padding: 12px 18px;
     border-top: 1px solid var(--border-color, #272727);
@@ -778,8 +667,6 @@
 .dcm-primary:hover { background: var(--primary-hover, #218838); }
 .dcm-primary:disabled { opacity: .55; cursor: not-allowed; }
 .dcm-ready { background: #1a6b35; border-color: #1a6b35; }
-
-/* Light theme */
 [data-theme="light"] .dcm-panel { background: #fff; border-color: #dee2e6; }
 [data-theme="light"] .dcm-header { background: rgba(40,167,69,.04); border-bottom-color: #dee2e6; }
 [data-theme="light"] .dcm-title { color: #212529; }
@@ -787,14 +674,7 @@
 [data-theme="light"] .dcm-footer { background: #f8f9fa; border-top-color: #dee2e6; }
 [data-theme="light"] .dcm-skip { color: #6c757d; }
 [data-theme="light"] .dcm-skip:hover { background: #e9ecef; color: #212529; }
-
-/* ═══════════════════════════════════════════════
-   RESPONSIVE — All modals
-   ═══════════════════════════════════════════════ */
-
 @media (max-width: 640px) {
-
-    /* ─── Calendar ───────────────────────────────── */
     .cal-overlay {
         padding: 0;
         align-items: flex-end;
@@ -817,26 +697,18 @@
     .cal-view-btn { flex: 1; text-align: center; }
     .cal-close-btn { order: 1; margin-left: 0; }
     .cal-body { padding: 8px; }
-
-    /* Month grid compact */
     .cal-day { min-height: 60px; padding: 4px; }
     .cal-day-num { width: 22px; height: 22px; font-size: 12px; }
     .cal-note-chip { font-size: 10px; padding: 1px 4px; }
     .cal-dow { padding: 4px 2px; font-size: 10px; }
     .cal-more { font-size: 9px; }
-
-    /* Week view compact */
     .cal-week { grid-template-columns: repeat(7, minmax(0, 1fr)); }
     .cal-week-hd strong { font-size: 14px; }
     .cal-week-hd span { display: none; }
     .cal-week-notes { padding: 3px; }
-
-    /* Agenda scrollable */
     .cal-agenda-item { flex-direction: column; gap: 0; }
     .cal-ai-bar { width: 100%; height: 3px; border-radius: 3px 3px 0 0; }
     .cal-ai-body { padding: 8px 12px; }
-
-    /* ─── Note Settings Modal ─────────────────── */
     .nsm-overlay {
         padding: 0;
         align-items: flex-end;
@@ -851,8 +723,6 @@
     .nsm-colors { gap: 10px; }
     .nsm-color-sw { width: 30px; height: 30px; }
     .nsm-tags-add { flex-wrap: wrap; }
-
-    /* ─── Decrypt Modal ───────────────────────── */
     .dcm-overlay {
         padding: 0;
         align-items: flex-end;
@@ -862,8 +732,6 @@
         max-width: 100%;
         animation: slideUp .25s ease;
     }
-
-    /* ─── Tags float panel ────────────────────── */
     .tags-float-panel {
         position: fixed !important;
         left: 0 !important; right: 0 !important;
@@ -875,8 +743,6 @@
         animation: slideUp .22s ease;
     }
 }
-
-/* ─── Slide-up animation ──────────────────────── */
 @keyframes slideUp {
     from { opacity: 0; transform: translateY(40px); }
     to   { opacity: 1; transform: translateY(0); }

@@ -263,12 +263,16 @@ async function decryptFull(encData, password, originInfo) {
     const unshuffled = await blockUnshuffle(shufKey, decBytes);
     const unxored    = await xorStream(xorKey, unshuffled);
 
-    // Диагностика padding
-    const last2 = unxored.slice(-2);
-    const pLen = (last2[0] << 8) | last2[1];
-    self.postMessage({ id: '_dbg', msg: `decBytes=${decBytes.length} unshuffled=${unshuffled.length} unxored=${unxored.length} padLen=${pLen} valid=${pLen>=1&&pLen<=64}` });
-
-    const unpadded   = zeroUnpad(unxored);
+    // Пробуем снять padding; если не получается — данные зашифрованы без padding (старый encrypt)
+    let unpadded;
+    try {
+        unpadded = zeroUnpad(unxored);
+    } catch {
+        // Fallback: файл зашифрован без xorStream/blockShuffle/padding
+        // Пробуем расшифровать напрямую без мутаций
+        const rawDec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: ivAes }, encKey, cipher);
+        return new TextDecoder().decode(rawDec);
+    }
 
     zeroize(decBytes, unshuffled, unxored);
     zeroize(rawBits.macBits, rawBits.shufBits, rawBits.xorBits, rawBits.ccBits);

@@ -607,9 +607,10 @@ class AdvancedEncryption {
                 op: 'encrypt', text, password,
                 originInfo: Array.from(originInfo),
             });
+            console.info('[encrypt] used Worker');
             return result;
         } catch (workerErr) {
-            // Fallback: main thread (если Worker упал)
+            console.info('[encrypt] Worker failed, using main thread:', workerErr.message);
             return this._encryptMainThread(text, password, originInfo);
         }
     }

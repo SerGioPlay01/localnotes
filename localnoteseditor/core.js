@@ -1518,13 +1518,7 @@ class LocalNotesEditor {
         // Close bar when clicking outside — attach once per editor instance
         // NOTE: не вешаем на touchend — это ломает таблицы (тулбар открывается с задержкой)
         if (!this._ctxDocListener) {
-            this._ctxDocListener = function(e) {
-                if (self._ctxTouchJustFired) return;
-                if (self._ctxActiveBar && !self._ctxActiveBar.contains(e.target)) {
-                    removeCtx();
-                }
-            };
-            document.addEventListener('click', this._ctxDocListener, true);
+            this._ctxDocListener = true; // просто маркер что уже инициализировано
         }
 
         var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
@@ -1625,13 +1619,24 @@ class LocalNotesEditor {
                     _tblTouchStartY = e.touches[0].clientY;
                 }, { passive: true });
                 table.addEventListener('touchend', function(e) {
-                    // Не блокируем дефолт — браузер сам поставит курсор в ячейку
                     var dx = e.changedTouches[0].clientX - _tblTouchStartX;
                     var dy = e.changedTouches[0].clientY - _tblTouchStartY;
-                    // Игнорируем скролл
                     if (Math.abs(dx) > 10 || Math.abs(dy) > 10) return;
-                    // Небольшая задержка чтобы браузер успел установить курсор
-                    setTimeout(function() { handleTableActivate(e); }, 50);
+                    var cell = e.target.closest('td, th');
+                    if (!cell) return;
+                    e.stopPropagation();
+                    clearTimeout(self._ctxHoverTimer);
+                    if (self._ctxActiveBar && self._ctxActiveBar._forEl === cell) {
+                        removeCtx();
+                        return;
+                    }
+                    removeCtx();
+                    // Защищаем от синтетического click который браузер генерирует после touchend
+                    self._ctxTouchJustFired = true;
+                    clearTimeout(self._ctxTouchTimer);
+                    self._ctxTouchTimer = setTimeout(function() { self._ctxTouchJustFired = false; }, 700);
+                    self._ctxActiveBar = self._showTableCtx(table, cell);
+                    if (self._ctxActiveBar) self._ctxActiveBar._forEl = cell;
                 }, { passive: true });
             }
         });
@@ -1680,12 +1685,6 @@ class LocalNotesEditor {
         // Click outside → remove (вешаем один раз на экземпляр)
         if (!this._ctxDocClickBound) {
             this._ctxDocClickBound = true;
-            // На тач-устройствах после touchend браузер генерирует синтетический click (~300ms),
-            // который сразу закрывал бы только что открытый тулбар. Блокируем его.
-            document.addEventListener('touchend', function() {
-                self._ctxTouchJustFired = true;
-                setTimeout(function() { self._ctxTouchJustFired = false; }, 600);
-            }, true);
             document.addEventListener('click', function(e) {
                 if (self._ctxTouchJustFired) return;
                 if (self._ctxActiveBar && !self._ctxActiveBar.contains(e.target)) {

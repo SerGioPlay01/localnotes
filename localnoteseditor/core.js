@@ -1515,15 +1515,16 @@ class LocalNotesEditor {
         // Сохраняем removeCtx на экземпляре для вызова извне
         this._removeCtx = removeCtx;
 
-        // Close bar when tapping/clicking outside — attach once per editor instance
+        // Close bar when clicking outside — attach once per editor instance
+        // NOTE: не вешаем на touchend — это ломает таблицы (тулбар открывается с задержкой)
         if (!this._ctxDocListener) {
             this._ctxDocListener = function(e) {
+                if (self._ctxTouchJustFired) return;
                 if (self._ctxActiveBar && !self._ctxActiveBar.contains(e.target)) {
                     removeCtx();
                 }
             };
             document.addEventListener('click', this._ctxDocListener, true);
-            document.addEventListener('touchend', this._ctxDocListener, true);
         }
 
         var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
@@ -1683,12 +1684,14 @@ class LocalNotesEditor {
             // который сразу закрывал бы только что открытый тулбар. Блокируем его.
             document.addEventListener('touchend', function() {
                 self._ctxTouchJustFired = true;
-                setTimeout(function() { self._ctxTouchJustFired = false; }, 500);
+                setTimeout(function() { self._ctxTouchJustFired = false; }, 600);
             }, true);
-            document.addEventListener('click', function() {
+            document.addEventListener('click', function(e) {
                 if (self._ctxTouchJustFired) return;
-                clearTimeout(self._ctxHoverTimer);
-                if (self._removeCtx) self._removeCtx();
+                if (self._ctxActiveBar && !self._ctxActiveBar.contains(e.target)) {
+                    clearTimeout(self._ctxHoverTimer);
+                    if (self._removeCtx) self._removeCtx();
+                }
             }, true);
         }
     }

@@ -1618,10 +1618,20 @@ class LocalNotesEditor {
             table.addEventListener('click', handleTableActivate);
 
             if (isTouchDevice) {
+                var _tblTouchStartX, _tblTouchStartY;
+                table.addEventListener('touchstart', function(e) {
+                    _tblTouchStartX = e.touches[0].clientX;
+                    _tblTouchStartY = e.touches[0].clientY;
+                }, { passive: true });
                 table.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    handleTableActivate(e);
-                }, { passive: false });
+                    // Не блокируем дефолт — браузер сам поставит курсор в ячейку
+                    var dx = e.changedTouches[0].clientX - _tblTouchStartX;
+                    var dy = e.changedTouches[0].clientY - _tblTouchStartY;
+                    // Игнорируем скролл
+                    if (Math.abs(dx) > 10 || Math.abs(dy) > 10) return;
+                    // Небольшая задержка чтобы браузер успел установить курсор
+                    setTimeout(function() { handleTableActivate(e); }, 50);
+                }, { passive: true });
             }
         });
 

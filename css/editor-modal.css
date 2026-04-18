@@ -74,8 +74,8 @@
         -webkit-overflow-scrolling: touch;
     }
     #editModal .modal-content .lne-editor {
-        min-height: 100%;
-        padding: 12px max(14px, env(safe-area-inset-right, 0px)) 12px max(14px, env(safe-area-inset-left, 0px));
+        min-height: 300px;
+        padding: 12px max(14px, env(safe-area-inset-right, 0px)) 120px max(14px, env(safe-area-inset-left, 0px));
         font-size: 15px;
     }
     #editModal .modal-content .lne-toolbar {

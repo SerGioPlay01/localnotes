@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Local Notes - Main Application
  * Based on original code, TinyMCE replaced with LocalNotesEditor
  */
@@ -1545,6 +1545,19 @@ function initSearchTagAutocomplete() {
 
     document.addEventListener('click', e => {
         if (dropdown && !dropdown.contains(e.target) && e.target !== input) closeDropdown();
+    });
+
+    document.addEventListener('touchstart', e => {
+        if (dropdown && !dropdown.contains(e.target) && e.target !== input) closeDropdown();
+    }, { passive: true });
+
+    input.addEventListener('blur', () => {
+        // Small delay so mousedown/touchstart on dropdown items fires first
+        setTimeout(() => {
+            if (dropdown && document.activeElement !== input && !dropdown.contains(document.activeElement)) {
+                closeDropdown();
+            }
+        }, 200);
     });
 
     // Reposition stats badge and dropdown on scroll/resize

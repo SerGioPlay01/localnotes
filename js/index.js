@@ -676,6 +676,7 @@ class AdvancedEncryption {
         const isV4magic = byte0 === 0x4E && byte1 === 0x56 && byte2 === 0x34 && byte3 === 0x00 && byte4 === 4;
         const isV3 = byte0 === 3;
         console.info(`[decrypt] len=${combined.length} bytes=[${byte0},${byte1},${byte2},${byte3},${byte4}] isV4=${isV4magic} isV3=${isV3}`);
+        console.info(`[decrypt] originInfo len=${originInfo.length} first bytes=[${originInfo[0]},${originInfo[1]},${originInfo[2]}]`);
         const isV4 = combined.length > 4 &&
             combined[0] === this.MAGIC[0] && combined[1] === this.MAGIC[1] &&
             combined[2] === this.MAGIC[2] && combined[3] === this.MAGIC[3] &&

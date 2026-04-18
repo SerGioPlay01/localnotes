@@ -256,6 +256,7 @@ async function decryptFull(encData, password, originInfo) {
     macInput.set(header, 0); macInput.set(cipher, 51);
 
     const valid = await verifyHMAC(macKey, macInput, hmacTag);
+    console.info(`[worker v4] hmac valid=${valid}, originInfo len=${info.length}, originInfo[0]=${info[0]}`);
     if (!valid) throw new Error('Integrity check failed — wrong password or tampered data');
 
     const decBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: ivAes }, encKey, cipher);
@@ -288,6 +289,7 @@ self.onmessage = async ({ data }) => {
             self.postMessage({ id, bits });
         }
     } catch (err) {
+        console.error('[worker error]', err.message, err.stack);
         self.postMessage({ id, error: err.message });
     }
 };

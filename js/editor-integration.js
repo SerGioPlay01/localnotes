@@ -239,7 +239,7 @@ window.localNotesEditorAPI = {
     // Only on touch devices
     if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) return;
 
-    var PADDING = 8; // px gap between caret and bottom of visible area
+    var PADDING = 24; // px gap between caret and bottom of visible area
     var rafId = null;
 
     function getCaretRect() {
@@ -295,4 +295,15 @@ window.localNotesEditorAPI = {
 
     document.addEventListener('selectionchange', scheduleScroll);
     document.addEventListener('input', scheduleScroll, true);
+
+    // When the keyboard opens/resizes the viewport, re-check caret position.
+    // This is the main fix: keyboard appears AFTER selectionchange fires,
+    // so we need to scroll again once the viewport settles.
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', function () {
+            // Fire at 100ms and again at 300ms to cover slow keyboard animations
+            setTimeout(scrollCaretIntoView, 100);
+            setTimeout(scrollCaretIntoView, 300);
+        });
+    }
 })();

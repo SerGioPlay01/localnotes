@@ -407,9 +407,11 @@ class AdvancedEncryption {
     constructor() {
         this.failedAttempts  = {};
         this.lockoutDuration = 15 * 60 * 1000;
-        this.FORMAT_VERSION  = 4;
-        // Magic bytes: 'NV4\x00' — идентификатор формата
-        this.MAGIC = new Uint8Array([0x4E, 0x56, 0x34, 0x00]);
+        this.FORMAT_VERSION  = 5;
+        // Magic bytes: 'NV5\x00' — v5 format (clean AES-256-GCM + HMAC-SHA-512)
+        this.MAGIC = new Uint8Array([0x4E, 0x56, 0x35, 0x00]);
+        // v4 magic for legacy detection
+        this.MAGIC_V4 = new Uint8Array([0x4E, 0x56, 0x34, 0x00]);
     }
 
     generateRandomBytes(n) { const a = new Uint8Array(n); crypto.getRandomValues(a); return a; }
@@ -567,13 +569,12 @@ class AdvancedEncryption {
             { name: 'HKDF', hash: 'SHA-512', salt: new TextEncoder().encode(label), info: originInfo },
             hkdfKey, bits
         );
-        const [encBits, macBits, shufBits, xorBits, ccBits] = await Promise.all([
+        const [encBits, macBits] = await Promise.all([
             derive('k-aes-gcm'), derive('k-hmac-512', 512),
-            derive('k-block-shuf'), derive('k-xor-stream'), derive('k-cc20-poly'),
         ]);
         const encKey = await crypto.subtle.importKey('raw', encBits, 'AES-GCM', false, ['encrypt', 'decrypt']);
         zeroize(baseBits);
-        return { encKey, macKey: new Uint8Array(macBits), shufKey: new Uint8Array(shufBits), xorKey: new Uint8Array(xorBits), ccKey: new Uint8Array(ccBits) };
+        return { encKey, macKey: new Uint8Array(macBits) };
     }
 
     // ── Вызов Worker с таймаутом ─────────────────────────────────────────────
@@ -599,7 +600,7 @@ class AdvancedEncryption {
         });
     }
 
-    // ── ENCRYPT v4 — весь pipeline в Worker ──────────────────────────────────
+    // ── ENCRYPT v5 — Worker ──────────────────────────────────────────────────
     async encrypt(text, password) {
         const originInfo = this._getOriginBinding();
         try {
@@ -607,19 +608,15 @@ class AdvancedEncryption {
                 op: 'encrypt', text, password,
                 originInfo: Array.from(originInfo),
             });
-            console.info('[encrypt] used Worker');
             return result;
-        } catch (workerErr) {
-            console.info('[encrypt] Worker failed, using main thread:', workerErr.message);
+        } catch {
             return this._encryptMainThread(text, password, originInfo);
         }
     }
 
-    // ── DECRYPT v4 — весь pipeline в Worker ──────────────────────────────────
+    // ── DECRYPT — Worker с fallback ──────────────────────────────────────────
     async decrypt(encData, password) {
         const originInfo = this._getOriginBinding();
-
-        // Пробуем Worker
         let workerErr = null;
         try {
             const { result } = await this._callWorker({
@@ -630,58 +627,90 @@ class AdvancedEncryption {
         } catch (e) {
             workerErr = e;
         }
-
-        // Fallback: main thread (Worker недоступен или упал)
         try {
             return await this._decryptMainThread(encData, password, originInfo);
         } catch (mainErr) {
             console.error('[decrypt fallback error]', mainErr.message);
-            // Оба пути провалились — бросаем ошибку main thread (она точнее)
             throw mainErr;
         }
     }
 
-    // ── Fallback: main thread encrypt ────────────────────────────────────────
+    // ── Fallback: main thread encrypt (v5) ───────────────────────────────────
     async _encryptMainThread(text, password, originInfo) {
-        const salt = this.generateRandomBytes(32), ivAes = this.generateRandomBytes(12), canary = this.generateRandomBytes(8);
-        let keys = null, padded = null, xored = null, shuffled = null, cipher = null;
-        try {
-            keys = await this.deriveKeys(password, salt);
-            const plainBytes = new TextEncoder().encode(text);
-            const { padded: p, padLen } = CryptoMutations.zeroPad(plainBytes, 64); padded = p;
-            xored    = await CryptoMutations.xorStream(keys.xorKey, padded);
-            shuffled = await CryptoMutations.blockShuffle(keys.shufKey, xored);
-            const cipherBuf = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: ivAes }, keys.encKey, shuffled);
-            cipher = new Uint8Array(cipherBuf);
-            const header = new Uint8Array(51);
-            header.set(this.MAGIC, 0); header[4] = this.FORMAT_VERSION;
-            header.set(salt, 5); header.set(ivAes, 37);
-            new DataView(header.buffer).setUint16(49, padLen, false);
-            const macInput = new Uint8Array(51 + cipher.length);
-            macInput.set(header, 0); macInput.set(cipher, 51);
-            const hmacTag = await CryptoMutations.computeHMAC(keys.macKey, macInput);
-            const payload = new Uint8Array(51 + 64 + cipher.length);
-            payload.set(header, 0); payload.set(hmacTag, 51); payload.set(cipher, 115);
-            const out = CryptoMutations.appendCanary(payload, canary);
-            return this.arrayBufferToBase64(out.buffer);
-        } finally {
-            zeroize(padded, xored, shuffled, cipher);
-            if (keys) zeroize(keys.macKey, keys.shufKey, keys.xorKey, keys.ccKey);
-        }
+        const salt = this.generateRandomBytes(32);
+        const iv   = this.generateRandomBytes(12);
+        const keys = await this._deriveKeysDirect(password, salt, originInfo);
+        const plain = new TextEncoder().encode(text);
+        const cipherBuf = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, keys.encKey, plain);
+        const cipher = new Uint8Array(cipherBuf);
+        const header = new Uint8Array(49);
+        header.set(this.MAGIC, 0); header[4] = this.FORMAT_VERSION;
+        header.set(salt, 5); header.set(iv, 37);
+        const macInput = new Uint8Array(49 + cipher.length);
+        macInput.set(header, 0); macInput.set(cipher, 49);
+        const macKey = await crypto.subtle.importKey('raw', keys.macKey, { name: 'HMAC', hash: 'SHA-512' }, false, ['sign']);
+        const hmacTag = new Uint8Array(await crypto.subtle.sign('HMAC', macKey, macInput));
+        const out = new Uint8Array(49 + 64 + cipher.length);
+        out.set(header, 0); out.set(hmacTag, 49); out.set(cipher, 113);
+        zeroize(cipher, keys.macKey);
+        return this.arrayBufferToBase64(out.buffer);
     }
 
     // ── Fallback: main thread decrypt ────────────────────────────────────────
     async _decryptMainThread(encData, password, originInfo) {
         const combined = new Uint8Array(this.base64ToArrayBuffer(encData));
-        const isV4 = combined.length > 4 &&
+
+        // v5
+        const isV5 = combined.length > 4 &&
             combined[0] === this.MAGIC[0] && combined[1] === this.MAGIC[1] &&
             combined[2] === this.MAGIC[2] && combined[3] === this.MAGIC[3] &&
             combined[4] === this.FORMAT_VERSION;
-        if (!isV4 && combined[0] === 3) {
+        if (isV5) {
+            const salt = combined.slice(5, 37), iv = combined.slice(37, 49);
+            const hmacTag = combined.slice(49, 113), cipher = combined.slice(113);
+            const keys = await this._deriveKeysDirect(password, salt, originInfo);
+            const macKey = await crypto.subtle.importKey('raw', keys.macKey, { name: 'HMAC', hash: 'SHA-512' }, false, ['verify']);
+            const macInput = new Uint8Array(49 + cipher.length);
+            macInput.set(combined.slice(0, 49), 0); macInput.set(cipher, 49);
+            const valid = await crypto.subtle.verify('HMAC', macKey, hmacTag, macInput);
+            if (!valid) throw new Error('Integrity check failed — wrong password or tampered data');
+            const dec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, keys.encKey, cipher);
+            zeroize(keys.macKey);
+            return new TextDecoder().decode(dec);
+        }
+
+        // v4 legacy (broken xorStream — decrypt AES only, strip padding if valid)
+        const isV4 = combined.length > 4 &&
+            combined[0] === this.MAGIC_V4[0] && combined[1] === this.MAGIC_V4[1] &&
+            combined[2] === this.MAGIC_V4[2] && combined[3] === this.MAGIC_V4[3] &&
+            combined[4] === 4;
+        if (isV4) {
+            const salt = combined.slice(5, 37), iv = combined.slice(37, 49);
+            const hmacTag = combined.slice(51, 115);
+            const withCanary = combined.slice(115);
+            const cipher = withCanary.length >= 8 ? withCanary.slice(0, withCanary.length - 8) : withCanary;
+            const keys = await this._deriveKeysDirect(password, salt, originInfo);
+            const macKey = await crypto.subtle.importKey('raw', keys.macKey, { name: 'HMAC', hash: 'SHA-512' }, false, ['verify']);
+            const macInput = new Uint8Array(51 + cipher.length);
+            macInput.set(combined.slice(0, 51), 0); macInput.set(cipher, 51);
+            const valid = await crypto.subtle.verify('HMAC', macKey, hmacTag, macInput);
+            if (!valid) throw new Error('Integrity check failed — wrong password or tampered data');
+            const decBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, keys.encKey, cipher);
+            const decBytes = new Uint8Array(decBuf);
+            zeroize(keys.macKey);
+            if (decBytes.length >= 2) {
+                const padLen = (decBytes[decBytes.length - 2] << 8) | decBytes[decBytes.length - 1];
+                if (padLen >= 1 && padLen <= 64 && decBytes.length >= padLen + 2)
+                    return new TextDecoder().decode(decBytes.slice(0, decBytes.length - padLen - 2));
+            }
+            return new TextDecoder().decode(decBytes);
+        }
+
+        // v3
+        if (combined[0] === 3) {
             const salt = combined.slice(1,17), iv = combined.slice(17,29), pepper = combined.slice(29,33);
             const hmacTag = combined.slice(33,65), cipher = combined.slice(65);
             const { encKey, macKey: macRaw } = await this._deriveKeysV3(password, salt);
-            // v3 использовал HMAC-SHA-256
             const macKey256 = await crypto.subtle.importKey('raw', macRaw, { name: 'HMAC', hash: 'SHA-256' }, false, ['verify']);
             const aad = new Uint8Array(33 + cipher.length);
             aad.set(combined.slice(0,33), 0); aad.set(cipher, 33);
@@ -689,43 +718,21 @@ class AdvancedEncryption {
             if (!valid) throw new Error('Integrity check failed');
             const decBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, encKey, cipher);
             const decBytes = new Uint8Array(decBuf);
-            // v3: оригинальный LCG xorScramble
             const pepperSeed = (pepper[0]<<24|pepper[1]<<16|pepper[2]<<8|pepper[3])>>>0;
-            const unscrambled = new Uint8Array(decBytes.length);
+            const out = new Uint8Array(decBytes.length);
             let s = pepperSeed;
             for (let i = 0; i < decBytes.length; i++) {
                 s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
-                unscrambled[i] = decBytes[i] ^ (s & 0xff);
+                out[i] = decBytes[i] ^ (s & 0xff);
             }
-            return new TextDecoder().decode(unscrambled);
+            return new TextDecoder().decode(out);
         }
-        if (!isV4) {
-            const legacyKey = await this._legacyDeriveKey(password, combined.slice(0,16));
-            return new TextDecoder().decode(await crypto.subtle.decrypt({ name:'AES-GCM', iv: combined.slice(16,28) }, legacyKey, combined.slice(28)));
-        }
-        let keys = null, decBytes = null, unshuffled = null, unxored = null;
-        try {
-            const salt = combined.slice(5,37), ivAes = combined.slice(37,49);
-            const padLenBytes = combined.slice(49, 51);
-            const padLen = (padLenBytes[0] << 8) | padLenBytes[1];
-            const hmacTag = combined.slice(51,115), withCanary = combined.slice(115);
-            if (withCanary.length < 8) throw new Error('Data too short');
-            const cipher = withCanary.slice(0, withCanary.length - 8);
-            // Используем прямой KDF без Worker (мы уже в fallback)
-            keys = await this._deriveKeysDirect(password, salt, originInfo);
-            const macInput = new Uint8Array(51 + cipher.length);
-            macInput.set(combined.slice(0,51), 0); macInput.set(cipher, 51);
-            const valid = await CryptoMutations.verifyHMAC(keys.macKey, macInput, hmacTag);
-            if (!valid) throw new Error('Integrity check failed — wrong password or tampered data');
-            const decBuf = await crypto.subtle.decrypt({ name:'AES-GCM', iv: ivAes }, keys.encKey, cipher);
-            decBytes = new Uint8Array(decBuf);
-            unshuffled = await CryptoMutations.blockUnshuffle(keys.shufKey, decBytes);
-            unxored    = await CryptoMutations.xorStream(keys.xorKey, unshuffled);
-            return new TextDecoder().decode(CryptoMutations.zeroUnpad(unxored));
-        } finally {
-            zeroize(decBytes, unshuffled, unxored);
-            if (keys) zeroize(keys.macKey, keys.shufKey, keys.xorKey, keys.ccKey);
-        }
+
+        // v2 legacy
+        const legacyKey = await this._legacyDeriveKey(password, combined.slice(0,16));
+        return new TextDecoder().decode(
+            await crypto.subtle.decrypt({ name:'AES-GCM', iv: combined.slice(16,28) }, legacyKey, combined.slice(28))
+        );
     }
 
     isLocked(id) {

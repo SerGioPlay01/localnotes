@@ -2010,6 +2010,9 @@ async function importNotesHTML(files) {
 }
 
 async function importNotesMarkdown(files) {
+    if (typeof window.importNotesMarkdownAdvanced === 'function') {
+        return window.importNotesMarkdownAdvanced(files);
+    }
     let imported = 0;
     for (const file of files) {
         try {

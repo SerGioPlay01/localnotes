@@ -258,8 +258,8 @@ const LNMarkdown = (() => {
 /* =============================================================
    2. REPLACE importNotesMarkdown with advanced version
 ============================================================= */
-window.addEventListener('DOMContentLoaded', () => {
-  window.importNotesMarkdownAdvanced = async function(files) {
+// Register immediately — this script is loaded dynamically after DOMContentLoaded
+window.importNotesMarkdownAdvanced = async function(files) {
     let imported = 0;
     for (const file of files) {
       try {
@@ -276,7 +276,6 @@ window.addEventListener('DOMContentLoaded', () => {
       if (typeof loadNotes === 'function') await loadNotes();
     }
   };
-});
 
 
 /* =============================================================

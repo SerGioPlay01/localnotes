@@ -1,4 +1,4 @@
-﻿/**
+/**
  * LocalNotesEditor — Professional Rich Text Editor
  * Features: Full formatting, tables, media, code highlighting, 
  *   find/replace, word count, templates, emoji, special chars,
@@ -1157,7 +1157,9 @@ class LocalNotesEditor {
                 html += '</tr>';
             }
             html += '</tbody></table><p><br></p>';
-            self._insertHTML(html); close();
+            self._insertHTML(html);
+            self._initContextToolbars();
+            close();
         });
     }
 

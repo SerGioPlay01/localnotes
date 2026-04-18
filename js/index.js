@@ -1534,6 +1534,14 @@ function initSearchTagAutocomplete() {
                 filterNotes();
                 input.focus();
             });
+            pill.addEventListener('touchend', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                input.value = '#' + pill.dataset.tag + ' ';
+                closeDropdown();
+                filterNotes();
+                input.focus();
+            });
         });
     };
 
@@ -1580,6 +1588,15 @@ function initSearchTagAutocomplete() {
                 filterNotes();
                 input.focus();
             });
+            item.addEventListener('touchend', e => {
+                e.preventDefault();
+                e.stopPropagation();
+                const before = val.slice(0, hashIdx + 1);
+                input.value = before + tag.name + ' ';
+                closeDropdown();
+                filterNotes();
+                input.focus();
+            });
             dropdown.appendChild(item);
         });
     });
@@ -1612,7 +1629,7 @@ function initSearchTagAutocomplete() {
             if (dropdown && document.activeElement !== input && !dropdown.contains(document.activeElement)) {
                 closeDropdown();
             }
-        }, 200);
+        }, 300);
     });
 
     // Reposition stats badge and dropdown on scroll/resize

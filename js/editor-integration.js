@@ -161,64 +161,77 @@ window.localNotesEditorAPI = {
 };
 
 /**
- * Visual Viewport handler — keeps toolbar visible when keyboard opens on mobile.
- *
- * iOS Safari scrolls the layout viewport upward when the keyboard opens,
- * pushing position:sticky elements off the top of the screen.
- * We watch scroll events and use getBoundingClientRect() on the toolbar
- * to detect drift, then compensate with margin-top on the toolbar itself.
+ * Mobile keyboard handler — two jobs:
+ *  1. Resize modal-content to the visual viewport height so lne-body
+ *     stays fully scrollable above the keyboard.
+ *     - iOS: dvh does NOT shrink when keyboard opens → JS must set height
+ *     - Android: dvh DOES shrink, but JS override is harmless and ensures
+ *       consistent behaviour across both platforms.
+ *  2. Compensate for iOS layout-viewport scroll (vv.offsetTop > 0) so the
+ *     toolbar doesn't disappear above the top of the screen.
  */
 (function () {
     if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) return;
+    if (!window.visualViewport) return;
 
-    var modal         = null;
-    var toolbar       = null;
-    var fixPosition   = 0;
-    var debounceTimer = null;
+    var modal = null;
+    var rafId = null;
 
-    function getEls() {
-        if (!modal)            modal   = document.getElementById('editModal');
-        if (modal && !toolbar) toolbar = modal.querySelector('.lne-toolbar');
+    function getModal() {
+        if (!modal) modal = document.getElementById('editModal');
+        return modal;
     }
 
-    function isModalOpen() {
-        return modal && modal.style.display !== 'none' && modal.style.display !== '';
+    function isOpen(m) {
+        return m && m.style.display !== 'none' && m.style.display !== '';
     }
 
-    function setMargin() {
-        getEls();
-        if (!isModalOpen() || !toolbar) return;
-        var rect = toolbar.getBoundingClientRect();
-        if (rect.top < -1) {
-            fixPosition = Math.abs(rect.top);
-            toolbar.style.marginTop = fixPosition + 'px';
-        }
+    function apply() {
+        var m = getModal();
+        if (!isOpen(m)) return;
+        if (window.innerWidth > 768) return;
+
+        var vv      = window.visualViewport;
+        var content = m.querySelector('.modal-content');
+        if (!content) return;
+
+        // Set exact visible height — works on both iOS and Android
+        content.style.height    = vv.height + 'px';
+        content.style.maxHeight = vv.height + 'px';
+
+        // iOS only: offsetTop > 0 means layout viewport was scrolled up by
+        // the browser when keyboard opened — shift content down to compensate
+        content.style.marginTop = (vv.offsetTop || 0) + 'px';
     }
 
-    function showToolbar() {
-        getEls();
-        if (!isModalOpen() || !toolbar) return;
-        if (fixPosition > 0) {
-            fixPosition = 0;
-            toolbar.style.marginTop = '0px';
-        }
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(setMargin, 150);
+    function reset() {
+        var m = getModal();
+        if (!m) return;
+        var content = m.querySelector('.modal-content');
+        if (!content) return;
+        content.style.height    = '';
+        content.style.maxHeight = '';
+        content.style.marginTop = '';
     }
 
-    window.addEventListener('scroll', showToolbar, { passive: true });
+    function onVpChange() {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(apply);
+    }
 
-    document.addEventListener('focusout', function () {
-        setTimeout(showToolbar, 100);
-    });
+    window.visualViewport.addEventListener('resize', onVpChange);
+    window.visualViewport.addEventListener('scroll', onVpChange);
 
     document.addEventListener('DOMContentLoaded', function () {
         modal = document.getElementById('editModal');
         if (!modal) return;
         new MutationObserver(function () {
-            if (!isModalOpen()) {
-                if (toolbar) toolbar.style.marginTop = '';
-                fixPosition = 0;
+            if (isOpen(modal)) {
+                // Apply immediately and again after layout settles
+                apply();
+                setTimeout(apply, 100);
+            } else {
+                reset();
             }
         }).observe(modal, { attributes: true, attributeFilter: ['style'] });
     });

@@ -36,10 +36,11 @@
     #editModal .modal-content {
         display: flex;
         flex-direction: column;
-        height: -webkit-fill-available !important;
-        height: 100dvh !important;
-        max-height: -webkit-fill-available !important;
-        max-height: 100dvh !important;
+        /* начальная высота — JS переопределит через vv.height при открытии клавиатуры */
+        height: -webkit-fill-available;
+        height: 100dvh;
+        max-height: -webkit-fill-available;
+        max-height: 100dvh;
         margin: 0 !important;
         padding-top: max(3px, env(safe-area-inset-top)) !important;
         padding-bottom: env(safe-area-inset-bottom) !important;

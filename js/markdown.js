@@ -1,4 +1,4 @@
-﻿/**
+/**
  * LocalNotes — Advanced Markdown Support
  * Provides: MD->HTML parser, HTML->MD exporter, live MD mode in editor,
  *           smart paste detection, and improved .md file import.
@@ -291,7 +291,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!tb || tb.querySelector('.lne-md-toggle')) return;
     const btn = document.createElement('button');
     btn.className = 'lne-btn lne-md-toggle';
-    btn.title = 'Markdown mode  Ctrl+M';
+    btn.title = window.t ? window.t('markdownMode') : 'Markdown mode  Ctrl+M';
     btn.setAttribute('type','button');
     btn.innerHTML = '<i class="bi bi-markdown"></i>';
     btn.addEventListener('click', toggle);
@@ -343,7 +343,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     const btn = document.querySelector('.lne-md-toggle');
-    if (btn) { btn.classList.add('lne-btn-active'); btn.title = 'Exit Markdown mode  Ctrl+M'; }
+    if (btn) { btn.classList.add('lne-btn-active'); btn.title = window.t ? window.t('exitMarkdownMode') : 'Exit Markdown mode  Ctrl+M'; }
     mdTA.focus();
   }
 
@@ -358,7 +358,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ed.focus();
     ed.dispatchEvent(new Event('input', { bubbles: true }));
     const btn = document.querySelector('.lne-md-toggle');
-    if (btn) { btn.classList.remove('lne-btn-active'); btn.title = 'Markdown mode  Ctrl+M'; }
+    if (btn) { btn.classList.remove('lne-btn-active'); btn.title = window.t ? window.t('markdownMode') : 'Markdown mode  Ctrl+M'; }
   }
 
   function render() {

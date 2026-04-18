@@ -1,4 +1,4 @@
-﻿// Система переводов для динамического текста
+// Система переводов для динамического текста
 if (typeof translations === 'undefined') {
 const translations = {
     en: {
@@ -288,7 +288,9 @@ const translations = {
         dcmEnterPassword: "Enter a password",
         dcmDecrypting: "Decrypting...",
         dcmWrongPasswordRetry: "Wrong password — try again",
-        dcmEnterPasswordPlaceholder: "Enter password..."
+        dcmEnterPasswordPlaceholder: "Enter password...",
+        markdownMode: "Markdown mode  Ctrl+M",
+        exitMarkdownMode: "Exit Markdown mode  Ctrl+M"
     },
     
     ru: {
@@ -572,7 +574,9 @@ const translations = {
         dcmEnterPassword: "Введите пароль",
         dcmDecrypting: "Расшифровка...",
         dcmWrongPasswordRetry: "Неверный пароль — попробуйте снова",
-        dcmEnterPasswordPlaceholder: "Введите пароль..."
+        dcmEnterPasswordPlaceholder: "Введите пароль...",
+        markdownMode: "Режим Markdown  Ctrl+M",
+        exitMarkdownMode: "Выйти из режима Markdown  Ctrl+M"
     },
     
     ua: {
@@ -820,7 +824,9 @@ const translations = {
         dcmEnterPassword: "Введіть пароль",
         dcmDecrypting: "Розшифровка...",
         dcmWrongPasswordRetry: "Невірний пароль — спробуйте знову",
-        dcmEnterPasswordPlaceholder: "Введіть пароль..."
+        dcmEnterPasswordPlaceholder: "Введіть пароль...",
+        markdownMode: "Режим Markdown  Ctrl+M",
+        exitMarkdownMode: "Вийти з режиму Markdown  Ctrl+M"
     },
     
     pl: {
@@ -1049,7 +1055,9 @@ const translations = {
         dcmEnterPassword: "Wprowadź hasło",
         dcmDecrypting: "Odszyfrowywanie...",
         dcmWrongPasswordRetry: "Złe hasło — spróbuj ponownie",
-        dcmEnterPasswordPlaceholder: "Wprowadź hasło..."
+        dcmEnterPasswordPlaceholder: "Wprowadź hasło...",
+        markdownMode: "Tryb Markdown  Ctrl+M",
+        exitMarkdownMode: "Wyjdź z trybu Markdown  Ctrl+M"
     },
     
     cs: {
@@ -1278,7 +1286,9 @@ const translations = {
         dcmEnterPassword: "Zadejte heslo",
         dcmDecrypting: "Dešifrování...",
         dcmWrongPasswordRetry: "Špatné heslo — zkuste znovu",
-        dcmEnterPasswordPlaceholder: "Zadejte heslo..."
+        dcmEnterPasswordPlaceholder: "Zadejte heslo...",
+        markdownMode: "Režim Markdown  Ctrl+M",
+        exitMarkdownMode: "Ukončit režim Markdown  Ctrl+M"
     },
     
     sk: {
@@ -1505,7 +1515,9 @@ const translations = {
         dcmEnterPassword: "Zadajte heslo",
         dcmDecrypting: "Dešifrovanie...",
         dcmWrongPasswordRetry: "Zlé heslo — skúste znova",
-        dcmEnterPasswordPlaceholder: "Zadajte heslo..."
+        dcmEnterPasswordPlaceholder: "Zadajte heslo...",
+        markdownMode: "Režim Markdown  Ctrl+M",
+        exitMarkdownMode: "Ukončiť režim Markdown  Ctrl+M"
     },
     
     bg: {
@@ -1730,7 +1742,9 @@ const translations = {
         dcmEnterPassword: "Въведете парола",
         dcmDecrypting: "Декриптиране...",
         dcmWrongPasswordRetry: "Грешна парола — опитайте отново",
-        dcmEnterPasswordPlaceholder: "Въведете парола..."
+        dcmEnterPasswordPlaceholder: "Въведете парола...",
+        markdownMode: "Режим Markdown  Ctrl+M",
+        exitMarkdownMode: "Изход от режим Markdown  Ctrl+M"
     },
     
     hr: {
@@ -1949,7 +1963,9 @@ const translations = {
         dcmEnterPassword: "Unesite lozinku",
         dcmDecrypting: "Dešifriranje...",
         dcmWrongPasswordRetry: "Pogrešna lozinka — pokušajte ponovo",
-        dcmEnterPasswordPlaceholder: "Unesite lozinku..."
+        dcmEnterPasswordPlaceholder: "Unesite lozinku...",
+        markdownMode: "Markdown način  Ctrl+M",
+        exitMarkdownMode: "Izlaz iz Markdown načina  Ctrl+M"
     },
     
     sr: {
@@ -2164,7 +2180,9 @@ const translations = {
         dcmEnterPassword: "Унесите лозинку",
         dcmDecrypting: "Дешифровање...",
         dcmWrongPasswordRetry: "Погрешна лозинка — покушајте поново",
-        dcmEnterPasswordPlaceholder: "Унесите лозинку..."
+        dcmEnterPasswordPlaceholder: "Унесите лозинку...",
+        markdownMode: "Markdown режим  Ctrl+M",
+        exitMarkdownMode: "Излаз из Markdown режима  Ctrl+M"
     },
     
     bs: {
@@ -2383,7 +2401,9 @@ const translations = {
         dcmEnterPassword: "Unesite lozinku",
         dcmDecrypting: "Dešifriranje...",
         dcmWrongPasswordRetry: "Pogrešna lozinka — pokušajte ponovo",
-        dcmEnterPasswordPlaceholder: "Unesite lozinku..."
+        dcmEnterPasswordPlaceholder: "Unesite lozinku...",
+        markdownMode: "Markdown način  Ctrl+M",
+        exitMarkdownMode: "Izlaz iz Markdown načina  Ctrl+M"
     },
     
     mk: {
@@ -2607,7 +2627,9 @@ const translations = {
         dcmEnterPassword: "Внесете лозинка",
         dcmDecrypting: "Дешифрирање...",
         dcmWrongPasswordRetry: "Погрешна лозинка — обидете се повторно",
-        dcmEnterPasswordPlaceholder: "Внесете лозинка..."
+        dcmEnterPasswordPlaceholder: "Внесете лозинка...",
+        markdownMode: "Markdown режим  Ctrl+M",
+        exitMarkdownMode: "Излез од Markdown режим  Ctrl+M"
     },
 
     sl: {
@@ -2821,7 +2843,9 @@ const translations = {
         dcmEnterPassword: "Vnesite geslo",
         dcmDecrypting: "Dešifriranje...",
         dcmWrongPasswordRetry: "Napačno geslo — poskusite znova",
-        dcmEnterPasswordPlaceholder: "Vnesite geslo..."
+        dcmEnterPasswordPlaceholder: "Vnesite geslo...",
+        markdownMode: "Markdown način  Ctrl+M",
+        exitMarkdownMode: "Izhod iz Markdown načina  Ctrl+M"
     }
 };
 

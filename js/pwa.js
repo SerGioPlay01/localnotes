@@ -37,9 +37,10 @@ function _pwaShowUpdateToast() {
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js?v=1.1.2')
+        navigator.serviceWorker.register('/sw.js?v=1.1.3')
             .then(function(registration) {
                 registration.update();
+
                 registration.addEventListener('updatefound', function() {
                     var newWorker = registration.installing;
                     newWorker.addEventListener('statechange', function() {
@@ -49,9 +50,23 @@ if ('serviceWorker' in navigator) {
                         }
                     });
                 });
+
+                // После активации SW — запускаем полное прекэширование
+                navigator.serviceWorker.ready.then(function(reg) {
+                    if (reg.active) {
+                        reg.active.postMessage({ type: 'PRECACHE_ALL' });
+                    }
+                });
             })
             .catch(function(error) {
                 console.warn('Service Worker registration failed:', error);
             });
+
+        // Слушаем сообщение о завершении прекэширования
+        navigator.serviceWorker.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'PRECACHE_DONE') {
+                console.log('[PWA] All static files cached for offline use');
+            }
+        });
     });
 }

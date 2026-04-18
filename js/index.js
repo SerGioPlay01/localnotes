@@ -986,27 +986,99 @@ function showCustomAlert(title, message, type = 'info') {
     alertModal.addEventListener('click', e => { if (e.target === alertModal) close(); });
 }
 
-function showCustomPrompt(title, message, placeholder = '', defaultValue = '', callback, isPassword = false) {
-    const modal = document.createElement('div');
-    modal.className = 'modal'; modal.id = 'customPromptModal';
-    const inputType = isPassword ? 'password' : 'text';
-    modal.innerHTML = `<div class="modal-content-error">
-        <div class="modal-content-inner"><h3>${title}</h3><p>${message}</p>
-        <input type="${inputType}" id="customPromptInput" placeholder="${placeholder}" value="${isPassword ? '' : escapeHtml(defaultValue)}"></div>
-        <div class="modal-buttons-container">
-            <button id="customPromptOk" class="btn"><i class="bi bi-check-lg"></i> ${(typeof t === 'function' ? t('ok') : 'OK')}</button>
-            <button id="customPromptCancel" class="btn cancel"><i class="bi bi-x-lg"></i> ${(typeof t === 'function' ? t('cancel') : 'Cancel')}</button>
-        </div></div>`;
-    document.body.appendChild(modal); modal.style.display = 'block';
-    const inp = modal.querySelector('#customPromptInput');
-    setTimeout(() => { inp.focus(); if (!isPassword) inp.select(); }, 100);
-    const ok = () => { const v = inp.value.trim(); if (modal.parentNode) document.body.removeChild(modal); callback?.(v); };
-    const cancel = () => { if (modal.parentNode) document.body.removeChild(modal); callback?.(null); };
-    modal.querySelector('#customPromptOk').addEventListener('click', ok);
-    modal.querySelector('#customPromptCancel').addEventListener('click', cancel);
-    inp.addEventListener('keypress', e => { if (e.key === 'Enter') ok(); });
-    document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { document.removeEventListener('keydown', esc); cancel(); } });
-    modal.addEventListener('click', e => { if (e.target === modal) cancel(); });
+function showEncryptModal(onSubmit) {
+    const ov = document.createElement('div');
+    ov.className = 'dcm-overlay';
+    ov.innerHTML = `
+        <div class="dcm-panel">
+            <div class="dcm-header">
+                <div class="dcm-icon"><i class="bi bi-lock-fill"></i></div>
+                <div class="dcm-info">
+                    <div class="dcm-title">${window.t ? window.t('encryptNote') : 'Encrypt Note'}</div>
+                    <div class="dcm-file">${window.t ? window.t('enterPasswordForFile') : 'Enter password for file'}</div>
+                </div>
+            </div>
+            <div class="dcm-body">
+                <div class="dcm-field">
+                    <label class="dcm-label">${window.t ? window.t('password') : 'Password'}</label>
+                    <div class="dcm-input-wrap">
+                        <input type="password" id="ecm-pw" class="dcm-input"
+                            placeholder="${window.t ? window.t('dcmEnterPasswordPlaceholder') : 'Enter password...'}"
+                            autocomplete="new-password">
+                        <button type="button" class="dcm-toggle-pw" id="ecm-toggle-pw" title="Show/hide password">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="dcm-field" style="margin-top:10px">
+                    <label class="dcm-label">${window.t ? window.t('confirmPassword') : 'Confirm password'}</label>
+                    <div class="dcm-input-wrap">
+                        <input type="password" id="ecm-pw2" class="dcm-input"
+                            placeholder="${window.t ? window.t('dcmEnterPasswordPlaceholder') : 'Enter password...'}"
+                            autocomplete="new-password">
+                    </div>
+                </div>
+                <div class="dcm-status" id="ecm-status"></div>
+            </div>
+            <div class="dcm-footer">
+                <button class="dcm-btn dcm-skip" id="ecm-cancel"><i class="bi bi-x-lg"></i> ${window.t ? window.t('cancel') : 'Cancel'}</button>
+                <button class="dcm-btn dcm-primary" id="ecm-ok" disabled><i class="bi bi-lock"></i> ${window.t ? window.t('encryptNote') : 'Encrypt'}</button>
+            </div>
+        </div>`;
+    document.body.appendChild(ov);
+
+    const pw1     = ov.querySelector('#ecm-pw');
+    const pw2     = ov.querySelector('#ecm-pw2');
+    const status  = ov.querySelector('#ecm-status');
+    const okBtn   = ov.querySelector('#ecm-ok');
+    const cancelBtn = ov.querySelector('#ecm-cancel');
+    const toggleBtn = ov.querySelector('#ecm-toggle-pw');
+
+    pw1.focus();
+
+    toggleBtn.addEventListener('click', () => {
+        const hide = pw1.type === 'password';
+        pw1.type = pw2.type = hide ? 'text' : 'password';
+        toggleBtn.innerHTML = hide ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+    });
+
+    const validate = () => {
+        const v1 = pw1.value, v2 = pw2.value;
+        if (!v1) { status.innerHTML = ''; okBtn.disabled = true; return; }
+        if (v1.length < 4) {
+            status.innerHTML = `<span class="dcm-invalid"><i class="bi bi-exclamation-circle"></i> ${window.t ? window.t('passwordTooShort') || 'Password too short' : 'Password too short'}</span>`;
+            okBtn.disabled = true; return;
+        }
+        if (v2 && v1 !== v2) {
+            status.innerHTML = `<span class="dcm-invalid"><i class="bi bi-x-circle-fill"></i> ${window.t ? window.t('passwordMismatch') || 'Passwords do not match' : 'Passwords do not match'}</span>`;
+            okBtn.disabled = true; return;
+        }
+        if (v2 && v1 === v2) {
+            status.innerHTML = `<span class="dcm-valid"><i class="bi bi-check-circle-fill"></i> ${window.t ? window.t('passwordMatch') || 'Passwords match' : 'Passwords match'}</span>`;
+            okBtn.disabled = false; okBtn.classList.add('dcm-ready'); return;
+        }
+        status.innerHTML = ''; okBtn.disabled = true;
+    };
+
+    pw1.addEventListener('input', validate);
+    pw2.addEventListener('input', validate);
+
+    const close = () => { if (ov.parentNode) document.body.removeChild(ov); };
+
+    okBtn.addEventListener('click', () => {
+        const pw = pw1.value.trim();
+        if (!pw) return;
+        close();
+        onSubmit(pw);
+    });
+
+    cancelBtn.addEventListener('click', () => { close(); onSubmit(null); });
+    ov.addEventListener('pointerdown', e => { if (e.target === ov) { close(); onSubmit(null); } });
+    pw2.addEventListener('keydown', e => { if (e.key === 'Enter' && !okBtn.disabled) okBtn.click(); });
+    pw1.addEventListener('keydown', e => { if (e.key === 'Enter') pw2.focus(); });
+    document.addEventListener('keydown', function esc(e) {
+        if (e.key === 'Escape') { document.removeEventListener('keydown', esc); close(); onSubmit(null); }
+    });
 }
 
 function escapeHtml(text) { const d = document.createElement('div'); d.textContent = text || ''; return d.innerHTML; }
@@ -2418,9 +2490,8 @@ function showExportOptions(noteContent) {
         opt.addEventListener('click', () => {
             const fmt = opt.dataset.format; close();
             if (fmt === 'encrypted') {
-                showCustomPrompt(typeof t === 'function' ? t('encryptNote') || 'Encrypt Note' : 'Encrypt Note', typeof t === 'function' ? t('enterPasswordForFile') || 'Enter password:' : 'Enter password:', typeof t === 'function' ? t('password') || 'Password' : 'Password', '', pw => {
+                showEncryptModal(pw => {
                     if (pw?.trim()) exportNote(noteContent, pw.trim());
-                    else if (pw !== null) showCustomAlert(typeof t === 'function' ? t('error') : 'Error', typeof t === 'function' ? t('errorEmptyPassword') : 'Password cannot be empty!', 'error');
                 });
             } else if (fmt === 'html') { exportNoteHTML(noteContent); }
             else { exportNoteWithFormat(noteContent, fmt); }

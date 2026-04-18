@@ -75,8 +75,7 @@
     "validatingPassword": "Validating password...",
     "passwordValid": "Password is valid",
     "passwordInvalid": "Invalid password",
-    "validationError": "Validation error",
-    "offlineBannerText": "You are offline — app works from cache"
+    "validationError": "Validation error"
   },
   "ru": {
     "appName": "Локальные заметки",
@@ -154,8 +153,7 @@
     "validatingPassword": "Проверка пароля...",
     "passwordValid": "Пароль верный",
     "passwordInvalid": "Неверный пароль",
-    "validationError": "Ошибка проверки",
-    "offlineBannerText": "Вы офлайн — приложение работает из кэша"
+    "validationError": "Ошибка проверки"
   },
   "ua": {
     "appName": "Локальні нотатки",
@@ -233,8 +231,7 @@
     "validatingPassword": "Перевірка пароля...",
     "passwordValid": "Пароль правильний",
     "passwordInvalid": "Невірний пароль",
-    "validationError": "Помилка перевірки",
-    "offlineBannerText": "Ви офлайн — додаток працює з кешу"
+    "validationError": "Помилка перевірки"
   },
   "pl": {
     "appName": "Lokalne Notatki",
@@ -312,8 +309,7 @@
     "validatingPassword": "Sprawdzanie hasła...",
     "passwordValid": "Hasło jest prawidłowe",
     "passwordInvalid": "Nieprawidłowe hasło",
-    "validationError": "Błąd walidacji",
-    "offlineBannerText": "Jesteś offline — aplikacja działa z pamięci podręcznej"
+    "validationError": "Błąd walidacji"
   },
   "cs": {
     "appName": "Lokální poznámky",
@@ -391,8 +387,7 @@
     "validatingPassword": "Ověřování hesla...",
     "passwordValid": "Heslo je platné",
     "passwordInvalid": "Neplatné heslo",
-    "validationError": "Chyba ověření",
-    "offlineBannerText": "Jste offline — aplikace funguje z mezipaměti"
+    "validationError": "Chyba ověření"
   },
   "sk": {
     "appName": "Lokálne poznámky",
@@ -470,8 +465,7 @@
     "validatingPassword": "Overovanie hesla...",
     "passwordValid": "Heslo je platné",
     "passwordInvalid": "Neplatné heslo",
-    "validationError": "Chyba overenia",
-    "offlineBannerText": "Ste offline — aplikácia funguje z vyrovnávacej pamäte"
+    "validationError": "Chyba overenia"
   },
   "bg": {
     "appName": "Локални бележки",
@@ -549,8 +543,7 @@
     "validatingPassword": "Проверка на парола...",
     "passwordValid": "Паролата е валидна",
     "passwordInvalid": "Невалидна парола",
-    "validationError": "Грешка при проверка",
-    "offlineBannerText": "Офлайн сте — приложението работи от кеша"
+    "validationError": "Грешка при проверка"
   },
   "hr": {
     "appName": "Lokalne bilješke",
@@ -628,8 +621,7 @@
     "validatingPassword": "Provjera lozinke...",
     "passwordValid": "Lozinka je valjana",
     "passwordInvalid": "Nevaljana lozinka",
-    "validationError": "Greška provjere",
-    "offlineBannerText": "Niste na mreži — aplikacija radi iz predmemorije"
+    "validationError": "Greška provjere"
   },
   "sr": {
     "appName": "Локалне белешке",
@@ -707,8 +699,7 @@
     "validatingPassword": "Провера лозинке...",
     "passwordValid": "Лозинка је валидна",
     "passwordInvalid": "Неважећа лозинка",
-    "validationError": "Грешка провере",
-    "offlineBannerText": "Нисте на мрежи — апликација ради из кеша"
+    "validationError": "Грешка провере"
   },
   "bs": {
     "appName": "Lokalne bilješke",
@@ -786,8 +777,7 @@
     "validatingPassword": "Provjera lozinke...",
     "passwordValid": "Lozinka je valjana",
     "passwordInvalid": "Nevaljana lozinka",
-    "validationError": "Greška provjere",
-    "offlineBannerText": "Niste na mreži — aplikacija radi iz predmemorije"
+    "validationError": "Greška provjere"
   },
   "mk": {
     "appName": "Локални белешки",
@@ -865,8 +855,7 @@
     "validatingPassword": "Проверка на лозинка...",
     "passwordValid": "Лозинката е валидна",
     "passwordInvalid": "Невалидна лозинка",
-    "validationError": "Грешка при проверка",
-    "offlineBannerText": "Сте офлајн — апликацијата работи од кешот"
+    "validationError": "Грешка при проверка"
   },
   "sl": {
     "appName": "Lokalne opombe",
@@ -944,7 +933,6 @@
     "validatingPassword": "Preverjanje gesla...",
     "passwordValid": "Geslo je veljavno",
     "passwordInvalid": "Neveljavno geslo",
-    "validationError": "Napaka preverjanja",
-    "offlineBannerText": "Ste brez povezave — aplikacija deluje iz predpomnilnika"
+    "validationError": "Napaka preverjanja"
   }
 }

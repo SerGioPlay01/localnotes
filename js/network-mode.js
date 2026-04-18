@@ -1,5 +1,5 @@
 /**
- * Network Mode — offline/online toggle + real connectivity indicator
+ * Network Mode — offline/online toggle
  * localStorage key: 'ln_network_mode' = 'offline' | 'online'
  */
 (function () {
@@ -7,7 +7,6 @@
 
   const STORAGE_KEY = 'ln_network_mode';
   const TOGGLE_ID   = 'lnNetworkToggle';
-  const BANNER_ID   = 'lnOfflineBanner';
 
   /* ── helpers ─────────────────────────────────────────── */
   function getMode() {
@@ -19,7 +18,6 @@
     applyMode(mode);
     notifySW(mode);
     updateToggleUI(mode);
-    updateBanner();
   }
 
   function applyMode(mode) {
@@ -29,89 +27,6 @@
   function notifySW(mode) {
     if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
       navigator.serviceWorker.controller.postMessage({ type: 'SET_NETWORK_MODE', mode });
-    }
-  }
-
-  /* ── offline banner (реальный статус сети) ───────────── */
-  function createBanner() {
-    if (document.getElementById(BANNER_ID)) return;
-    const banner = document.createElement('div');
-    banner.id = BANNER_ID;
-    banner.setAttribute('role', 'status');
-    banner.setAttribute('aria-live', 'polite');
-    banner.innerHTML =
-      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-        '<line x1="1" y1="1" x2="23" y2="23"/>' +
-        '<path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>' +
-        '<path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/>' +
-        '<path d="M10.71 5.05A16 16 0 0 1 22.56 9"/>' +
-        '<path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/>' +
-        '<path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>' +
-        '<line x1="12" y1="20" x2="12.01" y2="20"/>' +
-      '</svg>' +
-      '<span id="lnOfflineBannerText">You are offline</span>';
-    document.body.appendChild(banner);
-  }
-
-  // Track real connectivity — navigator.onLine is unreliable on mobile
-  var _isReallyOffline = false;
-  var _checkPending = false;
-
-  // Verify connectivity with a real network request (favicon, no-cache)
-  function checkRealConnectivity(callback) {
-    if (_checkPending) return;
-    _checkPending = true;
-    var url = '/favicon/favicon.ico?_=' + Date.now();
-    fetch(url, { method: 'HEAD', cache: 'no-store', mode: 'no-cors' })
-      .then(function () {
-        _checkPending = false;
-        callback(true);  // reachable
-      })
-      .catch(function () {
-        _checkPending = false;
-        callback(false); // unreachable
-      });
-  }
-
-  function isModalOpen() {
-    var modal = document.getElementById('editModal');
-    return modal && modal.style.display !== 'none' && modal.style.display !== '';
-  }
-
-  function showBanner() {
-    _isReallyOffline = true;
-    createBanner();
-    var b = document.getElementById(BANNER_ID);
-    if (b) {
-      var txt = (window.t && window.t('offlineBannerText')) || 'You are offline — app works from cache';
-      var el = document.getElementById('lnOfflineBannerText');
-      if (el) el.textContent = txt;
-      if (!isModalOpen()) {
-        b.classList.add('ln-offline-banner--visible');
-      }
-    }
-  }
-
-  function hideBanner() {
-    _isReallyOffline = false;
-    var b = document.getElementById(BANNER_ID);
-    if (b) b.classList.remove('ln-offline-banner--visible');
-  }
-
-  // Always verify with a real request — never trust navigator.onLine alone
-  function updateBanner() {
-    if (!navigator.onLine) {
-      // navigator says offline — trust it immediately, no fetch needed
-      showBanner();
-    } else {
-      // navigator says online — verify with real request before hiding
-      checkRealConnectivity(function (reachable) {
-        if (reachable) {
-          hideBanner();
-        } else {
-          showBanner();
-        }
-      });
     }
   }
 
@@ -169,23 +84,7 @@
     if (el('lnNetOnlineText'))  el('lnNetOnlineText').textContent  = t('onlineMode',  'Online');
     var btn = el('lnNetSwitch');
     if (btn) btn.setAttribute('aria-label', t('networkModeLabel', 'Network mode'));
-    if (el('lnOfflineBannerText') && _isReallyOffline) {
-      el('lnOfflineBannerText').textContent = t('offlineBannerText', 'You are offline — app works from cache');
-    }
   };
-
-  function setupModalObserver() {
-    var modal = document.getElementById('editModal');
-    if (!modal) return;
-    var observer = new MutationObserver(function() {
-      if (modal.style.display !== 'none' && modal.style.display !== '') {
-        hideBanner();
-      } else if (_isReallyOffline) {
-        showBanner();
-      }
-    });
-    observer.observe(modal, { attributes: true, attributeFilter: ['style'] });
-  }
 
   /* ── init ─────────────────────────────────────────────── */
   function init() {
@@ -196,19 +95,11 @@
       document.addEventListener('DOMContentLoaded', function () {
         buildToggle();
         updateToggleUI(mode);
-        updateBanner();
-        setupModalObserver();
       });
     } else {
       buildToggle();
       updateToggleUI(mode);
-      updateBanner();
-      setupModalObserver();
     }
-
-    // Слушаем реальные события сети
-    window.addEventListener('online',  function() { updateBanner(); });
-    window.addEventListener('offline', function() { showBanner(); });
 
     // Уведомляем SW после его активации
     if ('serviceWorker' in navigator) {

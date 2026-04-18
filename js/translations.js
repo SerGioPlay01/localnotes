@@ -293,8 +293,7 @@ const translations = {
         exitMarkdownMode: "Exit Markdown mode  Ctrl+M",
         offlineMode: "Offline",
         onlineMode: "Online",
-        networkModeLabel: "Network mode",
-        offlineBannerText: "You are offline — app works from cache"
+        networkModeLabel: "Network mode"
     },
     
     ru: {
@@ -583,8 +582,7 @@ const translations = {
         exitMarkdownMode: "Выйти из режима Markdown  Ctrl+M",
         offlineMode: "Офлайн",
         onlineMode: "Онлайн",
-        networkModeLabel: "Режим сети",
-        offlineBannerText: "Вы офлайн — приложение работает из кэша"
+        networkModeLabel: "Режим сети"
     },
     
     ua: {
@@ -837,8 +835,7 @@ const translations = {
         exitMarkdownMode: "Вийти з режиму Markdown  Ctrl+M",
         offlineMode: "Офлайн",
         onlineMode: "Онлайн",
-        networkModeLabel: "Режим мережі",
-        offlineBannerText: "Ви офлайн — додаток працює з кешу"
+        networkModeLabel: "Режим мережі"
     },
     
     pl: {
@@ -1072,8 +1069,7 @@ const translations = {
         exitMarkdownMode: "Wyjdź z trybu Markdown  Ctrl+M",
         offlineMode: "Offline",
         onlineMode: "Online",
-        networkModeLabel: "Tryb sieci",
-        offlineBannerText: "Jesteś offline — aplikacja działa z pamięci podręcznej"
+        networkModeLabel: "Tryb sieci"
     },
     
     cs: {
@@ -1307,8 +1303,7 @@ const translations = {
         exitMarkdownMode: "Ukončit režim Markdown  Ctrl+M",
         offlineMode: "Offline",
         onlineMode: "Online",
-        networkModeLabel: "Síťový režim",
-        offlineBannerText: "Jste offline — aplikace funguje z mezipaměti"
+        networkModeLabel: "Síťový režim"
     },
     
     sk: {
@@ -1540,8 +1535,7 @@ const translations = {
         exitMarkdownMode: "Ukončiť režim Markdown  Ctrl+M",
         offlineMode: "Offline",
         onlineMode: "Online",
-        networkModeLabel: "Sieťový režim",
-        offlineBannerText: "Ste offline — aplikácia funguje z vyrovnávacej pamäte"
+        networkModeLabel: "Sieťový režim"
     },
     
     bg: {
@@ -1771,8 +1765,7 @@ const translations = {
         exitMarkdownMode: "Изход от режим Markdown  Ctrl+M",
         offlineMode: "Офлайн",
         onlineMode: "Онлайн",
-        networkModeLabel: "Мрежов режим",
-        offlineBannerText: "Офлайн сте — приложението работи от кеша"
+        networkModeLabel: "Мрежов режим"
     },
     
     hr: {
@@ -1996,8 +1989,7 @@ const translations = {
         exitMarkdownMode: "Izlaz iz Markdown načina  Ctrl+M",
         offlineMode: "Offline",
         onlineMode: "Online",
-        networkModeLabel: "Mrežni način",
-        offlineBannerText: "Niste na mreži — aplikacija radi iz predmemorije"
+        networkModeLabel: "Mrežni način"
     },
     
     sr: {
@@ -2217,8 +2209,7 @@ const translations = {
         exitMarkdownMode: "Излаз из Markdown режима  Ctrl+M",
         offlineMode: "Офлајн",
         onlineMode: "Онлајн",
-        networkModeLabel: "Мрежни режим",
-        offlineBannerText: "Нисте на мрежи — апликација ради из кеша"
+        networkModeLabel: "Мрежни режим"
     },
     
     bs: {
@@ -2442,8 +2433,7 @@ const translations = {
         exitMarkdownMode: "Izlaz iz Markdown načina  Ctrl+M",
         offlineMode: "Offline",
         onlineMode: "Online",
-        networkModeLabel: "Mrežni način",
-        offlineBannerText: "Niste na mreži — aplikacija radi iz predmemorije"
+        networkModeLabel: "Mrežni način"
     },
     
     mk: {
@@ -2672,8 +2662,7 @@ const translations = {
         exitMarkdownMode: "Излез од Markdown режим  Ctrl+M",
         offlineMode: "Офлајн",
         onlineMode: "Онлајн",
-        networkModeLabel: "Мрежен режим",
-        offlineBannerText: "Сте офлајн — апликацијата работи од кешот"
+        networkModeLabel: "Мрежен режим"
     },
 
     sl: {
@@ -2892,8 +2881,7 @@ const translations = {
         exitMarkdownMode: "Izhod iz Markdown načina  Ctrl+M",
         offlineMode: "Brez povezave",
         onlineMode: "S povezavo",
-        networkModeLabel: "Omrežni način",
-        offlineBannerText: "Ste brez povezave — aplikacija deluje iz predpomnilnika"
+        networkModeLabel: "Omrežni način"
     }
 };
 

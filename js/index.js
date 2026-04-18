@@ -611,10 +611,29 @@ function openNoteSettings(noteId) {
             return `<button class="nsm-tag-add-item" data-tid="${t.id}" style="--tag-color:${hex}"><span class="nsm-dot"></span>${escapeHtml(t.name)}</button>`;
         }).join('');
 
+        // All tags manager list
+        const managerRows = allTags.map(t => {
+            const c = (typeof TAG_COLORS !== 'undefined' ? TAG_COLORS : []).find(c => c.id === t.colorId);
+            const hex = c ? c.hex : '#aefc6e';
+            return `<div class="nsm-mgr-row" data-tid="${t.id}">
+                <span class="nsm-mgr-dot" style="background:${hex}"></span>
+                <span class="nsm-mgr-name">${escapeHtml(t.name)}</span>
+                <button class="nsm-mgr-edit" data-tid="${t.id}" title="Edit"><i class="bi bi-pencil"></i></button>
+                <button class="nsm-mgr-del" data-tid="${t.id}" title="Delete"><i class="bi bi-trash"></i></button>
+            </div>`;
+        }).join('');
+
         return `<div class="nsm-tags-row" id="nsm-tags-row">${pills}</div>
             <div class="nsm-tags-add">${opts}
                 <button class="nsm-new-tag-btn" id="nsm-new-tag"><i class="bi bi-plus-circle"></i> ${window.t ? window.t('newTag') : 'New tag'}</button>
-            </div>`;
+            </div>
+            ${allTags.length > 0 ? `
+            <div class="nsm-mgr-toggle" id="nsm-mgr-toggle">
+                <i class="bi bi-sliders"></i> ${window.t ? window.t('manageTags') : 'Manage tags'}
+                <i class="bi bi-chevron-down nsm-mgr-chevron"></i>
+            </div>
+            <div class="nsm-mgr-list" id="nsm-mgr-list" style="display:none">${managerRows}</div>
+            ` : ''}`;
     };
 
     const dateVal = meta.dueDate ? new Date(meta.dueDate).toISOString().slice(0, 16) : '';
@@ -694,6 +713,42 @@ function openNoteSettings(noteId) {
                     render(freshTags);
                 });
             }
+        });
+
+        // Manage tags toggle
+        ov.querySelector('#nsm-mgr-toggle')?.addEventListener('click', () => {
+            const list = ov.querySelector('#nsm-mgr-list');
+            const chevron = ov.querySelector('.nsm-mgr-chevron');
+            if (!list) return;
+            const open = list.style.display !== 'none';
+            list.style.display = open ? 'none' : 'block';
+            chevron?.classList.toggle('nsm-mgr-chevron-open', !open);
+        });
+
+        // Edit tag
+        ov.querySelectorAll('.nsm-mgr-edit').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const tag = allTags.find(t => t.id === btn.dataset.tid);
+                if (!tag || typeof showTagEditModal !== 'function') return;
+                showTagEditModal(tag, async () => {
+                    const freshTags = typeof getTags === 'function' ? await getTags() : [];
+                    render(freshTags);
+                });
+            });
+        });
+
+        // Delete tag
+        ov.querySelectorAll('.nsm-mgr-del').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const tag = allTags.find(t => t.id === btn.dataset.tid);
+                if (!tag) return;
+                if (!confirm(`Delete tag "${tag.name}"?`)) return;
+                if (typeof deleteTag === 'function') await deleteTag(tag.id);
+                meta.tags = (meta.tags || []).filter(t => t !== tag.id);
+                const freshTags = typeof getTags === 'function' ? await getTags() : [];
+                render(freshTags);
+                if (typeof renderTagPanel === 'function') renderTagPanel();
+            });
         });
 
         // Due date clear

@@ -658,7 +658,7 @@ function wireCalendarClicks(modal, notes) {
         chip.addEventListener('click', e => {
             e.stopPropagation();
             const note = notes.find(n => n.id === chip.dataset.noteId);
-            if (note) { modal.style.display = 'none'; openModal(note.id, note.content, note.creationTime); }
+            if (note) openCalendarNotePreview(note, modal);
         });
     });
     // Click on day to create note with due date
@@ -671,6 +671,96 @@ function wireCalendarClicks(modal, notes) {
             openModal(null, '', Date.now());
         });
     });
+}
+
+function openCalendarNotePreview(note, calModal) {
+    const existing = document.getElementById('cal-note-preview-overlay');
+    if (existing) existing.remove();
+
+    const _t = (key, fallback) => (window.t ? window.t(key) : fallback);
+
+    const overlay = document.createElement('div');
+    overlay.id = 'cal-note-preview-overlay';
+    overlay.className = 'cnp-overlay';
+
+    const title = extractNoteTitle(note);
+    const due = note.dueDate ? new Date(note.dueDate) : null;
+    const dueTxt = due ? formatDateFull(due) : '';
+    const created = new Date(note.creationTime || note.createdAt || Date.now());
+
+    overlay.innerHTML =
+        '<div class="cnp-panel">' +
+            '<div class="cnp-header">' +
+                '<div class="cnp-title-row">' +
+                    (note.pinned ? '<i class="bi bi-pin-angle-fill cnp-pin-icon"></i>' : '') +
+                    '<span class="cnp-title">' + escapeHtml(title) + '</span>' +
+                '</div>' +
+                '<button class="cnp-close" id="cnp-close-btn" aria-label="Close"><i class="bi bi-x-lg"></i></button>' +
+            '</div>' +
+            '<div class="cnp-meta">' +
+                (dueTxt ? '<span class="cnp-meta-item' + (isOverdue(note.dueDate) ? ' cnp-overdue' : isDueToday(note.dueDate) ? ' cnp-due-today' : '') + '"><i class="bi bi-clock"></i> ' + dueTxt + '</span>' : '') +
+                '<span class="cnp-meta-item"><i class="bi bi-calendar-plus"></i> ' + created.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) + '</span>' +
+            '</div>' +
+            '<div class="cnp-body">' + (note.content || '') + '</div>' +
+            '<div class="cnp-footer">' +
+                '<button class="cnp-btn cnp-btn-edit" id="cnp-edit-btn"><i class="bi bi-pencil"></i> ' + _t('edit', 'Edit') + '</button>' +
+                '<button class="cnp-btn cnp-btn-delete" id="cnp-delete-btn"><i class="bi bi-trash3"></i> ' + _t('delete', 'Delete') + '</button>' +
+                '<button class="cnp-btn cnp-btn-cancel" id="cnp-cancel-btn"><i class="bi bi-x-lg"></i> ' + _t('cancel', 'Cancel') + '</button>' +
+            '</div>' +
+        '</div>';
+
+    document.body.appendChild(overlay);
+
+    const close = () => overlay.remove();
+
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    overlay.querySelector('#cnp-close-btn').addEventListener('click', close);
+    overlay.querySelector('#cnp-cancel-btn').addEventListener('click', close);
+
+    overlay.querySelector('#cnp-edit-btn').addEventListener('click', () => {
+        close();
+        calModal.style.display = 'none';
+        openModal(note.id, note.content, note.creationTime);
+    });
+
+    overlay.querySelector('#cnp-delete-btn').addEventListener('click', () => {
+        const _t2 = (key, fallback) => (window.t ? window.t(key) : fallback);
+        const msg = _t2('confirmDeleteOneNote', 'Delete this note? This cannot be undone.');
+
+        // Show confirm inline — above all overlays
+        const confirmOverlay = document.createElement('div');
+        confirmOverlay.className = 'cnp-confirm-overlay';
+        confirmOverlay.innerHTML =
+            '<div class="cnp-confirm-box">' +
+                '<p class="cnp-confirm-msg">' + escapeHtml(msg) + '</p>' +
+                '<div class="cnp-confirm-btns">' +
+                    '<button class="cnp-btn cnp-btn-delete" id="cnp-confirm-yes"><i class="bi bi-trash3"></i> ' + _t2('delete', 'Delete') + '</button>' +
+                    '<button class="cnp-btn cnp-btn-cancel" id="cnp-confirm-no"><i class="bi bi-x-lg"></i> ' + _t2('cancel', 'Cancel') + '</button>' +
+                '</div>' +
+            '</div>';
+        overlay.appendChild(confirmOverlay);
+
+        confirmOverlay.querySelector('#cnp-confirm-no').addEventListener('click', () => confirmOverlay.remove());
+        confirmOverlay.querySelector('#cnp-confirm-yes').addEventListener('click', async () => {
+            confirmOverlay.remove();
+            try {
+                await notesDB.deleteNote(note.id);
+                close();
+                await loadNotes();
+                const calModalEl = document.getElementById('calendarModal');
+                if (calModalEl && calModalEl.style.display !== 'none') {
+                    await renderCalendar(calModalEl);
+                }
+            } catch (e) {
+                console.error('Delete error:', e);
+            }
+        });
+    });
+
+    // Highlight code blocks if hljs available
+    setTimeout(() => {
+        if (typeof hljs !== 'undefined') hljs.highlightAll();
+    }, 80);
 }
 
 function getNotesOnDay(notes, date) {

@@ -132,7 +132,7 @@ const LNMarkdown = (() => {
         while (i < lines.length && /^- \[[ xX]\] /.test(lines[i])) {
           const checked = /^- \[[xX]\]/.test(lines[i]);
           const text = lines[i].replace(/^- \[[ xX]\] /,'');
-          html += '<li class="lne-checklist-item' + (checked ? ' checked' : '') + '"><input type="checkbox"' + (checked ? ' checked' : '') + '> <span>' + parseInline(text) + '</span></li>';
+          html += '<li class="lne-checklist-item' + (checked ? ' checked' : '') + '"><input type="checkbox" data-md-checkbox="true"' + (checked ? ' checked' : '') + '> <span>' + parseInline(text) + '</span></li>';
           i++;
         }
         out.push(html + '</ul>'); continue;
@@ -315,7 +315,36 @@ window.importNotesMarkdownAdvanced = async function(files) {
     ed.style.display = 'none';
 
     mdWrap = document.createElement('div');
-    mdWrap.className = 'lne-md-container';
+    mdWrap.className = 'lne-md-container md-tab-edit';
+
+    // Tab bar (visible on mobile only via CSS)
+    const tabBar = document.createElement('div');
+    tabBar.className = 'lne-md-tabs';
+    const tabEdit = document.createElement('button');
+    tabEdit.className = 'lne-md-tab active';
+    tabEdit.setAttribute('type', 'button');
+    tabEdit.innerHTML = '<i class="bi bi-pencil"></i> Edit';
+    const tabPrev = document.createElement('button');
+    tabPrev.className = 'lne-md-tab';
+    tabPrev.setAttribute('type', 'button');
+    tabPrev.innerHTML = '<i class="bi bi-eye"></i> Preview';
+    tabBar.appendChild(tabEdit);
+    tabBar.appendChild(tabPrev);
+
+    tabEdit.addEventListener('click', () => {
+      mdWrap.classList.remove('md-tab-preview');
+      mdWrap.classList.add('md-tab-edit');
+      tabEdit.classList.add('active');
+      tabPrev.classList.remove('active');
+      mdTA.focus();
+    });
+    tabPrev.addEventListener('click', () => {
+      render();
+      mdWrap.classList.remove('md-tab-edit');
+      mdWrap.classList.add('md-tab-preview');
+      tabPrev.classList.add('active');
+      tabEdit.classList.remove('active');
+    });
 
     mdTA = document.createElement('textarea');
     mdTA.className = 'lne-md-textarea';
@@ -325,6 +354,7 @@ window.importNotesMarkdownAdvanced = async function(files) {
     mdPrev = document.createElement('div');
     mdPrev.className = 'lne-md-preview';
 
+    mdWrap.appendChild(tabBar);
     mdWrap.appendChild(mdTA);
     mdWrap.appendChild(mdPrev);
     ed.parentElement.appendChild(mdWrap);
@@ -393,6 +423,11 @@ window.importNotesMarkdownAdvanced = async function(files) {
     return typeof getEditorContent === 'function' ? getEditorContent() : '';
   };
   window.isLNMarkdownMode = () => mdActive;
+  window.exitLNMarkdownMode = function() {
+    if (!mdActive) return;
+    const ed = document.querySelector('.lne-editor');
+    if (ed) exit(ed);
+  };
 
   function tryInject() {
     if (document.querySelector('.lne-toolbar')) injectBtn();

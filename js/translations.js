@@ -43,6 +43,8 @@ const translations = {
         allNotesDeleted: "All notes have been successfully deleted!",
         
         // Подтверждения
+        confirmDeleteOneNote: "Delete this note? This cannot be undone.",
+        delete: "Delete",
         confirmDeleteAll: "Do you really want to delete ALL notes?",
         confirmDeleteAllTitle: "Delete All Notes",
         confirmDeleteAllPlaceholder: "Type 'DELETE ALL' to confirm",
@@ -338,6 +340,8 @@ const translations = {
         allNotesDeleted: "Все заметки успешно удалены!",
         
         // Подтверждения
+        confirmDeleteOneNote: "Удалить эту заметку? Это действие необратимо.",
+        delete: "Удалить",
         confirmDeleteAll: "Вы действительно хотите удалить ВСЕ заметки?",
         confirmDeleteAllTitle: "Удалить все заметки",
         confirmDeleteAllPlaceholder: "Введите 'DELETE ALL' для подтверждения",
@@ -627,6 +631,8 @@ const translations = {
         allNotesDeleted: "Всі нотатки успішно видалені!",
         
         // Подтверждения
+        confirmDeleteOneNote: "Видалити цю нотатку? Цю дію не можна скасувати.",
+        delete: "Видалити",
         confirmDeleteAll: "Ви впевнені, що хочете видалити всі нотатки?",
         confirmDeleteAllTitle: "Видалити всі нотатки",
         confirmDeleteAllPlaceholder: "Введіть 'DELETE ALL' для підтвердження",
@@ -880,6 +886,8 @@ const translations = {
         allNotesDeleted: "Wszystkie notatki zostały pomyślnie usunięte!",
         
         // Подтверждения
+        confirmDeleteOneNote: "Usunąć tę notatkę? Tej operacji nie można cofnąć.",
+        delete: "Usuń",
         confirmDeleteAll: "Czy na pewno chcesz usunąć wszystkie notatki?",
         confirmDeleteAllTitle: "Usuń wszystkie notatki",
         confirmDeleteAllPlaceholder: "Wpisz 'DELETE ALL' aby potwierdzić",
@@ -1114,6 +1122,8 @@ const translations = {
         allNotesDeleted: "Všechny poznámky byly úspěšně smazány!",
         
         // Подтверждения
+        confirmDeleteOneNote: "Smazat tuto poznámku? Tuto akci nelze vrátit.",
+        delete: "Smazat",
         confirmDeleteAll: "Jste si jisti, že chcete smazat všechny poznámky?",
         confirmDeleteAllTitle: "Smazat všechny poznámky",
         confirmDeleteAllPlaceholder: "Zadejte 'DELETE ALL' pro potvrzení",
@@ -1348,6 +1358,8 @@ const translations = {
         allNotesDeleted: "Všetky poznámky boli úspešne zmazané!",
         
         // Подтверждения
+        confirmDeleteOneNote: "Zmazať túto poznámku? Túto akciu nie je možné vrátiť.",
+        delete: "Zmazať",
         confirmDeleteAll: "Ste si istí, že chcete zmazať všetky poznámky?",
         confirmDeleteAllTitle: "Zmazať všetky poznámky",
         confirmDeleteAllPlaceholder: "Zadajte 'DELETE ALL' pre potvrdenie",
@@ -1578,6 +1590,8 @@ const translations = {
         allNotesDeleted: "Всички бележки са успешно изтрити!",
         
         // Подтверждения
+        confirmDeleteOneNote: "Изтриване на тази бележка? Това действие е необратимо.",
+        delete: "Изтрий",
         confirmDeleteAll: "Сигурни ли сте, че искате да изтриете всички бележки?",
         confirmDeleteAllTitle: "Изтрий всички бележки",
         confirmDeleteAllPlaceholder: "Въведете 'DELETE ALL' за потвърждение",
@@ -1810,6 +1824,7 @@ const translations = {
         allNotesDeleted: "Sve bilješke su uspješno obrisane!",
         
         // Подтверждения
+        confirmDeleteOneNote: "Obrisati ovu bilješku? Ova radnja se ne može poništiti.",
         confirmDeleteAll: "Jeste li sigurni da želite obrisati sve bilješke?",
         
         // Интерфейс
@@ -2034,6 +2049,8 @@ const translations = {
         allNotesDeleted: "Све белешке су успешно обрисане!",
         
         // Подтверждения
+        confirmDeleteOneNote: "Обрисати ову белешку? Ова радња се не може поништити.",
+        delete: "Обриши",
         confirmDeleteAll: "Да ли сте сигурни да желите обрисати све белешке?",
         
         // Интерфейс
@@ -2255,6 +2272,7 @@ const translations = {
         
         // Подтверждения
         confirmDeleteAll: "Jeste li sigurni da želite obrisati sve bilješke?",
+        confirmDeleteOneNote: "Obrisati ovu bilješku? Ova radnja se ne može poništiti.",
         
         // Интерфейс
         noNotesMessage: "Nema bilješki za prikaz",
@@ -2478,6 +2496,8 @@ const translations = {
         allNotesDeleted: "Сите белешки се успешно избришани!",
         
         // Подтверждения
+        confirmDeleteOneNote: "Да се избрише оваа белешка? Оваа акција е неповратна.",
+        delete: "Избриши",
         confirmDeleteAll: "Дали сте сигурни дека сакате да ги избришете сите белешки?",
         confirmDeleteAllTitle: "Избриши ги сите белешки",
         confirmDeleteAllPlaceholder: "Внесете 'ИЗБРИШИ СИТЕ' за потврда",
@@ -2707,6 +2727,8 @@ const translations = {
         allNotesDeleted: "Vse opombe so bile uspešno izbrisane!",
         
         // Подтверждения
+        confirmDeleteOneNote: "Izbrisati to opombo? Tega dejanja ni mogoče razveljaviti.",
+        delete: "Izbriši",
         confirmDeleteAll: "Ali ste prepričani, da želite izbrisati vse opombe?",
         
         // Интерфейс

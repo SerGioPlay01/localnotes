@@ -317,7 +317,7 @@ function fixChecklistStructure(content) {
 function getChecklistProgress(content) {
     if (!content) return null;
     const d = document.createElement('div'); d.innerHTML = content;
-    const all = d.querySelectorAll('.checklist-checkbox-ios, input[type="checkbox"]');
+    const all = d.querySelectorAll('.checklist-checkbox-ios, input[type="checkbox"]:not([data-md-checkbox])');
     if (all.length === 0) return null;
     const checked = [...all].filter(cb => cb.checked || cb.getAttribute('data-checked') === 'true').length;
     return { total: all.length, checked };
@@ -872,7 +872,9 @@ function openModal(noteId, noteContent, noteCreationTime) {
     const saveBtn = document.getElementById('saveNoteButton');
     if (saveBtn) saveBtn.onclick = async () => {
         let content = '';
-        if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
+        if (typeof window.isLNMarkdownMode === 'function' && window.isLNMarkdownMode()) {
+            content = (typeof window.getLNEditorContent === 'function' ? window.getLNEditorContent() : '').trim();
+        } else if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
             content = localNotesEditorInstance.getContent().trim();
         }
         if (!content || content === '<p></p>' || content === '<p><br></p>') {
@@ -902,6 +904,7 @@ function openModal(noteId, noteContent, noteCreationTime) {
             window.scrollTo(0, savedY);
             delete document.body.dataset.scrollY;
             currentNoteId = null;
+            if (typeof window.exitLNMarkdownMode === 'function') window.exitLNMarkdownMode();
             if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
                 if (typeof localNotesEditorInstance._removeCtx === 'function') localNotesEditorInstance._removeCtx();
                 localNotesEditorInstance.setContent('');
@@ -926,6 +929,7 @@ function closeModal() {
     window.scrollTo(0, savedY);
     delete document.body.dataset.scrollY;
     currentNoteId = null;
+    if (typeof window.exitLNMarkdownMode === 'function') window.exitLNMarkdownMode();
     if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
         if (typeof localNotesEditorInstance._removeCtx === 'function') localNotesEditorInstance._removeCtx();
         localNotesEditorInstance.setContent('');

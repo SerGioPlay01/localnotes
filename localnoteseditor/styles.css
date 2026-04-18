@@ -114,7 +114,11 @@
 .lne-editor mark.lne-find-mark { background: rgba(255,200,0,.35); color: inherit; border-radius: 2px; }
 .lne-editor mark.lne-find-cur  { background: rgba(255,140,0,.6); color: #fff; border-radius: 2px; outline: 1px solid orange; }
 .lne-video-wrapper { margin: 14px 0; display: block; clear: both; max-width: 100% !important; }
-.lne-video-wrapper iframe,.lne-video-wrapper video { max-width: 100%; width: 100%; height: auto; display: block; }
+.lne-video-wrapper iframe,.lne-video-wrapper video { max-width: 100% !important; width: 100% !important; height: auto !important; display: block; }
+/* Враппер с aspect-ratio (всегда имеет style-атрибут) — iframe/video заполняет его абсолютно */
+.lne-video-wrapper[style] { position: relative; }
+.lne-video-wrapper[style] iframe,
+.lne-video-wrapper[style] video { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
 
 /* ═══════════════════════════ CHECKLIST ══════════════════════════════════ */
 .checklist-item-wrapper {

@@ -286,6 +286,6 @@ self.onmessage = async ({ data }) => {
             self.postMessage({ id, bits });
         }
     } catch (err) {
-        self.postMessage({ id, error: err.message });
+        self.postMessage({ id, error: err.message + ' | stack: ' + (err.stack || '').split('\n')[1] });
     }
 };

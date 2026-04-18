@@ -633,6 +633,7 @@ class AdvancedEncryption {
         try {
             return await this._decryptMainThread(encData, password, originInfo);
         } catch (mainErr) {
+            console.error('[decrypt fallback error]', mainErr.message);
             // Оба пути провалились — бросаем ошибку main thread (она точнее)
             throw mainErr;
         }

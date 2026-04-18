@@ -161,72 +161,66 @@ window.localNotesEditorAPI = {
 };
 
 /**
- * Visual Viewport handler — keeps toolbar visible when keyboard opens on mobile
+ * Visual Viewport handler — keeps toolbar visible when keyboard opens on mobile.
+ *
+ * iOS Safari scrolls the layout viewport upward when the keyboard opens,
+ * pushing position:sticky elements off the top of the screen.
+ * We watch scroll events and use getBoundingClientRect() on the toolbar
+ * to detect drift, then compensate with margin-top on the toolbar itself.
  */
 (function () {
-    if (!window.visualViewport) return;
+    if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) return;
 
-    var modal = null;
-    var rafId = null;
+    var modal         = null;
+    var toolbar       = null;
+    var fixPosition   = 0;
+    var debounceTimer = null;
 
-    function getModal() {
-        if (!modal) modal = document.getElementById('editModal');
-        return modal;
+    function getEls() {
+        if (!modal)            modal   = document.getElementById('editModal');
+        if (modal && !toolbar) toolbar = modal.querySelector('.lne-toolbar');
     }
 
-    function applyViewport() {
-        var m = getModal();
-        if (!m || m.style.display === 'none' || m.style.display === '') return;
+    function isModalOpen() {
+        return modal && modal.style.display !== 'none' && modal.style.display !== '';
+    }
 
-        var vv = window.visualViewport;
-        var content = m.querySelector('.modal-content');
-        if (!content) return;
-
-        if (window.innerWidth <= 768) {
-            // vv.offsetTop: how far the layout viewport has been scrolled by iOS
-            // when the keyboard opens. We shift modal-content down by that amount
-            // so the toolbar stays at the top of the visible screen.
-            content.style.marginTop = vv.offsetTop + 'px';
-            content.style.height    = vv.height + 'px';
-            content.style.maxHeight = vv.height + 'px';
+    function setMargin() {
+        getEls();
+        if (!isModalOpen() || !toolbar) return;
+        var rect = toolbar.getBoundingClientRect();
+        if (rect.top < -1) {
+            fixPosition = Math.abs(rect.top);
+            toolbar.style.marginTop = fixPosition + 'px';
         }
     }
 
-    function onViewportChange() {
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(applyViewport);
-    }
-
-    function resetViewport() {
-        var m = getModal();
-        if (!m) return;
-        var content = m.querySelector('.modal-content');
-        if (content) {
-            content.style.marginTop = '';
-            content.style.height    = '';
-            content.style.maxHeight = '';
+    function showToolbar() {
+        getEls();
+        if (!isModalOpen() || !toolbar) return;
+        if (fixPosition > 0) {
+            fixPosition = 0;
+            toolbar.style.marginTop = '0px';
         }
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(setMargin, 150);
     }
 
-    window.visualViewport.addEventListener('resize', onViewportChange);
-    // NOTE: не слушаем 'scroll' — на iOS это срабатывает при скролле lne-body
-    // и сбрасывает m.style.top, заставляя модал прыгать
+    window.addEventListener('scroll', showToolbar, { passive: true });
 
-    // Hook into modal open/close
+    document.addEventListener('focusout', function () {
+        setTimeout(showToolbar, 100);
+    });
+
     document.addEventListener('DOMContentLoaded', function () {
-        var m = document.getElementById('editModal');
-        if (!m) return;
-        modal = m;
-
-        var observer = new MutationObserver(function () {
-            if (m.style.display !== 'none' && m.style.display !== '') {
-                // Modal opened — apply immediately
-                setTimeout(applyViewport, 50);
-            } else {
-                resetViewport();
+        modal = document.getElementById('editModal');
+        if (!modal) return;
+        new MutationObserver(function () {
+            if (!isModalOpen()) {
+                if (toolbar) toolbar.style.marginTop = '';
+                fixPosition = 0;
             }
-        });
-        observer.observe(m, { attributes: true, attributeFilter: ['style'] });
+        }).observe(modal, { attributes: true, attributeFilter: ['style'] });
     });
 })();
 

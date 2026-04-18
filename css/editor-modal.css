@@ -40,10 +40,7 @@
         height: 100dvh !important;
         max-height: -webkit-fill-available !important;
         max-height: 100dvh !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        margin-bottom: 0 !important;
-        /* margin-top управляется JS через vv.offsetTop */
+        margin: 0 !important;
         padding-top: max(3px, env(safe-area-inset-top)) !important;
         padding-bottom: env(safe-area-inset-bottom) !important;
         padding-left: 0 !important;

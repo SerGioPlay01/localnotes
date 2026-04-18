@@ -1,14 +1,19 @@
-# 📝 Local Notes — Локальные Заметки
+# 📝 Local Notes
 
 ![Local Notes Screenshot](https://github.com/SerGioPlay01/localnotes/blob/main/sccc.png?raw=true)
 
-[![Version](https://img.shields.io/badge/Version-1.1.0-brightgreen.svg)](https://github.com/SerGioPlay01/localnotes/releases)
-[![Security](https://img.shields.io/badge/Security-AES--256%20Encrypted-blue.svg)](https://github.com/SerGioPlay01/localnotes)
+[![Version](https://img.shields.io/badge/Version-1.2.0-brightgreen.svg)](https://github.com/SerGioPlay01/localnotes/releases)
+[![Security](https://img.shields.io/badge/Security-AES--256--GCM%20%2B%20HMAC--SHA--512-blue.svg)](https://github.com/SerGioPlay01/localnotes)
 [![PWA](https://img.shields.io/badge/PWA-Enabled-purple.svg)](https://github.com/SerGioPlay01/localnotes)
 [![Offline](https://img.shields.io/badge/Offline-Supported-orange.svg)](https://github.com/SerGioPlay01/localnotes)
 [![Languages](https://img.shields.io/badge/Languages-12-yellow.svg)](https://github.com/SerGioPlay01/localnotes)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-### 🌍 Выберите язык / Choose Language
+### 📖 README in other languages
+[![README RU](https://img.shields.io/badge/📖_README_Русский-red)](README_RU.md)
+
+### 🌍 Choose App Language
 
 [![EN](https://img.shields.io/badge/🇺🇸_English-blue)](https://localnotes-three.vercel.app/)
 [![RU](https://img.shields.io/badge/🇷🇺_Русский-red)](https://localnotes-three.vercel.app/ru/)
@@ -23,264 +28,278 @@
 [![MK](https://img.shields.io/badge/🇲🇰_Македонски-gold)](https://localnotes-three.vercel.app/mk/)
 [![SL](https://img.shields.io/badge/🇸🇮_Slovenščina-lime)](https://localnotes-three.vercel.app/sl/)
 
-### 📖 README на других языках
-[![README EN](https://img.shields.io/badge/📖_README_English-blue)](README_EN.md)
-[![README RU](https://img.shields.io/badge/📖_README_Русский-red)](README.md)
-
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-brightgreen)](https://localnotes-three.vercel.app/)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-black)](https://github.com/SerGioPlay01/localnotes)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
 ---
 
-## 🎯 О проекте
+## 🎯 About
 
-**Local Notes** — современное, безопасное и многофункциональное веб-приложение для создания, хранения и организации заметок прямо в браузере. Все данные хранятся локально на вашем устройстве — никакого сервера, никакой слежки.
+**Local Notes** is a modern, secure web application for creating and organizing notes directly in your browser. All data stays on your device — no server, no tracking, no accounts.
 
-### 🏆 Ключевые особенности
+### Key Features
 
-- **🔒 Военное шифрование AES-256** — максимальная защита данных
-- **🌍 12 языков** — полная локализация интерфейса, включая все модальные окна и кнопки
-- **📱 PWA поддержка** — установка как нативное приложение
-- **⚡ Собственный редактор** — лёгкий LocalNotesEditor без внешних зависимостей
-- **🏷️ Теги и цветовые метки** — организация заметок по темам
-- **📅 Встроенный календарь** — просмотр заметок по датам (месяц / неделя / повестка)
-- **🛡️ Усиленная безопасность** — CSP, HTTPS, защита от XSS
-- **🎨 Современный UI/UX** — адаптивный дизайн для всех устройств
-- **🔄 Офлайн работа** — Service Worker для автономной работы
-
----
-
-##  Основные возможности
-
-### 📝 Создание и редактирование заметок
-- **Собственный редактор LocalNotesEditor** — ~15KB, без внешних зависимостей
-- **Богатое форматирование** — заголовки, списки, таблицы, ссылки, цитаты, блоки кода
-- **Вставка медиа** — изображения (drag & drop), видео (YouTube, Vimeo, прямые ссылки)
-- **Чеклисты** — интерактивные списки задач с чекбоксами
-- **Эмодзи и специальные символы** — встроенные пикеры
-- **Полноэкранный режим** — для максимального фокуса
-- **Быстрое редактирование** — режим Quick Edit прямо в списке заметок
-- **Undo/Redo** — полная история изменений (Ctrl+Z / Ctrl+Y)
-
-###  Теги и организация
-- **Цветные теги** — создание, редактирование, удаление тегов с выбором цвета
-- **Фильтрация по тегам** — быстрый поиск заметок по метке
-- **Дата выполнения (Due Date)** — установка дедлайна для заметки
-- **Визуальные индикаторы** — просроченные и срочные заметки выделяются цветом
-
-###  Календарь
-- **Три режима просмотра** — Месяц, Неделя, Повестка (Agenda)
-- **Навигация** — переключение между периодами, кнопка «Сегодня»
-- **Привязка к датам** — заметки отображаются по дате создания и дате выполнения
-- **Полная локализация** — названия месяцев и дней недели на всех 12 языках
-
-### 🔍 Поиск и просмотр
-- **Мгновенный поиск** — по содержимому заметок
-- **Транслитерация** — поиск на кириллице и латинице
-- **Два режима просмотра** — сетка и список
-- **Сортировка** — по дате создания и изменения
-
-### 💾 Экспорт и импорт
-- **Зашифрованные файлы (.note)** — AES-256 для безопасного хранения
-- **HTML** — для веб-страниц
-- **Markdown** — с полной поддержкой форматирования и изображений
-- **Модал расшифровки** — удобный интерфейс с проверкой пароля в реальном времени, полностью локализован
-
-### 🛡️ Безопасность
-- **AES-256-GCM шифрование** — военный стандарт с PBKDF2 деривацией ключей
-- **Content Security Policy** — защита от XSS атак
-- **Блокировка после 5 неудачных попыток** — защита от брутфорса
-- **Все данные локально** — ничего не отправляется на сервер
+- **🔒 Max-2026 encryption** — AES-256-GCM + HMAC-SHA-512 + PBKDF2-SHA-512 (600k iterations) + domain binding
+- **🌍 12 languages** — full UI localization including all modals, buttons and error messages
+- **📱 PWA** — install as a native app on any device
+- **⚡ LocalNotesEditor** — custom lightweight editor (~15KB), no external dependencies
+- **🏷️ Tags & colors** — organize notes by topic with color labels
+- **📅 Built-in calendar** — view notes by date (month / week / agenda)
+- **🛡️ CSP, HTTPS, XSS protection** — hardened security layer
+- **🔄 Offline** — Service Worker caching for full offline use
 
 ---
 
-## 🌐 Система переводов
+## 🔐 Encryption (v4 — Max-2026)
 
-Все 12 языков (EN, RU, UA, PL, CS, SK, BG, HR, SR, BS, MK, SL) имеют полные переводы для:
+Local Notes uses a multi-layer encryption pipeline for exported `.note` files:
 
-- Основного интерфейса (кнопки, заголовки, сообщения)
-- Модала **Decrypt Note** — заголовок, метка пароля, кнопки, статусные сообщения
-- Кнопки и модала **Calendar** — кнопки Month/Week/Agenda, названия месяцев, дни недели
-- Редактора — панель инструментов, диалоги, подсказки
-- Политик и страниц — cookie, privacy, usage
+```
+PASSWORD
+  │
+  ▼
+PBKDF2-SHA-512 (600 000 iterations)
+  │
+  ▼
+HKDF-SHA-512 → 5 independent keys:
+  K_aes   — AES-256-GCM  (encryption)
+  K_mac   — HMAC-SHA-512 (integrity)
+  K_shuf  — Fisher-Yates block shuffle
+  K_xor   — XOR keystream (SHA-512 PRF)
+  K_cc    — reserved (ChaCha20 layer)
+  │
+  ▼
+ENCRYPT PIPELINE:
+  1. Zero-padding (hides plaintext length)
+  2. XOR-stream (K_xor) — first transformation layer
+  3. Block shuffle (K_shuf) — Fisher-Yates permutation
+  4. AES-256-GCM (K_aes) — main encryption
+  5. HMAC-SHA-512 (K_mac) — Encrypt-then-MAC
+  6. Canary bytes — truncation/corruption detector
+  7. Zeroize all intermediate buffers
+```
 
-Переводы хранятся в `js/translations.js` и применяются через `window.t(key)`.
+**Format v4:** `magic(4) | version(1) | salt(32) | iv(12) | hmac(64) | cipher | canary(8)`
+
+**Domain binding:** keys are cryptographically tied to `localnotes-three.vercel.app` via HKDF `info` parameter — files cannot be decrypted on any other domain.
+
+**Backward compatible** with v2 and v3 formats.
 
 ---
 
-## 🏗️ Архитектура проекта
+## ✨ Features
 
-### 📁 Структура файлов
+### 📝 Editor (LocalNotesEditor)
+- ~15KB, zero dependencies — replaced TinyMCE (was 500KB+)
+- Rich formatting: headings, lists, tables, links, blockquotes, code blocks
+- Media: images (drag & drop), videos (YouTube, Vimeo, direct URL)
+- Interactive checklists, emoji picker, special characters
+- Find & Replace, word/character count
+- Text color & highlight with live caret color sync
+- Fullscreen mode, Undo/Redo (Ctrl+Z / Ctrl+Y)
+- Quick Edit mode directly in the notes list
+
+### 🏷️ Tags & Organization
+- Color tags — create, edit, delete with color picker
+- Filter notes by tag
+- Due date with overdue / today / soon visual indicators
+- Note Settings modal — tags, due date, color, pin — fully translated
+
+### Calendar
+- Three views: Month, Week, Agenda
+- Navigation with Today button
+- Notes linked to creation date and due date
+- Full i18n: month names, weekday abbreviations, all labels
+
+### 🔍 Search
+- Instant search through note content
+- Transliteration support (Cyrillic ↔ Latin)
+- Grid and list view modes
+
+### 💾 Export & Import
+- Encrypted `.note` files (AES-256-GCM v4 pipeline)
+- HTML and Markdown export/import
+- Decrypt modal with live password validation — fully translated
+- Clear error messages: wrong password vs. wrong domain
+
+### 🛡️ Security
+- AES-256-GCM + HMAC-SHA-512 with PBKDF2-SHA-512 (600k iterations)
+- Domain-bound keys — files only decrypt on the official site
+- Lockout after 5 failed attempts
+- Zeroize sensitive buffers after use
+- Constant-time comparisons (anti-timing attacks)
+- All data local — nothing sent to any server
+
+---
+
+## 🌐 Translation System
+
+All 12 languages (EN, RU, UA, PL, CS, SK, BG, HR, SR, BS, MK, SL) have complete translations for:
+
+- Main UI (buttons, titles, messages)
+- Decrypt Note modal (title, password label, buttons, status messages, origin error)
+- Import errors (encrypted file warning, file error, partial success)
+- Calendar (Month/Week/Agenda buttons, Today, month names, weekdays)
+- Note Settings modal (Tags, Due date, Color, Pin, New tag, Clear, Apply)
+- Editor toolbar (paragraph styles, font, size selects)
+- All policy pages
+
+Translations live in `js/translations.js` and `json/lang.json`, applied via `window.t(key)`.
+
+---
+
+## 🏗️ Architecture
+
+### File Structure
 
 ```
 localnotes/
-├── index.html                    # Главная страница (EN)
-├── manifest.json                 # PWA манифест
+├── index.html                    # Main page (EN)
+├── manifest.json                 # PWA manifest
 ├── sw.js                         # Service Worker
-├── robots.txt                    # SEO настройки
-├── sitemap.xml                   # Карта сайта
+├── robots.txt / sitemap.xml
 │
 ├── css/
-│   ├── index.css                 # Основные стили
-│   ├── editor-modal.css          # Стили модальных окон редактора
-│   ├── tags-calendar.css         # Стили тегов и календаря
-│   ├── img.css                   # Стили изображений
-│   ├── preloader.css             # Стили прелоадера
-│   ├── highlight.css             # Подсветка синтаксиса
-│   ├── print.css                 # Стили для печати
-│   └── page.css                  # Стили policy-страниц
+│   ├── index.css                 # Main styles
+│   ├── editor-modal.css          # Editor modal styles
+│   ├── tags-calendar.css         # Tags, calendar, decrypt modal
+│   └── img.css / preloader.css / highlight.css / print.css / page.css
 │
 ├── js/
-│   ├── index.js                  # Основная логика приложения
-│   ├── translations.js           # Переводы (12 языков, 200+ ключей)
-│   ├── translate.js              # Языковая детекция и применение
-│   ├── tags-calendar.js          # Система тегов и календарь
-│   ├── themes.js                 # Система тем (светлая/тёмная)
-│   ├── utils.js                  # Утилиты и хелперы
-│   ├── selectors.js              # Селекторы DOM элементов
-│   ├── performance.js            # Мониторинг производительности
-│   ├── security.js               # Проверки безопасности
-│   ├── editor-integration.js     # Интеграция редактора
-│   ├── img.js                    # Полноэкранный просмотр изображений
-│   ├── preloader.js              # Прелоадер
-│   ├── magicurl.js               # Обработка ссылок
-│   ├── pwa.js                    # PWA логика
-│   ├── date-utils.js             # Утилиты для работы с датами
-│   └── highlight.min.js          # Подсветка синтаксиса
+│   ├── index.js                  # App logic, encryption v4, import/export
+│   ├── translations.js           # 12 languages, 300+ keys
+│   ├── translate.js              # Language detection & switching
+│   ├── tags-calendar.js          # Tags system + calendar
+│   ├── security.js               # SecurityManager + SecureStorage (AES-GCM)
+│   ├── themes.js / utils.js / selectors.js
+│   ├── performance.js / editor-integration.js
+│   └── date-utils.js / img.js / preloader.js / magicurl.js / pwa.js
 │
-├── json/
-│   └── lang.json                 # Статические переводы UI
+├── json/lang.json                # Static UI translations (all 12 languages)
 │
 ├── localnoteseditor/
-│   ├── core.js                   # Движок редактора (~15KB)
-│   ├── styles.css                # Стили редактора
-│   └── bootstrap-icons/          # Иконки
+│   ├── core.js                   # Editor engine (~15KB)
+│   ├── styles.css
+│   └── bootstrap-icons/
 │
-├── fonts/                        # Шрифты (Golos, Montserrat, Roboto, Lato, Open Sans)
-├── favicon/                      # Иконки для всех платформ
-├── resources/                    # Логотип и изображения
-├── cookies_banner_universal/     # GDPR-совместимый баннер cookies
+├── fonts/ favicon/ resources/
+├── cookies_banner_universal/     # GDPR cookie banner
 │
-└── [lang]/                       # Языковые версии (ru, ua, pl, cs, sk, bg, hr, sr, bs, mk, sl)
+└── [lang]/                       # ru, ua, pl, cs, sk, bg, hr, sr, bs, mk, sl
     ├── index.html
     ├── privacy_policy.html
     ├── usage_policy.html
     └── cookie_policy.html
 ```
 
-### ⚡ Технологический стек
+### Tech Stack
 
-| Слой | Технология |
-|------|-----------|
-| Frontend | Vanilla JavaScript ES6+, HTML5, CSS3 |
-| Редактор | LocalNotesEditor (собственный, без зависимостей) |
-| Хранение | IndexedDB |
-| Шифрование | Web Crypto API (AES-256-GCM + PBKDF2) |
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Vanilla JS ES6+, HTML5, CSS3 |
+| Editor | LocalNotesEditor (custom, no deps) |
+| Storage | IndexedDB |
+| Encryption | Web Crypto API — AES-256-GCM + HMAC-SHA-512 + PBKDF2-SHA-512 |
 | PWA | Service Worker + Web App Manifest |
-| Стили | CSS Grid, Flexbox, CSS Variables |
-| Иконки | Bootstrap Icons |
+| Icons | Bootstrap Icons |
 
-### 🔄 Поток данных
+### Data Flow
 
-1. **Инициализация** → Определение языка → Применение темы → Инициализация редактора
-2. **Создание заметки** → LocalNotesEditor → IndexedDB
-3. **Экспорт** → AES-256 шифрование → Скачивание `.note` файла
-4. **Импорт** → Модал расшифровки (с live-проверкой пароля) → Валидация → IndexedDB
-5. **Смена языка** → `updateButtonTexts()` → обновление всех кнопок включая Calendar
+1. **Init** → language detection → theme → editor init
+2. **Create note** → LocalNotesEditor → IndexedDB
+3. **Export** → 5-layer encryption pipeline → `.note` file download
+4. **Import** → Decrypt modal (live password check) → validation → IndexedDB
+5. **Language switch** → `updateButtonTexts()` → all UI elements updated
 
 ---
 
-## 🚀 Быстрый старт
+## 🚀 Quick Start
 
-### 🌐 Онлайн
-Перейдите на [localnotes-three.vercel.app](https://localnotes-three.vercel.app/) — приложение готово к работе без установки.
+### Online
+Visit [localnotes-three.vercel.app](https://localnotes-three.vercel.app/) — ready instantly, no install needed.
 
-### 💻 Локально
+### Local
 
 ```bash
-# Клонируйте репозиторий
 git clone https://github.com/SerGioPlay01/localnotes.git
 cd localnotes
-
-# Запустите любой HTTP-сервер
 python -m http.server 8000
-# или
-npx serve .
-# или
-php -S localhost:8000
+# or: npx serve .
 ```
 
-Откройте `http://localhost:8000` в браузере.
+Open `http://localhost:8000`.
 
-###  Установка как PWA
-1. Откройте приложение в Chrome/Edge
-2. Нажмите иконку «Установить» в адресной строке
-3. Подтвердите установку
+> **Note:** encrypted `.note` files are domain-bound to `localnotes-three.vercel.app`. Decryption will not work on localhost.
+
+### Install as PWA
+Click the install icon in Chrome/Edge address bar and confirm.
 
 ---
 
-##  История изменений
+## 🆕 Changelog
 
-### v1.1.0 (текущая)
-- **🌍 Полная локализация Calendar** — кнопки Month/Week/Agenda, названия месяцев и дней недели на всех 12 языках
-- **� Полная локализация Decrypt Note** — все строки модала расшифровки переведены на 12 языков
-- **🏷️ Система тегов** — цветные теги, фильтрация, дата выполнения
-- **📅 Встроенный календарь** — три режима просмотра с полной локализацией
-- **⚡ Собственный редактор** — замена TinyMCE на LocalNotesEditor (97% меньше, в 50 раз быстрее)
-- **🎨 Быстрое редактирование** — режим Quick Edit
+### v1.2.0 (current)
+- **🔐 Encryption v4 (Max-2026)** — PBKDF2-SHA-512 (600k iter) + HKDF → 5 keys + XOR-stream + block shuffle + HMAC-SHA-512 + canary bytes + zeroize
+- **🔗 Domain binding** — `.note` files cryptographically tied to `localnotes-three.vercel.app`
+- **🔒 SecureStorage** — localStorage now encrypted with AES-256-GCM + HMAC (session key via HKDF)
+- **� Full i18n for all error modals** — import errors, origin error, integrity errors — all 12 languages
+- **�️ Anti-timing protection** — jitter delays, constant-time comparisons, zeroize buffers
+- **📝 Import UX** — translated error messages for encrypted files, file errors, partial success
+
+### v1.1.0
+- **LocalNotesEditor** — replaced TinyMCE: 97% smaller, 50× faster init
+- **Tags system** — color tags, filtering, due dates
+- **Calendar** — month/week/agenda views, full i18n
+- **Full i18n** — Calendar, Decrypt modal, Note Settings — all 12 languages
 
 ### v1.0.3
-- Полная поддержка Markdown с изображениями
-- Мониторинг производительности (Core Web Vitals)
-- Усиленная безопасность (CSP, XSS защита)
-- Добавлены языки: украинский, боснийский, македонский, сербский
+- Full Markdown import with images
+- Performance monitoring (Core Web Vitals)
+- Enhanced security (CSP, XSS)
+- Added UA, BS, MK, SR languages
 
 ---
 
 ## ❓ FAQ
 
-**Q: Где хранятся мои заметки?**
-Все заметки хранятся локально в IndexedDB вашего браузера. Данные никогда не передаются на сервер.
+**Where are notes stored?**
+Locally in IndexedDB. Nothing is ever sent to a server.
 
-**Q: Насколько безопасно шифрование?**
-Используется AES-256-GCM с PBKDF2 (100 000 итераций) — военный стандарт защиты.
+**How secure is the encryption?**
+AES-256-GCM with PBKDF2-SHA-512 (600,000 iterations) + HMAC-SHA-512 integrity check + domain binding. Industry-leading protection as of 2026.
 
-**Q: Как перенести заметки в другой браузер?**
-Используйте экспорт в `.note` файл, затем импортируйте в новом браузере.
+**Why can't I decrypt on localhost?**
+`.note` files are cryptographically bound to `localnotes-three.vercel.app` via HKDF domain binding. This is intentional — it prevents decryption outside the official site.
 
-**Q: Как добавить новый язык?**
-Добавьте языковой блок в `js/translations.js`, создайте папку `[lang]/` с HTML-страницами и добавьте язык в `js/translate.js`.
+**How to move notes to another browser?**
+Export to `.note` file, then import at [localnotes-three.vercel.app](https://localnotes-three.vercel.app/).
 
-**Q: Работает ли офлайн?**
-Да, после первой загрузки Service Worker кэширует все ресурсы.
+**How to add a new language?**
+Add a language block in `js/translations.js`, create a `[lang]/` folder with HTML pages, add the language to `js/translate.js`.
 
----
-
-## 🤝 Вклад в проект
-
-Приветствуются любые улучшения:
-
-1. **Fork** репозитория
-2. Создайте ветку: `git checkout -b feature/my-feature`
-3. Внесите изменения и протестируйте
-4. Создайте Pull Request
-
-Особенно нужны:
-- Переводы на новые языки
-- Улучшения доступности (a11y)
-- Тесты
+**Does it work offline?**
+Yes — Service Worker caches all resources after first load.
 
 ---
 
-## 📄 Лицензия
+## 🤝 Contributing
 
-MIT — подробности в файле [LICENSE](LICENSE).
+1. Fork the repository
+2. Create a branch: `git checkout -b feature/my-feature`
+3. Make changes and test
+4. Open a Pull Request
+
+Especially welcome: new language translations, accessibility improvements, tests.
 
 ---
 
-## 👨‍� Автор
+## 📄 License
+
+MIT — see [LICENSE](LICENSE).
+
+---
+
+## 👨‍💻 Author
 
 **SerGio Play** — [GitHub](https://github.com/SerGioPlay01) | [Website](https://sergioplay-dev.vercel.app/)
 
@@ -288,10 +307,10 @@ MIT — подробности в файле [LICENSE](LICENSE).
 
 <div align="center">
 
-**⭐ Если проект понравился — поставьте звезду! ⭐**
+**⭐ If you like the project, give it a star! ⭐**
 
 [![GitHub stars](https://img.shields.io/github/stars/SerGioPlay01/localnotes?style=social)](https://github.com/SerGioPlay01/localnotes)
 
-**🌐 [Попробуйте Local Notes прямо сейчас!](https://localnotes-three.vercel.app/)**
+**🌐 [Try Local Notes now!](https://localnotes-three.vercel.app/)**
 
 </div>

@@ -1,5 +1,5 @@
 // Service Worker для Local Notes
-const CACHE_VERSION = 'v1.1.5';
+const CACHE_VERSION = 'v1.2.0';
 const STATIC_CACHE  = `static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
 const CACHE_LIMIT   = 60;
@@ -56,6 +56,7 @@ const STATIC_FILES = [
     '/js/themes.js',
     '/js/performance.js',
     '/js/security.js',
+    '/js/crypto-worker.js',
     '/js/preloader.js',
     '/js/index.js',
     '/js/magicurl.js',

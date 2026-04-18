@@ -687,6 +687,12 @@ function openCalendarNotePreview(note, calModal) {
     const due = note.dueDate ? new Date(note.dueDate) : null;
     const dueTxt = due ? formatDateFull(due) : '';
     const created = new Date(note.creationTime || note.createdAt || Date.now());
+    const _lang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+    const _localeMap = { ru:'ru-RU', ua:'uk-UA', pl:'pl-PL', cs:'cs-CZ', sk:'sk-SK', bg:'bg-BG', hr:'hr-HR', sr:'sr-RS', bs:'bs-BA', mk:'mk-MK', sl:'sl-SI' };
+    const _locale = _localeMap[_lang] || 'en-US';
+    const createdTxt = typeof formatDate === 'function'
+        ? formatDate(created, 'short', _lang)
+        : created.toLocaleDateString(_locale, { day: 'numeric', month: 'short', year: 'numeric' });
 
     overlay.innerHTML =
         '<div class="cnp-panel">' +
@@ -699,7 +705,7 @@ function openCalendarNotePreview(note, calModal) {
             '</div>' +
             '<div class="cnp-meta">' +
                 (dueTxt ? '<span class="cnp-meta-item' + (isOverdue(note.dueDate) ? ' cnp-overdue' : isDueToday(note.dueDate) ? ' cnp-due-today' : '') + '"><i class="bi bi-clock"></i> ' + dueTxt + '</span>' : '') +
-                '<span class="cnp-meta-item"><i class="bi bi-calendar-plus"></i> ' + created.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) + '</span>' +
+                '<span class="cnp-meta-item"><i class="bi bi-calendar-plus"></i> ' + createdTxt + '</span>' +
             '</div>' +
             '<div class="cnp-body">' + (note.content || '') + '</div>' +
             '<div class="cnp-footer">' +
@@ -787,7 +793,13 @@ function formatDateShort(d) {
 }
 
 function formatDateFull(d) {
-    return d.toLocaleDateString(undefined, { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    if (typeof formatDate === 'function') {
+        return formatDate(d, 'medium', typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : null);
+    }
+    const localeMap = { ru:'ru-RU', ua:'uk-UA', pl:'pl-PL', cs:'cs-CZ', sk:'sk-SK', bg:'bg-BG', hr:'hr-HR', sr:'sr-RS', bs:'bs-BA', mk:'mk-MK', sl:'sl-SI' };
+    const lang = typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : 'en';
+    const locale = localeMap[lang] || 'en-US';
+    return d.toLocaleDateString(locale, { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
 }
 
 function extractNoteTitle(note) {

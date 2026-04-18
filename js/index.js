@@ -2451,6 +2451,8 @@ function exportToPDF(noteContent) {
 async function exportNote(noteContent, password) {
     try {
         const ts = new Date().toISOString().replace(/[:.]/g, '-');
+        // Даём UI обновиться перед тяжёлой операцией
+        await new Promise(r => setTimeout(r, 0));
         const pc = await processMediaContent(noteContent);
         const contentWithTag = `<!-- Exported on ${ts} -->\n${pc}`;
         const encrypted = await encryption.encrypt(contentWithTag, password);

@@ -19,6 +19,7 @@ const STATIC_FILES = [
     '/js/index.js',
     '/js/magicurl.js',
     '/js/pwa.js',
+    '/js/network-mode.js',
     '/js/highlight.min.js',
     '/js/img.js',
     '/js/preloader.js',
@@ -198,6 +199,13 @@ async function cacheFirst(request) {
 
 // Стратегия Network First
 async function networkFirst(request) {
+    // Если принудительный офлайн-режим — сразу из кэша
+    if (self.networkMode === 'offline') {
+        const cached = await caches.match(request);
+        if (cached) return cached;
+        // нет в кэше — всё равно пробуем сеть как fallback
+    }
+
     try {
         // Добавляем cache-busting параметр для CSS и JS файлов
         let fetchRequest = request;
@@ -250,6 +258,10 @@ self.addEventListener('message', event => {
     
     if (event.data && event.data.type === 'GET_VERSION') {
         event.ports[0].postMessage({ version: CACHE_NAME });
+    }
+
+    if (event.data && event.data.type === 'SET_NETWORK_MODE') {
+        self.networkMode = event.data.mode; // 'offline' | 'online'
     }
 });
 

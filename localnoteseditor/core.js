@@ -398,6 +398,7 @@ class LocalNotesEditor {
             } else {
                 this.ed.insertAdjacentHTML('beforeend', html);
             }
+            this._initAll();
         } else {
             document.execCommand('insertHTML', false, html);
         }
@@ -436,7 +437,7 @@ class LocalNotesEditor {
         this.undoStack.pop();
         var p = this.undoStack[this.undoStack.length - 1];
         if (p) { this.ed.innerHTML = p.c; this._snapDecode(); this.lastSnap = p; }
-        this.isRec = false; this._syncState();
+        this.isRec = false; this._initAll(); this._syncState();
     }
 
     redo() {
@@ -444,7 +445,7 @@ class LocalNotesEditor {
         this.isRec = true;
         var s = this.redoStack.pop();
         this.undoStack.push(s); this.ed.innerHTML = s.c; this._snapDecode(); this.lastSnap = s;
-        this.isRec = false; this._syncState();
+        this.isRec = false; this._initAll(); this._syncState();
     }
 
     // ── Font size ────────────────────────────────────────────────────────
@@ -1046,18 +1047,18 @@ class LocalNotesEditor {
                     ov.querySelector('#lne-vauto').checked ? 1:0,
                     ov.querySelector('#lne-vloop').checked ? 1:0,
                     ov.querySelector('#lne-vmute').checked ? 1:0);
-                if (embed) { self._insertHTML('<div class="lne-video-wrapper" style="' + self._arStyle(embed) + '">' + embed + '</div>'); close(); }
+                if (embed) { self._insertHTML('<div class="lne-video-wrapper" contenteditable="false" style="' + self._arStyle(embed) + '">' + embed + '</div>'); close(); }
             } else if (active === 'dir') {
                 var dUrl = ov.querySelector('#lne-vdir').value.trim(); if (!dUrl) return;
                 var vw = ov.querySelector('#lne-vdw').value || '560', vh = ov.querySelector('#lne-vdh').value || '315';
                 var ap = ov.querySelector('#lne-vdauto').checked, lp = ov.querySelector('#lne-vdloop').checked, mu = ov.querySelector('#lne-vdmute').checked;
                 var videoHtml = '<video width="' + vw + '" height="' + vh + '" controls style="max-width:100%"' +
                     (ap?' autoplay':'') + (lp?' loop':'') + (mu?' muted':'') + '><source src="' + dUrl + '"></video>';
-                self._insertHTML('<div class="lne-video-wrapper" style="aspect-ratio:' + vw + '/' + vh + ';max-width:' + vw + 'px">' + videoHtml + '</div>');
+                self._insertHTML('<div class="lne-video-wrapper" contenteditable="false" style="aspect-ratio:' + vw + '/' + vh + ';max-width:' + vw + 'px">' + videoHtml + '</div>');
                 close();
             } else {
                 var code = ov.querySelector('#lne-vifr').value.trim(); if (!code) return;
-                self._insertHTML('<div class="lne-video-wrapper" style="' + self._arStyle(code) + '">' + code + '</div>'); close();
+                self._insertHTML('<div class="lne-video-wrapper" contenteditable="false" style="' + self._arStyle(code) + '">' + code + '</div>'); close();
             }
         }, true);
 
@@ -2103,6 +2104,10 @@ class LocalNotesEditor {
     }
 
     _initAll() {
+        // Ensure video wrappers are non-editable atoms so the cursor can't enter them
+        this.ed.querySelectorAll('.lne-video-wrapper, .video-embed-wrapper').forEach(function(vw) {
+            vw.setAttribute('contenteditable', 'false');
+        });
         this._initChecklists();
         this._initCodeBlocks();
         this._initContextToolbars();

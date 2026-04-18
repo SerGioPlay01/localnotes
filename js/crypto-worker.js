@@ -244,6 +244,8 @@ async function decryptFull(encData, password, originInfo) {
     if (withCanary.length < 8) throw new Error('Data too short');
     const cipher = withCanary.slice(0, withCanary.length - 8);
 
+    console.info(`[worker decrypt v4] salt=${salt.length} iv=${ivAes.length} padLen=${padLen} cipher=${cipher.length}`);
+
     const rawBits = await deriveRawBits(password, salt, originInfo);
     const { encKey, macKey } = await importKeys(rawBits.encBits, rawBits.macBits);
     const shufKey = new Uint8Array(rawBits.shufBits);

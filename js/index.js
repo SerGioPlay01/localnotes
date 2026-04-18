@@ -555,6 +555,27 @@ class AdvancedEncryption {
         return crypto.subtle.importKey('raw', bits, 'AES-GCM', false, ['encrypt', 'decrypt']);
     }
 
+    // KDF напрямую в main thread — для fallback без Worker
+    async _deriveKeysDirect(password, salt, originInfo) {
+        const pwBytes = new TextEncoder().encode(password);
+        const baseKey = await crypto.subtle.importKey('raw', pwBytes, 'PBKDF2', false, ['deriveBits']);
+        const baseBits = await crypto.subtle.deriveBits(
+            { name: 'PBKDF2', salt, iterations: 600000, hash: 'SHA-512' }, baseKey, 512
+        );
+        const hkdfKey = await crypto.subtle.importKey('raw', baseBits, 'HKDF', false, ['deriveBits']);
+        const derive = (label, bits = 256) => crypto.subtle.deriveBits(
+            { name: 'HKDF', hash: 'SHA-512', salt: new TextEncoder().encode(label), info: originInfo },
+            hkdfKey, bits
+        );
+        const [encBits, macBits, shufBits, xorBits, ccBits] = await Promise.all([
+            derive('k-aes-gcm'), derive('k-hmac-512', 512),
+            derive('k-block-shuf'), derive('k-xor-stream'), derive('k-cc20-poly'),
+        ]);
+        const encKey = await crypto.subtle.importKey('raw', encBits, 'AES-GCM', false, ['encrypt', 'decrypt']);
+        zeroize(baseBits);
+        return { encKey, macKey: new Uint8Array(macBits), shufKey: new Uint8Array(shufBits), xorKey: new Uint8Array(xorBits), ccKey: new Uint8Array(ccBits) };
+    }
+
     // ── Вызов Worker с таймаутом ─────────────────────────────────────────────
     _callWorker(msg, transferable = []) {
         return new Promise((resolve, reject) => {
@@ -595,21 +616,25 @@ class AdvancedEncryption {
     // ── DECRYPT v4 — весь pipeline в Worker ──────────────────────────────────
     async decrypt(encData, password) {
         const originInfo = this._getOriginBinding();
+
+        // Пробуем Worker
+        let workerErr = null;
         try {
             const { result } = await this._callWorker({
                 op: 'decrypt', encData, password,
                 originInfo: Array.from(originInfo),
             });
             return result;
-        } catch (workerErr) {
-            if (workerErr.message && (
-                workerErr.message.includes('Integrity') ||
-                workerErr.message.includes('tampered') ||
-                workerErr.message.includes('padding') ||
-                workerErr.message.includes('too short')
-            )) throw workerErr; // пробрасываем крипто-ошибки
-            // Fallback: main thread
-            return this._decryptMainThread(encData, password, originInfo);
+        } catch (e) {
+            workerErr = e;
+        }
+
+        // Fallback: main thread (Worker недоступен или упал)
+        try {
+            return await this._decryptMainThread(encData, password, originInfo);
+        } catch (mainErr) {
+            // Оба пути провалились — бросаем ошибку main thread (она точнее)
+            throw mainErr;
         }
     }
 
@@ -645,6 +670,12 @@ class AdvancedEncryption {
     // ── Fallback: main thread decrypt ────────────────────────────────────────
     async _decryptMainThread(encData, password, originInfo) {
         const combined = new Uint8Array(this.base64ToArrayBuffer(encData));
+
+        // Диагностика формата
+        const byte0 = combined[0], byte1 = combined[1], byte2 = combined[2], byte3 = combined[3], byte4 = combined[4];
+        const isV4magic = byte0 === 0x4E && byte1 === 0x56 && byte2 === 0x34 && byte3 === 0x00 && byte4 === 4;
+        const isV3 = byte0 === 3;
+        console.info(`[decrypt] len=${combined.length} bytes=[${byte0},${byte1},${byte2},${byte3},${byte4}] isV4=${isV4magic} isV3=${isV3}`);
         const isV4 = combined.length > 4 &&
             combined[0] === this.MAGIC[0] && combined[1] === this.MAGIC[1] &&
             combined[2] === this.MAGIC[2] && combined[3] === this.MAGIC[3] &&
@@ -682,7 +713,8 @@ class AdvancedEncryption {
             const hmacTag = combined.slice(51,115), withCanary = combined.slice(115);
             if (withCanary.length < 8) throw new Error('Data too short');
             const cipher = withCanary.slice(0, withCanary.length - 8);
-            keys = await this.deriveKeys(password, salt);
+            // Используем прямой KDF без Worker (мы уже в fallback)
+            keys = await this._deriveKeysDirect(password, salt, originInfo);
             const macInput = new Uint8Array(51 + cipher.length);
             macInput.set(combined.slice(0,51), 0); macInput.set(cipher, 51);
             const valid = await CryptoMutations.verifyHMAC(keys.macKey, macInput, hmacTag);

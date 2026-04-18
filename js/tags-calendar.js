@@ -200,7 +200,7 @@ async function renderTagPanel() {
     panel.querySelector('#addTagBtn').addEventListener('click', () => showTagEditModal(null));
 }
 
-function showTagEditModal(tag) {
+function showTagEditModal(tag, onCreated) {
     const isNew = !tag;
     const title = isNew ? 'Create Tag' : 'Edit Tag';
     const name = tag ? tag.name : '';
@@ -246,8 +246,13 @@ function showTagEditModal(tag) {
             if (idx !== -1) { tags[idx].name = tagName; tags[idx].colorId = selectedColor; await saveTags(tags); }
         }
         close();
-        await renderTagPanel();
-        await loadNotes();
+        // If called from note settings panel — use callback instead of reloading
+        if (typeof onCreated === 'function') {
+            await onCreated();
+        } else {
+            await renderTagPanel();
+            await loadNotes();
+        }
     });
     setTimeout(() => modal.querySelector('#tag-name-inp').focus(), 50);
 }

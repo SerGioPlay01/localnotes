@@ -685,10 +685,15 @@ function openNoteSettings(noteId) {
             });
         });
 
-        // New tag
+        // New tag — open tag modal on top, re-render settings after creation
         ov.querySelector('#nsm-new-tag')?.addEventListener('click', () => {
-            closeOv();
-            if (typeof showTagEditModal === 'function') showTagEditModal(null);
+            if (typeof showTagEditModal === 'function') {
+                showTagEditModal(null, async () => {
+                    // After tag created — refresh tags list inside settings panel
+                    const freshTags = typeof getTags === 'function' ? await getTags() : [];
+                    render(freshTags);
+                });
+            }
         });
 
         // Due date clear
@@ -1060,9 +1065,11 @@ async function loadNotes() {
             if (note.tags && note.tags.length && allTags.length) {
                 const tagsDiv = document.createElement('div');
                 tagsDiv.className = 'note-tags';
+                const tagNamesList = [];
                 for (const tagId of note.tags) {
                     const tag = allTags.find(t => t.id === tagId);
                     if (!tag) continue;
+                    tagNamesList.push(tag.name.toLowerCase());
                     const colorObj = (typeof TAG_COLORS !== 'undefined' ? TAG_COLORS : []).find(c => c.id === tag.colorId);
                     const hex = colorObj ? colorObj.hex : '#aefc6e';
                     const pill = document.createElement('span');
@@ -1072,6 +1079,10 @@ async function loadNotes() {
                     tagsDiv.appendChild(pill);
                 }
                 btns.appendChild(tagsDiv);
+                // Store lowercase tag names for search
+                noteEl.dataset.tagNames = tagNamesList.join(',');
+            } else {
+                noteEl.dataset.tagNames = '';
             }
 
             const btnRow = document.createElement('div'); btnRow.className = 'note-btn-row';
@@ -1197,36 +1208,356 @@ function updateWelcomeTranslations() {
 }
 
 // ============================================================================
-// SEARCH (from backup)
+// ADVANCED SEARCH
 // ============================================================================
+
+// Extended transliteration covering all supported languages:
+// Russian, Ukrainian, Bulgarian, Serbian, Macedonian, Bosnian, Croatian, Slovak, Czech, Polish, Slovenian
+function transliterateAdvanced(text) {
+    const map = {
+        // Russian / Ukrainian / Bulgarian / Macedonian / Serbian / Bosnian
+        'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'zh','з':'z',
+        'и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r',
+        'с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'ts','ч':'ch','ш':'sh','щ':'sch',
+        'ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya',
+        // Ukrainian specific
+        'і':'i','ї':'yi','є':'ye','ґ':'g',
+        // Bulgarian specific
+        'ь':'','ъ':'a',
+        // Serbian / Macedonian Cyrillic
+        'ђ':'dj','ж':'zh','љ':'lj','њ':'nj','ћ':'c','џ':'dz','ѓ':'gj','ѕ':'dz','ѐ':'e',
+        'ј':'j','ќ':'kj','ѓ':'gj','ѐ':'e','ѣ':'e',
+        // Polish diacritics
+        'ą':'a','ć':'c','ę':'e','ł':'l','ń':'n','ó':'o','ś':'s','ź':'z','ż':'z',
+        // Czech / Slovak diacritics
+        'á':'a','č':'c','ď':'d','é':'e','ě':'e','í':'i','ň':'n','ř':'r','š':'s',
+        'ť':'t','ú':'u','ů':'u','ý':'y','ž':'z',
+        // Croatian / Bosnian / Serbian Latin
+        'đ':'d','ć':'c','č':'c','š':'s','ž':'z',
+        // Slovenian
+        // (same as Croatian above)
+        // German / other common
+        'ä':'ae','ö':'oe','ü':'ue','ß':'ss',
+        // Macedonian specific
+        'ѓ':'gj','ѕ':'dz','ј':'j','љ':'lj','њ':'nj','ќ':'kj','џ':'dz',
+    };
+    return text.toLowerCase().split('').map(c => map[c] !== undefined ? map[c] : c).join('');
+}
+
+// Parse search query: extract #tag parts and text parts
+function parseSearchQuery(raw) {
+    const tagMatches = [];
+    const textParts = [];
+    const tokens = raw.trim().split(/\s+/);
+    for (const tok of tokens) {
+        if (tok.startsWith('#') && tok.length > 1) {
+            tagMatches.push(tok.slice(1).toLowerCase());
+        } else if (tok.length > 0) {
+            textParts.push(tok.toLowerCase());
+        }
+    }
+    return { tagMatches, textQuery: textParts.join(' '), textWords: textParts };
+}
+
+// Get tag names for a note element (from data-tag-names attribute set during render)
+function getNoteTagNames(noteEl) {
+    return noteEl.dataset.tagNames || '';
+}
+
+// Text match logic with transliteration
+function textMatchesQuery(allText, textQuery, textWords) {
+    if (!textQuery) return true;
+    const allTr = transliterateAdvanced(allText);
+    const tq = transliterateAdvanced(textQuery);
+
+    // Exact phrase match
+    if (allText.includes(textQuery) || allTr.includes(tq)) return true;
+
+    // All words must be present
+    if (textWords.length > 1) {
+        if (textWords.every(w => allText.includes(w) || allTr.includes(transliterateAdvanced(w)))) return true;
+    }
+
+    // Word prefix match
+    const words = allText.split(/\s+/);
+    const wordsTr = allTr.split(/\s+/);
+    if (words.some(w => w.startsWith(textQuery)) || wordsTr.some(w => w.startsWith(tq))) return true;
+
+    // Fuzzy: drop last char for queries > 2 chars
+    if (textQuery.length > 2) {
+        const fuzzy = textQuery.slice(0, -1);
+        const fuzzyTr = transliterateAdvanced(fuzzy);
+        if (allText.includes(fuzzy) || allTr.includes(fuzzyTr)) return true;
+    }
+
+    return false;
+}
+
 function filterNotes() {
     const searchInput = document.getElementById('searchInput');
     if (!searchInput) return;
-    const query = searchInput.value.toLowerCase().trim();
-    if (!query) {
+    const raw = searchInput.value.trim();
+
+    if (!raw) {
         document.querySelectorAll('.note').forEach(n => n.classList.remove('hidden'));
-        highlightSearchResults(''); return;
+        clearSearchHighlights();
+        hideSearchStats();
+        return;
     }
-    const tq = transliterate(query);
+
+    const { tagMatches, textQuery, textWords } = parseSearchQuery(raw);
+
     document.querySelectorAll('.note').forEach(note => {
         const content = note.querySelector('.noteContent');
         if (!content) { note.classList.add('hidden'); return; }
-        const allText = content.textContent.toLowerCase() + ' ' + (note.querySelector('.note-footer')?.textContent.toLowerCase() || '');
-        const allTr = transliterate(allText);
-        const match = allText.includes(query) || allTr.includes(tq) ||
-            (() => { const words = query.split(/\s+/).filter(w => w.length > 0); return words.length > 1 && words.every(w => allText.includes(w) || allTr.includes(transliterate(w))); })() ||
-            allText.split(/\s+/).some(w => w.startsWith(query)) || allTr.split(/\s+/).some(w => w.startsWith(tq)) ||
-            (query.length > 2 && (allText.includes(query.slice(0,-1)) || allTr.includes(transliterate(query.slice(0,-1)))));
-        note.classList.toggle('hidden', !match);
+
+        // Tag filter: all requested tags must be present
+        // Supports both exact match and prefix (for partial typing)
+        if (tagMatches.length > 0) {
+            const noteTagNames = getNoteTagNames(note); // comma-separated lowercase tag names
+            const noteTags = noteTagNames ? noteTagNames.split(',').map(s => s.trim()).filter(Boolean) : [];
+            if (noteTags.length === 0) { note.classList.add('hidden'); return; }
+            const allTagsMatch = tagMatches.every(searchTag =>
+                noteTags.some(noteTag => noteTag === searchTag || noteTag.startsWith(searchTag))
+            );
+            if (!allTagsMatch) { note.classList.add('hidden'); return; }
+        }
+
+        // Text filter
+        if (textQuery) {
+            const allText = (content.textContent + ' ' + (note.querySelector('.note-footer')?.textContent || '')).toLowerCase();
+            if (!textMatchesQuery(allText, textQuery, textWords)) {
+                note.classList.add('hidden'); return;
+            }
+        }
+
+        note.classList.remove('hidden');
     });
-    highlightSearchResults(query);
+
+    applySearchHighlights(textQuery);
+    updateSearchStats();
 }
 
-function highlightSearchResults(query) {
-    // Visual search highlight – minimal implementation
-    document.querySelectorAll('.note').forEach(note => {
-        note.classList.toggle('search-highlight', query.length > 0 && !note.classList.contains('hidden'));
+function applySearchHighlights(query) {
+    clearSearchHighlights();
+    if (!query || query.length < 2) return;
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped})`, 'gi');
+
+    document.querySelectorAll('.note:not(.hidden) .noteContent').forEach(content => {
+        highlightTextNodes(content, regex);
     });
+}
+
+function highlightTextNodes(node, regex) {
+    if (node.nodeType === 3) {
+        const text = node.textContent;
+        if (!regex.test(text)) return;
+        regex.lastIndex = 0;
+        const frag = document.createDocumentFragment();
+        let last = 0, m;
+        while ((m = regex.exec(text)) !== null) {
+            if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+            const mark = document.createElement('mark');
+            mark.className = 'search-highlight';
+            mark.textContent = m[0];
+            frag.appendChild(mark);
+            last = regex.lastIndex;
+        }
+        if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+    } else if (node.nodeType === 1 && !['SCRIPT','STYLE','MARK'].includes(node.tagName)) {
+        Array.from(node.childNodes).forEach(child => highlightTextNodes(child, regex));
+    }
+}
+
+function clearSearchHighlights() {
+    document.querySelectorAll('.search-highlight').forEach(mark => {
+        const parent = mark.parentNode;
+        if (parent) { parent.replaceChild(document.createTextNode(mark.textContent), mark); parent.normalize(); }
+    });
+}
+
+function updateSearchStats() {
+    const visible = document.querySelectorAll('.note:not(.hidden)').length;
+    const total = document.querySelectorAll('.note').length;
+    let statsEl = document.getElementById('searchStats');
+    if (!statsEl) {
+        statsEl = document.createElement('div');
+        statsEl.id = 'searchStats';
+        statsEl.className = 'search-stats';
+        document.body.appendChild(statsEl);
+    }
+    statsEl.textContent = visible + ' / ' + total;
+    statsEl.style.display = 'block';
+
+    // Position as float below search input
+    const si = document.getElementById('searchInput');
+    if (si) {
+        const r = si.getBoundingClientRect();
+        statsEl.style.top = (r.bottom + window.scrollY + 6) + 'px';
+        statsEl.style.left = r.left + 'px';
+        statsEl.style.minWidth = r.width + 'px';
+    }
+}
+
+function hideSearchStats() {
+    const statsEl = document.getElementById('searchStats');
+    if (statsEl) statsEl.style.display = 'none';
+}
+
+// Tag autocomplete dropdown for # searches + focus hint
+function initSearchTagAutocomplete() {
+    const input = document.getElementById('searchInput');
+    if (!input) return;
+
+    let dropdown = null;
+
+    const positionDropdown = (el) => {
+        const rect = input.getBoundingClientRect();
+        el.style.cssText = `position:fixed;top:${rect.bottom + 4}px;left:${rect.left}px;min-width:${Math.max(rect.width, 280)}px;z-index:9999;`;
+    };
+
+    const closeDropdown = () => {
+        if (!dropdown) return;
+        const el = dropdown;
+        dropdown = null;
+        el.classList.remove('is-open');
+        el.classList.add('is-closing');
+        setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 180);
+    };
+
+    const openDropdown = (el) => {
+        // Force reflow so initial state is painted before transition starts
+        el.getBoundingClientRect();
+        requestAnimationFrame(() => el.classList.add('is-open'));
+    };
+
+    // Show hint panel on focus (when input is empty)
+    const showHintDropdown = async () => {
+        if (input.value.trim()) return; // already typing — don't override
+        closeDropdown();
+
+        const allTags = typeof getTags === 'function' ? await getTags() : [];
+
+        dropdown = document.createElement('div');
+        dropdown.className = 'search-tag-dropdown search-hint-dropdown';
+        document.body.appendChild(dropdown);
+        positionDropdown(dropdown);
+        openDropdown(dropdown);
+
+        const _t = (key, fb) => window.t ? (window.t(key) || fb) : fb;
+
+        let html = `<div class="search-hint-header"><i class="bi bi-search"></i> ${_t('searchHintTitle', 'Как искать')}</div>`;
+        html += `<div class="search-hint-tips">`;
+        html += `<div class="search-hint-tip"><span class="search-hint-key">текст</span><span class="search-hint-desc">${_t('searchHintText', 'поиск по содержимому')}</span></div>`;
+        html += `<div class="search-hint-tip"><span class="search-hint-key">#тег</span><span class="search-hint-desc">${_t('searchHintTag', 'поиск по тегу')}</span></div>`;
+        html += `<div class="search-hint-tip"><span class="search-hint-key">текст #тег</span><span class="search-hint-desc">${_t('searchHintCombined', 'комбинированный поиск')}</span></div>`;
+        html += `</div>`;
+
+        if (allTags.length > 0) {
+            html += `<div class="search-hint-tags-title"><i class="bi bi-tags"></i> ${_t('searchHintTags', 'Теги')}</div>`;
+            html += `<div class="search-hint-tags">`;
+            allTags.forEach(tag => {
+                const colorObj = (typeof TAG_COLORS !== 'undefined' ? TAG_COLORS : []).find(c => c.id === tag.colorId);
+                const hex = colorObj ? colorObj.hex : '#aefc6e';
+                html += `<button class="search-hint-tag-pill" data-tag="${escapeHtml(tag.name)}" style="--tag-color:${hex}">
+                    <span class="search-tag-dot" style="background:${hex}"></span>${escapeHtml(tag.name)}
+                </button>`;
+            });
+            html += `</div>`;
+        }
+
+        dropdown.innerHTML = html;
+
+        // Click on tag pill — insert #tagname into input
+        dropdown.querySelectorAll('.search-hint-tag-pill').forEach(pill => {
+            pill.addEventListener('mousedown', e => {
+                e.preventDefault();
+                input.value = '#' + pill.dataset.tag + ' ';
+                closeDropdown();
+                filterNotes();
+                input.focus();
+            });
+        });
+    };
+
+    input.addEventListener('focus', showHintDropdown);
+
+    input.addEventListener('input', async () => {
+        filterNotes();
+        const val = input.value;
+
+        // Empty — show hint again
+        if (!val.trim()) { showHintDropdown(); return; }
+
+        const hashIdx = val.lastIndexOf('#');
+        if (hashIdx === -1) { closeDropdown(); return; }
+
+        const partial = val.slice(hashIdx + 1).toLowerCase();
+        const allTags = typeof getTags === 'function' ? await getTags() : [];
+        const matches = allTags.filter(t => t.name.toLowerCase().startsWith(partial));
+
+        if (matches.length === 0) { closeDropdown(); return; }
+
+        if (!dropdown) {
+            dropdown = document.createElement('div');
+            dropdown.className = 'search-tag-dropdown';
+            document.body.appendChild(dropdown);
+            positionDropdown(dropdown);
+            openDropdown(dropdown);
+        }
+
+        positionDropdown(dropdown);
+        dropdown.innerHTML = '';
+
+        matches.slice(0, 8).forEach(tag => {
+            const colorObj = (typeof TAG_COLORS !== 'undefined' ? TAG_COLORS : []).find(c => c.id === tag.colorId);
+            const hex = colorObj ? colorObj.hex : '#aefc6e';
+            const item = document.createElement('button');
+            item.className = 'search-tag-item';
+            item.innerHTML = `<span class="search-tag-dot" style="background:${hex}"></span>${escapeHtml(tag.name)}`;
+            item.addEventListener('mousedown', e => {
+                e.preventDefault();
+                const before = val.slice(0, hashIdx + 1);
+                input.value = before + tag.name + ' ';
+                closeDropdown();
+                filterNotes();
+                input.focus();
+            });
+            dropdown.appendChild(item);
+        });
+    });
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { closeDropdown(); input.value = ''; filterNotes(); input.blur(); }
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            closeDropdown();
+            const first = document.querySelector('.note:not(.hidden)');
+            if (first) { first.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        }
+        if (e.key === 'ArrowDown' && dropdown) {
+            const items = dropdown.querySelectorAll('.search-tag-item, .search-hint-tag-pill');
+            if (items.length) { items[0].focus(); }
+        }
+    });
+
+    document.addEventListener('click', e => {
+        if (dropdown && !dropdown.contains(e.target) && e.target !== input) closeDropdown();
+    });
+
+    // Reposition stats badge and dropdown on scroll/resize
+    const repositionStats = () => {
+        const statsEl = document.getElementById('searchStats');
+        if (!statsEl || statsEl.style.display === 'none') return;
+        const r = input.getBoundingClientRect();
+        statsEl.style.top = (r.bottom + window.scrollY + 6) + 'px';
+        statsEl.style.left = r.left + 'px';
+        statsEl.style.minWidth = r.width + 'px';
+    };
+    window.addEventListener('scroll', repositionStats, { passive: true });
+    window.addEventListener('resize', repositionStats, { passive: true });
 }
 
 // ============================================================================
@@ -1744,11 +2075,9 @@ function initializeEventListeners() {
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('input', filterNotes);
-        searchInput.addEventListener('keydown', e => {
-            if (e.key === 'Escape') { searchInput.value = ''; filterNotes(); searchInput.blur(); }
-            if (e.key === 'Enter') { e.preventDefault(); const first = document.querySelector('.note:not(.hidden)'); if (first) { first.scrollIntoView({ behavior:'smooth', block:'center' }); first.focus(); } }
-        });
+        // Keyboard shortcuts handled inside initSearchTagAutocomplete
     }
+    initSearchTagAutocomplete();
 
     const clearBtn = document.getElementById('clearAllButton');
     if (clearBtn) clearBtn.addEventListener('click', showClearAllConfirmationModal);

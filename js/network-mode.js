@@ -52,6 +52,11 @@
     document.body.appendChild(banner);
   }
 
+  function isModalOpen() {
+    var modal = document.getElementById('editModal');
+    return modal && modal.style.display !== 'none' && modal.style.display !== '';
+  }
+
   function showBanner() {
     createBanner();
     var b = document.getElementById(BANNER_ID);
@@ -59,7 +64,9 @@
       var t = (window.t && window.t('offlineBannerText')) || 'You are offline — app works from cache';
       var el = document.getElementById('lnOfflineBannerText');
       if (el) el.textContent = t;
-      b.classList.add('ln-offline-banner--visible');
+      if (!isModalOpen()) {
+        b.classList.add('ln-offline-banner--visible');
+      }
     }
   }
 
@@ -135,6 +142,19 @@
     }
   };
 
+  function setupModalObserver() {
+    var modal = document.getElementById('editModal');
+    if (!modal) return;
+    var observer = new MutationObserver(function() {
+      if (modal.style.display !== 'none' && modal.style.display !== '') {
+        hideBanner();
+      } else if (!navigator.onLine) {
+        showBanner();
+      }
+    });
+    observer.observe(modal, { attributes: true, attributeFilter: ['style'] });
+  }
+
   /* ── init ─────────────────────────────────────────────── */
   function init() {
     var mode = getMode();
@@ -145,11 +165,13 @@
         buildToggle();
         updateToggleUI(mode);
         updateBanner();
+        setupModalObserver();
       });
     } else {
       buildToggle();
       updateToggleUI(mode);
       updateBanner();
+      setupModalObserver();
     }
 
     // Слушаем реальные события сети

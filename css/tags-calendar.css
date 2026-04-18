@@ -1,4 +1,4 @@
-﻿/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════════════════
    TAGS & CALENDAR STYLES
    ═══════════════════════════════════════════════ */
 
@@ -522,6 +522,58 @@
     cursor: pointer; transition: all .12s;
 }
 .nsm-new-tag-btn:hover { background: rgba(40,167,69,.1); }
+
+/* Tag manager */
+.nsm-mgr-toggle {
+    display: inline-flex; align-items: center; gap: 5px;
+    margin-top: 8px; padding: 3px 10px; border-radius: 999px;
+    font-size: 12px; cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--border-color, #333);
+    color: var(--text-secondary, #888);
+    transition: all .12s;
+}
+.nsm-mgr-toggle:hover { color: var(--text-color, #e0e0e0); border-color: var(--text-secondary, #888); }
+.nsm-mgr-chevron { font-size: 10px; transition: transform .18s; }
+.nsm-mgr-chevron-open { transform: rotate(180deg); }
+
+.nsm-mgr-list {
+    margin-top: 6px;
+    border: 1px solid var(--border-color, #272727);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.nsm-mgr-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--border-color, #1e1e1e);
+    transition: background .1s;
+}
+.nsm-mgr-row:last-child { border-bottom: none; }
+.nsm-mgr-row:hover { background: var(--button-hover, #2d2d2d); }
+.nsm-mgr-dot {
+    width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+}
+.nsm-mgr-name {
+    flex: 1; font-size: 13px; color: var(--text-color, #e0e0e0);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.nsm-mgr-edit, .nsm-mgr-del {
+    background: transparent; border: none;
+    padding: 3px 6px; border-radius: 5px;
+    font-size: 13px; cursor: pointer;
+    color: var(--text-secondary, #888);
+    transition: all .12s; flex-shrink: 0;
+}
+.nsm-mgr-edit:hover { color: var(--text-color, #e0e0e0); background: var(--bg-secondary, #111); }
+.nsm-mgr-del:hover { color: #e74c3c; background: rgba(231,76,60,.1); }
+
+[data-theme="light"] .nsm-mgr-toggle { border-color: #dee2e6; color: #6c757d; }
+[data-theme="light"] .nsm-mgr-list { border-color: #dee2e6; }
+[data-theme="light"] .nsm-mgr-row { border-bottom-color: #f0f0f0; }
+[data-theme="light"] .nsm-mgr-row:hover { background: #f8f9fa; }
+[data-theme="light"] .nsm-mgr-name { color: #212529; }
+[data-theme="light"] .nsm-mgr-edit:hover { background: #f0f0f0; color: #212529; }
 
 /* Due date */
 .nsm-input {

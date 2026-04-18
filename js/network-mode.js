@@ -19,6 +19,7 @@
     applyMode(mode);
     notifySW(mode);
     updateToggleUI(mode);
+    updateBanner();
   }
 
   function applyMode(mode) {
@@ -52,12 +53,16 @@
     document.body.appendChild(banner);
   }
 
+  // Track real connectivity state independently of navigator.onLine
+  var _isReallyOffline = false;
+
   function isModalOpen() {
     var modal = document.getElementById('editModal');
     return modal && modal.style.display !== 'none' && modal.style.display !== '';
   }
 
   function showBanner() {
+    _isReallyOffline = true;
     createBanner();
     var b = document.getElementById(BANNER_ID);
     if (b) {
@@ -71,11 +76,13 @@
   }
 
   function hideBanner() {
+    _isReallyOffline = false;
     var b = document.getElementById(BANNER_ID);
     if (b) b.classList.remove('ln-offline-banner--visible');
   }
 
   function updateBanner() {
+    // Banner reflects REAL connectivity only, not the manual mode toggle
     if (!navigator.onLine) {
       showBanner();
     } else {
@@ -137,7 +144,7 @@
     if (el('lnNetOnlineText'))  el('lnNetOnlineText').textContent  = t('onlineMode',  'Online');
     var btn = el('lnNetSwitch');
     if (btn) btn.setAttribute('aria-label', t('networkModeLabel', 'Network mode'));
-    if (el('lnOfflineBannerText') && !navigator.onLine) {
+    if (el('lnOfflineBannerText') && _isReallyOffline) {
       el('lnOfflineBannerText').textContent = t('offlineBannerText', 'You are offline — app works from cache');
     }
   };
@@ -148,7 +155,7 @@
     var observer = new MutationObserver(function() {
       if (modal.style.display !== 'none' && modal.style.display !== '') {
         hideBanner();
-      } else if (!navigator.onLine) {
+      } else if (_isReallyOffline) {
         showBanner();
       }
     });

@@ -249,11 +249,15 @@ window.localNotesEditorAPI = {
     // Only on touch devices
     if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) return;
 
-    var PADDING       = 24;    // px gap between caret and bottom of visible area
-    var rafId         = null;
-    var timers        = [];
-    var userScrolling = false; // true while user is manually scrolling
+    var PADDING        = 24;
+    var rafId          = null;
+    var timers         = [];
+    var userScrolling  = false;
     var scrollEndTimer = null;
+    // true only when user tapped inside the editor — prevents auto-scroll
+    // to end of text when the modal first opens
+    var userTapped     = false;
+    var tapResetTimer  = null;
 
     function clearTimers() {
         timers.forEach(clearTimeout);
@@ -273,7 +277,6 @@ window.localNotesEditorAPI = {
     }
 
     function scrollCaretIntoView() {
-        // Don't fight the user while they're manually scrolling
         if (userScrolling) return;
 
         var modal = document.getElementById('editModal');
@@ -291,16 +294,10 @@ window.localNotesEditorAPI = {
         var toolbar       = modal.querySelector('.lne-toolbar');
         var toolbarBottom = toolbar ? toolbar.getBoundingClientRect().bottom : 0;
 
-        var caretBottom = caretRect.bottom;
-        var caretTop    = caretRect.top;
-
-        // Caret hidden under keyboard
-        if (caretBottom + PADDING > vvBottom) {
-            body.scrollTop += (caretBottom + PADDING - vvBottom);
-        }
-        // Caret scrolled above toolbar
-        else if (caretTop < toolbarBottom + PADDING) {
-            body.scrollTop -= (toolbarBottom + PADDING - caretTop);
+        if (caretRect.bottom + PADDING > vvBottom) {
+            body.scrollTop += (caretRect.bottom + PADDING - vvBottom);
+        } else if (caretRect.top < toolbarBottom + PADDING) {
+            body.scrollTop -= (toolbarBottom + PADDING - caretRect.top);
         }
     }
 
@@ -309,45 +306,63 @@ window.localNotesEditorAPI = {
         rafId = requestAnimationFrame(scrollCaretIntoView);
     }
 
-    // Re-check after keyboard animation completes
+    // Only scroll to caret after keyboard animation if user actually tapped
     function scheduleScrollDelayed() {
+        if (!userTapped) return;
         clearTimers();
         [80, 200, 400].forEach(function (ms) {
             timers.push(setTimeout(scrollCaretIntoView, ms));
         });
     }
 
-    // Detect manual scroll — suppress caret-scroll while user is scrolling
     document.addEventListener('DOMContentLoaded', function () {
         var modal = document.getElementById('editModal');
         if (!modal) return;
-        var body = modal.querySelector('.lne-body');
+        var body  = modal.querySelector('.lne-body');
+        var ed    = modal.querySelector('.lne-editor');
         if (!body) return;
 
+        // Mark tap inside editor — so viewport resize knows it's user-initiated
+        if (ed) {
+            ed.addEventListener('touchstart', function () {
+                userTapped = true;
+                clearTimeout(tapResetTimer);
+                // Reset after enough time for keyboard + scroll to complete
+                tapResetTimer = setTimeout(function () { userTapped = false; }, 1500);
+            }, { passive: true });
+        }
+
+        // Suppress caret-scroll while user is manually scrolling
         body.addEventListener('touchstart', function () {
             userScrolling = true;
             clearTimeout(scrollEndTimer);
         }, { passive: true });
 
         body.addEventListener('touchend', function () {
-            // Resume caret-scroll shortly after finger lifts
             clearTimeout(scrollEndTimer);
             scrollEndTimer = setTimeout(function () {
                 userScrolling = false;
             }, 300);
         }, { passive: true });
+
+        // Reset userTapped when modal closes
+        new MutationObserver(function () {
+            if (modal.style.display === 'none' || modal.style.display === '') {
+                userTapped = false;
+                clearTimers();
+            }
+        }).observe(modal, { attributes: true, attributeFilter: ['style'] });
     });
 
     // input = user typed → always scroll to caret
     document.addEventListener('input', function () {
         userScrolling = false;
+        userTapped    = true;
         scheduleScroll();
     }, true);
 
-    // selectionchange = tap to place cursor → scroll only if not manually scrolling
     document.addEventListener('selectionchange', scheduleScroll);
 
-    // KEY FIX: keyboard opens → visualViewport shrinks → scroll caret into view
     if (window.visualViewport) {
         window.visualViewport.addEventListener('resize', scheduleScrollDelayed);
     }

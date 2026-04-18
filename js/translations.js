@@ -290,13 +290,21 @@ const translations = {
         dcmEnterPassword: "Enter a password",
         dcmDecrypting: "Decrypting...",
         dcmWrongPasswordRetry: "Wrong password — try again",
+        dcmOriginError: "Open localnotes-three.vercel.app to decrypt",
+        decryptOriginError: "Decryption only works on localnotes-three.vercel.app",
         dcmEnterPasswordPlaceholder: "Enter password...",
         markdownMode: "Markdown mode  Ctrl+M",
         exitMarkdownMode: "Exit Markdown mode  Ctrl+M",
         mdEdit: "Edit",
         mdPreview: "Preview",
         offlineMode: "Offline",
-        onlineMode: "Online"
+        onlineMode: "Online",
+        // Import error messages
+        importEncryptedUseFormat: "{name} is encrypted — use Encrypted format",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Imported {count} note(s), errors: {errors}",
+        importSkipped: "Skipped: {count}",
+        importErrors: "Errors: {count}"
     },
     
     ru: {
@@ -582,13 +590,20 @@ const translations = {
         dcmEnterPassword: "Введите пароль",
         dcmDecrypting: "Расшифровка...",
         dcmWrongPasswordRetry: "Неверный пароль — попробуйте снова",
+        dcmOriginError: "Откройте localnotes-three.vercel.app для расшифровки",
+        decryptOriginError: "Расшифровка работает только на localnotes-three.vercel.app",
         dcmEnterPasswordPlaceholder: "Введите пароль...",
         markdownMode: "Режим Markdown  Ctrl+M",
         exitMarkdownMode: "Выйти из режима Markdown  Ctrl+M",
         mdEdit: "Редактировать",
         mdPreview: "Просмотр",
         offlineMode: "Офлайн",
-        onlineMode: "Онлайн"
+        onlineMode: "Онлайн",
+        importEncryptedUseFormat: "{name} зашифрован — используйте формат Encrypted",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Импортировано {count} заметок, ошибок: {errors}",
+        importSkipped: "Пропущено: {count}",
+        importErrors: "Ошибок: {count}"
     },
     
     ua: {
@@ -838,13 +853,20 @@ const translations = {
         dcmEnterPassword: "Введіть пароль",
         dcmDecrypting: "Розшифровка...",
         dcmWrongPasswordRetry: "Невірний пароль — спробуйте знову",
+        dcmOriginError: "Відкрийте localnotes-three.vercel.app для розшифровки",
+        decryptOriginError: "Розшифровка працює тільки на localnotes-three.vercel.app",
         dcmEnterPasswordPlaceholder: "Введіть пароль...",
         markdownMode: "Режим Markdown  Ctrl+M",
         exitMarkdownMode: "Вийти з режиму Markdown  Ctrl+M",
         mdEdit: "Редагувати",
         mdPreview: "Перегляд",
         offlineMode: "Офлайн",
-        onlineMode: "Онлайн"
+        onlineMode: "Онлайн",
+        importEncryptedUseFormat: "{name} зашифровано — використовуйте формат Encrypted",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Імпортовано {count} нотаток, помилок: {errors}",
+        importSkipped: "Пропущено: {count}",
+        importErrors: "Помилок: {count}"
     },
     
     pl: {
@@ -1075,13 +1097,20 @@ const translations = {
         dcmEnterPassword: "Wprowadź hasło",
         dcmDecrypting: "Odszyfrowywanie...",
         dcmWrongPasswordRetry: "Złe hasło — spróbuj ponownie",
+        dcmOriginError: "Otwórz localnotes-three.vercel.app aby odszyfrować",
+        decryptOriginError: "Odszyfrowanie działa tylko na localnotes-three.vercel.app",
         dcmEnterPasswordPlaceholder: "Wprowadź hasło...",
         markdownMode: "Tryb Markdown  Ctrl+M",
         exitMarkdownMode: "Wyjdź z trybu Markdown  Ctrl+M",
         mdEdit: "Edytuj",
         mdPreview: "Podgląd",
         offlineMode: "Offline",
-        onlineMode: "Online"
+        onlineMode: "Online",
+        importEncryptedUseFormat: "{name} jest zaszyfrowany — użyj formatu Encrypted",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Zaimportowano {count} notatek, błędów: {errors}",
+        importSkipped: "Pominięto: {count}",
+        importErrors: "Błędów: {count}"
     },
     
     cs: {
@@ -1312,13 +1341,20 @@ const translations = {
         dcmEnterPassword: "Zadejte heslo",
         dcmDecrypting: "Dešifrování...",
         dcmWrongPasswordRetry: "Špatné heslo — zkuste znovu",
+        dcmOriginError: "Otevřete localnotes-three.vercel.app pro dešifrování",
+        decryptOriginError: "Dešifrování funguje pouze na localnotes-three.vercel.app",
         dcmEnterPasswordPlaceholder: "Zadejte heslo...",
         markdownMode: "Režim Markdown  Ctrl+M",
         exitMarkdownMode: "Ukončit režim Markdown  Ctrl+M",
         mdEdit: "Upravit",
         mdPreview: "Náhled",
         offlineMode: "Offline",
-        onlineMode: "Online"
+        onlineMode: "Online",
+        importEncryptedUseFormat: "{name} je zašifrován — použijte formát Encrypted",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Importováno {count} poznámek, chyb: {errors}",
+        importSkipped: "Přeskočeno: {count}",
+        importErrors: "Chyb: {count}"
     },
     
     sk: {
@@ -1547,13 +1583,20 @@ const translations = {
         dcmEnterPassword: "Zadajte heslo",
         dcmDecrypting: "Dešifrovanie...",
         dcmWrongPasswordRetry: "Zlé heslo — skúste znova",
+        dcmOriginError: "Otvorte localnotes-three.vercel.app pre dešifrovanie",
+        decryptOriginError: "Dešifrovanie funguje iba na localnotes-three.vercel.app",
         dcmEnterPasswordPlaceholder: "Zadajte heslo...",
         markdownMode: "Režim Markdown  Ctrl+M",
         exitMarkdownMode: "Ukončiť režim Markdown  Ctrl+M",
         mdEdit: "Upraviť",
         mdPreview: "Náhľad",
         offlineMode: "Offline",
-        onlineMode: "Online"
+        onlineMode: "Online",
+        importEncryptedUseFormat: "{name} je zašifrovaný — použite formát Encrypted",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Importovaných {count} poznámok, chýb: {errors}",
+        importSkipped: "Preskočené: {count}",
+        importErrors: "Chýb: {count}"
     },
     
     bg: {
@@ -1780,13 +1823,20 @@ const translations = {
         dcmEnterPassword: "Въведете парола",
         dcmDecrypting: "Декриптиране...",
         dcmWrongPasswordRetry: "Грешна парола — опитайте отново",
+        dcmOriginError: "Отворете localnotes-three.vercel.app за дешифриране",
+        decryptOriginError: "Дешифрирането работи само на localnotes-three.vercel.app",
         dcmEnterPasswordPlaceholder: "Въведете парола...",
         markdownMode: "Режим Markdown  Ctrl+M",
         exitMarkdownMode: "Изход от режим Markdown  Ctrl+M",
         mdEdit: "Редактиране",
         mdPreview: "Преглед",
         offlineMode: "Офлайн",
-        onlineMode: "Онлайн"
+        onlineMode: "Онлайн",
+        importEncryptedUseFormat: "{name} е шифрован — използвайте формат Encrypted",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Импортирани {count} бележки, грешки: {errors}",
+        importSkipped: "Пропуснати: {count}",
+        importErrors: "Грешки: {count}"
     },
     
     hr: {
@@ -2012,7 +2062,14 @@ const translations = {
         mdEdit: "Uredi",
         mdPreview: "Pregled",
         offlineMode: "Offline",
-        onlineMode: "Online"
+        onlineMode: "Online",
+        importEncryptedUseFormat: "{name} je šifriran — koristite format Encrypted",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Uvezeno {count} bilješki, grešaka: {errors}",
+        importSkipped: "Preskočeno: {count}",
+        importErrors: "Grešaka: {count}",
+        dcmOriginError: "Otvorite localnotes-three.vercel.app za dešifriranje",
+        decryptOriginError: "Dešifriranje radi samo na localnotes-three.vercel.app"
     },
 
     sr: {
@@ -2229,13 +2286,20 @@ const translations = {
         dcmEnterPassword: "Унесите лозинку",
         dcmDecrypting: "Дешифровање...",
         dcmWrongPasswordRetry: "Погрешна лозинка — покушајте поново",
+        dcmOriginError: "Отворите localnotes-three.vercel.app за дешифровање",
+        decryptOriginError: "Дешифровање ради само на localnotes-three.vercel.app",
         dcmEnterPasswordPlaceholder: "Унесите лозинку...",
         markdownMode: "Markdown режим  Ctrl+M",
         exitMarkdownMode: "Излаз из Markdown режима  Ctrl+M",
         mdEdit: "Уреди",
         mdPreview: "Преглед",
         offlineMode: "Офлајн",
-        onlineMode: "Онлајн"
+        onlineMode: "Онлајн",
+        importEncryptedUseFormat: "{name} је шифрован — користите формат Encrypted",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Увезено {count} белешки, грешака: {errors}",
+        importSkipped: "Прескочено: {count}",
+        importErrors: "Грешака: {count}"
     },
     
     bs: {
@@ -2461,7 +2525,14 @@ const translations = {
         mdEdit: "Uredi",
         mdPreview: "Pregled",
         offlineMode: "Offline",
-        onlineMode: "Online"
+        onlineMode: "Online",
+        importEncryptedUseFormat: "{name} je šifriran — koristite format Encrypted",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Uvezeno {count} bilješki, grešaka: {errors}",
+        importSkipped: "Preskočeno: {count}",
+        importErrors: "Grešaka: {count}",
+        dcmOriginError: "Otvorite localnotes-three.vercel.app za dešifriranje",
+        decryptOriginError: "Dešifriranje radi samo na localnotes-three.vercel.app"
     },
 
     mk: {
@@ -2687,13 +2758,20 @@ const translations = {
         dcmEnterPassword: "Внесете лозинка",
         dcmDecrypting: "Дешифрирање...",
         dcmWrongPasswordRetry: "Погрешна лозинка — обидете се повторно",
+        dcmOriginError: "Отворете localnotes-three.vercel.app за дешифрирање",
+        decryptOriginError: "Дешифрирањето работи само на localnotes-three.vercel.app",
         dcmEnterPasswordPlaceholder: "Внесете лозинка...",
         markdownMode: "Markdown режим  Ctrl+M",
         exitMarkdownMode: "Излез од Markdown режим  Ctrl+M",
         mdEdit: "Уреди",
         mdPreview: "Преглед",
         offlineMode: "Офлајн",
-        onlineMode: "Онлајн"
+        onlineMode: "Онлајн",
+        importEncryptedUseFormat: "{name} е шифрирана — користете формат Encrypted",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Увезени {count} белешки, грешки: {errors}",
+        importSkipped: "Прескокнати: {count}",
+        importErrors: "Грешки: {count}"
     },
 
     sl: {
@@ -2909,13 +2987,20 @@ const translations = {
         dcmEnterPassword: "Vnesite geslo",
         dcmDecrypting: "Dešifriranje...",
         dcmWrongPasswordRetry: "Napačno geslo — poskusite znova",
+        dcmOriginError: "Odprite localnotes-three.vercel.app za dešifriranje",
+        decryptOriginError: "Dešifriranje deluje samo na localnotes-three.vercel.app",
         dcmEnterPasswordPlaceholder: "Vnesite geslo...",
         markdownMode: "Markdown način  Ctrl+M",
         exitMarkdownMode: "Izhod iz Markdown načina  Ctrl+M",
         mdEdit: "Uredi",
         mdPreview: "Predogled",
         offlineMode: "Brez povezave",
-        onlineMode: "S povezavo"
+        onlineMode: "S povezavo",
+        importEncryptedUseFormat: "{name} je šifrirana — uporabite format Encrypted",
+        importFileError: "{name}: {message}",
+        importCompletedWithErrors: "Uvoženo {count} opomb, napak: {errors}",
+        importSkipped: "Preskočeno: {count}",
+        importErrors: "Napak: {count}"
     }
 };
 

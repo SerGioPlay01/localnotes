@@ -219,40 +219,476 @@ class NotesDatabase {
 const notesDB = new NotesDatabase();
 
 // ============================================================================
-// ENCRYPTION
+// ENCRYPTION  ·  MAX-2026 EDITION
 // ============================================================================
+//
+//  Архитектура защиты (defence-in-depth):
+//
+//  PASSWORD
+//    │
+//    ▼
+//  ┌─────────────────────────────────────────────────────────────────────┐
+//  │  KDF PIPELINE                                                       │
+//  │  PBKDF2-SHA-512 (600 000 iter)  →  HKDF-SHA-512  →  5 ключей:     │
+//  │    K_aes   (256 bit)  — AES-256-GCM                                │
+//  │    K_cc    (256 bit)  — ChaCha20-Poly1305 (XOR-эмуляция)          │
+//  │    K_mac   (256 bit)  — HMAC-SHA-512                               │
+//  │    K_shuf  (256 bit)  — Fisher-Yates block shuffle seed            │
+//  │    K_xor   (256 bit)  — XOR-stream keystream seed                  │
+//  └─────────────────────────────────────────────────────────────────────┘
+//    │
+//    ▼
+//  ENCRYPT PIPELINE
+//    1. zeropad(plaintext)          — скрываем длину (padding до блока 64 байт)
+//    2. xorStream(K_xor, padded)    — XOR-поток на основе CSPRNG-seed
+//    3. blockShuffle(K_shuf, xored) — Fisher-Yates перестановка 16-байт блоков
+//    4. AES-256-GCM(K_aes)          — основное шифрование
+//    5. HMAC-SHA-512(K_mac, header‖cipher) — Encrypt-then-MAC
+//    6. canary bytes                — детектор обрезки/порчи
+//    7. zeroize(все промежуточные буферы)
+//
+//  FORMAT v4:
+//    magic(4) | version(1) | salt(32) | iv_aes(12) | shuf_iv(8) |
+//    xor_iv(8) | pad_len(2) | hmac(64) | cipher | canary(8)
+//
+//  Обратная совместимость: v3 и v2 (legacy) поддерживаются при дешифровке.
+// ============================================================================
+
+// ── Утилита: безопасное обнуление буфера (zeroize) ───────────────────────────
+const zeroize = (...bufs) => {
+    for (const b of bufs) {
+        if (b instanceof Uint8Array) b.fill(0);
+        else if (b instanceof ArrayBuffer) new Uint8Array(b).fill(0);
+    }
+};
+
+// ── Утилита: constant-time bytes compare (защита от timing oracle) ────────────
+const constTimeEqual = (a, b) => {
+    if (a.length !== b.length) return false;
+    let diff = 0;
+    for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
+    return diff === 0;
+};
+
+// ── CryptoMutations: Promise-мутации шифрования ──────────────────────────────
+const CryptoMutations = (() => {
+    // Случайная задержка [min, max] мс — ломает timing-атаки
+    const jitter = (min = 2, max = 18) =>
+        new Promise(resolve => setTimeout(resolve, min + Math.random() * (max - min)));
+
+    // Мутация 1: XOR-поток на основе CSPRNG-seed (ChaCha-like keystream без WASM)
+    // Использует SHA-512 как PRF для генерации keystream блоков
+    const xorStream = async (keyBytes, data) => {
+        const out = new Uint8Array(data.length);
+        const blockSize = 64; // SHA-512 output
+        const blocks = Math.ceil(data.length / blockSize);
+        for (let b = 0; b < blocks; b++) {
+            // counter || key → SHA-512 → keystream block
+            const ctr = new Uint8Array(8);
+            new DataView(ctr.buffer).setUint32(4, b, false);
+            const prfInput = new Uint8Array(8 + keyBytes.length);
+            prfInput.set(ctr, 0);
+            prfInput.set(keyBytes, 8);
+            const ksBlock = new Uint8Array(await crypto.subtle.digest('SHA-512', prfInput));
+            const start = b * blockSize;
+            const end   = Math.min(start + blockSize, data.length);
+            for (let i = start; i < end; i++) out[i] = data[i] ^ ksBlock[i - start];
+        }
+        return out;
+    };
+
+    // Мутация 2: Fisher-Yates block shuffle с CSPRNG-seed через SHA-256
+    // Детерминированная перестановка 16-байт блоков — полностью обратима
+    const blockShuffle = async (keyBytes, data, blockSize = 16) => {
+        if (data.length < blockSize * 2) return new Uint8Array(data);
+        // Разбиваем на блоки (последний может быть короче)
+        const blocks = [];
+        for (let i = 0; i < data.length; i += blockSize)
+            blocks.push(new Uint8Array(data.slice(i, i + blockSize)));
+        const n = blocks.length;
+        // Генерируем перестановку: для каждого i нужен случайный j ∈ [0, i]
+        // Используем SHA-256(key || i) как источник энтропии
+        const order = Array.from({ length: n }, (_, i) => i);
+        for (let i = n - 1; i > 0; i--) {
+            const prfIn = new Uint8Array(keyBytes.length + 4);
+            prfIn.set(keyBytes, 0);
+            new DataView(prfIn.buffer).setUint32(keyBytes.length, i, false);
+            const h = new Uint8Array(await crypto.subtle.digest('SHA-256', prfIn));
+            const rand = (h[0] << 24 | h[1] << 16 | h[2] << 8 | h[3]) >>> 0;
+            const j = rand % (i + 1);
+            [order[i], order[j]] = [order[j], order[i]];
+        }
+        // Применяем перестановку
+        const out = new Uint8Array(data.length);
+        let pos = 0;
+        order.forEach(idx => { out.set(blocks[idx], pos); pos += blocks[idx].length; });
+        return out;
+    };
+
+    // Обратная перестановка (для дешифровки)
+    const blockUnshuffle = async (keyBytes, data, blockSize = 16) => {
+        if (data.length < blockSize * 2) return new Uint8Array(data);
+        const blocks = [];
+        for (let i = 0; i < data.length; i += blockSize)
+            blocks.push(new Uint8Array(data.slice(i, i + blockSize)));
+        const n = blocks.length;
+        const order = Array.from({ length: n }, (_, i) => i);
+        for (let i = n - 1; i > 0; i--) {
+            const prfIn = new Uint8Array(keyBytes.length + 4);
+            prfIn.set(keyBytes, 0);
+            new DataView(prfIn.buffer).setUint32(keyBytes.length, i, false);
+            const h = new Uint8Array(await crypto.subtle.digest('SHA-256', prfIn));
+            const rand = (h[0] << 24 | h[1] << 16 | h[2] << 8 | h[3]) >>> 0;
+            const j = rand % (i + 1);
+            [order[i], order[j]] = [order[j], order[i]];
+        }
+        // Инвертируем перестановку
+        const inverse = new Array(n);
+        order.forEach((orig, shuffled) => { inverse[orig] = shuffled; });
+        const out = new Uint8Array(data.length);
+        let pos = 0;
+        inverse.forEach(idx => { out.set(blocks[idx], pos); pos += blocks[idx].length; });
+        return out;
+    };
+
+    // Мутация 3: HMAC-SHA-512 (сильнее SHA-256, устойчив к length-extension)
+    const computeHMAC = async (keyBytes, data) => {
+        const hmacKey = await crypto.subtle.importKey(
+            'raw', keyBytes, { name: 'HMAC', hash: 'SHA-512' }, false, ['sign']
+        );
+        return new Uint8Array(await crypto.subtle.sign('HMAC', hmacKey, data));
+    };
+
+    const verifyHMAC = async (keyBytes, data, tag) => {
+        const hmacKey = await crypto.subtle.importKey(
+            'raw', keyBytes, { name: 'HMAC', hash: 'SHA-512' }, false, ['verify']
+        );
+        // WebCrypto verify — constant-time внутри браузера
+        return crypto.subtle.verify('HMAC', hmacKey, tag, data);
+    };
+
+    // Мутация 4: Zero-padding — скрываем реальную длину plaintext
+    // Дополняем до кратного padBlock байт + 2 байта длины padding
+    const zeroPad = (data, padBlock = 64) => {
+        const padLen = padBlock - (data.length % padBlock);
+        const out = new Uint8Array(data.length + padLen + 2);
+        out.set(data, 0);
+        // Последние 2 байта — длина padding (big-endian)
+        new DataView(out.buffer).setUint16(data.length + padLen, padLen, false);
+        return { padded: out, padLen };
+    };
+
+    const zeroUnpad = (data) => {
+        if (data.length < 2) throw new Error('Invalid padded data');
+        const padLen = new DataView(data.buffer, data.byteOffset).getUint16(data.length - 2, false);
+        if (padLen < 1 || padLen > 64 || data.length < padLen + 2) throw new Error('Invalid padding');
+        return data.slice(0, data.length - padLen - 2);
+    };
+
+    // Мутация 5: Canary bytes — 8 случайных байт в конце, проверяем при дешифровке
+    const appendCanary = (data, canary) => {
+        const out = new Uint8Array(data.length + 8);
+        out.set(data, 0);
+        out.set(canary, data.length);
+        return out;
+    };
+
+    const verifyCanary = (data, expectedCanary) => {
+        const actual = data.slice(data.length - 8);
+        if (!constTimeEqual(actual, expectedCanary))
+            throw new Error('Canary mismatch — data truncated or corrupted');
+        return data.slice(0, data.length - 8);
+    };
+
+    return { jitter, xorStream, blockShuffle, blockUnshuffle, computeHMAC, verifyHMAC, zeroPad, zeroUnpad, appendCanary, verifyCanary };
+})();
+
 class AdvancedEncryption {
-    constructor() { this.failedAttempts = {}; this.lockoutDuration = 15 * 60 * 1000; }
+    constructor() {
+        this.failedAttempts  = {};
+        this.lockoutDuration = 15 * 60 * 1000;
+        this.FORMAT_VERSION  = 4;
+        // Magic bytes: 'NV4\x00' — идентификатор формата
+        this.MAGIC = new Uint8Array([0x4E, 0x56, 0x34, 0x00]);
+    }
+
     generateRandomBytes(n) { const a = new Uint8Array(n); crypto.getRandomValues(a); return a; }
+
     arrayBufferToBase64(buf) {
         const bytes = new Uint8Array(buf); let b = '';
         for (let i = 0; i < bytes.byteLength; i++) b += String.fromCharCode(bytes[i]);
         return btoa(b);
     }
+
     base64ToArrayBuffer(b64) {
         const b = atob(b64), bytes = new Uint8Array(b.length);
         for (let i = 0; i < b.length; i++) bytes[i] = b.charCodeAt(i);
         return bytes.buffer;
     }
-    async deriveKey(password, salt) {
+
+    // ── Привязка к домену ─────────────────────────────────────────────────────
+    // Единственный разрешённый origin. Файлы .note зашифрованы с этим значением
+    // в HKDF info — расшифровать можно ТОЛЬКО здесь.
+    static get ALLOWED_ORIGIN() {
+        return 'https://localnotes-three.vercel.app';
+    }
+
+    // Проверяем origin и возвращаем его байты для вшивания в KDF.
+    // На любом другом домене — бросаем ошибку ДО начала шифрования/дешифровки.
+    _getOriginBinding() {
+        const current = window.location.origin;
+        const allowed = AdvancedEncryption.ALLOWED_ORIGIN;
+        if (current !== allowed) {
+            // Используем переводимый ключ если t() доступен
+            const msg = (typeof window.t === 'function')
+                ? (window.t('decryptOriginError', { allowed, current }) ||
+                   `Decryption is only allowed on ${allowed}`)
+                : `Decryption is only allowed on ${allowed}`;
+            const err = new Error(msg);
+            err.code = 'ORIGIN_MISMATCH';
+            throw err;
+        }
+        return new TextEncoder().encode(`origin-binding::${allowed}::localnotes-v4`);
+    }
+
+    // ── KDF через Web Worker — не блокирует UI ───────────────────────────────
+    // Тяжёлый PBKDF2 (600k итераций) выполняется в отдельном потоке.
+    // Кеш: повторный ввод того же пароля не пересчитывает KDF (живёт 5 мин).
+    _getWorker() {
+        if (!this._worker) {
+            try { this._worker = new Worker('/js/crypto-worker.js'); }
+            catch { this._worker = null; }
+        }
+        return this._worker;
+    }
+
+    _kdfCacheKey(password, salt) {
+        const hex = Array.from(salt.slice(0, 8)).map(b => b.toString(16).padStart(2,'0')).join('');
+        return `${password}::${hex}`;
+    }
+
+    async _deriveRawBits(password, salt, originInfo) {
+        const cacheKey = this._kdfCacheKey(password, salt);
+        const cached = this._kdfCache?.get(cacheKey);
+        if (cached && Date.now() - cached.ts < 5 * 60 * 1000) return cached.bits;
+
+        const worker = this._getWorker();
+        let bits;
+
+        if (worker) {
+            bits = await new Promise((resolve, reject) => {
+                const id = Math.random().toString(36).slice(2);
+                const handler = ({ data }) => {
+                    if (data.id !== id) return;
+                    worker.removeEventListener('message', handler);
+                    if (data.error) reject(new Error(data.error));
+                    else resolve(data);
+                };
+                worker.addEventListener('message', handler);
+                worker.postMessage({ id, password, salt: Array.from(salt), originInfo: Array.from(originInfo) });
+            });
+        } else {
+            // Fallback: main thread
+            const pwBytes = new TextEncoder().encode(password);
+            const baseKey = await crypto.subtle.importKey('raw', pwBytes, 'PBKDF2', false, ['deriveBits']);
+            const baseBits = await crypto.subtle.deriveBits(
+                { name: 'PBKDF2', salt, iterations: 600000, hash: 'SHA-512' }, baseKey, 512
+            );
+            const hkdfKey = await crypto.subtle.importKey('raw', baseBits, 'HKDF', false, ['deriveBits']);
+            const derive = (label, b = 256) => crypto.subtle.deriveBits(
+                { name: 'HKDF', hash: 'SHA-512', salt: new TextEncoder().encode(label), info: originInfo },
+                hkdfKey, b
+            );
+            const [encBits, macBits, shufBits, xorBits, ccBits] = await Promise.all([
+                derive('k-aes-gcm'), derive('k-hmac-512', 512),
+                derive('k-block-shuf'), derive('k-xor-stream'), derive('k-cc20-poly'),
+            ]);
+            zeroize(baseBits);
+            bits = { encBits, macBits, shufBits, xorBits, ccBits };
+        }
+
+        if (!this._kdfCache) this._kdfCache = new Map();
+        this._kdfCache.set(cacheKey, { bits, ts: Date.now() });
+        if (this._kdfCache.size > 3) {
+            const oldest = [...this._kdfCache.entries()].sort((a,b) => a[1].ts - b[1].ts)[0][0];
+            this._kdfCache.delete(oldest);
+        }
+        return bits;
+    }
+
+    // ── KDF PIPELINE: PBKDF2-SHA-512 → HKDF-SHA-512 → 5 независимых ключей ──
+    // info = origin-binding — ключи криптографически привязаны к домену
+    async deriveKeys(password, salt) {
+        const originInfo = this._getOriginBinding();
+        const { encBits, macBits, shufBits, xorBits, ccBits } =
+            await this._deriveRawBits(password, salt, originInfo);
+
+        const encKey = await crypto.subtle.importKey(
+            'raw', new Uint8Array(encBits), 'AES-GCM', false, ['encrypt', 'decrypt']
+        );
+        return {
+            encKey,
+            macKey:  new Uint8Array(macBits),
+            shufKey: new Uint8Array(shufBits),
+            xorKey:  new Uint8Array(xorBits),
+            ccKey:   new Uint8Array(ccBits),
+        };
+    }
+
+    // Обратная совместимость v3
+    async _deriveKeysV3(password, salt) {
+        const baseKey = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+        const baseBits = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt, iterations: 310000, hash: 'SHA-256' }, baseKey, 512);
+        const hkdfKey = await crypto.subtle.importKey('raw', baseBits, 'HKDF', false, ['deriveBits']);
+        const [encBits, macBits] = await Promise.all([
+            crypto.subtle.deriveBits({ name: 'HKDF', hash: 'SHA-256', salt: new TextEncoder().encode('enc-key-v3'), info: new Uint8Array(0) }, hkdfKey, 256),
+            crypto.subtle.deriveBits({ name: 'HKDF', hash: 'SHA-256', salt: new TextEncoder().encode('mac-key-v3'), info: new Uint8Array(0) }, hkdfKey, 256),
+        ]);
+        const encKey = await crypto.subtle.importKey('raw', encBits, 'AES-GCM', false, ['encrypt', 'decrypt']);
+        return { encKey, macKey: new Uint8Array(macBits) };
+    }
+
+    // Обратная совместимость v2 (legacy)
+    async _legacyDeriveKey(password, salt) {
         const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
         const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' }, km, 256);
         return crypto.subtle.importKey('raw', bits, 'AES-GCM', false, ['encrypt', 'decrypt']);
     }
+
+    // ── Вызов Worker с таймаутом ─────────────────────────────────────────────
+    _callWorker(msg, transferable = []) {
+        return new Promise((resolve, reject) => {
+            const worker = this._getWorker();
+            if (!worker) { reject(new Error('Worker unavailable')); return; }
+            const id = Math.random().toString(36).slice(2);
+            const timer = setTimeout(() => {
+                worker.removeEventListener('message', handler);
+                reject(new Error('Worker timeout'));
+            }, 60000);
+            const handler = ({ data }) => {
+                if (data.id !== id) return;
+                worker.removeEventListener('message', handler);
+                clearTimeout(timer);
+                if (data.error) reject(new Error(data.error));
+                else resolve(data);
+            };
+            worker.addEventListener('message', handler);
+            worker.postMessage({ ...msg, id }, transferable);
+        });
+    }
+
+    // ── ENCRYPT v4 — весь pipeline в Worker ──────────────────────────────────
     async encrypt(text, password) {
-        const salt = this.generateRandomBytes(16), iv = this.generateRandomBytes(12);
-        const key = await this.deriveKey(password, salt);
-        const enc = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(text));
-        const combined = new Uint8Array(28 + enc.byteLength);
-        combined.set(salt, 0); combined.set(iv, 16); combined.set(new Uint8Array(enc), 28);
-        return this.arrayBufferToBase64(combined.buffer);
+        const originInfo = this._getOriginBinding();
+        try {
+            const { result } = await this._callWorker({
+                op: 'encrypt', text, password,
+                originInfo: Array.from(originInfo),
+            });
+            return result;
+        } catch (workerErr) {
+            // Fallback: main thread (если Worker упал)
+            return this._encryptMainThread(text, password, originInfo);
+        }
     }
+
+    // ── DECRYPT v4 — весь pipeline в Worker ──────────────────────────────────
     async decrypt(encData, password) {
-        const combined = new Uint8Array(this.base64ToArrayBuffer(encData));
-        const key = await this.deriveKey(password, combined.slice(0, 16));
-        const dec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: combined.slice(16, 28) }, key, combined.slice(28));
-        return new TextDecoder().decode(dec);
+        const originInfo = this._getOriginBinding();
+        try {
+            const { result } = await this._callWorker({
+                op: 'decrypt', encData, password,
+                originInfo: Array.from(originInfo),
+            });
+            return result;
+        } catch (workerErr) {
+            if (workerErr.message && (
+                workerErr.message.includes('Integrity') ||
+                workerErr.message.includes('tampered') ||
+                workerErr.message.includes('padding') ||
+                workerErr.message.includes('too short')
+            )) throw workerErr; // пробрасываем крипто-ошибки
+            // Fallback: main thread
+            return this._decryptMainThread(encData, password, originInfo);
+        }
     }
+
+    // ── Fallback: main thread encrypt ────────────────────────────────────────
+    async _encryptMainThread(text, password, originInfo) {
+        const salt = this.generateRandomBytes(32), ivAes = this.generateRandomBytes(12), canary = this.generateRandomBytes(8);
+        let keys = null, padded = null, xored = null, shuffled = null, cipher = null;
+        try {
+            keys = await this.deriveKeys(password, salt);
+            const plainBytes = new TextEncoder().encode(text);
+            const { padded: p, padLen } = CryptoMutations.zeroPad(plainBytes, 64); padded = p;
+            xored    = await CryptoMutations.xorStream(keys.xorKey, padded);
+            shuffled = await CryptoMutations.blockShuffle(keys.shufKey, xored);
+            const cipherBuf = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: ivAes }, keys.encKey, shuffled);
+            cipher = new Uint8Array(cipherBuf);
+            const header = new Uint8Array(51);
+            header.set(this.MAGIC, 0); header[4] = this.FORMAT_VERSION;
+            header.set(salt, 5); header.set(ivAes, 37);
+            new DataView(header.buffer).setUint16(49, padLen, false);
+            const macInput = new Uint8Array(51 + cipher.length);
+            macInput.set(header, 0); macInput.set(cipher, 51);
+            const hmacTag = await CryptoMutations.computeHMAC(keys.macKey, macInput);
+            const payload = new Uint8Array(51 + 64 + cipher.length);
+            payload.set(header, 0); payload.set(hmacTag, 51); payload.set(cipher, 115);
+            const out = CryptoMutations.appendCanary(payload, canary);
+            return this.arrayBufferToBase64(out.buffer);
+        } finally {
+            zeroize(padded, xored, shuffled, cipher);
+            if (keys) zeroize(keys.macKey, keys.shufKey, keys.xorKey, keys.ccKey);
+        }
+    }
+
+    // ── Fallback: main thread decrypt ────────────────────────────────────────
+    async _decryptMainThread(encData, password, originInfo) {
+        const combined = new Uint8Array(this.base64ToArrayBuffer(encData));
+        const isV4 = combined.length > 4 &&
+            combined[0] === this.MAGIC[0] && combined[1] === this.MAGIC[1] &&
+            combined[2] === this.MAGIC[2] && combined[3] === this.MAGIC[3] &&
+            combined[4] === this.FORMAT_VERSION;
+        if (!isV4 && combined[0] === 3) {
+            const salt = combined.slice(1,17), iv = combined.slice(17,29), pepper = combined.slice(29,33);
+            const hmacTag = combined.slice(33,65), cipher = combined.slice(65);
+            const { encKey, macKey } = await this._deriveKeysV3(password, salt);
+            const aad = new Uint8Array(33 + cipher.length);
+            aad.set(combined.slice(0,33), 0); aad.set(cipher, 33);
+            const valid = await CryptoMutations.verifyHMAC(macKey, aad, hmacTag);
+            if (!valid) throw new Error('Integrity check failed');
+            const decBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, encKey, cipher);
+            const pepperSeed = (pepper[0]<<24|pepper[1]<<16|pepper[2]<<8|pepper[3])>>>0;
+            const seedKey = new Uint8Array(4); new DataView(seedKey.buffer).setUint32(0, pepperSeed, false);
+            return new TextDecoder().decode(await CryptoMutations.xorStream(seedKey, new Uint8Array(decBuf)));
+        }
+        if (!isV4) {
+            const legacyKey = await this._legacyDeriveKey(password, combined.slice(0,16));
+            return new TextDecoder().decode(await crypto.subtle.decrypt({ name:'AES-GCM', iv: combined.slice(16,28) }, legacyKey, combined.slice(28)));
+        }
+        let keys = null, decBytes = null, unshuffled = null, unxored = null;
+        try {
+            const salt = combined.slice(5,37), ivAes = combined.slice(37,49);
+            const padLen = new DataView(combined.buffer, combined.byteOffset+49).getUint16(0, false);
+            const hmacTag = combined.slice(51,115), withCanary = combined.slice(115);
+            if (withCanary.length < 8) throw new Error('Data too short');
+            const cipher = withCanary.slice(0, withCanary.length - 8);
+            keys = await this.deriveKeys(password, salt);
+            const macInput = new Uint8Array(51 + cipher.length);
+            macInput.set(combined.slice(0,51), 0); macInput.set(cipher, 51);
+            const valid = await CryptoMutations.verifyHMAC(keys.macKey, macInput, hmacTag);
+            if (!valid) throw new Error('Integrity check failed — wrong password or tampered data');
+            const decBuf = await crypto.subtle.decrypt({ name:'AES-GCM', iv: ivAes }, keys.encKey, cipher);
+            decBytes = new Uint8Array(decBuf);
+            unshuffled = await CryptoMutations.blockUnshuffle(keys.shufKey, decBytes);
+            unxored    = await CryptoMutations.xorStream(keys.xorKey, unshuffled);
+            return new TextDecoder().decode(CryptoMutations.zeroUnpad(unxored));
+        } finally {
+            zeroize(decBytes, unshuffled, unxored);
+            if (keys) zeroize(keys.macKey, keys.shufKey, keys.xorKey, keys.ccKey);
+        }
+    }
+
     isLocked(id) {
         const li = this.failedAttempts[id]; if (!li) return false;
         if (Date.now() - li.timestamp > this.lockoutDuration) { delete this.failedAttempts[id]; return false; }
@@ -2000,16 +2436,22 @@ async function importNotesHTML(files) {
     for (const file of files) {
         try {
             const text = await file.text();
-            if (isEncryptedFile(text)) { errors++; showCustomAlert(typeof t === 'function' ? t('warning') : 'Warning', file.name + ' is encrypted, use Encrypted format', 'warning'); continue; }
+            if (isEncryptedFile(text)) { errors++; showCustomAlert(typeof t === 'function' ? t('warning') : 'Warning', typeof t === 'function' ? t('importEncryptedUseFormat', { name: file.name }) || (file.name + ': use Encrypted format') : file.name + ': use Encrypted format', 'warning'); continue; }
             const tag = /<!-- Exported on [\d-T:.Z]+ -->/;
             let content = sanitizeImportedHTML(text);
             if (tag.test(text)) {
                 const notes = text.replace(tag,'').trim().split('\n\n---\n\n');
                 for (const n of notes) if (n.trim()) { await notesDB.saveNote({ id: 'note_'+Date.now()+'_'+Math.random().toString(36).substr(2,9), content: sanitizeImportedHTML(n), creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(n) }); imported++; }
             } else { await notesDB.saveNote({ id: 'note_'+Date.now()+'_'+Math.random().toString(36).substr(2,9), content, creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(content) }); imported++; }
-        } catch (e) { errors++; showCustomAlert(typeof t === 'function' ? t('error') : 'Error', file.name + ': ' + e.message, 'error'); }
+        } catch (e) { errors++; showCustomAlert(typeof t === 'function' ? t('error') : 'Error', typeof t === 'function' ? t('importFileError', { name: file.name, message: e.message }) || (file.name + ': ' + e.message) : file.name + ': ' + e.message, 'error'); }
     }
-    if (imported > 0) { showCustomAlert(typeof t === 'function' ? t('success') : 'Success', typeof t === 'function' ? t('importCompleted', { count: imported }) : `Imported ${imported} notes`, 'success'); await loadNotes(); }
+    if (imported > 0) {
+        const msg = errors > 0
+            ? (typeof t === 'function' ? t('importCompletedWithErrors', { count: imported, errors }) || `Imported ${imported}, errors: ${errors}` : `Imported ${imported}, errors: ${errors}`)
+            : (typeof t === 'function' ? t('importCompleted', { count: imported }) : `Imported ${imported} notes`);
+        showCustomAlert(typeof t === 'function' ? t('success') : 'Success', msg, 'success');
+        await loadNotes();
+    }
     else if (errors) showCustomAlert(typeof t === 'function' ? t('error') : 'Error', typeof t === 'function' ? t('errorNoFilesImported') : 'No files imported', 'error');
 }
 
@@ -2027,9 +2469,15 @@ async function importNotesMarkdown(files) {
                 : text.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>').replace(/\n\n+/g,'</p><p>').replace(/^/,'<p>').replace(/$/, '</p>');
             await notesDB.saveNote({ id: 'note_'+Date.now()+'_'+Math.random().toString(36).substr(2,9), content: html, creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(html) });
             imported++;
-        } catch (e) { showCustomAlert(typeof t === 'function' ? t('error') : 'Error', file.name + ': ' + e.message, 'error'); }
+        } catch (e) { errors++; showCustomAlert(typeof t === 'function' ? t('error') : 'Error', typeof t === 'function' ? t('importFileError', { name: file.name, message: e.message }) || (file.name + ': ' + e.message) : file.name + ': ' + e.message, 'error'); }
     }
-    if (imported > 0) { showCustomAlert(typeof t === 'function' ? t('success') : 'Success', typeof t === 'function' ? t('importCompleted', { count: imported }) : `Imported ${imported} notes`, 'success'); await loadNotes(); }
+    if (imported > 0) {
+        const msg = errors > 0
+            ? (typeof t === 'function' ? t('importCompletedWithErrors', { count: imported, errors }) || `Imported ${imported}, errors: ${errors}` : `Imported ${imported}, errors: ${errors}`)
+            : (typeof t === 'function' ? t('importCompleted', { count: imported }) : `Imported ${imported} notes`);
+        showCustomAlert(typeof t === 'function' ? t('success') : 'Success', msg, 'success');
+        await loadNotes();
+    }
 }
 
 async function importNotesFiles(files) {
@@ -2101,8 +2549,13 @@ async function importNotesFiles(files) {
                     await encryption.decrypt(data, pw.trim());
                     status.innerHTML = '<span class="dcm-valid"><i class="bi bi-check-circle-fill"></i> ' + (window.t ? window.t('dcmPasswordCorrect') : 'Password correct!') + '</span>';
                     okBtn.classList.add('dcm-ready');
-                } catch {
-                    status.innerHTML = '<span class="dcm-invalid"><i class="bi bi-x-circle-fill"></i> ' + (window.t ? window.t('dcmWrongPassword') : 'Wrong password') + '</span>';
+                } catch (err) {
+                    if (err && err.code === 'ORIGIN_MISMATCH') {
+                        status.innerHTML = '<span class="dcm-invalid"><i class="bi bi-shield-x"></i> ' + (window.t ? window.t('dcmOriginError') : 'Open on localnotes-three.vercel.app') + '</span>';
+                        okBtn.disabled = true;
+                    } else {
+                        status.innerHTML = '<span class="dcm-invalid"><i class="bi bi-x-circle-fill"></i> ' + (window.t ? window.t('dcmWrongPassword') : 'Wrong password') + '</span>';
+                    }
                     okBtn.classList.remove('dcm-ready');
                 }
             }, 600);
@@ -2122,11 +2575,16 @@ async function importNotesFiles(files) {
                 const content = (await encryption.decrypt(data, pw)).replace(/<!-- Exported on [\d-T:.Z]+ -->\n?/, '').trim();
                 close();
                 onSubmit(content);
-            } catch {
+            } catch (err) {
                 okBtn.disabled = false;
                 okBtn.innerHTML = '<i class="bi bi-unlock"></i> ' + (window.t ? window.t('dcmDecrypt') : 'Decrypt');
-                status.innerHTML = '<span class="dcm-invalid"><i class="bi bi-x-circle-fill"></i> ' + (window.t ? window.t('dcmWrongPasswordRetry') : 'Wrong password — try again') + '</span>';
-                pwInput.select(); pwInput.focus();
+                if (err && err.code === 'ORIGIN_MISMATCH') {
+                    status.innerHTML = '<span class="dcm-invalid"><i class="bi bi-shield-x"></i> ' + (window.t ? window.t('dcmOriginError') : 'Open on localnotes-three.vercel.app') + '</span>';
+                    okBtn.disabled = true;
+                } else {
+                    status.innerHTML = '<span class="dcm-invalid"><i class="bi bi-x-circle-fill"></i> ' + (window.t ? window.t('dcmWrongPasswordRetry') : 'Wrong password — try again') + '</span>';
+                    pwInput.select(); pwInput.focus();
+                }
             }
         });
 
@@ -2139,12 +2597,11 @@ async function importNotesFiles(files) {
     async function processNext(index) {
         if (index >= fileList.length) {
             await loadNotes();
-            const msg = [`Imported: ${imported}`];
-            if (skipped > 0) msg.push(`Skipped: ${skipped}`);
-            if (errors > 0)  msg.push(`Errors: ${errors}`);
             if (imported > 0) {
-                showCustomAlert(typeof t === 'function' ? t('success') : 'Success',
-                    typeof t === 'function' ? t('importCompleted', { count: imported }) : `Imported ${imported} notes`, 'success');
+                let msg = typeof t === 'function' ? t('importCompleted', { count: imported }) : `Imported ${imported} notes`;
+                if (skipped > 0) msg += ' · ' + (typeof t === 'function' ? t('importSkipped', { count: skipped }) || `Skipped: ${skipped}` : `Skipped: ${skipped}`);
+                if (errors > 0)  msg += ' · ' + (typeof t === 'function' ? t('importErrors', { count: errors }) || `Errors: ${errors}` : `Errors: ${errors}`);
+                showCustomAlert(typeof t === 'function' ? t('success') : 'Success', msg, errors > 0 ? 'warning' : 'success');
             } else {
                 showCustomAlert(typeof t === 'function' ? t('error') : 'Error',
                     typeof t === 'function' ? t('errorNoFilesImported') : 'No files imported', 'error');

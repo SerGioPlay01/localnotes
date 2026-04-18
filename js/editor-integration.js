@@ -245,9 +245,11 @@ window.localNotesEditorAPI = {
     // Only on touch devices
     if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) return;
 
-    var PADDING = 24; // px gap between caret and bottom of visible area
-    var rafId   = null;
-    var timers  = [];
+    var PADDING       = 24;    // px gap between caret and bottom of visible area
+    var rafId         = null;
+    var timers        = [];
+    var userScrolling = false; // true while user is manually scrolling
+    var scrollEndTimer = null;
 
     function clearTimers() {
         timers.forEach(clearTimeout);
@@ -267,6 +269,9 @@ window.localNotesEditorAPI = {
     }
 
     function scrollCaretIntoView() {
+        // Don't fight the user while they're manually scrolling
+        if (userScrolling) return;
+
         var modal = document.getElementById('editModal');
         if (!modal || modal.style.display === 'none' || modal.style.display === '') return;
 
@@ -276,9 +281,7 @@ window.localNotesEditorAPI = {
         var caretRect = getCaretRect();
         if (!caretRect) return;
 
-        // Use visualViewport when available — it reflects the area above the keyboard
-        var vv = window.visualViewport;
-        var vvTop    = vv ? vv.offsetTop            : 0;
+        var vv       = window.visualViewport;
         var vvBottom = vv ? vv.offsetTop + vv.height : window.innerHeight;
 
         var toolbar       = modal.querySelector('.lne-toolbar');
@@ -287,7 +290,7 @@ window.localNotesEditorAPI = {
         var caretBottom = caretRect.bottom;
         var caretTop    = caretRect.top;
 
-        // Caret hidden under keyboard (or too close to bottom)
+        // Caret hidden under keyboard
         if (caretBottom + PADDING > vvBottom) {
             body.scrollTop += (caretBottom + PADDING - vvBottom);
         }
@@ -302,8 +305,7 @@ window.localNotesEditorAPI = {
         rafId = requestAnimationFrame(scrollCaretIntoView);
     }
 
-    // Re-check after keyboard animation completes (fires at multiple points
-    // because different devices animate the keyboard at different speeds)
+    // Re-check after keyboard animation completes
     function scheduleScrollDelayed() {
         clearTimers();
         [80, 200, 400].forEach(function (ms) {
@@ -311,8 +313,35 @@ window.localNotesEditorAPI = {
         });
     }
 
+    // Detect manual scroll — suppress caret-scroll while user is scrolling
+    document.addEventListener('DOMContentLoaded', function () {
+        var modal = document.getElementById('editModal');
+        if (!modal) return;
+        var body = modal.querySelector('.lne-body');
+        if (!body) return;
+
+        body.addEventListener('touchstart', function () {
+            userScrolling = true;
+            clearTimeout(scrollEndTimer);
+        }, { passive: true });
+
+        body.addEventListener('touchend', function () {
+            // Resume caret-scroll shortly after finger lifts
+            clearTimeout(scrollEndTimer);
+            scrollEndTimer = setTimeout(function () {
+                userScrolling = false;
+            }, 300);
+        }, { passive: true });
+    });
+
+    // input = user typed → always scroll to caret
+    document.addEventListener('input', function () {
+        userScrolling = false;
+        scheduleScroll();
+    }, true);
+
+    // selectionchange = tap to place cursor → scroll only if not manually scrolling
     document.addEventListener('selectionchange', scheduleScroll);
-    document.addEventListener('input', scheduleScroll, true);
 
     // KEY FIX: keyboard opens → visualViewport shrinks → scroll caret into view
     if (window.visualViewport) {

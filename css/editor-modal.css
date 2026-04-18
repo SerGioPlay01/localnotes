@@ -36,7 +36,9 @@
     #editModal .modal-content {
         display: flex;
         flex-direction: column;
+        height: -webkit-fill-available !important;
         height: 100dvh !important;
+        max-height: -webkit-fill-available !important;
         max-height: 100dvh !important;
         margin: 0 !important;
         padding-top: max(3px, env(safe-area-inset-top)) !important;
@@ -82,8 +84,8 @@
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        position: sticky;
-        top: 0;
+        position: relative;
+        top: auto;
         z-index: 10;
     }
     #editModal .modal-content .lne-toolbar::-webkit-scrollbar { display: none; }
@@ -149,4 +151,4 @@
     #editModal .modal-content .lne-wrapper {
         scrollbar-width: none !important;
     }
-}
+}

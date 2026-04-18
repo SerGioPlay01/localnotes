@@ -240,8 +240,8 @@ html, body {
         overscroll-behavior-x: contain;
         scrollbar-width: none;
         -ms-overflow-style: none;
-        position: sticky;
-        top: 0;
+        position: relative;
+        top: auto;
         z-index: 10;
     }
     .lne-toolbar::-webkit-scrollbar {
@@ -495,4 +495,4 @@ img {
 }
 .note:not(:hover) {
     will-change: auto;
-}
+}

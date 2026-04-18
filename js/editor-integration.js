@@ -182,15 +182,18 @@ window.localNotesEditorAPI = {
         var content = m.querySelector('.modal-content');
         if (!content) return;
 
-        // On mobile: set modal-content height to visual viewport height
-        // so the toolbar stays pinned at top and doesn't scroll off screen
         if (window.innerWidth <= 768) {
+            // vv.height = visible area above keyboard.
+            // vv.offsetTop = how much the layout viewport is scrolled
+            //   (iOS Safari scrolls the page up when keyboard opens).
+            // We only resize modal-content; the overlay (#editModal) stays
+            // at top:0/height:100% so the toolbar is never pushed off screen.
             var h = vv.height;
-            content.style.height = h + 'px';
+            content.style.height    = h + 'px';
             content.style.maxHeight = h + 'px';
-            // Offset for viewport position (handles iOS scroll-to-top on focus)
-            m.style.top = vv.offsetTop + 'px';
-            m.style.height = vv.height + 'px';
+            // Reset any previously set top/height on the overlay itself
+            m.style.top    = '';
+            m.style.height = '';
         }
     }
 
@@ -204,11 +207,9 @@ window.localNotesEditorAPI = {
         if (!m) return;
         var content = m.querySelector('.modal-content');
         if (content) {
-            content.style.height = '';
+            content.style.height    = '';
             content.style.maxHeight = '';
         }
-        m.style.top = '';
-        m.style.height = '';
     }
 
     window.visualViewport.addEventListener('resize', onViewportChange);

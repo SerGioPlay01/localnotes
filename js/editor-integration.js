@@ -231,3 +231,68 @@ window.localNotesEditorAPI = {
         observer.observe(m, { attributes: true, attributeFilter: ['style'] });
     });
 })();
+
+/**
+ * Cursor scroll — keeps the caret visible above the keyboard on mobile
+ */
+(function () {
+    // Only on touch devices
+    if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) return;
+
+    var PADDING = 8; // px gap between caret and bottom of visible area
+    var rafId = null;
+
+    function getCaretRect() {
+        var sel = window.getSelection();
+        if (!sel || sel.rangeCount === 0) return null;
+        var range = sel.getRangeAt(0).cloneRange();
+        range.collapse(true); // collapse to start = caret position
+        var rects = range.getClientRects();
+        if (rects.length > 0) return rects[0];
+        // Fallback: bounding rect of the container
+        var node = range.startContainer;
+        if (node.nodeType === 3) node = node.parentElement;
+        return node ? node.getBoundingClientRect() : null;
+    }
+
+    function scrollCaretIntoView() {
+        var modal = document.getElementById('editModal');
+        if (!modal || modal.style.display === 'none' || modal.style.display === '') return;
+
+        var body = modal.querySelector('.lne-body');
+        if (!body) return;
+
+        var caretRect = getCaretRect();
+        if (!caretRect) return;
+
+        // Bottom of the visual viewport (accounts for keyboard)
+        var vvBottom = window.visualViewport
+            ? window.visualViewport.offsetTop + window.visualViewport.height
+            : window.innerHeight;
+
+        var toolbar = modal.querySelector('.lne-toolbar');
+        var toolbarBottom = toolbar ? toolbar.getBoundingClientRect().bottom : 0;
+
+        var caretBottom = caretRect.bottom;
+        var caretTop    = caretRect.top;
+
+        // Caret is below the visible area (hidden under keyboard)
+        if (caretBottom + PADDING > vvBottom) {
+            var overflow = caretBottom + PADDING - vvBottom;
+            body.scrollTop += overflow;
+        }
+        // Caret is above the toolbar (scrolled too far up)
+        else if (caretTop < toolbarBottom + PADDING) {
+            var overflow2 = toolbarBottom + PADDING - caretTop;
+            body.scrollTop -= overflow2;
+        }
+    }
+
+    function scheduleScroll() {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(scrollCaretIntoView);
+    }
+
+    document.addEventListener('selectionchange', scheduleScroll);
+    document.addEventListener('input', scheduleScroll, true);
+})();

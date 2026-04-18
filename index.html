@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -227,7 +227,7 @@
         "@context": "https://schema.org",
         "@type": "WebApplication",
         "name": "Local Notes",
-        "alternateName": "Локальные заметки",
+        "alternateName": "Local Notes App",
         "description": "Secure note-taking application with AES-256 encryption, multi-language support, and offline functionality",
         "url": "https://localnotes-three.vercel.app/",
         "applicationCategory": "ProductivityApplication",
@@ -462,8 +462,8 @@
                 /\[GET_CSS\]/,
                 /content-scripts\.js/,
                 /Loading the (font|script)/,
-                /✅/,
-                /❌/,
+                /?/,
+                /?/,
                 /Live reload/,
                 /Google Analytics script failed/,
                 /Initializing language/,
@@ -525,7 +525,7 @@
             originalLog('%c   Use search with transliteration for convenient searching!', 'color: #666; font-size: 12px;');
             originalLog('%c   Cyrillic ↔ Latin automatically', 'color: #666; font-size: 12px;');
             
-            originalLog('%c\n' + '═'.repeat(63) + '\n', 'color: #4CAF50; font-weight: bold;');
+            originalLog('%c\n' + '='.repeat(63) + '\n', 'color: #4CAF50; font-weight: bold;');
             
             // Обновляем текст кнопок после загрузки страницы
             if (typeof updateButtonTexts === 'function') {
@@ -548,18 +548,18 @@
     </script>
 
     <!-- Critical CSS loaded first with cache busting -->
-    <link rel="stylesheet" href="/css/index.css?v=1.1.2">
-    <link rel="stylesheet" href="/css/img.css?v=1.1.2">
-    <link rel="stylesheet" href="/css/highlight.css?v=1.1.2">
-    <link rel="stylesheet" href="/localnoteseditor/styles.css?v=1.1.2">
-    <link rel="stylesheet" href="/css/editor-modal.css?v=1.1.2">
-    <link rel="stylesheet" href="/css/apple.css?v=1.1.2">
-    <link rel="stylesheet" href="/css/tags-calendar.css?v=1.1.2">
-    <link rel="stylesheet" href="/fonts/local-fonts.css?v=1.1.2">
+    <link rel="stylesheet" href="/css/index.css?v=1.1.3">
+    <link rel="stylesheet" href="/css/img.css?v=1.1.3">
+    <link rel="stylesheet" href="/css/highlight.css?v=1.1.3">
+    <link rel="stylesheet" href="/localnoteseditor/styles.css?v=1.1.3">
+    <link rel="stylesheet" href="/css/editor-modal.css?v=1.1.3">
+    <link rel="stylesheet" href="/css/apple.css?v=1.1.3">
+    <link rel="stylesheet" href="/css/tags-calendar.css?v=1.1.3">
+    <link rel="stylesheet" href="/fonts/local-fonts.css?v=1.1.3">
     
     <!-- Prevent FOUC: hide only main content, NOT the preloader -->
     <style>
-        /* Preloader visible immediately — no black screen */
+        /* Preloader visible immediately no black screen */
         #app-preloader {
             position: fixed;
             top: 0; left: 0;
@@ -662,7 +662,7 @@
             <strong>Local Notes</strong>
             <span id="ln-install-hint">Tap <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> then "Add to Home Screen"</span>
         </div>
-        <button class="ln-install-banner-close" id="ln-install-close" aria-label="Close">✕</button>
+        <button class="ln-install-banner-close" id="ln-install-close" aria-label="Close">?</button>
     </div>
 
     <!-- Header section - full width -->
@@ -756,15 +756,15 @@
 
 
     <!-- Critical JavaScript loaded first with cache busting -->
-    <script src="/js/utils.js?v=1.1.2"></script>
-    <script src="/js/selectors.js?v=1.1.2"></script>
-    <script src="/js/translate.js?v=1.1.2"></script>
-    <script src="/js/themes.js?v=1.1.2"></script>
-    <script src="/js/performance.js?v=1.1.2"></script>
-    <script src="/js/security.js?v=1.1.2"></script>
-    <script src="/js/preloader.js?v=1.1.2"></script>
+    <script src="/js/utils.js?v=1.1.3"></script>
+    <script src="/js/selectors.js?v=1.1.3"></script>
+    <script src="/js/translate.js?v=1.1.3"></script>
+    <script src="/js/themes.js?v=1.1.3"></script>
+    <script src="/js/performance.js?v=1.1.3"></script>
+    <script src="/js/security.js?v=1.1.3"></script>
+    <script src="/js/preloader.js?v=1.1.3"></script>
     <!-- LocalNotesEditor -->
-    <script src="/localnoteseditor/core.js?v=1.1.2" defer></script>
+    <script src="/localnoteseditor/core.js?v=1.1.3" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
     <script>
@@ -781,7 +781,7 @@
                 loadScriptsSequentially(scripts, index + 1);
             };
             script.onerror = () => {
-                console.error(`❌ Failed to load: ${scripts[index]}`);
+                console.error(`? Failed to load: ${scripts[index]}`);
                 loadScriptsSequentially(scripts, index + 1);
             };
             document.head.appendChild(script);
@@ -790,15 +790,15 @@
         // Load scripts after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             const scripts = [
-                '/js/magicurl.js?v=1.1.2',
-                '/js/highlight.min.js?v=1.1.2',
-                '/js/translations.js?v=1.1.2',
-                '/js/img.js?v=1.1.2',
-                '/js/date-utils.js?v=1.1.2',
-                '/js/editor-integration.js?v=1.1.2',
-                '/js/markdown.js?v=1.1.2',
-                '/js/tags-calendar.js?v=1.1.2',
-                '/js/index.js?v=1.1.2'
+                '/js/magicurl.js?v=1.1.3',
+                '/js/highlight.min.js?v=1.1.3',
+                '/js/translations.js?v=1.1.3',
+                '/js/img.js?v=1.1.3',
+                '/js/date-utils.js?v=1.1.3',
+                '/js/editor-integration.js?v=1.1.3',
+                '/js/markdown.js?v=1.1.3',
+                '/js/tags-calendar.js?v=1.1.3',
+                '/js/index.js?v=1.1.3'
             ];
             
             loadScriptsSequentially(scripts);
@@ -806,11 +806,11 @@
     </script>
     
     <!-- Service Worker + PWA Modal -->
-    <script src="/js/pwa.js?v=1.1.2"></script>
-    <script src="/js/network-mode.js?v=1.1.2"></script>
+    <script src="/js/pwa.js?v=1.1.3"></script>
+    <script src="/js/network-mode.js?v=1.1.3"></script>
 
     <!-- Universal Cookies Banner -->
-    <script src="cookies_banner_universal/cookies-banner.js"></script>
+    <script src="/cookies_banner_universal/cookies-banner.js"></script>
 
 </body>
 

@@ -1,13 +1,17 @@
 // Service Worker для Local Notes
-const CACHE_NAME = 'local-notes-v1.1.2';
-const STATIC_CACHE = 'static-v1.1.2';
-const DYNAMIC_CACHE = 'dynamic-v1.1.2';
-const CACHE_LIMIT = 50; // Максимальное количество файлов в динамическом кэше
+const CACHE_VERSION = 'v1.1.3';
+const STATIC_CACHE  = `static-${CACHE_VERSION}`;
+const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
+const CACHE_LIMIT   = 60;
 
-// Файлы для кэширования
+// ─── Файлы, которые ОБЯЗАТЕЛЬНО должны быть в кэше ───────────────────────────
 const STATIC_FILES = [
     '/',
     '/index.html',
+    '/manifest.json',
+    '/robots.txt',
+
+    // CSS
     '/css/index.css',
     '/css/img.css',
     '/css/preloader.css',
@@ -16,326 +20,370 @@ const STATIC_FILES = [
     '/css/tags-calendar.css',
     '/css/page.css',
     '/css/print.css',
+    '/css/apple.css',
+
+    // Шрифты — CSS
+    '/fonts/local-fonts.css',
+    '/fonts/golos_web/golostext.css',
+    '/fonts/intro/intro.css',
+    '/fonts/lekton-nerd-font-mono/lekton-nerd-font-mono.css',
+    '/fonts/Roboto/roboto.css',
+    '/fonts/Open_Sans/open_sans.css',
+    '/fonts/Lato/lato.css',
+    '/fonts/Montserrat/montserrat.css',
+
+    // Шрифты — файлы
+    '/fonts/golos_web/golostextvf-regular.woff2',
+    '/fonts/golos_web/golostextvf-regular.woff',
+    '/fonts/intro/intro.woff2',
+    '/fonts/intro/intro.woff',
+    '/fonts/lekton-nerd-font-mono/lekton-nerd-font-mono.woff2',
+
+    // Bootstrap Icons (редактор)
+    '/localnoteseditor/bootstrap-icons/font/bootstrap-icons.css',
+    '/localnoteseditor/bootstrap-icons/font/bootstrap-icons.min.css',
+    '/localnoteseditor/bootstrap-icons/font/fonts/bootstrap-icons.woff2',
+    '/localnoteseditor/bootstrap-icons/font/fonts/bootstrap-icons.woff',
+
+    // Редактор
+    '/localnoteseditor/core.js',
+    '/localnoteseditor/styles.css',
+
+    // JavaScript
+    '/js/utils.js',
+    '/js/selectors.js',
+    '/js/translate.js',
+    '/js/themes.js',
+    '/js/performance.js',
+    '/js/security.js',
+    '/js/preloader.js',
     '/js/index.js',
     '/js/magicurl.js',
     '/js/pwa.js',
     '/js/network-mode.js',
     '/js/highlight.min.js',
     '/js/img.js',
-    '/js/preloader.js',
     '/js/translations.js',
-    '/js/translate.js',
-    '/js/themes.js',
     '/js/tags-calendar.js',
-    '/js/utils.js',
-    '/js/selectors.js',
-    '/js/performance.js',
-    '/js/security.js',
     '/js/date-utils.js',
     '/js/editor-integration.js',
-    '/localnoteseditor/core.js',
-    '/localnoteseditor/styles.css',
+    '/js/markdown.js',
+
+    // Данные
     '/json/lang.json',
+
+    // Иконки
     '/favicon/favicon-16x16.png',
     '/favicon/favicon-32x32.png',
     '/favicon/android-chrome-192x192.png',
     '/favicon/android-chrome-512x512.png',
     '/favicon/apple-touch-icon.png',
     '/favicon/favicon.ico',
-    '/manifest.json',
-    '/robots.txt'
+    '/favicon/browserconfig.xml',
+    '/favicon/site.webmanifest',
+
+    // Cookies banner
+    '/cookies_banner_universal/cookies-banner.js'
 ];
 
-// Языковые версии для кэширования
-const LANGUAGE_VERSIONS = [
-    '/ru/',
-    '/ua/',
-    '/pl/',
-    '/cs/',
-    '/sk/',
-    '/bg/',
-    '/hr/',
-    '/sr/',
-    '/bs/',
-    '/mk/',
-    '/sl/'
+// Языковые версии
+const LANGUAGE_PAGES = [
+    '/ru/', '/ua/', '/pl/', '/cs/', '/sk/',
+    '/bg/', '/hr/', '/sr/', '/bs/', '/mk/', '/sl/'
 ];
 
-// Функция для ограничения размера кэша
+// Добавляем языковые страницы в статический кэш
+const ALL_STATIC_FILES = STATIC_FILES.concat(LANGUAGE_PAGES);
+
+// ─── Расширения, которые всегда берём из кэша (Cache First) ──────────────────
+const CACHE_FIRST_EXTS = ['.woff', '.woff2', '.ttf', '.otf', '.png', '.jpg',
+                           '.jpeg', '.gif', '.svg', '.ico', '.webp', '.avif'];
+
+// ─── Текущий режим сети (персистируется через IndexedDB / fallback переменная) ─
+let networkMode = 'online'; // 'online' | 'offline'
+
+// Читаем сохранённый режим из IndexedDB при старте SW
+async function loadNetworkMode() {
+    try {
+        const db = await openModeDB();
+        const tx = db.transaction('settings', 'readonly');
+        const val = await idbGet(tx, 'networkMode');
+        if (val === 'offline' || val === 'online') networkMode = val;
+    } catch (_) { /* ignore */ }
+}
+
+// Простой IDB helper
+function openModeDB() {
+    return new Promise((resolve, reject) => {
+        const req = indexedDB.open('ln-sw-settings', 1);
+        req.onupgradeneeded = e => e.target.result.createObjectStore('settings');
+        req.onsuccess = e => resolve(e.target.result);
+        req.onerror   = e => reject(e.target.error);
+    });
+}
+function idbGet(tx, key) {
+    return new Promise((resolve, reject) => {
+        const req = tx.objectStore('settings').get(key);
+        req.onsuccess = e => resolve(e.target.result);
+        req.onerror   = e => reject(e.target.error);
+    });
+}
+async function saveNetworkMode(mode) {
+    try {
+        const db = await openModeDB();
+        const tx = db.transaction('settings', 'readwrite');
+        tx.objectStore('settings').put(mode, 'networkMode');
+    } catch (_) { /* ignore */ }
+}
+
+// Загружаем режим сразу при старте SW
+loadNetworkMode();
+
+// ─── Ограничение размера динамического кэша ──────────────────────────────────
 async function limitCacheSize(cacheName, limit) {
     const cache = await caches.open(cacheName);
-    const keys = await cache.keys();
+    const keys  = await cache.keys();
     if (keys.length > limit) {
         await cache.delete(keys[0]);
         await limitCacheSize(cacheName, limit);
     }
 }
 
-// Установка Service Worker
+// ─── INSTALL ─────────────────────────────────────────────────────────────────
 self.addEventListener('install', event => {
-    console.log('Service Worker: Installing...');
-    
     event.waitUntil(
-        caches.open(STATIC_CACHE)
-            .then(cache => {
-                console.log('Service Worker: Caching static files');
-                // Кэшируем файлы по одному, чтобы не падать при отсутствии одного файла
-                return Promise.allSettled(
-                    STATIC_FILES.map(url => 
-                        fetch(url)
-                            .then(response => {
-                                if (response.ok) {
-                                    return cache.put(url, response);
-                                } else {
-                                    console.warn(`Service Worker: Failed to cache ${url} - ${response.status}`);
-                                }
-                            })
-                            .catch(error => {
-                                console.warn(`Service Worker: Failed to fetch ${url}:`, error);
-                            })
-                    )
-                );
-            })
-            .then(() => {
-                console.log('Service Worker: Static files cached');
-                return self.skipWaiting();
-            })
-            .catch(error => {
-                console.error('Service Worker: Error caching static files', error);
-                // Продолжаем работу даже при ошибках кэширования
-                return self.skipWaiting();
-            })
+        caches.open(STATIC_CACHE).then(cache => {
+            return Promise.allSettled(
+                ALL_STATIC_FILES.map(url =>
+                    fetch(url, { cache: 'reload' })
+                        .then(res => { if (res.ok) return cache.put(url, res); })
+                        .catch(() => {})
+                )
+            );
+        }).then(() => self.skipWaiting())
     );
 });
 
-// Активация Service Worker
+// ─── ACTIVATE ────────────────────────────────────────────────────────────────
 self.addEventListener('activate', event => {
-    console.log('Service Worker: Activating...');
-    
     event.waitUntil(
-        caches.keys()
-            .then(cacheNames => {
-                return Promise.all(
-                    cacheNames.map(cacheName => {
-                        if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
-                            console.log('Service Worker: Deleting old cache', cacheName);
-                            return caches.delete(cacheName);
-                        }
-                    })
-                );
-            })
-            .then(() => {
-                console.log('Service Worker: Activated');
-                return self.clients.claim();
-            })
+        caches.keys().then(names =>
+            Promise.all(
+                names.map(name => {
+                    if (name !== STATIC_CACHE && name !== DYNAMIC_CACHE) {
+                        return caches.delete(name);
+                    }
+                })
+            )
+        ).then(() => {
+            loadNetworkMode();
+            return self.clients.claim();
+        })
     );
 });
 
-// Перехват запросов
+// ─── FETCH ───────────────────────────────────────────────────────────────────
 self.addEventListener('fetch', event => {
     const { request } = event;
     const url = new URL(request.url);
-    
-    // Пропускаем запросы к внешним ресурсам
-    if (url.origin !== location.origin) {
+
+    // Только GET, только свой origin
+    if (request.method !== 'GET' || url.origin !== location.origin) return;
+
+    // Убираем query-параметры для поиска в кэше (cache-busting ?v=...)
+    const cleanRequest = new Request(url.origin + url.pathname, {
+        method: request.method,
+        headers: request.headers,
+        mode: request.mode === 'navigate' ? 'same-origin' : request.mode,
+        credentials: request.credentials,
+        redirect: request.redirect
+    });
+
+    const ext = url.pathname.substring(url.pathname.lastIndexOf('.'));
+
+    // ── Принудительный офлайн-режим: только кэш ──────────────────────────────
+    if (networkMode === 'offline') {
+        event.respondWith(cacheOnly(cleanRequest, request));
         return;
     }
-    
-    // Стратегия кэширования для разных типов ресурсов
-    if (request.method === 'GET') {
-        // Статические ресурсы - Network First для CSS/JS, Cache First для остального
-        if (url.pathname.endsWith('.css') || url.pathname.endsWith('.js')) {
-            // Для CSS и JS используем Network First чтобы всегда получать свежие версии
-            event.respondWith(networkFirst(request));
-        } else if (STATIC_FILES.includes(url.pathname) || 
-            url.pathname.endsWith('.png') || 
-            url.pathname.endsWith('.jpg') || 
-            url.pathname.endsWith('.ico') ||
-            url.pathname.endsWith('.json') ||
-            url.pathname.startsWith('/editor_news/')) {
-            
-            event.respondWith(cacheFirst(request));
-        }
-        // HTML страницы - Network First
-        else if (url.pathname.endsWith('.html') || 
-                 url.pathname === '/' || 
-                 LANGUAGE_VERSIONS.some(lang => url.pathname.startsWith(lang))) {
-            
-            event.respondWith(networkFirst(request));
-        }
-        // Остальные запросы - Network First
-        else {
-            event.respondWith(networkFirst(request));
-        }
+
+    // ── Шрифты и изображения: Cache First (никогда не меняются) ──────────────
+    if (CACHE_FIRST_EXTS.includes(ext)) {
+        event.respondWith(cacheFirst(cleanRequest, request));
+        return;
     }
+
+    // ── Навигация (HTML) и языковые страницы: Network First → Cache fallback ──
+    if (request.mode === 'navigate' ||
+        url.pathname.endsWith('.html') ||
+        url.pathname === '/' ||
+        LANGUAGE_PAGES.some(p => url.pathname === p || url.pathname.startsWith(p))) {
+        event.respondWith(networkFirst(cleanRequest, request));
+        return;
+    }
+
+    // ── CSS, JS, JSON: Stale-While-Revalidate ────────────────────────────────
+    // Отдаём из кэша мгновенно, фоном обновляем
+    if (ext === '.css' || ext === '.js' || ext === '.json') {
+        event.respondWith(staleWhileRevalidate(cleanRequest, request));
+        return;
+    }
+
+    // ── Всё остальное: Network First ─────────────────────────────────────────
+    event.respondWith(networkFirst(cleanRequest, request));
 });
 
-// Стратегия Cache First
-async function cacheFirst(request) {
+// ─── Стратегии ───────────────────────────────────────────────────────────────
+
+/** Cache Only — для принудительного офлайн-режима */
+async function cacheOnly(cleanReq, origReq) {
+    const cached = await caches.match(cleanReq, { ignoreSearch: true })
+                || await caches.match(origReq,  { ignoreSearch: true });
+    if (cached) return cached;
+    if (origReq.mode === 'navigate') return await caches.match('/index.html');
+    return new Response('', { status: 503, statusText: 'Offline' });
+}
+
+/** Cache First — шрифты, картинки */
+async function cacheFirst(cleanReq, origReq) {
+    const cached = await caches.match(cleanReq, { ignoreSearch: true })
+                || await caches.match(origReq,  { ignoreSearch: true });
+    if (cached) return cached;
     try {
-        const cachedResponse = await caches.match(request);
-        if (cachedResponse) {
-            return cachedResponse;
-        }
-        
-        const networkResponse = await fetch(request);
-        if (networkResponse.ok) {
+        const res = await fetch(origReq);
+        if (res.ok) {
             const cache = await caches.open(STATIC_CACHE);
-            cache.put(request, networkResponse.clone());
+            cache.put(cleanReq, res.clone());
         }
-        return networkResponse;
-    } catch (error) {
-        console.warn('Cache First strategy failed for:', request.url, error);
-        // Возвращаем fallback вместо ошибки
-        if (request.headers.get('accept').includes('text/html')) {
-            return caches.match('/index.html');
-        }
-        return new Response('Offline content not available', {
-            status: 503,
-            statusText: 'Service Unavailable'
-        });
+        return res;
+    } catch (_) {
+        return new Response('', { status: 503, statusText: 'Offline' });
     }
 }
 
-// Стратегия Network First
-async function networkFirst(request) {
-    // Если принудительный офлайн-режим — сразу из кэша
-    if (self.networkMode === 'offline') {
-        const cached = await caches.match(request);
-        if (cached) return cached;
-        // нет в кэше — всё равно пробуем сеть как fallback
-    }
+/** Stale-While-Revalidate — CSS, JS, JSON */
+async function staleWhileRevalidate(cleanReq, origReq) {
+    const cached = await caches.match(cleanReq, { ignoreSearch: true })
+                || await caches.match(origReq,  { ignoreSearch: true });
 
+    const fetchPromise = fetch(origReq, { cache: 'no-cache' }).then(async res => {
+        if (res.ok) {
+            const cache = await caches.open(STATIC_CACHE);
+            cache.put(cleanReq, res.clone());
+        }
+        return res;
+    }).catch(() => null);
+
+    if (cached) return cached;
+
+    const netRes = await fetchPromise;
+    if (netRes) return netRes;
+
+    return new Response('', { status: 503, statusText: 'Offline' });
+}
+
+/** Network First — HTML, навигация */
+async function networkFirst(cleanReq, origReq) {
     try {
-        // Добавляем cache-busting параметр для CSS и JS файлов
-        let fetchRequest = request;
-        if (request.url.includes('.css') || request.url.includes('.js')) {
-            const url = new URL(request.url);
-            url.searchParams.set('v', Date.now().toString());
-            fetchRequest = new Request(url.toString(), {
-                method: request.method,
-                headers: request.headers,
-                body: request.body,
-                mode: request.mode,
-                credentials: request.credentials,
-                cache: 'no-cache'
-            });
-        }
-        
-        const networkResponse = await fetch(fetchRequest);
-        if (networkResponse.ok) {
+        const res = await fetch(origReq, { cache: 'no-cache' });
+        if (res.ok) {
             const cache = await caches.open(DYNAMIC_CACHE);
-            // Кешируем оригинальный запрос, а не с cache-busting параметрами
-            cache.put(request, networkResponse.clone());
-            // Ограничиваем размер кэша
-            await limitCacheSize(DYNAMIC_CACHE, CACHE_LIMIT);
+            cache.put(cleanReq, res.clone());
+            limitCacheSize(DYNAMIC_CACHE, CACHE_LIMIT);
         }
-        return networkResponse;
-    } catch (error) {
-        console.log('Network failed, trying cache:', error);
-        const cachedResponse = await caches.match(request);
-        if (cachedResponse) {
-            return cachedResponse;
-        }
-        
-        // Fallback для HTML страниц
-        if (request.headers.get('accept').includes('text/html')) {
-            return caches.match('/index.html');
-        }
-        
-        return new Response('Offline content not available', {
-            status: 503,
-            statusText: 'Service Unavailable'
-        });
+        return res;
+    } catch (_) {
+        const cached = await caches.match(cleanReq, { ignoreSearch: true })
+                    || await caches.match(origReq,  { ignoreSearch: true });
+        if (cached) return cached;
+        if (origReq.mode === 'navigate') return await caches.match('/index.html');
+        return new Response('', { status: 503, statusText: 'Offline' });
     }
 }
 
-// Обработка сообщений от основного потока
+// ─── MESSAGES ────────────────────────────────────────────────────────────────
 self.addEventListener('message', event => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
+    const data = event.data;
+    if (!data) return;
+
+    if (data.type === 'SKIP_WAITING') {
         self.skipWaiting();
     }
-    
-    if (event.data && event.data.type === 'GET_VERSION') {
-        event.ports[0].postMessage({ version: CACHE_NAME });
+
+    if (data.type === 'GET_VERSION') {
+        event.ports[0] && event.ports[0].postMessage({ version: STATIC_CACHE });
     }
 
-    if (event.data && event.data.type === 'SET_NETWORK_MODE') {
-        self.networkMode = event.data.mode; // 'offline' | 'online'
+    if (data.type === 'SET_NETWORK_MODE') {
+        networkMode = data.mode;
+        saveNetworkMode(data.mode);
+    }
+
+    // Принудительно перекэшировать все статические файлы
+    if (data.type === 'PRECACHE_ALL') {
+        event.waitUntil(
+            caches.open(STATIC_CACHE).then(cache =>
+                Promise.allSettled(
+                    ALL_STATIC_FILES.map(url =>
+                        fetch(url, { cache: 'reload' })
+                            .then(res => { if (res.ok) return cache.put(url, res); })
+                            .catch(() => {})
+                    )
+                )
+            ).then(() => {
+                self.clients.matchAll().then(clients =>
+                    clients.forEach(c => c.postMessage({ type: 'PRECACHE_DONE' }))
+                );
+            })
+        );
     }
 });
 
-// Периодическая очистка кэша
+// ─── Периодическая очистка кэша ──────────────────────────────────────────────
 self.addEventListener('periodicsync', event => {
     if (event.tag === 'cache-cleanup') {
-        event.waitUntil(cleanupCache());
+        event.waitUntil(cleanupOldCache());
     }
 });
 
-// Функция очистки кэша
-async function cleanupCache() {
+async function cleanupOldCache() {
     try {
-        const cache = await caches.open(DYNAMIC_CACHE);
-        const requests = await cache.keys();
-        const now = Date.now();
-        const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 дней
-        
-        for (const request of requests) {
-            const response = await cache.match(request);
-            const dateHeader = response.headers.get('date');
-            
-            if (dateHeader) {
-                const responseDate = new Date(dateHeader).getTime();
-                if (now - responseDate > maxAge) {
-                    await cache.delete(request);
-                }
+        const cache   = await caches.open(DYNAMIC_CACHE);
+        const keys    = await cache.keys();
+        const now     = Date.now();
+        const maxAge  = 7 * 24 * 60 * 60 * 1000;
+        for (const req of keys) {
+            const res  = await cache.match(req);
+            const date = res && res.headers.get('date');
+            if (date && now - new Date(date).getTime() > maxAge) {
+                await cache.delete(req);
             }
         }
-    } catch (error) {
-        console.error('Cache cleanup failed:', error);
-    }
+    } catch (_) {}
 }
 
-// Обработка push уведомлений (для будущего использования)
+// ─── Push уведомления ────────────────────────────────────────────────────────
 self.addEventListener('push', event => {
-    if (event.data) {
-        const data = event.data.json();
-        const options = {
+    if (!event.data) return;
+    const data = event.data.json();
+    event.waitUntil(
+        self.registration.showNotification(data.title, {
             body: data.body,
             icon: '/favicon/android-chrome-192x192.png',
             badge: '/favicon/favicon-32x32.png',
             vibrate: [100, 50, 100],
-            data: {
-                dateOfArrival: Date.now(),
-                primaryKey: data.primaryKey
-            },
+            data: { dateOfArrival: Date.now(), primaryKey: data.primaryKey },
             actions: [
-                {
-                    action: 'explore',
-                    title: 'Open App',
-                    icon: '/favicon/favicon-32x32.png'
-                },
-                {
-                    action: 'close',
-                    title: 'Close',
-                    icon: '/favicon/favicon-32x32.png'
-                }
+                { action: 'explore', title: 'Open App', icon: '/favicon/favicon-32x32.png' },
+                { action: 'close',   title: 'Close',    icon: '/favicon/favicon-32x32.png' }
             ]
-        };
-        
-        event.waitUntil(
-            self.registration.showNotification(data.title, options)
-        );
-    }
+        })
+    );
 });
 
-// Обработка кликов по уведомлениям
 self.addEventListener('notificationclick', event => {
     event.notification.close();
-    
     if (event.action === 'explore') {
-        event.waitUntil(
-            clients.openWindow('/')
-        );
+        event.waitUntil(clients.openWindow('/'));
     }
 });

@@ -53,8 +53,25 @@
     document.body.appendChild(banner);
   }
 
-  // Track real connectivity state independently of navigator.onLine
+  // Track real connectivity — navigator.onLine is unreliable on mobile
   var _isReallyOffline = false;
+  var _checkPending = false;
+
+  // Verify connectivity with a real network request (favicon, no-cache)
+  function checkRealConnectivity(callback) {
+    if (_checkPending) return;
+    _checkPending = true;
+    var url = '/favicon/favicon.ico?_=' + Date.now();
+    fetch(url, { method: 'HEAD', cache: 'no-store', mode: 'no-cors' })
+      .then(function () {
+        _checkPending = false;
+        callback(true);  // reachable
+      })
+      .catch(function () {
+        _checkPending = false;
+        callback(false); // unreachable
+      });
+  }
 
   function isModalOpen() {
     var modal = document.getElementById('editModal');
@@ -66,9 +83,9 @@
     createBanner();
     var b = document.getElementById(BANNER_ID);
     if (b) {
-      var t = (window.t && window.t('offlineBannerText')) || 'You are offline — app works from cache';
+      var txt = (window.t && window.t('offlineBannerText')) || 'You are offline — app works from cache';
       var el = document.getElementById('lnOfflineBannerText');
-      if (el) el.textContent = t;
+      if (el) el.textContent = txt;
       if (!isModalOpen()) {
         b.classList.add('ln-offline-banner--visible');
       }
@@ -81,12 +98,20 @@
     if (b) b.classList.remove('ln-offline-banner--visible');
   }
 
+  // Always verify with a real request — never trust navigator.onLine alone
   function updateBanner() {
-    // Banner reflects REAL connectivity only, not the manual mode toggle
     if (!navigator.onLine) {
+      // navigator says offline — trust it immediately, no fetch needed
       showBanner();
     } else {
-      hideBanner();
+      // navigator says online — verify with real request before hiding
+      checkRealConnectivity(function (reachable) {
+        if (reachable) {
+          hideBanner();
+        } else {
+          showBanner();
+        }
+      });
     }
   }
 
@@ -182,7 +207,7 @@
     }
 
     // Слушаем реальные события сети
-    window.addEventListener('online',  function() { hideBanner(); });
+    window.addEventListener('online',  function() { updateBanner(); });
     window.addEventListener('offline', function() { showBanner(); });
 
     // Уведомляем SW после его активации

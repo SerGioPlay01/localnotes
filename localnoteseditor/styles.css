@@ -908,7 +908,8 @@ textarea.lne-inp { resize: vertical; }
 @media (max-width: 768px) {
     .lne-md-container {
         flex-direction: column;
-        height: calc(100dvh - 180px);
+        height: auto;
+        min-height: 200px;
         position: relative;
     }
     /* Tab bar */

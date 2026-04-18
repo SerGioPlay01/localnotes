@@ -293,9 +293,10 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Enter password...",
         markdownMode: "Markdown mode  Ctrl+M",
         exitMarkdownMode: "Exit Markdown mode  Ctrl+M",
+        mdEdit: "Edit",
+        mdPreview: "Preview",
         offlineMode: "Offline",
-        onlineMode: "Online",
-        networkModeLabel: "Network mode"
+        onlineMode: "Online"
     },
     
     ru: {
@@ -584,9 +585,10 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Введите пароль...",
         markdownMode: "Режим Markdown  Ctrl+M",
         exitMarkdownMode: "Выйти из режима Markdown  Ctrl+M",
+        mdEdit: "Редактировать",
+        mdPreview: "Просмотр",
         offlineMode: "Офлайн",
-        onlineMode: "Онлайн",
-        networkModeLabel: "Режим сети"
+        onlineMode: "Онлайн"
     },
     
     ua: {
@@ -839,9 +841,10 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Введіть пароль...",
         markdownMode: "Режим Markdown  Ctrl+M",
         exitMarkdownMode: "Вийти з режиму Markdown  Ctrl+M",
+        mdEdit: "Редагувати",
+        mdPreview: "Перегляд",
         offlineMode: "Офлайн",
-        onlineMode: "Онлайн",
-        networkModeLabel: "Режим мережі"
+        onlineMode: "Онлайн"
     },
     
     pl: {
@@ -1075,9 +1078,10 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Wprowadź hasło...",
         markdownMode: "Tryb Markdown  Ctrl+M",
         exitMarkdownMode: "Wyjdź z trybu Markdown  Ctrl+M",
+        mdEdit: "Edytuj",
+        mdPreview: "Podgląd",
         offlineMode: "Offline",
-        onlineMode: "Online",
-        networkModeLabel: "Tryb sieci"
+        onlineMode: "Online"
     },
     
     cs: {
@@ -1311,9 +1315,10 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Zadejte heslo...",
         markdownMode: "Režim Markdown  Ctrl+M",
         exitMarkdownMode: "Ukončit režim Markdown  Ctrl+M",
+        mdEdit: "Upravit",
+        mdPreview: "Náhled",
         offlineMode: "Offline",
-        onlineMode: "Online",
-        networkModeLabel: "Síťový režim"
+        onlineMode: "Online"
     },
     
     sk: {
@@ -1545,9 +1550,10 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Zadajte heslo...",
         markdownMode: "Režim Markdown  Ctrl+M",
         exitMarkdownMode: "Ukončiť režim Markdown  Ctrl+M",
+        mdEdit: "Upraviť",
+        mdPreview: "Náhľad",
         offlineMode: "Offline",
-        onlineMode: "Online",
-        networkModeLabel: "Sieťový režim"
+        onlineMode: "Online"
     },
     
     bg: {
@@ -1777,9 +1783,10 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Въведете парола...",
         markdownMode: "Режим Markdown  Ctrl+M",
         exitMarkdownMode: "Изход от режим Markdown  Ctrl+M",
+        mdEdit: "Редактиране",
+        mdPreview: "Преглед",
         offlineMode: "Офлайн",
-        onlineMode: "Онлайн",
-        networkModeLabel: "Мрежов режим"
+        onlineMode: "Онлайн"
     },
     
     hr: {
@@ -2002,11 +2009,12 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Unesite lozinku...",
         markdownMode: "Markdown način  Ctrl+M",
         exitMarkdownMode: "Izlaz iz Markdown načina  Ctrl+M",
+        mdEdit: "Uredi",
+        mdPreview: "Pregled",
         offlineMode: "Offline",
-        onlineMode: "Online",
-        networkModeLabel: "Mrežni način"
+        onlineMode: "Online"
     },
-    
+
     sr: {
         // Общие сообщения
         error: "Грешка",
@@ -2224,9 +2232,10 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Унесите лозинку...",
         markdownMode: "Markdown режим  Ctrl+M",
         exitMarkdownMode: "Излаз из Markdown режима  Ctrl+M",
+        mdEdit: "Уреди",
+        mdPreview: "Преглед",
         offlineMode: "Офлајн",
-        onlineMode: "Онлајн",
-        networkModeLabel: "Мрежни режим"
+        onlineMode: "Онлајн"
     },
     
     bs: {
@@ -2449,11 +2458,12 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Unesite lozinku...",
         markdownMode: "Markdown način  Ctrl+M",
         exitMarkdownMode: "Izlaz iz Markdown načina  Ctrl+M",
+        mdEdit: "Uredi",
+        mdPreview: "Pregled",
         offlineMode: "Offline",
-        onlineMode: "Online",
-        networkModeLabel: "Mrežni način"
+        onlineMode: "Online"
     },
-    
+
     mk: {
         // Общие сообщения
         error: "Грешка",
@@ -2680,9 +2690,10 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Внесете лозинка...",
         markdownMode: "Markdown режим  Ctrl+M",
         exitMarkdownMode: "Излез од Markdown режим  Ctrl+M",
+        mdEdit: "Уреди",
+        mdPreview: "Преглед",
         offlineMode: "Офлајн",
-        onlineMode: "Онлајн",
-        networkModeLabel: "Мрежен режим"
+        onlineMode: "Онлајн"
     },
 
     sl: {
@@ -2901,9 +2912,10 @@ const translations = {
         dcmEnterPasswordPlaceholder: "Vnesite geslo...",
         markdownMode: "Markdown način  Ctrl+M",
         exitMarkdownMode: "Izhod iz Markdown načina  Ctrl+M",
+        mdEdit: "Uredi",
+        mdPreview: "Predogled",
         offlineMode: "Brez povezave",
-        onlineMode: "S povezavo",
-        networkModeLabel: "Omrežni način"
+        onlineMode: "S povezavo"
     }
 };
 

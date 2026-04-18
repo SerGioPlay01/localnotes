@@ -293,7 +293,18 @@ window.importNotesMarkdownAdvanced = async function(files) {
     btn.title = window.t ? window.t('markdownMode') : 'Markdown mode  Ctrl+M';
     btn.setAttribute('type','button');
     btn.innerHTML = '<i class="bi bi-markdown"></i>';
-    btn.addEventListener('click', toggle);
+    let _toggling = false;
+    btn.addEventListener('touchend', e => {
+      e.preventDefault(); // prevent ghost click on mobile
+      if (_toggling) return;
+      _toggling = true;
+      toggle();
+      setTimeout(() => { _toggling = false; }, 400);
+    });
+    btn.addEventListener('click', e => {
+      if (_toggling) return; // already handled by touchend
+      toggle();
+    });
     const rows = tb.querySelectorAll('.lne-toolbar-row');
     const row = rows[rows.length - 1];
     if (row) {
@@ -323,11 +334,11 @@ window.importNotesMarkdownAdvanced = async function(files) {
     const tabEdit = document.createElement('button');
     tabEdit.className = 'lne-md-tab active';
     tabEdit.setAttribute('type', 'button');
-    tabEdit.innerHTML = '<i class="bi bi-pencil"></i> Edit';
+    tabEdit.innerHTML = '<i class="bi bi-pencil"></i> ' + (window.t ? window.t('mdEdit') : 'Edit');
     const tabPrev = document.createElement('button');
     tabPrev.className = 'lne-md-tab';
     tabPrev.setAttribute('type', 'button');
-    tabPrev.innerHTML = '<i class="bi bi-eye"></i> Preview';
+    tabPrev.innerHTML = '<i class="bi bi-eye"></i> ' + (window.t ? window.t('mdPreview') : 'Preview');
     tabBar.appendChild(tabEdit);
     tabBar.appendChild(tabPrev);
 
@@ -373,7 +384,25 @@ window.importNotesMarkdownAdvanced = async function(files) {
 
     const btn = document.querySelector('.lne-md-toggle');
     if (btn) { btn.classList.add('lne-btn-active'); btn.title = window.t ? window.t('exitMarkdownMode') : 'Exit Markdown mode  Ctrl+M'; }
-    mdTA.focus();
+    // On mobile don't auto-focus — avoids ghost clicks and unwanted keyboard popup
+    if (window.innerWidth > 768) mdTA.focus();
+    resizeMdContainer();
+  }
+
+  function resizeMdContainer() {
+    if (!mdWrap || window.innerWidth > 768) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const modal = document.getElementById('editModal');
+    if (!modal) return;
+    const buttons = modal.querySelector('.modal-buttons-container');
+    const toolbar = modal.querySelector('.lne-toolbar');
+    const tabBar  = mdWrap.querySelector('.lne-md-tabs');
+    const toolbarH = toolbar ? toolbar.offsetHeight : 0;
+    const buttonsH = buttons ? buttons.offsetHeight : 0;
+    const tabBarH  = tabBar  ? tabBar.offsetHeight  : 0;
+    const available = vv.height - toolbarH - buttonsH - tabBarH - 2;
+    mdWrap.style.height = Math.max(available, 200) + 'px';
   }
 
   function exit(ed) {
@@ -405,6 +434,11 @@ window.importNotesMarkdownAdvanced = async function(files) {
       if (ed && (document.activeElement === ed || mdActive)) { e.preventDefault(); toggle(); }
     }
   });
+
+  // Mobile: resize md container when keyboard opens/closes
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', () => { if (mdActive) resizeMdContainer(); });
+  }
 
   // Smart paste: detect MD and convert
   document.addEventListener('paste', e => {

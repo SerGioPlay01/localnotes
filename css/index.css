@@ -2926,9 +2926,9 @@ footer a:hover { color: var(--primary-color); }
     position: relative;
     margin: 14px 0;
     border-radius: 8px;
-    overflow: clip;
+    overflow: hidden;
     width: 100%;
-    max-width: 100%;
+    max-width: 100% !important;
 }
 /* Враппер с inline style (aspect-ratio + max-width) — iframe заполняет его */
 .noteContent .lne-video-wrapper[style],
@@ -6162,4 +6162,32 @@ body {
 .noteContent {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
+}
+
+/* ============================================================
+   VIDEO WRAPPER — MOBILE FIX
+   На смартфонах враппер с inline max-width (напр. 560px) выходит
+   за экран. Принудительно ограничиваем и сбрасываем overflow
+   чтобы не обрезались элементы управления плеера.
+   ============================================================ */
+@media (max-width: 768px) {
+    .noteContent .lne-video-wrapper,
+    .noteContent .video-embed-wrapper {
+        max-width: 100% !important;
+        overflow: visible !important;
+    }
+    /* iframe/video внутри враппера — заполняют 100% */
+    .noteContent .lne-video-wrapper iframe,
+    .noteContent .lne-video-wrapper video,
+    .noteContent .video-embed-wrapper iframe,
+    .noteContent .video-embed-wrapper video {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    /* Враппер с inline style — высота по aspect-ratio от реальной ширины */
+    .noteContent .lne-video-wrapper[style],
+    .noteContent .video-embed-wrapper[style] {
+        width: 100% !important;
+        height: auto !important;
+    }
 }

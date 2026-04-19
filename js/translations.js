@@ -87,6 +87,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Close",
         specialCharsClose: "Close",
+        emojiCatSmileys: "😀 Smileys",
+        emojiCatGestures: "👍 Gestures",
+        emojiCatHearts: "❤️ Hearts",
+        emojiCatCelebrate: "🎉 Celebrate",
+        emojiCatNature: "🌍 Nature",
+        emojiCatFood: "🍕 Food",
+        emojiCatSymbols: "⚡ Symbols",
         
         // Таблицы
         createTable: "Create Table",
@@ -409,6 +416,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Закрыть",
         specialCharsClose: "Закрыть",
+        emojiCatSmileys: "😀 Смайлики",
+        emojiCatGestures: "👍 Жесты",
+        emojiCatHearts: "❤️ Сердца",
+        emojiCatCelebrate: "🎉 Праздник",
+        emojiCatNature: "🌍 Природа",
+        emojiCatFood: "🍕 Еда",
+        emojiCatSymbols: "⚡ Символы",
         
         // Таблицы
         createTable: "Создание таблицы",
@@ -711,6 +725,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Закрити",
         specialCharsClose: "Закрити",
+        emojiCatSmileys: "😀 Смайлики",
+        emojiCatGestures: "👍 Жести",
+        emojiCatHearts: "❤️ Серця",
+        emojiCatCelebrate: "🎉 Свято",
+        emojiCatNature: "🌍 Природа",
+        emojiCatFood: "🍕 Їжа",
+        emojiCatSymbols: "⚡ Символи",
         
         // Таблицы
         createTable: "Створення таблиці",
@@ -990,6 +1011,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Zamknij",
         specialCharsClose: "Zamknij",
+        emojiCatSmileys: "😀 Buźki",
+        emojiCatGestures: "👍 Gesty",
+        emojiCatHearts: "❤️ Serca",
+        emojiCatCelebrate: "🎉 Świętowanie",
+        emojiCatNature: "🌍 Natura",
+        emojiCatFood: "🍕 Jedzenie",
+        emojiCatSymbols: "⚡ Symbole",
         
         // Таблицы
         createTable: "Tworzenie tabeli",
@@ -1250,6 +1278,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Zavřít",
         specialCharsClose: "Zavřít",
+        emojiCatSmileys: "😀 Smajlíci",
+        emojiCatGestures: "👍 Gesta",
+        emojiCatHearts: "❤️ Srdce",
+        emojiCatCelebrate: "🎉 Oslava",
+        emojiCatNature: "🌍 Příroda",
+        emojiCatFood: "🍕 Jídlo",
+        emojiCatSymbols: "⚡ Symboly",
         
         // Таблицы
         createTable: "Vytvoření tabulky",
@@ -1510,6 +1545,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Zavrieť",
         specialCharsClose: "Zavrieť",
+        emojiCatSmileys: "😀 Smajlíky",
+        emojiCatGestures: "👍 Gestá",
+        emojiCatHearts: "❤️ Srdcia",
+        emojiCatCelebrate: "🎉 Oslava",
+        emojiCatNature: "🌍 Príroda",
+        emojiCatFood: "🍕 Jedlo",
+        emojiCatSymbols: "⚡ Symboly",
         
         // Таблицы
         createTable: "Vytvorenie tabuľky",
@@ -1766,9 +1808,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Затвори",
         specialCharsClose: "Затвори",
-        
-        // Таблицы
-        createTable: "Създаване на таблица",
+        emojiCatSmileys: "😀 Усмивки",
+        emojiCatGestures: "👍 Жестове",
+        emojiCatHearts: "❤️ Сърца",
+        emojiCatCelebrate: "🎉 Празник",
+        emojiCatNature: "🌍 Природа",
+        emojiCatFood: "🍕 Храна",
+        emojiCatSymbols: "⚡ Символи",
         enterRows: "Въведете брой редове:",
         numberOfRows: "Брой редове",
         enterColumns: "Въведете брой колони:",
@@ -2015,6 +2061,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Zatvori",
         specialCharsClose: "Zatvori",
+        emojiCatSmileys: "😀 Smajlići",
+        emojiCatGestures: "👍 Geste",
+        emojiCatHearts: "❤️ Srca",
+        emojiCatCelebrate: "🎉 Slavlje",
+        emojiCatNature: "🌍 Priroda",
+        emojiCatFood: "🍕 Hrana",
+        emojiCatSymbols: "⚡ Simboli",
         
         // Таблицы
         createTable: "Stvaranje tablice",
@@ -2262,6 +2315,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Затвори",
         specialCharsClose: "Затвори",
+        emojiCatSmileys: "😀 Смајлији",
+        emojiCatGestures: "👍 Гесте",
+        emojiCatHearts: "❤️ Срца",
+        emojiCatCelebrate: "🎉 Слављење",
+        emojiCatNature: "🌍 Природа",
+        emojiCatFood: "🍕 Храна",
+        emojiCatSymbols: "⚡ Симболи",
         
         // Таблицы
         createTable: "Стварање табеле",
@@ -2510,6 +2570,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Zatvori",
         specialCharsClose: "Zatvori",
+        emojiCatSmileys: "😀 Smajlići",
+        emojiCatGestures: "👍 Geste",
+        emojiCatHearts: "❤️ Srca",
+        emojiCatCelebrate: "🎉 Slavlje",
+        emojiCatNature: "🌍 Priroda",
+        emojiCatFood: "🍕 Hrana",
+        emojiCatSymbols: "⚡ Simboli",
         
         // Таблицы
         createTable: "Stvaranje tabele",
@@ -2765,6 +2832,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Затвори",
         specialCharsClose: "Затвори",
+        emojiCatSmileys: "😀 Смајлии",
+        emojiCatGestures: "👍 Гестови",
+        emojiCatHearts: "❤️ Срца",
+        emojiCatCelebrate: "🎉 Прослава",
+        emojiCatNature: "🌍 Природа",
+        emojiCatFood: "🍕 Храна",
+        emojiCatSymbols: "⚡ Симболи",
         
         // Таблицы
         createTable: "Создавање табела",
@@ -3012,6 +3086,13 @@ const translations = {
         // Эмодзи и специальные символы
         emojiClose: "Zapri",
         specialCharsClose: "Zapri",
+        emojiCatSmileys: "😀 Smajliji",
+        emojiCatGestures: "👍 Geste",
+        emojiCatHearts: "❤️ Srca",
+        emojiCatCelebrate: "🎉 Praznovanje",
+        emojiCatNature: "🌍 Narava",
+        emojiCatFood: "🍕 Hrana",
+        emojiCatSymbols: "⚡ Simboli",
         
         // Таблицы
         createTable: "Ustvarjanje tabele",

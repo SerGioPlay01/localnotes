@@ -38,24 +38,29 @@
 <nav class="nav" id="nav">
   <a href="../" class="nav-logo"><img src="../logo.png" alt="Local Notes" class="nav-logo-img"> Local Notes</a>
   <ul class="nav-links">
-    <li><a href="#features">Funkcie</a>
-  <a href="#story">Príbeh</a></li>
-    <li><a href="#story">Príbeh</a></li>
-    <li><a href="#how">Ako funguje</a></li>
-    <li><a href="#usecases">Použitie</a></li>
-    <li><a href="#security">Bezpečnosť</a></li>
-    <li><a href="#languages">Jazyky</a></li>
-    <li><a href="../" class="lang-switcher" style="border-color:rgba(174,252,110,0.3);">🇸🇰 SK</a></li>
-    <li><a href="https://localnotes-three.vercel.app/sk/" class="nav-cta" target="_blank" rel="noopener">Otvoriť</a></li>
-  </ul>
+  <li><a href="#features">Funkcie</a></li>
+  <li><a href="#story">Príbeh</a></li>
+  <li><a href="#how">Ako funguje</a></li>
+  <li><a href="#note-format">Formát .note</a></li>
+  <li><a href="#editor">Editor</a></li>
+  <li><a href="#usecases">Použitie</a></li>
+  <li><a href="#security">Bezpečnosť</a></li>
+  <li><a href="#faq">FAQ</a></li>
+  <li><a href="../" class="lang-switcher" style="border-color:rgba(174,252,110,0.3);">🇸🇰 SK</a></li>
+  <li><a href="https://localnotes-three.vercel.app/sk/" class="nav-cta" target="_blank" rel="noopener">Otvoriť</a></li>
+</ul>
   <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 <div class="nav-mobile" id="navMobile">
   <a href="#features">Funkcie</a>
   <a href="#story">Príbeh</a>
   <a href="#how">Ako funguje</a>
+  <a href="#note-format">Formát .note</a>
+  <a href="#editor">Editor</a>
   <a href="#usecases">Použitie</a>
   <a href="#security">Bezpečnosť</a>
+  <a href="#install">Inštalácia</a>
+  <a href="#faq">FAQ</a>
   <a href="#languages">Jazyky</a>
   <a href="../">🌐 Zmeniť jazyk</a>
   <a href="https://localnotes-three.vercel.app/sk/" target="_blank" rel="noopener" style="color:#aefc6e;font-weight:700;">Otvoriť aplikáciu →</a>
@@ -148,6 +153,18 @@
   </div>
 </section>
 
+<!-- ── Stats ──────────────────────────────────────────────────── -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item animate-in"><div class="stat-number">0</div><div class="stat-label">Serverov ukladá vaše dáta</div></div>
+      <div class="stat-item animate-in delay-1"><div class="stat-number">256<span class="stat-unit">-bit</span></div><div class="stat-label">Šifrovanie AES</div></div>
+      <div class="stat-item animate-in delay-2"><div class="stat-number">12</div><div class="stat-label">Podporovaných jazykov</div></div>
+      <div class="stat-item animate-in delay-3"><div class="stat-number">100<span class="stat-unit">%</span></div><div class="stat-label">Zadarmo a open source</div></div>
+    </div>
+  </div>
+</section>
+
 <section class="how" id="how">
   <div class="container">
     <div class="how-header">
@@ -200,6 +217,139 @@
         <div class="usecase-persona"><div class="usecase-avatar">🌍</div><div><div class="usecase-name">Cestovateľ</div><div class="usecase-role">Digitálny nomád</div></div></div>
         <p class="usecase-scenario">Používa Local Notes v 12 jazykoch v rôznych krajinách. Funguje plne offline v lietadlách a odľahlých miestach.</p>
         <div class="usecase-tags"><span class="usecase-tag">12 jazykov</span><span class="usecase-tag">Offline</span><span class="usecase-tag">PWA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── .note Format ──────────────────────────────────────────── -->
+<section class="note-format-section" id="note-format">
+  <div class="container">
+    <div class="note-format-inner">
+      <div class="note-format-content">
+        <div class="section-label animate-in">Formát .note</div>
+        <h2 class="section-title animate-in delay-1">Vaše dáta, váš formát</h2>
+        <p class="section-subtitle animate-in delay-2">Súbor <code class="note-code">.note</code> je prenosný šifrovaný kontajner navrhnutý s jediným cieľom: vaše poznámky patria vám — nie platforme, cloudu ani firme.</p>
+        <div class="note-format-timeline animate-in delay-3">
+          <div class="nft-item"><div class="nft-icon">🔒</div><div><div class="nft-title">Zrodený z problému súkromia</div><div class="nft-desc">Každá populárna aplikácia na poznámky ukladá dáta na vzdialených serveroch. Jeden únik, jedna žiadosť úradov, jedna zmena zásad — a vaše súkromné myšlienky sú odhalené. Formát <code class="note-code">.note</code> to znemožňuje svojou podstatou.</div></div></div>
+          <div class="nft-item"><div class="nft-icon">📦</div><div><div class="nft-title">Čo je vnútri súboru .note</div><div class="nft-desc">Súbor <code class="note-code">.note</code> je samostatný JSON balík: obsah poznámky, metadáta, štítky a — pri zapnutom šifrovaní — šifrovaný text AES-256, ktorý môže dešifrovať iba vaše heslo. Žiadny proprietárny formát, žiadne uzamknutie k dodávateľovi.</div></div></div>
+          <div class="nft-item"><div class="nft-icon">🌐</div><div><div class="nft-title">Offline-first, vždy prenositeľný</div><div class="nft-desc">Exportujte ľubovoľnú poznámku ako súbor <code class="note-code">.note</code> a noste ju na USB, posielajte cez Signal alebo archivujte na desaťročia. Importujte späť do Local Notes na akomkoľvek zariadení — bez účtu, bez internetu.</div></div></div>
+          <div class="nft-item"><div class="nft-icon">🛡️</div><div><div class="nft-title">Zero-knowledge ako základ</div><div class="nft-desc">Pri šifrovaní poznámky kľúč nikdy neopustí vaše zariadenie. Local Notes používa vstavaný Web Crypto API prehliadača — rovnaký štandard, ktorý používajú banky. Aj keby niekto zachytil váš súbor <code class="note-code">.note</code>, uvidí iba šifrovaný text.</div></div></div>
+        </div>
+      </div>
+      <div class="note-format-visual animate-in delay-2">
+        <div class="note-file-card glass">
+          <div class="nfc-header"><div class="nfc-icon">📄</div><div><div class="nfc-name">meeting-notes.note</div><div class="nfc-size">2.4 KB · Šifrované</div></div><div class="nfc-lock">🔒</div></div>
+          <div class="nfc-body">
+            <div class="nfc-line"><span class="nfc-key">"id"</span><span class="nfc-val">"a3f9…c12e"</span></div>
+            <div class="nfc-line"><span class="nfc-key">"title"</span><span class="nfc-val">"Poznámky zo stretnutia"</span></div>
+            <div class="nfc-line"><span class="nfc-key">"encrypted"</span><span class="nfc-val nfc-true">true</span></div>
+            <div class="nfc-line"><span class="nfc-key">"content"</span><span class="nfc-val nfc-cipher">U2FsdGVkX1+mK9…</span></div>
+            <div class="nfc-line"><span class="nfc-key">"iv"</span><span class="nfc-val nfc-cipher">8f3a1b…d92c</span></div>
+            <div class="nfc-line"><span class="nfc-key">"created"</span><span class="nfc-val">"2026-04-19"</span></div>
+          </div>
+          <div class="nfc-footer"><span class="nfc-badge">AES-256-GCM</span><span class="nfc-badge">Web Crypto API</span><span class="nfc-badge">Otvorený formát</span></div>
+        </div>
+        <p class="note-format-hint">↑ Skutočná štruktúra šifrovaného súboru .note. Obsah je nečitateľný bez vášho hesla.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Editor Preview ───────────────────────────────────────── -->
+<section class="editor-preview" id="editor">
+  <div class="container">
+    <div class="editor-preview-inner">
+      <div class="editor-preview-content">
+        <div class="section-label animate-in">Editor</div>
+        <h2 class="section-title animate-in delay-1">Píšte tak, ako myslíte</h2>
+        <p class="section-subtitle animate-in delay-2">Editor bez rozptyľovania so všetkým potrebným — formátovanie, checklisty, bloky kódu a ďalšie.</p>
+        <ul class="editor-features-list animate-in delay-3">
+          <li><i class="bi bi-type-bold"></i> Tučné, kurzíva, podčiarknutie, prečiarknutie</li>
+          <li><i class="bi bi-list-check"></i> Checklisty a odrážkové zoznamy</li>
+          <li><i class="bi bi-code-slash"></i> Vložený kód a bloky kódu</li>
+          <li><i class="bi bi-image"></i> Vkladanie obrázkov</li>
+          <li><i class="bi bi-arrows-fullscreen"></i> Režim celej obrazovky</li>
+          <li><i class="bi bi-search"></i> Vyhľadávanie s transliteráciou</li>
+        </ul>
+      </div>
+      <div class="editor-mock animate-in delay-2">
+        <div class="editor-mock-toolbar">
+          <span class="toolbar-btn active"><i class="bi bi-type-bold"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-type-italic"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-type-underline"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-list-ul"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-list-check"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-code-slash"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-image"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-arrows-fullscreen"></i></span>
+        </div>
+        <div class="editor-mock-body">
+          <div class="editor-mock-title">Stretnutie — Plánovanie Q4</div>
+          <div class="editor-mock-text">
+            <p>Kľúčové rozhodnutia zo sezóny:</p>
+            <div class="editor-checklist">
+              <div class="editor-check done"><span class="check-box">✓</span> Finalizovať priority roadmapy</div>
+              <div class="editor-check done"><span class="check-box">✓</span> Priradiť vedúcich funkcií</div>
+              <div class="editor-check"><span class="check-box"></span> Naplánovať stretnutie k rozpočtu</div>
+              <div class="editor-check"><span class="check-box"></span> Skontrolovať výsledky bezpečnostného auditu</div>
+            </div>
+            <p style="margin-top:12px;">Poznámka: <span class="editor-highlight">upgrade šifrovania</span> je hlavná priorita sprintu.</p>
+          </div>
+        </div>
+        <div class="editor-mock-footer">
+          <span class="editor-tag tag-blue">práca</span>
+          <span class="editor-tag tag-purple">q4</span>
+          <span class="editor-date">19. apr. 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Install PWA ───────────────────────────────────────────── -->
+<section class="install-section" id="install">
+  <div class="container">
+    <div class="install-inner">
+      <div class="install-header">
+        <div class="section-label animate-in">Inštalácia</div>
+        <h2 class="section-title animate-in delay-1">Funguje ako natívna aplikácia</h2>
+        <p class="section-subtitle animate-in delay-2">Nainštalujte Local Notes na akékoľvek zariadenie — bez obchodu s aplikáciami, bez sťahovania. Stačí otvoriť v prehliadači a pridať na domovskú obrazovku.</p>
+      </div>
+      <div class="install-platforms">
+        <div class="install-platform glass animate-in">
+          <div class="install-platform-icon">🖥️</div>
+          <div class="install-platform-name">Počítač</div>
+          <div class="install-platform-desc">Chrome, Edge, Firefox — kliknite na ikonu inštalácie v adresnom riadku</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Otvorte aplikáciu</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Kliknite ⊕ v adresnom riadku</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> Kliknite «Inštalovať»</div>
+          </div>
+        </div>
+        <div class="install-platform glass animate-in delay-1">
+          <div class="install-platform-icon">📱</div>
+          <div class="install-platform-name">Android</div>
+          <div class="install-platform-desc">Chrome pre Android — pridajte na domovskú obrazovku jedným klepnutím</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Otvorte v Chrome</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Klepnite ⋮ menu</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> «Pridať na domovskú obrazovku»</div>
+          </div>
+        </div>
+        <div class="install-platform glass animate-in delay-2">
+          <div class="install-platform-icon">🍎</div>
+          <div class="install-platform-name">iOS / iPadOS</div>
+          <div class="install-platform-desc">Safari na iPhone alebo iPad — menu «Zdieľať» → na domovskú obrazovku</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Otvorte v Safari</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Klepnite «Zdieľať» ↑</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> «Pridať na plochu»</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -270,6 +420,43 @@
       <a href="../bs/" class="lang-item animate-in delay-1"><span class="lang-flag">🇧🇦</span><div><div class="lang-name">Bosanski</div><div class="lang-native">Bosnian</div></div></a>
       <a href="../mk/" class="lang-item animate-in delay-2"><span class="lang-flag">🇲🇰</span><div><div class="lang-name">Македонски</div><div class="lang-native">Macedonian</div></div></a>
       <a href="../sl/" class="lang-item animate-in delay-3"><span class="lang-flag">🇸🇮</span><div><div class="lang-name">Slovenščina</div><div class="lang-native">Slovenian</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ──────────────────────────────────────────────────── -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="faq-header">
+      <div class="section-label animate-in">FAQ</div>
+      <h2 class="section-title animate-in delay-1">Časté otázky</h2>
+      <p class="section-subtitle animate-in delay-2">Všetko, čo ste chceli vedieť pred začiatkom.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item glass animate-in">
+        <button class="faq-question" aria-expanded="false"><span>Je Local Notes naozaj zadarmo?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Áno, úplne. Local Notes je open source softvér pod licenciou MIT. Žiadne platené plány, žiadne skryté poplatky — navždy. Všetky funkcie sú dostupné zadarmo.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-1">
+        <button class="faq-question" aria-expanded="false"><span>Kde sú uložené moje poznámky?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Vaše poznámky sú uložené v IndexedDB vášho prehliadača — lokálnej databáze zabudovanej v každom modernom prehliadači. Nič sa nikdy neodosiela na server.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-2">
+        <button class="faq-question" aria-expanded="false"><span>Čo sa stane, keď vyčistím dáta prehliadača?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Vyčistenie úložiska prehliadača zmaže vaše poznámky. Odporúčame pravidelne exportovať poznámky ako .note, HTML alebo Markdown súbory.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-1">
+        <button class="faq-question" aria-expanded="false"><span>Ako funguje šifrovanie AES-256?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Pri zapnutí šifrovania sú poznámky šifrované pomocou Web Crypto API zabudovaného v prehliadači. Kľúč odvodený z vášho hesla šifruje každú poznámku pred uložením.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-2">
+        <button class="faq-question" aria-expanded="false"><span>Môžem synchronizovať poznámky medzi zariadeniami?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Local Notes je zámerne iba lokálny — bez synchronizácie. Pre prenos poznámok medzi zariadeniami ich exportujte ako .note súbory a importujte na druhom zariadení.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-3">
+        <button class="faq-question" aria-expanded="false"><span>Je zdrojový kód dostupný?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Áno. Local Notes je plne otvorený pod licenciou MIT. Môžete preskúmať, forknúť a prispievať na <a href="https://github.com/SerGioPlay01/localnotes" target="_blank" rel="noopener" style="color:var(--primary-light);">GitHub</a>.</p></div>
+      </div>
     </div>
   </div>
 </section>

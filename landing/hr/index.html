@@ -38,24 +38,29 @@
 <nav class="nav" id="nav">
   <a href="../" class="nav-logo"><img src="../logo.png" alt="Local Notes" class="nav-logo-img"> Local Notes</a>
   <ul class="nav-links">
-    <li><a href="#features">Značajke</a>
-  <a href="#story">Priča</a></li>
-    <li><a href="#story">Priča</a></li>
-    <li><a href="#how">Kako radi</a></li>
-    <li><a href="#usecases">Primjeri</a></li>
-    <li><a href="#security">Sigurnost</a></li>
-    <li><a href="#languages">Jezici</a></li>
-    <li><a href="../" class="lang-switcher" style="border-color:rgba(174,252,110,0.3);">🇭🇷 HR</a></li>
-    <li><a href="https://localnotes-three.vercel.app/hr/" class="nav-cta" target="_blank" rel="noopener">Otvori</a></li>
-  </ul>
+  <li><a href="#features">Značajke</a></li>
+  <li><a href="#story">Priča</a></li>
+  <li><a href="#how">Kako radi</a></li>
+  <li><a href="#note-format">Format .note</a></li>
+  <li><a href="#editor">Uređivač</a></li>
+  <li><a href="#usecases">Primjeri</a></li>
+  <li><a href="#security">Sigurnost</a></li>
+  <li><a href="#faq">FAQ</a></li>
+  <li><a href="../" class="lang-switcher" style="border-color:rgba(174,252,110,0.3);">🇭🇷 HR</a></li>
+  <li><a href="https://localnotes-three.vercel.app/hr/" class="nav-cta" target="_blank" rel="noopener">Otvori</a></li>
+</ul>
   <button class="nav-hamburger" id="hamburger" aria-label="Izbornik"><span></span><span></span><span></span></button>
 </nav>
 <div class="nav-mobile" id="navMobile">
   <a href="#features">Značajke</a>
   <a href="#story">Priča</a>
   <a href="#how">Kako radi</a>
+  <a href="#note-format">Format .note</a>
+  <a href="#editor">Uređivač</a>
   <a href="#usecases">Primjeri</a>
   <a href="#security">Sigurnost</a>
+  <a href="#install">Instalacija</a>
+  <a href="#faq">FAQ</a>
   <a href="#languages">Jezici</a>
   <a href="../">🌐 Promijeni jezik</a>
   <a href="https://localnotes-three.vercel.app/hr/" target="_blank" rel="noopener" style="color:#aefc6e;font-weight:700;">Otvori aplikaciju →</a>
@@ -148,6 +153,18 @@
   </div>
 </section>
 
+<!-- ── Stats ──────────────────────────────────────────────────── -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item animate-in"><div class="stat-number">0</div><div class="stat-label">Poslužitelja čuva vaše podatke</div></div>
+      <div class="stat-item animate-in delay-1"><div class="stat-number">256<span class="stat-unit">-bit</span></div><div class="stat-label">AES enkripcija</div></div>
+      <div class="stat-item animate-in delay-2"><div class="stat-number">12</div><div class="stat-label">Podržanih jezika</div></div>
+      <div class="stat-item animate-in delay-3"><div class="stat-number">100<span class="stat-unit">%</span></div><div class="stat-label">Besplatno i open source</div></div>
+    </div>
+  </div>
+</section>
+
 <section class="how" id="how">
   <div class="container">
     <div class="how-header">
@@ -200,6 +217,139 @@
         <div class="usecase-persona"><div class="usecase-avatar">🌍</div><div><div class="usecase-name">Putnik</div><div class="usecase-role">Digitalni nomad</div></div></div>
         <p class="usecase-scenario">Koristi Local Notes na 12 jezika u različitim zemljama. Radi potpuno offline u avionima i udaljenim mjestima.</p>
         <div class="usecase-tags"><span class="usecase-tag">12 jezika</span><span class="usecase-tag">Offline</span><span class="usecase-tag">PWA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── .note Format ──────────────────────────────────────────── -->
+<section class="note-format-section" id="note-format">
+  <div class="container">
+    <div class="note-format-inner">
+      <div class="note-format-content">
+        <div class="section-label animate-in">Format .note</div>
+        <h2 class="section-title animate-in delay-1">Vaši podaci, vaš format</h2>
+        <p class="section-subtitle animate-in delay-2">Datoteka <code class="note-code">.note</code> je prenosivi šifrirani kontejner dizajniran s jednim ciljem: vaše bilješke pripadaju vama — ne platformi, oblaku ni tvrtki.</p>
+        <div class="note-format-timeline animate-in delay-3">
+          <div class="nft-item"><div class="nft-icon">🔒</div><div><div class="nft-title">Rođen iz problema privatnosti</div><div class="nft-desc">Svaka popularna aplikacija za bilješke pohranjuje podatke na udaljenim poslužiteljima. Jedan propust, jedan zahtjev vlasti, jedna promjena pravila — i vaše privatne misli su otkrivene. Format <code class="note-code">.note</code> to čini nemogućim po svojoj prirodi.</div></div></div>
+          <div class="nft-item"><div class="nft-icon">📦</div><div><div class="nft-title">Što je unutar .note datoteke</div><div class="nft-desc">Datoteka <code class="note-code">.note</code> je samostalni JSON paket: sadržaj bilješke, metapodaci, oznake i — pri uključenoj enkripciji — AES-256 šifrirani tekst koji samo vaša lozinka može dešifrirati. Bez vlasničkog formata, bez vezivanja za dobavljača.</div></div></div>
+          <div class="nft-item"><div class="nft-icon">🌐</div><div><div class="nft-title">Offline-first, uvijek prenosiv</div><div class="nft-desc">Izvezite bilo koju bilješku kao datoteku <code class="note-code">.note</code> i nosite je na USB-u, šaljite putem Signala ili arhivirajte na desetljeća. Uvezite natrag u Local Notes na bilo kojem uređaju — bez računa, bez interneta.</div></div></div>
+          <div class="nft-item"><div class="nft-icon">🛡️</div><div><div class="nft-title">Zero-knowledge kao temelj</div><div class="nft-desc">Pri šifriranju bilješke ključ nikada ne napušta vaš uređaj. Local Notes koristi ugrađeni Web Crypto API preglednika — isti standard koji koriste banke. Čak i ako netko presretne vašu datoteku <code class="note-code">.note</code>, vidjet će samo šifrirani tekst.</div></div></div>
+        </div>
+      </div>
+      <div class="note-format-visual animate-in delay-2">
+        <div class="note-file-card glass">
+          <div class="nfc-header"><div class="nfc-icon">📄</div><div><div class="nfc-name">meeting-notes.note</div><div class="nfc-size">2.4 KB · Šifrirano</div></div><div class="nfc-lock">🔒</div></div>
+          <div class="nfc-body">
+            <div class="nfc-line"><span class="nfc-key">"id"</span><span class="nfc-val">"a3f9…c12e"</span></div>
+            <div class="nfc-line"><span class="nfc-key">"title"</span><span class="nfc-val">"Bilješke sa sastanka"</span></div>
+            <div class="nfc-line"><span class="nfc-key">"encrypted"</span><span class="nfc-val nfc-true">true</span></div>
+            <div class="nfc-line"><span class="nfc-key">"content"</span><span class="nfc-val nfc-cipher">U2FsdGVkX1+mK9…</span></div>
+            <div class="nfc-line"><span class="nfc-key">"iv"</span><span class="nfc-val nfc-cipher">8f3a1b…d92c</span></div>
+            <div class="nfc-line"><span class="nfc-key">"created"</span><span class="nfc-val">"2026-04-19"</span></div>
+          </div>
+          <div class="nfc-footer"><span class="nfc-badge">AES-256-GCM</span><span class="nfc-badge">Web Crypto API</span><span class="nfc-badge">Otvoreni format</span></div>
+        </div>
+        <p class="note-format-hint">↑ Stvarna struktura šifrirane .note datoteke. Sadržaj je nečitljiv bez vaše lozinke.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Editor Preview ───────────────────────────────────────── -->
+<section class="editor-preview" id="editor">
+  <div class="container">
+    <div class="editor-preview-inner">
+      <div class="editor-preview-content">
+        <div class="section-label animate-in">Uređivač</div>
+        <h2 class="section-title animate-in delay-1">Pišite onako kako mislite</h2>
+        <p class="section-subtitle animate-in delay-2">Uređivač bez ometanja sa svim potrebnim — formatiranje, checkliste, blokovi koda i još.</p>
+        <ul class="editor-features-list animate-in delay-3">
+          <li><i class="bi bi-type-bold"></i> Podebljano, kurziv, podvučeno, precrtan</li>
+          <li><i class="bi bi-list-check"></i> Checkliste i liste s točkama</li>
+          <li><i class="bi bi-code-slash"></i> Ugrađeni kod i blokovi koda</li>
+          <li><i class="bi bi-image"></i> Umetanje slika</li>
+          <li><i class="bi bi-arrows-fullscreen"></i> Način rada na cijelom zaslonu</li>
+          <li><i class="bi bi-search"></i> Pretraživanje s transliteracijom</li>
+        </ul>
+      </div>
+      <div class="editor-mock animate-in delay-2">
+        <div class="editor-mock-toolbar">
+          <span class="toolbar-btn active"><i class="bi bi-type-bold"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-type-italic"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-type-underline"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-list-ul"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-list-check"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-code-slash"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-image"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-arrows-fullscreen"></i></span>
+        </div>
+        <div class="editor-mock-body">
+          <div class="editor-mock-title">Sastanak — Planiranje Q4</div>
+          <div class="editor-mock-text">
+            <p>Ključne odluke sa sjednice:</p>
+            <div class="editor-checklist">
+              <div class="editor-check done"><span class="check-box">✓</span> Finalizirati prioritete plana</div>
+              <div class="editor-check done"><span class="check-box">✓</span> Dodijeliti voditelje funkcija</div>
+              <div class="editor-check"><span class="check-box"></span> Zakazati sastanak o proračunu</div>
+              <div class="editor-check"><span class="check-box"></span> Pregledati rezultate sigurnosne revizije</div>
+            </div>
+            <p style="margin-top:12px;">Napomena: <span class="editor-highlight">nadogradnja enkripcije</span> je glavni prioritet sprinta.</p>
+          </div>
+        </div>
+        <div class="editor-mock-footer">
+          <span class="editor-tag tag-blue">posao</span>
+          <span class="editor-tag tag-purple">q4</span>
+          <span class="editor-date">19. tra. 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Install PWA ───────────────────────────────────────────── -->
+<section class="install-section" id="install">
+  <div class="container">
+    <div class="install-inner">
+      <div class="install-header">
+        <div class="section-label animate-in">Instalacija</div>
+        <h2 class="section-title animate-in delay-1">Radi kao nativna aplikacija</h2>
+        <p class="section-subtitle animate-in delay-2">Instalirajte Local Notes na bilo koji uređaj — bez trgovine aplikacija, bez preuzimanja. Samo otvorite u pregledniku i dodajte na početni zaslon.</p>
+      </div>
+      <div class="install-platforms">
+        <div class="install-platform glass animate-in">
+          <div class="install-platform-icon">🖥️</div>
+          <div class="install-platform-name">Računalo</div>
+          <div class="install-platform-desc">Chrome, Edge, Firefox — kliknite ikonu instalacije u adresnoj traci</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Otvorite aplikaciju</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Kliknite ⊕ u adresnoj traci</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> Kliknite «Instaliraj»</div>
+          </div>
+        </div>
+        <div class="install-platform glass animate-in delay-1">
+          <div class="install-platform-icon">📱</div>
+          <div class="install-platform-name">Android</div>
+          <div class="install-platform-desc">Chrome za Android — dodajte na početni zaslon jednim dodirom</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Otvorite u Chrome</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Dodirnite ⋮ izbornik</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> «Dodaj na početni zaslon»</div>
+          </div>
+        </div>
+        <div class="install-platform glass animate-in delay-2">
+          <div class="install-platform-icon">🍎</div>
+          <div class="install-platform-name">iOS / iPadOS</div>
+          <div class="install-platform-desc">Safari na iPhone ili iPad — izbornik «Dijeli» → na početni zaslon</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Otvorite u Safari</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Dodirnite «Dijeli» ↑</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> «Dodaj na početni zaslon»</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -270,6 +420,43 @@
       <a href="../bs/" class="lang-item animate-in delay-1"><span class="lang-flag">🇧🇦</span><div><div class="lang-name">Bosanski</div><div class="lang-native">Bosnian</div></div></a>
       <a href="../mk/" class="lang-item animate-in delay-2"><span class="lang-flag">🇲🇰</span><div><div class="lang-name">Македонски</div><div class="lang-native">Macedonian</div></div></a>
       <a href="../sl/" class="lang-item animate-in delay-3"><span class="lang-flag">🇸🇮</span><div><div class="lang-name">Slovenščina</div><div class="lang-native">Slovenian</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ──────────────────────────────────────────────────── -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="faq-header">
+      <div class="section-label animate-in">FAQ</div>
+      <h2 class="section-title animate-in delay-1">Česta pitanja</h2>
+      <p class="section-subtitle animate-in delay-2">Sve što ste željeli znati prije početka.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item glass animate-in">
+        <button class="faq-question" aria-expanded="false"><span>Je li Local Notes zaista besplatan?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Da, potpuno. Local Notes je open source softver pod MIT licencom. Bez plaćenih planova, bez skrivenih naknada — zauvijek. Sve značajke su dostupne besplatno.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-1">
+        <button class="faq-question" aria-expanded="false"><span>Gdje se pohranjuju moje bilješke?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Vaše bilješke se pohranjuju u IndexedDB vašeg preglednika — lokalnoj bazi podataka ugrađenoj u svaki moderni preglednik. Ništa se nikada ne šalje na poslužitelj.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-2">
+        <button class="faq-question" aria-expanded="false"><span>Što će se dogoditi ako obrišem podatke preglednika?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Brisanje pohrane preglednika će obrisati vaše bilješke. Preporučujemo redovito izvoziti bilješke kao .note, HTML ili Markdown datoteke.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-1">
+        <button class="faq-question" aria-expanded="false"><span>Kako funkcionira AES-256 enkripcija?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Kada se enkripcija uključi, bilješke se šifriraju pomoću Web Crypto API ugrađenog u preglednik. Ključ izveden iz vaše lozinke šifrira svaku bilješku prije pohrane.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-2">
+        <button class="faq-question" aria-expanded="false"><span>Mogu li sinkronizirati bilješke između uređaja?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Local Notes je namjerno samo lokalan — bez sinkronizacije. Za prijenos bilješki između uređaja izvezite ih kao .note datoteke i uvezite na drugom uređaju.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-3">
+        <button class="faq-question" aria-expanded="false"><span>Je li izvorni kod dostupan?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Da. Local Notes je potpuno otvoren pod MIT licencom. Možete pregledati, forkati i doprinijeti na <a href="https://github.com/SerGioPlay01/localnotes" target="_blank" rel="noopener" style="color:var(--primary-light);">GitHub</a>.</p></div>
+      </div>
     </div>
   </div>
 </section>

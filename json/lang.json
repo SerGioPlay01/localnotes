@@ -159,7 +159,9 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Imported {count} note(s), errors: {errors}",
     "importSkipped": "Skipped: {count}",
-    "importErrors": "Errors: {count}"
+    "importErrors": "Errors: {count}",
+    "titleSaved": "Title saved",
+    "clickToRename": "Click to rename"
   },
   "ru": {
     "appName": "Локальные заметки",
@@ -321,7 +323,9 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Импортировано {count} заметок, ошибок: {errors}",
     "importSkipped": "Пропущено: {count}",
-    "importErrors": "Ошибок: {count}"
+    "importErrors": "Ошибок: {count}",
+    "titleSaved": "Заголовок сохранён",
+    "clickToRename": "Нажмите для переименования"
   },
   "ua": {
     "appName": "Локальні нотатки",
@@ -483,7 +487,9 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Імпортовано {count} нотаток, помилок: {errors}",
     "importSkipped": "Пропущено: {count}",
-    "importErrors": "Помилок: {count}"
+    "importErrors": "Помилок: {count}",
+    "titleSaved": "Заголовок збережено",
+    "clickToRename": "Натисніть для перейменування"
   },
   "pl": {
     "appName": "Lokalne Notatki",
@@ -645,7 +651,9 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Zaimportowano {count} notatek, błędów: {errors}",
     "importSkipped": "Pominięto: {count}",
-    "importErrors": "Błędów: {count}"
+    "importErrors": "Błędów: {count}",
+    "titleSaved": "Tytuł zapisany",
+    "clickToRename": "Kliknij, aby zmienić nazwę"
   },
   "cs": {
     "appName": "Lokální poznámky",
@@ -807,7 +815,9 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Importováno {count} poznámek, chyb: {errors}",
     "importSkipped": "Přeskočeno: {count}",
-    "importErrors": "Chyb: {count}"
+    "importErrors": "Chyb: {count}",
+    "titleSaved": "Název uložen",
+    "clickToRename": "Klikněte pro přejmenování"
   },
   "sk": {
     "appName": "Lokálne poznámky",
@@ -969,7 +979,9 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Importovaných {count} poznámok, chýb: {errors}",
     "importSkipped": "Preskočené: {count}",
-    "importErrors": "Chýb: {count}"
+    "importErrors": "Chýb: {count}",
+    "titleSaved": "Názov uložený",
+    "clickToRename": "Kliknite pre premenovanie"
   },
   "bg": {
     "appName": "Локални бележки",
@@ -1131,7 +1143,9 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Импортирани {count} бележки, грешки: {errors}",
     "importSkipped": "Пропуснати: {count}",
-    "importErrors": "Грешки: {count}"
+    "importErrors": "Грешки: {count}",
+    "titleSaved": "Заглавието е запазено",
+    "clickToRename": "Кликнете за преименуване"
   },
   "hr": {
     "appName": "Lokalne bilješke",
@@ -1293,7 +1307,9 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Uvezeno {count} bilješki, grešaka: {errors}",
     "importSkipped": "Preskočeno: {count}",
-    "importErrors": "Grešaka: {count}"
+    "importErrors": "Grešaka: {count}",
+    "titleSaved": "Naslov spremljen",
+    "clickToRename": "Kliknite za preimenovanje"
   },
   "sr": {
     "appName": "Локалне белешке",
@@ -1455,7 +1471,9 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Увезено {count} белешки, грешака: {errors}",
     "importSkipped": "Прескочено: {count}",
-    "importErrors": "Грешака: {count}"
+    "importErrors": "Грешака: {count}",
+    "titleSaved": "Наслов сачуван",
+    "clickToRename": "Кликните за преименовање"
   },
   "bs": {
     "appName": "Lokalne bilješke",
@@ -1617,7 +1635,9 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Uvezeno {count} bilješki, grešaka: {errors}",
     "importSkipped": "Preskočeno: {count}",
-    "importErrors": "Grešaka: {count}"
+    "importErrors": "Grešaka: {count}",
+    "titleSaved": "Naslov sačuvan",
+    "clickToRename": "Kliknite za preimenovanje"
   },
   "mk": {
     "appName": "Локални белешки",
@@ -1779,7 +1799,9 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Увезени {count} белешки, грешки: {errors}",
     "importSkipped": "Прескокнати: {count}",
-    "importErrors": "Грешки: {count}"
+    "importErrors": "Грешки: {count}",
+    "titleSaved": "Насловот е зачуван",
+    "clickToRename": "Кликнете за преименување"
   },
   "sl": {
     "appName": "Lokalne opombe",
@@ -1941,6 +1963,8 @@
     "importFileError": "{name}: {message}",
     "importCompletedWithErrors": "Uvoženo {count} opomb, napak: {errors}",
     "importSkipped": "Preskočeno: {count}",
-    "importErrors": "Napak: {count}"
+    "importErrors": "Napak: {count}",
+    "titleSaved": "Naslov shranjen",
+    "clickToRename": "Kliknite za preimenovanje"
   }
 }

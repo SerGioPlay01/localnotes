@@ -38,24 +38,29 @@
 <nav class="nav" id="nav">
   <a href="../" class="nav-logo"><img src="../logo.png" alt="Local Notes" class="nav-logo-img"> Local Notes</a>
   <ul class="nav-links">
-    <li><a href="#features">Funkcje</a>
-  <a href="#story">Historia</a></li>
-    <li><a href="#story">Historia</a></li>
-    <li><a href="#how">Jak działa</a></li>
-    <li><a href="#usecases">Zastosowania</a></li>
-    <li><a href="#security">Bezpieczeństwo</a></li>
-    <li><a href="#languages">Języki</a></li>
-    <li><a href="../" class="lang-switcher" style="border-color:rgba(174,252,110,0.3);">🇵🇱 PL</a></li>
-    <li><a href="https://localnotes-three.vercel.app/pl/" class="nav-cta" target="_blank" rel="noopener">Otwórz</a></li>
-  </ul>
+  <li><a href="#features">Funkcje</a></li>
+  <li><a href="#story">Historia</a></li>
+  <li><a href="#how">Jak działa</a></li>
+  <li><a href="#note-format">Format .note</a></li>
+  <li><a href="#editor">Edytor</a></li>
+  <li><a href="#usecases">Zastosowania</a></li>
+  <li><a href="#security">Bezpieczeństwo</a></li>
+  <li><a href="#faq">FAQ</a></li>
+  <li><a href="../" class="lang-switcher" style="border-color:rgba(174,252,110,0.3);">🇵🇱 PL</a></li>
+  <li><a href="https://localnotes-three.vercel.app/pl/" class="nav-cta" target="_blank" rel="noopener">Otwórz</a></li>
+</ul>
   <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 <div class="nav-mobile" id="navMobile">
   <a href="#features">Funkcje</a>
   <a href="#story">Historia</a>
   <a href="#how">Jak działa</a>
+  <a href="#note-format">Format .note</a>
+  <a href="#editor">Edytor</a>
   <a href="#usecases">Zastosowania</a>
   <a href="#security">Bezpieczeństwo</a>
+  <a href="#install">Instalacja</a>
+  <a href="#faq">FAQ</a>
   <a href="#languages">Języki</a>
   <a href="../">🌐 Zmień język</a>
   <a href="https://localnotes-three.vercel.app/pl/" target="_blank" rel="noopener" style="color:#aefc6e;font-weight:700;">Otwórz aplikację →</a>
@@ -146,6 +151,18 @@
   </div>
 </section>
 
+<!-- ── Stats ──────────────────────────────────────────────────── -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item animate-in"><div class="stat-number">0</div><div class="stat-label">Serwerów przechowuje Twoje dane</div></div>
+      <div class="stat-item animate-in delay-1"><div class="stat-number">256<span class="stat-unit">-bit</span></div><div class="stat-label">Szyfrowanie AES</div></div>
+      <div class="stat-item animate-in delay-2"><div class="stat-number">12</div><div class="stat-label">Obsługiwanych języków</div></div>
+      <div class="stat-item animate-in delay-3"><div class="stat-number">100<span class="stat-unit">%</span></div><div class="stat-label">Darmowe i open source</div></div>
+    </div>
+  </div>
+</section>
+
 <section class="how" id="how">
   <div class="container">
     <div class="how-header">
@@ -198,6 +215,139 @@
         <div class="usecase-persona"><div class="usecase-avatar">🌍</div><div><div class="usecase-name">Podróżnik</div><div class="usecase-role">Cyfrowy nomada</div></div></div>
         <p class="usecase-scenario">Używa Local Notes w 12 językach w różnych krajach. Działa w pełni offline w samolotach i odległych miejscach.</p>
         <div class="usecase-tags"><span class="usecase-tag">12 języków</span><span class="usecase-tag">Offline</span><span class="usecase-tag">PWA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── .note Format ──────────────────────────────────────────── -->
+<section class="note-format-section" id="note-format">
+  <div class="container">
+    <div class="note-format-inner">
+      <div class="note-format-content">
+        <div class="section-label animate-in">Format .note</div>
+        <h2 class="section-title animate-in delay-1">Twoje dane, Twój format</h2>
+        <p class="section-subtitle animate-in delay-2">Plik <code class="note-code">.note</code> to przenośny, szyfrowany kontener zaprojektowany z jednym celem: Twoje notatki należą do Ciebie — nie do platformy, chmury ani firmy.</p>
+        <div class="note-format-timeline animate-in delay-3">
+          <div class="nft-item"><div class="nft-icon">🔒</div><div><div class="nft-title">Zrodzony z problemu prywatności</div><div class="nft-desc">Każda popularna aplikacja do notatek przechowuje dane na zdalnych serwerach. Jeden wyciek, jedna żądanie władz, jedna zmiana polityki — i Twoje prywatne myśli są ujawnione. Format <code class="note-code">.note</code> sprawia, że jest to niemożliwe z założenia.</div></div></div>
+          <div class="nft-item"><div class="nft-icon">📦</div><div><div class="nft-title">Co jest wewnątrz pliku .note</div><div class="nft-desc">Plik <code class="note-code">.note</code> to samodzielny pakiet JSON: treść notatki, metadane, tagi i — przy włączonym szyfrowaniu — zaszyfrowany tekst AES-256, który może odszyfrować tylko Twoje hasło. Żadnego zastrzeżonego formatu, żadnego uzależnienia od dostawcy.</div></div></div>
+          <div class="nft-item"><div class="nft-icon">🌐</div><div><div class="nft-title">Offline-first, zawsze przenośny</div><div class="nft-desc">Wyeksportuj dowolną notatkę jako plik <code class="note-code">.note</code> i noś na pendrivie, wysyłaj przez Signal lub archiwizuj na dziesięciolecia. Zaimportuj z powrotem do Local Notes na dowolnym urządzeniu — bez konta, bez internetu.</div></div></div>
+          <div class="nft-item"><div class="nft-icon">🛡️</div><div><div class="nft-title">Zero-knowledge jako fundament</div><div class="nft-desc">Przy szyfrowaniu notatki klucz nigdy nie opuszcza Twojego urządzenia. Local Notes używa wbudowanego Web Crypto API przeglądarki — tego samego standardu, który stosują banki. Nawet jeśli ktoś przechwyci Twój plik <code class="note-code">.note</code>, zobaczy tylko zaszyfrowany tekst.</div></div></div>
+        </div>
+      </div>
+      <div class="note-format-visual animate-in delay-2">
+        <div class="note-file-card glass">
+          <div class="nfc-header"><div class="nfc-icon">📄</div><div><div class="nfc-name">meeting-notes.note</div><div class="nfc-size">2.4 KB · Zaszyfrowane</div></div><div class="nfc-lock">🔒</div></div>
+          <div class="nfc-body">
+            <div class="nfc-line"><span class="nfc-key">"id"</span><span class="nfc-val">"a3f9…c12e"</span></div>
+            <div class="nfc-line"><span class="nfc-key">"title"</span><span class="nfc-val">"Notatki ze spotkania"</span></div>
+            <div class="nfc-line"><span class="nfc-key">"encrypted"</span><span class="nfc-val nfc-true">true</span></div>
+            <div class="nfc-line"><span class="nfc-key">"content"</span><span class="nfc-val nfc-cipher">U2FsdGVkX1+mK9…</span></div>
+            <div class="nfc-line"><span class="nfc-key">"iv"</span><span class="nfc-val nfc-cipher">8f3a1b…d92c</span></div>
+            <div class="nfc-line"><span class="nfc-key">"created"</span><span class="nfc-val">"2026-04-19"</span></div>
+          </div>
+          <div class="nfc-footer"><span class="nfc-badge">AES-256-GCM</span><span class="nfc-badge">Web Crypto API</span><span class="nfc-badge">Otwarty format</span></div>
+        </div>
+        <p class="note-format-hint">↑ Rzeczywista struktura zaszyfrowanego pliku .note. Treść jest nieczytelna bez Twojego hasła.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Editor Preview ───────────────────────────────────────── -->
+<section class="editor-preview" id="editor">
+  <div class="container">
+    <div class="editor-preview-inner">
+      <div class="editor-preview-content">
+        <div class="section-label animate-in">Edytor</div>
+        <h2 class="section-title animate-in delay-1">Pisz tak, jak myślisz</h2>
+        <p class="section-subtitle animate-in delay-2">Edytor bez rozpraszaczy ze wszystkim, czego potrzebujesz — formatowanie, checklisty, bloki kodu i więcej.</p>
+        <ul class="editor-features-list animate-in delay-3">
+          <li><i class="bi bi-type-bold"></i> Pogrubienie, kursywa, podkreślenie, przekreślenie</li>
+          <li><i class="bi bi-list-check"></i> Checklisty i listy punktowane</li>
+          <li><i class="bi bi-code-slash"></i> Kod inline i bloki kodu</li>
+          <li><i class="bi bi-image"></i> Wstawianie obrazów</li>
+          <li><i class="bi bi-arrows-fullscreen"></i> Tryb pełnoekranowy</li>
+          <li><i class="bi bi-search"></i> Wyszukiwanie z transliteracją</li>
+        </ul>
+      </div>
+      <div class="editor-mock animate-in delay-2">
+        <div class="editor-mock-toolbar">
+          <span class="toolbar-btn active"><i class="bi bi-type-bold"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-type-italic"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-type-underline"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-list-ul"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-list-check"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-code-slash"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-image"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-arrows-fullscreen"></i></span>
+        </div>
+        <div class="editor-mock-body">
+          <div class="editor-mock-title">Spotkanie — Planowanie Q4</div>
+          <div class="editor-mock-text">
+            <p>Kluczowe decyzje ze spotkania:</p>
+            <div class="editor-checklist">
+              <div class="editor-check done"><span class="check-box">✓</span> Sfinalizować priorytety roadmapy</div>
+              <div class="editor-check done"><span class="check-box">✓</span> Przydzielić liderów funkcji</div>
+              <div class="editor-check"><span class="check-box"></span> Zaplanować spotkanie budżetowe</div>
+              <div class="editor-check"><span class="check-box"></span> Przejrzeć wyniki audytu bezpieczeństwa</div>
+            </div>
+            <p style="margin-top:12px;">Notatka: <span class="editor-highlight">ulepszenie szyfrowania</span> to główny priorytet sprintu.</p>
+          </div>
+        </div>
+        <div class="editor-mock-footer">
+          <span class="editor-tag tag-blue">praca</span>
+          <span class="editor-tag tag-purple">q4</span>
+          <span class="editor-date">19 kwi. 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Install PWA ───────────────────────────────────────────── -->
+<section class="install-section" id="install">
+  <div class="container">
+    <div class="install-inner">
+      <div class="install-header">
+        <div class="section-label animate-in">Instalacja</div>
+        <h2 class="section-title animate-in delay-1">Działa jak natywna aplikacja</h2>
+        <p class="section-subtitle animate-in delay-2">Zainstaluj Local Notes na dowolnym urządzeniu — bez sklepu z aplikacjami, bez pobierania. Wystarczy otworzyć w przeglądarce i dodać do ekranu głównego.</p>
+      </div>
+      <div class="install-platforms">
+        <div class="install-platform glass animate-in">
+          <div class="install-platform-icon">🖥️</div>
+          <div class="install-platform-name">Komputer</div>
+          <div class="install-platform-desc">Chrome, Edge, Firefox — kliknij ikonę instalacji w pasku adresu</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Otwórz aplikację</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Kliknij ⊕ w pasku adresu</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> Kliknij «Zainstaluj»</div>
+          </div>
+        </div>
+        <div class="install-platform glass animate-in delay-1">
+          <div class="install-platform-icon">📱</div>
+          <div class="install-platform-name">Android</div>
+          <div class="install-platform-desc">Chrome na Android — dodaj do ekranu głównego jednym dotknięciem</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Otwórz w Chrome</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Dotknij ⋮ menu</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> «Dodaj do ekranu głównego»</div>
+          </div>
+        </div>
+        <div class="install-platform glass animate-in delay-2">
+          <div class="install-platform-icon">🍎</div>
+          <div class="install-platform-name">iOS / iPadOS</div>
+          <div class="install-platform-desc">Safari na iPhone lub iPad — menu «Udostępnij» → do ekranu głównego</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Otwórz w Safari</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Dotknij «Udostępnij» ↑</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> «Dodaj do ekranu głównego»</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -268,6 +418,43 @@
       <a href="../bs/" class="lang-item animate-in delay-1"><span class="lang-flag">🇧🇦</span><div><div class="lang-name">Bosanski</div><div class="lang-native">Bosnian</div></div></a>
       <a href="../mk/" class="lang-item animate-in delay-2"><span class="lang-flag">🇲🇰</span><div><div class="lang-name">Македонски</div><div class="lang-native">Macedonian</div></div></a>
       <a href="../sl/" class="lang-item animate-in delay-3"><span class="lang-flag">🇸🇮</span><div><div class="lang-name">Slovenščina</div><div class="lang-native">Slovenian</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ──────────────────────────────────────────────────── -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="faq-header">
+      <div class="section-label animate-in">FAQ</div>
+      <h2 class="section-title animate-in delay-1">Często zadawane pytania</h2>
+      <p class="section-subtitle animate-in delay-2">Wszystko, co chciałeś wiedzieć przed rozpoczęciem.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item glass animate-in">
+        <button class="faq-question" aria-expanded="false"><span>Czy Local Notes jest naprawdę darmowy?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Tak, całkowicie. Local Notes to oprogramowanie open source na licencji MIT. Bez płatnych planów, bez ukrytych opłat — na zawsze. Wszystkie funkcje są dostępne bezpłatnie.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-1">
+        <button class="faq-question" aria-expanded="false"><span>Gdzie są przechowywane moje notatki?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Twoje notatki są przechowywane w IndexedDB Twojej przeglądarki — lokalnej bazie danych wbudowanej w każdą nowoczesną przeglądarkę. Nic nigdy nie jest wysyłane na serwer.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-2">
+        <button class="faq-question" aria-expanded="false"><span>Co się stanie, jeśli wyczyścię dane przeglądarki?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Wyczyszczenie pamięci przeglądarki usunie Twoje notatki. Zalecamy regularne eksportowanie notatek jako pliki .note, HTML lub Markdown.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-1">
+        <button class="faq-question" aria-expanded="false"><span>Jak działa szyfrowanie AES-256?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Po włączeniu szyfrowania notatki są szyfrowane za pomocą Web Crypto API wbudowanego w przeglądarkę. Klucz wyprowadzony z Twojego hasła szyfruje każdą notatkę przed zapisem.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-2">
+        <button class="faq-question" aria-expanded="false"><span>Czy mogę synchronizować notatki między urządzeniami?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Local Notes jest celowo tylko lokalny — bez synchronizacji. Aby przenieść notatki między urządzeniami, wyeksportuj je jako pliki .note i zaimportuj na drugim urządzeniu.</p></div>
+      </div>
+      <div class="faq-item glass animate-in delay-3">
+        <button class="faq-question" aria-expanded="false"><span>Czy kod źródłowy jest dostępny?</span><i class="bi bi-plus faq-icon"></i></button>
+        <div class="faq-answer"><p>Tak. Local Notes jest w pełni otwarty na licencji MIT. Możesz przeglądać, forkować i wnosić wkład na <a href="https://github.com/SerGioPlay01/localnotes" target="_blank" rel="noopener" style="color:var(--primary-light);">GitHub</a>.</p></div>
+      </div>
     </div>
   </div>
 </section>

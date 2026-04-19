@@ -123,6 +123,24 @@
     }
   });
 
+  /* ── FAQ accordion ──────────────────────────────────────── */
+  document.querySelectorAll('.faq-item').forEach((item) => {
+    const btn = item.querySelector('.faq-question');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      // close all
+      document.querySelectorAll('.faq-item.open').forEach((el) => {
+        el.classList.remove('open');
+        el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
   /* ── Language redirect ──────────────────────────────────── */
   var isRoot = !window.location.pathname.match(/\/(ru|ua|pl|cs|sk|bg|hr|sr|bs|mk|sl|en)\//);
   var alreadyRedirected = sessionStorage.getItem('ln_redirected');

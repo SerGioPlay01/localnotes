@@ -775,6 +775,7 @@
     border-bottom: 1px solid var(--border-color, #272727);
     flex-shrink: 0;
     gap: 10px;
+    position: relative;
 }
 .cnp-title-row {
     display: flex; align-items: center; gap: 8px;
@@ -889,3 +890,84 @@
 [data-theme="light"] .cnp-btn-cancel { background: #f8f9fa; color: #212529; border-color: #dee2e6; }
 [data-theme="light"] .cnp-close:hover { background: #fee2e2; }
 
+
+/* ── Editable title in preview ───────────────────────────────── */
+.cnp-title[contenteditable="true"] {
+    outline: none;
+    border-bottom: 1.5px solid var(--primary-color, #28a745);
+    border-radius: 2px;
+    padding-bottom: 1px;
+    cursor: text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 40px;
+    transition: border-color .15s;
+}
+.cnp-title[contenteditable="true"]:focus {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    border-bottom-color: var(--primary-color, #28a745);
+}
+.cnp-title-edit-hint {
+    font-size: 10px;
+    color: var(--text-secondary, #888);
+    margin-left: 4px;
+    flex-shrink: 0;
+    opacity: .7;
+    user-select: none;
+    cursor: pointer;
+    padding: 3px 5px;
+    border-radius: 4px;
+    transition: background .12s, opacity .12s;
+}
+.cnp-title-edit-hint:hover { opacity: 1; background: var(--button-hover, #2d2d2d); }
+
+/* ── Title saved toast ───────────────────────────────────────── */
+.cnp-title-toast {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 16px;
+    background: var(--primary-color, #28a745);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+    animation: cnpToastIn .15s ease;
+    box-shadow: 0 4px 14px rgba(0,0,0,.35);
+}
+.cnp-title-toast-err { background: #e74c3c; }
+@keyframes cnpToastIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Video wrappers inside note preview body ─────────────────── */
+.cnp-body .lne-video-wrapper,
+.cnp-body .video-embed-wrapper {
+    margin: 14px 0;
+    display: block;
+    clear: both;
+    max-width: 100% !important;
+    /* aspect-ratio container via padding trick */
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 fallback */
+    height: 0;
+}
+.cnp-body .lne-video-wrapper iframe,
+.cnp-body .lne-video-wrapper video,
+.cnp-body .video-embed-wrapper iframe,
+.cnp-body .video-embed-wrapper video {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    border: none;
+}

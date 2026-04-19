@@ -44,13 +44,14 @@
     Local Notes
   </a>
   <ul class="nav-links">
-    <li><a href="#features">Функции</a>
-  <a href="#story">История</a></li>
+    <li><a href="#features">Функции</a></li>
     <li><a href="#story">История</a></li>
     <li><a href="#how">Как работает</a></li>
+    <li><a href="#note-format">Формат .note</a></li>
+    <li><a href="#editor">Редактор</a></li>
     <li><a href="#usecases">Сценарии</a></li>
     <li><a href="#security">Безопасность</a></li>
-    <li><a href="#languages">Языки</a></li>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="../" class="lang-switcher" style="border-color:rgba(174,252,110,0.3);">🇷🇺 RU</a></li>
     <li><a href="https://localnotes-three.vercel.app/ru/" class="nav-cta" target="_blank" rel="noopener">Открыть</a></li>
   </ul>
@@ -62,8 +63,12 @@
   <a href="#features">Функции</a>
   <a href="#story">История</a>
   <a href="#how">Как работает</a>
+  <a href="#note-format">Формат .note</a>
+  <a href="#editor">Редактор</a>
   <a href="#usecases">Сценарии</a>
   <a href="#security">Безопасность</a>
+  <a href="#install">Установка</a>
+  <a href="#faq">FAQ</a>
   <a href="#languages">Языки</a>
   <a href="../">🌐 Сменить язык</a>
   <a href="https://localnotes-three.vercel.app/ru/" target="_blank" rel="noopener" style="color:#aefc6e;font-weight:700;">Открыть приложение →</a>
@@ -199,6 +204,30 @@
   </div>
 </section>
 
+<!-- ── Stats ──────────────────────────────────────────────────── -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item animate-in">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Серверов хранят ваши данные</div>
+      </div>
+      <div class="stat-item animate-in delay-1">
+        <div class="stat-number">256<span class="stat-unit">-бит</span></div>
+        <div class="stat-label">Шифрование AES</div>
+      </div>
+      <div class="stat-item animate-in delay-2">
+        <div class="stat-number">12</div>
+        <div class="stat-label">Поддерживаемых языков</div>
+      </div>
+      <div class="stat-item animate-in delay-3">
+        <div class="stat-number">100<span class="stat-unit">%</span></div>
+        <div class="stat-label">Бесплатно и открытый код</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="how" id="how">
   <div class="container">
     <div class="how-header">
@@ -263,6 +292,176 @@
         <div class="usecase-persona"><div class="usecase-avatar">🌍</div><div><div class="usecase-name">Путешественник</div><div class="usecase-role">Цифровой кочевник</div></div></div>
         <p class="usecase-scenario">Использует Local Notes на 12 языках в разных странах. Работает полностью офлайн в самолётах и отдалённых местах.</p>
         <div class="usecase-tags"><span class="usecase-tag">12 языков</span><span class="usecase-tag">Офлайн</span><span class="usecase-tag">PWA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── .note Format ──────────────────────────────────────────── -->
+<section class="note-format-section" id="note-format">
+  <div class="container">
+    <div class="note-format-inner">
+      <div class="note-format-content">
+        <div class="section-label animate-in">Формат .note</div>
+        <h2 class="section-title animate-in delay-1">Ваши данные, ваш формат</h2>
+        <p class="section-subtitle animate-in delay-2">
+          Файл <code class="note-code">.note</code> — это портативный зашифрованный контейнер, созданный с одной целью: ваши заметки принадлежат вам, а не платформе, облаку или компании.
+        </p>
+        <div class="note-format-timeline animate-in delay-3">
+          <div class="nft-item">
+            <div class="nft-icon">🔒</div>
+            <div>
+              <div class="nft-title">Рождён из проблемы приватности</div>
+              <div class="nft-desc">Каждое популярное приложение для заметок хранит данные на удалённых серверах. Одна утечка, один запрос властей, одно изменение политики — и ваши личные мысли раскрыты. Формат <code class="note-code">.note</code> делает это невозможным по своей природе.</div>
+            </div>
+          </div>
+          <div class="nft-item">
+            <div class="nft-icon">📦</div>
+            <div>
+              <div class="nft-title">Что внутри файла .note</div>
+              <div class="nft-desc">Файл <code class="note-code">.note</code> — это самодостаточный JSON-пакет: содержимое заметки, метаданные, теги и — при включённом шифровании — шифртекст AES-256, который может расшифровать только ваш пароль. Никакого проприетарного формата, никакой привязки к вендору.</div>
+            </div>
+          </div>
+          <div class="nft-item">
+            <div class="nft-icon">🌐</div>
+            <div>
+              <div class="nft-title">Офлайн-первый, всегда переносимый</div>
+              <div class="nft-desc">Экспортируйте любую заметку как файл <code class="note-code">.note</code> и носите на флешке, отправляйте через Signal или архивируйте на десятилетия. Импортируйте обратно в Local Notes на любом устройстве — без аккаунта, без интернета.</div>
+            </div>
+          </div>
+          <div class="nft-item">
+            <div class="nft-icon">🛡️</div>
+            <div>
+              <div class="nft-title">Zero-knowledge по умолчанию</div>
+              <div class="nft-desc">При шифровании заметки ключ никогда не покидает ваше устройство. Local Notes использует встроенный в браузер Web Crypto API — тот же стандарт, что используют банки. Даже если кто-то перехватит ваш файл <code class="note-code">.note</code>, он увидит только шифртекст.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="note-format-visual animate-in delay-2">
+        <div class="note-file-card glass">
+          <div class="nfc-header">
+            <div class="nfc-icon">📄</div>
+            <div>
+              <div class="nfc-name">meeting-notes.note</div>
+              <div class="nfc-size">2.4 KB · Зашифровано</div>
+            </div>
+            <div class="nfc-lock">🔒</div>
+          </div>
+          <div class="nfc-body">
+            <div class="nfc-line"><span class="nfc-key">"id"</span><span class="nfc-val">"a3f9…c12e"</span></div>
+            <div class="nfc-line"><span class="nfc-key">"title"</span><span class="nfc-val">"Заметки встречи"</span></div>
+            <div class="nfc-line"><span class="nfc-key">"encrypted"</span><span class="nfc-val nfc-true">true</span></div>
+            <div class="nfc-line"><span class="nfc-key">"content"</span><span class="nfc-val nfc-cipher">U2FsdGVkX1+mK9…</span></div>
+            <div class="nfc-line"><span class="nfc-key">"iv"</span><span class="nfc-val nfc-cipher">8f3a1b…d92c</span></div>
+            <div class="nfc-line"><span class="nfc-key">"created"</span><span class="nfc-val">"2026-04-19"</span></div>
+          </div>
+          <div class="nfc-footer">
+            <span class="nfc-badge">AES-256-GCM</span>
+            <span class="nfc-badge">Web Crypto API</span>
+            <span class="nfc-badge">Открытый формат</span>
+          </div>
+        </div>
+        <p class="note-format-hint">↑ Реальная структура зашифрованного файла .note. Содержимое нечитаемо без вашего пароля.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Editor Preview ───────────────────────────────────────── -->
+<section class="editor-preview" id="editor">
+  <div class="container">
+    <div class="editor-preview-inner">
+      <div class="editor-preview-content">
+        <div class="section-label animate-in">Редактор</div>
+        <h2 class="section-title animate-in delay-1">Пишите так, как думаете</h2>
+        <p class="section-subtitle animate-in delay-2">Редактор без отвлечений со всем необходимым — форматирование, чеклисты, блоки кода и многое другое.</p>
+        <ul class="editor-features-list animate-in delay-3">
+          <li><i class="bi bi-type-bold"></i> Жирный, курсив, подчёркивание, зачёркивание</li>
+          <li><i class="bi bi-list-check"></i> Чеклисты и маркированные списки</li>
+          <li><i class="bi bi-code-slash"></i> Встроенный код и блоки кода</li>
+          <li><i class="bi bi-image"></i> Вставка изображений</li>
+          <li><i class="bi bi-arrows-fullscreen"></i> Полноэкранный режим фокуса</li>
+          <li><i class="bi bi-search"></i> Поиск с транслитерацией</li>
+        </ul>
+      </div>
+      <div class="editor-mock animate-in delay-2">
+        <div class="editor-mock-toolbar">
+          <span class="toolbar-btn active"><i class="bi bi-type-bold"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-type-italic"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-type-underline"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-list-ul"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-list-check"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-code-slash"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-image"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-arrows-fullscreen"></i></span>
+        </div>
+        <div class="editor-mock-body">
+          <div class="editor-mock-title">Встреча — Планирование Q4</div>
+          <div class="editor-mock-text">
+            <p>Ключевые решения сессии:</p>
+            <div class="editor-checklist">
+              <div class="editor-check done"><span class="check-box">✓</span> Финализировать приоритеты дорожной карты</div>
+              <div class="editor-check done"><span class="check-box">✓</span> Назначить ответственных по функциям</div>
+              <div class="editor-check"><span class="check-box"></span> Запланировать встречу по бюджету</div>
+              <div class="editor-check"><span class="check-box"></span> Проверить результаты аудита безопасности</div>
+            </div>
+            <p style="margin-top:12px;">Заметка: <span class="editor-highlight">обновление шифрования</span> — главный приоритет следующего спринта.</p>
+          </div>
+        </div>
+        <div class="editor-mock-footer">
+          <span class="editor-tag tag-blue">работа</span>
+          <span class="editor-tag tag-purple">q4</span>
+          <span class="editor-date">19 апр. 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Install PWA ───────────────────────────────────────────── -->
+<section class="install-section" id="install">
+  <div class="container">
+    <div class="install-inner">
+      <div class="install-header">
+        <div class="section-label animate-in">Установка</div>
+        <h2 class="section-title animate-in delay-1">Работает как нативное приложение</h2>
+        <p class="section-subtitle animate-in delay-2">Установите Local Notes на любое устройство — без магазина приложений, без загрузки. Просто откройте в браузере и добавьте на главный экран.</p>
+      </div>
+      <div class="install-platforms">
+        <div class="install-platform glass animate-in">
+          <div class="install-platform-icon">🖥️</div>
+          <div class="install-platform-name">Компьютер</div>
+          <div class="install-platform-desc">Chrome, Edge, Firefox — нажмите значок установки в адресной строке</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Откройте приложение</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Нажмите ⊕ в адресной строке</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> Нажмите «Установить»</div>
+          </div>
+        </div>
+        <div class="install-platform glass animate-in delay-1">
+          <div class="install-platform-icon">📱</div>
+          <div class="install-platform-name">Android</div>
+          <div class="install-platform-desc">Chrome для Android — добавьте на главный экран одним нажатием</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Откройте в Chrome</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Нажмите ⋮ меню</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> «Добавить на главный экран»</div>
+          </div>
+        </div>
+        <div class="install-platform glass animate-in delay-2">
+          <div class="install-platform-icon">🍎</div>
+          <div class="install-platform-name">iOS / iPadOS</div>
+          <div class="install-platform-desc">Safari на iPhone или iPad — меню «Поделиться» → на главный экран</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Откройте в Safari</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Нажмите «Поделиться» ↑</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> «На экран «Домой»»</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -357,6 +556,73 @@
       <a href="../bs/" class="lang-item animate-in delay-1"><span class="lang-flag">🇧🇦</span><div><div class="lang-name">Bosanski</div><div class="lang-native">Bosnian</div></div></a>
       <a href="../mk/" class="lang-item animate-in delay-2"><span class="lang-flag">🇲🇰</span><div><div class="lang-name">Македонски</div><div class="lang-native">Macedonian</div></div></a>
       <a href="../sl/" class="lang-item animate-in delay-3"><span class="lang-flag">🇸🇮</span><div><div class="lang-name">Slovenščina</div><div class="lang-native">Slovenian</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ──────────────────────────────────────────────────── -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="faq-header">
+      <div class="section-label animate-in">FAQ</div>
+      <h2 class="section-title animate-in delay-1">Частые вопросы</h2>
+      <p class="section-subtitle animate-in delay-2">Всё, что вы хотели знать перед началом.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item glass animate-in">
+        <button class="faq-question" aria-expanded="false">
+          <span>Local Notes действительно бесплатный?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Да, полностью. Local Notes — программное обеспечение с открытым исходным кодом под лицензией MIT. Никаких платных планов, никаких скрытых платежей — навсегда. Все функции доступны всем бесплатно.</p>
+        </div>
+      </div>
+      <div class="faq-item glass animate-in delay-1">
+        <button class="faq-question" aria-expanded="false">
+          <span>Где хранятся мои заметки?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Ваши заметки хранятся в IndexedDB вашего браузера — локальной базе данных, встроенной в каждый современный браузер. Ничего никогда не отправляется на сервер. Ваши данные не покидают устройство.</p>
+        </div>
+      </div>
+      <div class="faq-item glass animate-in delay-2">
+        <button class="faq-question" aria-expanded="false">
+          <span>Что будет, если я очищу данные браузера?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Очистка хранилища браузера удалит ваши заметки. Рекомендуем регулярно экспортировать заметки в форматах .note, HTML или Markdown. Файлы .note можно импортировать обратно в любое время.</p>
+        </div>
+      </div>
+      <div class="faq-item glass animate-in delay-1">
+        <button class="faq-question" aria-expanded="false">
+          <span>Как работает шифрование AES-256?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>При включении шифрования заметки шифруются с помощью Web Crypto API, встроенного в браузер. Ключ, производный от вашего пароля, используется для шифрования каждой заметки перед сохранением. Без правильного пароля данные нечитаемы.</p>
+        </div>
+      </div>
+      <div class="faq-item glass animate-in delay-2">
+        <button class="faq-question" aria-expanded="false">
+          <span>Можно ли синхронизировать заметки между устройствами?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Local Notes намеренно работает только локально — синхронизации нет по замыслу. Для переноса заметок между устройствами экспортируйте их в файлы .note и импортируйте на другом устройстве.</p>
+        </div>
+      </div>
+      <div class="faq-item glass animate-in delay-3">
+        <button class="faq-question" aria-expanded="false">
+          <span>Доступен ли исходный код?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Да. Local Notes полностью открыт под лицензией MIT. Вы можете изучить, форкнуть и внести вклад на <a href="https://github.com/SerGioPlay01/localnotes" target="_blank" rel="noopener" style="color:var(--primary-light);">GitHub</a>. Никаких чёрных ящиков.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>

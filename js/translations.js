@@ -318,7 +318,9 @@ const translations = {
         importFileError: "{name}: {message}",
         importCompletedWithErrors: "Imported {count} note(s), errors: {errors}",
         importSkipped: "Skipped: {count}",
-        importErrors: "Errors: {count}"
+        importErrors: "Errors: {count}",
+        titleSaved: "Title saved",
+        clickToRename: "Click to rename"
     },
     
     ru: {
@@ -631,7 +633,9 @@ const translations = {
         importFileError: "{name}: {message}",
         importCompletedWithErrors: "Импортировано {count} заметок, ошибок: {errors}",
         importSkipped: "Пропущено: {count}",
-        importErrors: "Ошибок: {count}"
+        importErrors: "Ошибок: {count}",
+        titleSaved: "Заголовок сохранён",
+        clickToRename: "Нажмите для переименования"
     },
     
     ua: {
@@ -908,7 +912,9 @@ const translations = {
         importFileError: "{name}: {message}",
         importCompletedWithErrors: "Імпортовано {count} нотаток, помилок: {errors}",
         importSkipped: "Пропущено: {count}",
-        importErrors: "Помилок: {count}"
+        importErrors: "Помилок: {count}",
+        titleSaved: "Заголовок збережено",
+        clickToRename: "Натисніть для перейменування"
     },
     
     pl: {
@@ -1166,7 +1172,9 @@ const translations = {
         importFileError: "{name}: {message}",
         importCompletedWithErrors: "Zaimportowano {count} notatek, błędów: {errors}",
         importSkipped: "Pominięto: {count}",
-        importErrors: "Błędów: {count}"
+        importErrors: "Błędów: {count}",
+        titleSaved: "Tytuł zapisany",
+        clickToRename: "Kliknij, aby zmienić nazwę"
     },
     
     cs: {
@@ -1424,7 +1432,9 @@ const translations = {
         importFileError: "{name}: {message}",
         importCompletedWithErrors: "Importováno {count} poznámek, chyb: {errors}",
         importSkipped: "Přeskočeno: {count}",
-        importErrors: "Chyb: {count}"
+        importErrors: "Chyb: {count}",
+        titleSaved: "Název uložen",
+        clickToRename: "Klikněte pro přejmenování"
     },
     
     sk: {
@@ -1680,7 +1690,9 @@ const translations = {
         importFileError: "{name}: {message}",
         importCompletedWithErrors: "Importovaných {count} poznámok, chýb: {errors}",
         importSkipped: "Preskočené: {count}",
-        importErrors: "Chýb: {count}"
+        importErrors: "Chýb: {count}",
+        titleSaved: "Názov uložený",
+        clickToRename: "Kliknite pre premenovanie"
     },
     
     bg: {
@@ -1934,7 +1946,9 @@ const translations = {
         importFileError: "{name}: {message}",
         importCompletedWithErrors: "Импортирани {count} бележки, грешки: {errors}",
         importSkipped: "Пропуснати: {count}",
-        importErrors: "Грешки: {count}"
+        importErrors: "Грешки: {count}",
+        titleSaved: "Заглавието е запазено",
+        clickToRename: "Кликнете за преименуване"
     },
     
     hr: {
@@ -2181,7 +2195,9 @@ const translations = {
         confirmPassword: "Potvrdite lozinku",
         passwordTooShort: "Lozinka je prekratka (min. 4 znaka)",
         passwordMismatch: "Lozinke se ne podudaraju",
-        passwordMatch: "Lozinke se podudaraju"
+        passwordMatch: "Lozinke se podudaraju",
+        titleSaved: "Naslov spremljen",
+        clickToRename: "Kliknite za preimenovanje"
     },
 
     sr: {
@@ -2425,7 +2441,9 @@ const translations = {
         importFileError: "{name}: {message}",
         importCompletedWithErrors: "Увезено {count} белешки, грешака: {errors}",
         importSkipped: "Прескочено: {count}",
-        importErrors: "Грешака: {count}"
+        importErrors: "Грешака: {count}",
+        titleSaved: "Наслов сачуван",
+        clickToRename: "Кликните за преименовање"
     },
     
     bs: {
@@ -2672,7 +2690,9 @@ const translations = {
         confirmPassword: "Potvrdite lozinku",
         passwordTooShort: "Lozinka je prekratka (min. 4 znaka)",
         passwordMismatch: "Lozinke se ne podudaraju",
-        passwordMatch: "Lozinke se podudaraju"
+        passwordMatch: "Lozinke se podudaraju",
+        titleSaved: "Naslov sačuvan",
+        clickToRename: "Kliknite za preimenovanje"
     },
 
     mk: {
@@ -2925,7 +2945,9 @@ const translations = {
         importFileError: "{name}: {message}",
         importCompletedWithErrors: "Увезени {count} белешки, грешки: {errors}",
         importSkipped: "Прескокнати: {count}",
-        importErrors: "Грешки: {count}"
+        importErrors: "Грешки: {count}",
+        titleSaved: "Насловот е зачуван",
+        clickToRename: "Кликнете за преименување"
     },
 
     sl: {
@@ -3168,7 +3190,9 @@ const translations = {
         importFileError: "{name}: {message}",
         importCompletedWithErrors: "Uvoženo {count} opomb, napak: {errors}",
         importSkipped: "Preskočeno: {count}",
-        importErrors: "Napak: {count}"
+        importErrors: "Napak: {count}",
+        titleSaved: "Naslov shranjen",
+        clickToRename: "Kliknite za preimenovanje"
     }
 };
 

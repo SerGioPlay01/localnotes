@@ -72,9 +72,11 @@
     <li><a href="#features">Features</a></li>
     <li><a href="#story">Our Story</a></li>
     <li><a href="#how">How it works</a></li>
+    <li><a href="#note-format">.note Format</a></li>
+    <li><a href="#editor">Editor</a></li>
     <li><a href="#usecases">Use Cases</a></li>
     <li><a href="#security">Security</a></li>
-    <li><a href="#languages">Languages</a></li>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="https://localnotes-three.vercel.app/" class="nav-cta" target="_blank" rel="noopener">Try Free</a></li>
   </ul>
   <button class="nav-hamburger" id="hamburger" aria-label="Menu">
@@ -85,8 +87,12 @@
   <a href="#features">Features</a>
   <a href="#story">Our Story</a>
   <a href="#how">How it works</a>
+  <a href="#note-format">.note Format</a>
+  <a href="#editor">Editor</a>
   <a href="#usecases">Use Cases</a>
   <a href="#security">Security</a>
+  <a href="#install">Install</a>
+  <a href="#faq">FAQ</a>
   <a href="#languages">Languages</a>
   <a href="https://localnotes-three.vercel.app/" target="_blank" rel="noopener" style="color:#aefc6e;font-weight:700;">Try Free →</a>
 </div>
@@ -268,6 +274,30 @@
         <div class="feature-icon">📤</div>
         <div class="feature-title">Export Anywhere</div>
         <div class="feature-desc">Export notes as .note files, HTML, or Markdown. Your data is always portable — no lock-in, ever.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats ──────────────────────────────────────────────────── -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item animate-in">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Servers store your data</div>
+      </div>
+      <div class="stat-item animate-in delay-1">
+        <div class="stat-number">256<span class="stat-unit">-bit</span></div>
+        <div class="stat-label">AES encryption</div>
+      </div>
+      <div class="stat-item animate-in delay-2">
+        <div class="stat-number">12</div>
+        <div class="stat-label">Languages supported</div>
+      </div>
+      <div class="stat-item animate-in delay-3">
+        <div class="stat-number">100<span class="stat-unit">%</span></div>
+        <div class="stat-label">Free &amp; open source</div>
       </div>
     </div>
   </div>
@@ -555,6 +585,243 @@
         <span class="lang-flag">🇸🇮</span>
         <div><div class="lang-name">Slovenian</div><div class="lang-native">Slovenščina</div></div>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── .note Format ──────────────────────────────────────────── -->
+<section class="note-format-section" id="note-format">
+  <div class="container">
+    <div class="note-format-inner">
+      <div class="note-format-content">
+        <div class="section-label animate-in">The .note Format</div>
+        <h2 class="section-title animate-in delay-1">Your data, your format</h2>
+        <p class="section-subtitle animate-in delay-2">
+          The <code class="note-code">.note</code> file is a portable, encrypted container designed from the ground up with one goal: your notes belong to you — not to any platform, cloud, or company.
+        </p>
+        <div class="note-format-timeline animate-in delay-3">
+          <div class="nft-item">
+            <div class="nft-icon">🔒</div>
+            <div>
+              <div class="nft-title">Born from a privacy problem</div>
+              <div class="nft-desc">Every popular notes app stores your data on remote servers. One breach, one subpoena, one policy change — and your private thoughts are exposed. The <code class="note-code">.note</code> format was created to make that impossible by design.</div>
+            </div>
+          </div>
+          <div class="nft-item">
+            <div class="nft-icon">📦</div>
+            <div>
+              <div class="nft-title">What's inside a .note file</div>
+              <div class="nft-desc">A <code class="note-code">.note</code> file is a self-contained JSON bundle: your note content, metadata, tags, and — if encryption is enabled — an AES-256 ciphertext that only your password can unlock. No proprietary binary format, no vendor lock-in.</div>
+            </div>
+          </div>
+          <div class="nft-item">
+            <div class="nft-icon">🌐</div>
+            <div>
+              <div class="nft-title">Offline-first, always portable</div>
+              <div class="nft-desc">Export any note as a <code class="note-code">.note</code> file and carry it on a USB drive, send it over Signal, or archive it for decades. Import it back into Local Notes on any device — no account, no internet required.</div>
+            </div>
+          </div>
+          <div class="nft-item">
+            <div class="nft-icon">🛡️</div>
+            <div>
+              <div class="nft-title">Zero-knowledge by default</div>
+              <div class="nft-desc">When you encrypt a note, the key never leaves your device. Local Notes uses the browser's built-in Web Crypto API — the same standard used by banks. Even if someone intercepts your <code class="note-code">.note</code> file, they see only ciphertext.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="note-format-visual animate-in delay-2">
+        <div class="note-file-card glass">
+          <div class="nfc-header">
+            <div class="nfc-icon">📄</div>
+            <div>
+              <div class="nfc-name">meeting-notes.note</div>
+              <div class="nfc-size">2.4 KB · Encrypted</div>
+            </div>
+            <div class="nfc-lock">🔒</div>
+          </div>
+          <div class="nfc-body">
+            <div class="nfc-line"><span class="nfc-key">"id"</span><span class="nfc-val">"a3f9…c12e"</span></div>
+            <div class="nfc-line"><span class="nfc-key">"title"</span><span class="nfc-val">"Meeting notes"</span></div>
+            <div class="nfc-line"><span class="nfc-key">"encrypted"</span><span class="nfc-val nfc-true">true</span></div>
+            <div class="nfc-line"><span class="nfc-key">"content"</span><span class="nfc-val nfc-cipher">U2FsdGVkX1+mK9…</span></div>
+            <div class="nfc-line"><span class="nfc-key">"iv"</span><span class="nfc-val nfc-cipher">8f3a1b…d92c</span></div>
+            <div class="nfc-line"><span class="nfc-key">"created"</span><span class="nfc-val">"2026-04-19"</span></div>
+          </div>
+          <div class="nfc-footer">
+            <span class="nfc-badge">AES-256-GCM</span>
+            <span class="nfc-badge">Web Crypto API</span>
+            <span class="nfc-badge">Open format</span>
+          </div>
+        </div>
+        <p class="note-format-hint">↑ Actual structure of an encrypted .note file. The content is unreadable without your password.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Editor Preview ───────────────────────────────────────── -->
+<section class="editor-preview" id="editor">
+  <div class="container">
+    <div class="editor-preview-inner">
+      <div class="editor-preview-content">
+        <div class="section-label animate-in">Rich Text Editor</div>
+        <h2 class="section-title animate-in delay-1">Write the way you think</h2>
+        <p class="section-subtitle animate-in delay-2">A distraction-free editor with everything you need — formatting, checklists, code blocks, and more. No clutter, just your words.</p>
+        <ul class="editor-features-list animate-in delay-3">
+          <li><i class="bi bi-type-bold"></i> Bold, italic, underline, strikethrough</li>
+          <li><i class="bi bi-list-check"></i> Checklists &amp; bullet lists</li>
+          <li><i class="bi bi-code-slash"></i> Inline code &amp; code blocks</li>
+          <li><i class="bi bi-image"></i> Image embedding</li>
+          <li><i class="bi bi-arrows-fullscreen"></i> Fullscreen focus mode</li>
+          <li><i class="bi bi-search"></i> Transliteration-aware search</li>
+        </ul>
+      </div>
+      <div class="editor-mock animate-in delay-2">
+        <div class="editor-mock-toolbar">
+          <span class="toolbar-btn active"><i class="bi bi-type-bold"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-type-italic"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-type-underline"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-list-ul"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-list-check"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-code-slash"></i></span>
+          <span class="toolbar-btn"><i class="bi bi-image"></i></span>
+          <span class="toolbar-sep"></span>
+          <span class="toolbar-btn"><i class="bi bi-arrows-fullscreen"></i></span>
+        </div>
+        <div class="editor-mock-body">
+          <div class="editor-mock-title">Meeting notes — Q4 Planning</div>
+          <div class="editor-mock-text">
+            <p>Key decisions from today's session:</p>
+            <div class="editor-checklist">
+              <div class="editor-check done"><span class="check-box">✓</span> Finalize roadmap priorities</div>
+              <div class="editor-check done"><span class="check-box">✓</span> Assign team leads per feature</div>
+              <div class="editor-check"><span class="check-box"></span> Schedule follow-up for budget</div>
+              <div class="editor-check"><span class="check-box"></span> Review security audit results</div>
+            </div>
+            <p style="margin-top:12px;">Notes: <span class="editor-highlight">encryption upgrade</span> is top priority for next sprint.</p>
+          </div>
+        </div>
+        <div class="editor-mock-footer">
+          <span class="editor-tag tag-blue">work</span>
+          <span class="editor-tag tag-purple">q4</span>
+          <span class="editor-date">Apr 19, 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Install PWA ───────────────────────────────────────────── -->
+<section class="install-section" id="install">
+  <div class="container">
+    <div class="install-inner">
+      <div class="install-header">
+        <div class="section-label animate-in">Install</div>
+        <h2 class="section-title animate-in delay-1">Works like a native app</h2>
+        <p class="section-subtitle animate-in delay-2">Install Local Notes on any device — no app store, no download. Just open in your browser and add to home screen.</p>
+      </div>
+      <div class="install-platforms">
+        <div class="install-platform glass animate-in">
+          <div class="install-platform-icon">🖥️</div>
+          <div class="install-platform-name">Desktop</div>
+          <div class="install-platform-desc">Chrome, Edge, Firefox — click the install icon in the address bar</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Open the app</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Click ⊕ in address bar</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> Click "Install"</div>
+          </div>
+        </div>
+        <div class="install-platform glass animate-in delay-1">
+          <div class="install-platform-icon">📱</div>
+          <div class="install-platform-name">Android</div>
+          <div class="install-platform-desc">Chrome for Android — add to home screen in one tap</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Open in Chrome</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Tap ⋮ menu</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> "Add to Home screen"</div>
+          </div>
+        </div>
+        <div class="install-platform glass animate-in delay-2">
+          <div class="install-platform-icon">🍎</div>
+          <div class="install-platform-name">iOS / iPadOS</div>
+          <div class="install-platform-desc">Safari on iPhone or iPad — share menu to home screen</div>
+          <div class="install-steps">
+            <div class="install-step-item"><span class="install-step-num">1</span> Open in Safari</div>
+            <div class="install-step-item"><span class="install-step-num">2</span> Tap Share ↑</div>
+            <div class="install-step-item"><span class="install-step-num">3</span> "Add to Home Screen"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ──────────────────────────────────────────────────── -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="faq-header">
+      <div class="section-label animate-in">FAQ</div>
+      <h2 class="section-title animate-in delay-1">Common questions</h2>
+      <p class="section-subtitle animate-in delay-2">Everything you might want to know before you start.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item glass animate-in">
+        <button class="faq-question" aria-expanded="false">
+          <span>Is Local Notes really free?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Yes, completely. Local Notes is MIT-licensed open source software. There are no paid plans, no premium tiers, no hidden fees — ever. All features are available to everyone for free.</p>
+        </div>
+      </div>
+      <div class="faq-item glass animate-in delay-1">
+        <button class="faq-question" aria-expanded="false">
+          <span>Where are my notes stored?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Your notes are stored in your browser's IndexedDB — a local database built into every modern browser. Nothing is ever sent to a server. Your data never leaves your device.</p>
+        </div>
+      </div>
+      <div class="faq-item glass animate-in delay-2">
+        <button class="faq-question" aria-expanded="false">
+          <span>What happens if I clear my browser data?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Clearing browser storage will delete your notes. We recommend exporting your notes regularly as .note files, HTML, or Markdown. You can re-import .note files at any time to restore your data.</p>
+        </div>
+      </div>
+      <div class="faq-item glass animate-in delay-1">
+        <button class="faq-question" aria-expanded="false">
+          <span>How does AES-256 encryption work here?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>When you enable encryption, your notes are encrypted using the Web Crypto API built into your browser. A key derived from your password is used to encrypt each note before it's saved. Without the correct password, the data is unreadable — even if someone accesses your device.</p>
+        </div>
+      </div>
+      <div class="faq-item glass animate-in delay-2">
+        <button class="faq-question" aria-expanded="false">
+          <span>Can I sync notes between devices?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Local Notes is intentionally local-only — there's no sync by design. To move notes between devices, export them as .note files and import on the other device. This keeps your data fully under your control.</p>
+        </div>
+      </div>
+      <div class="faq-item glass animate-in delay-3">
+        <button class="faq-question" aria-expanded="false">
+          <span>Is the source code available?</span>
+          <i class="bi bi-plus faq-icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p>Yes. Local Notes is fully open source under the MIT license. You can inspect, fork, and contribute on <a href="https://github.com/SerGioPlay01/localnotes" target="_blank" rel="noopener" style="color:var(--primary-light);">GitHub</a>. No black boxes, no hidden code.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>

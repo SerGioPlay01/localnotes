@@ -720,7 +720,8 @@ function openCalendarNotePreview(note, calModal) {
             '<div class="cnp-header">' +
                 '<div class="cnp-title-row">' +
                     (note.pinned ? '<i class="bi bi-pin-angle-fill cnp-pin-icon"></i>' : '') +
-                    '<span class="cnp-title">' + escapeHtml(title) + '</span>' +
+                    '<span class="cnp-title" contenteditable="true" spellcheck="false" title="' + _t('clickToRename', 'Click to rename') + '">' + escapeHtml(title) + '</span>' +
+                    '<span class="cnp-title-edit-hint"><i class="bi bi-pencil"></i></span>' +
                 '</div>' +
                 '<button class="cnp-close" id="cnp-close-btn" aria-label="Close"><i class="bi bi-x-lg"></i></button>' +
             '</div>' +
@@ -728,7 +729,7 @@ function openCalendarNotePreview(note, calModal) {
                 (dueTxt ? '<span class="cnp-meta-item' + (isOverdue(note.dueDate) ? ' cnp-overdue' : isDueToday(note.dueDate) ? ' cnp-due-today' : '') + '"><i class="bi bi-clock"></i> ' + dueTxt + '</span>' : '') +
                 '<span class="cnp-meta-item"><i class="bi bi-calendar-plus"></i> ' + createdTxt + '</span>' +
             '</div>' +
-            '<div class="cnp-body">' + (note.content || '') + '</div>' +
+            '<div class="cnp-body"></div>' +
             '<div class="cnp-footer">' +
                 '<button class="cnp-btn cnp-btn-edit" id="cnp-edit-btn"><i class="bi bi-pencil"></i> ' + _t('edit', 'Edit') + '</button>' +
                 '<button class="cnp-btn cnp-btn-delete" id="cnp-delete-btn"><i class="bi bi-trash3"></i> ' + _t('delete', 'Delete') + '</button>' +
@@ -738,7 +739,101 @@ function openCalendarNotePreview(note, calModal) {
 
     document.body.appendChild(overlay);
 
+    // Populate body via DOM (not innerHTML) so iframes load correctly
+    const cnpBody = overlay.querySelector('.cnp-body');
+    const bodyFrag = document.createElement('div');
+    bodyFrag.innerHTML = note.content || '';
+    // Convert aspect-ratio style to padding-top trick so iframe is visible before layout
+    bodyFrag.querySelectorAll('.lne-video-wrapper, .video-embed-wrapper').forEach(wrapper => {
+        let ratio = 9 / 16; // default 16:9
+        const ar = wrapper.style.aspectRatio;
+        if (ar) {
+            const parts = ar.split('/').map(Number);
+            if (parts.length === 2 && parts[0] && parts[1]) ratio = parts[1] / parts[0];
+        } else {
+            // Try to read from iframe/video attributes
+            const el = wrapper.querySelector('iframe, video');
+            const w = el && (el.getAttribute('width') || el.width);
+            const h = el && (el.getAttribute('height') || el.height);
+            if (w && h && parseInt(w) && parseInt(h)) ratio = parseInt(h) / parseInt(w);
+        }
+        wrapper.style.paddingTop = (ratio * 100).toFixed(4) + '%';
+        wrapper.style.height = '0';
+        wrapper.style.aspectRatio = '';
+        wrapper.style.maxWidth = '100%';
+    });
+    while (bodyFrag.firstChild) cnpBody.appendChild(bodyFrag.firstChild);
+
     const close = () => overlay.remove();
+
+    // ── Editable title ────────────────────────────────────────────
+    const titleEl = overlay.querySelector('.cnp-title');
+    let _titleOriginal = title;
+
+    const showTitleToast = (msg, ok = true) => {
+        const existing = overlay.querySelector('.cnp-title-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.className = 'cnp-title-toast' + (ok ? '' : ' cnp-title-toast-err');
+        toast.innerHTML = (ok ? '<i class="bi bi-check-lg"></i> ' : '<i class="bi bi-x-lg"></i> ') + msg;
+        overlay.querySelector('.cnp-header').appendChild(toast);
+        setTimeout(() => toast.remove(), 2200);
+    };
+
+    const saveTitle = async () => {
+        const newTitle = titleEl.textContent.trim();
+        if (!newTitle || newTitle === _titleOriginal) return;
+        _titleOriginal = newTitle;
+        try {
+            const ts = Date.now();
+            let updContent = note.content || '';
+            const tmpDiv = document.createElement('div');
+            tmpDiv.innerHTML = updContent;
+            const firstHeading = tmpDiv.querySelector('h1,h2,h3,h4,h5,h6');
+            if (firstHeading && firstHeading.textContent.trim() === (note.title || extractNoteTitle(note))) {
+                firstHeading.textContent = newTitle;
+                updContent = tmpDiv.innerHTML;
+            }
+            await notesDB.saveNote({
+                id: note.id,
+                content: updContent,
+                creationTime: note.creationTime,
+                lastModified: ts,
+                title: newTitle,
+                tags: note.tags || [],
+                dueDate: note.dueDate || null
+            });
+            note.title = newTitle;
+            note.content = updContent;
+            showTitleToast(_t('titleSaved', 'Title saved'));
+            if (typeof loadNotes === 'function') await loadNotes();
+            const calModalEl = document.getElementById('calendarModal');
+            if (calModalEl && calModalEl.style.display !== 'none') {
+                await renderCalendar(calModalEl);
+            }
+        } catch (e) {
+            console.error('Title save error:', e);
+            showTitleToast(_t('error', 'Error'), false);
+        }
+    };
+
+    titleEl.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); titleEl.blur(); }
+        if (e.key === 'Escape') { titleEl.textContent = _titleOriginal; titleEl.blur(); }
+    });
+    titleEl.addEventListener('blur', saveTitle);
+
+    // Pencil icon focuses the title for editing
+    overlay.querySelector('.cnp-title-edit-hint').addEventListener('click', () => {
+        titleEl.focus();
+        // Move cursor to end
+        const range = document.createRange();
+        const sel = window.getSelection();
+        range.selectNodeContents(titleEl);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+    });
 
     overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
     overlay.querySelector('#cnp-close-btn').addEventListener('click', close);

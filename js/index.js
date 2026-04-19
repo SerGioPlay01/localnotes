@@ -1294,12 +1294,32 @@ function openNoteSettings(noteId) {
             btn.addEventListener('click', async () => {
                 const tag = allTags.find(t => t.id === btn.dataset.tid);
                 if (!tag) return;
-                if (!confirm(`Delete tag "${tag.name}"?`)) return;
-                if (typeof deleteTag === 'function') await deleteTag(tag.id);
-                meta.tags = (meta.tags || []).filter(t => t !== tag.id);
-                const freshTags = typeof getTags === 'function' ? await getTags() : [];
-                render(freshTags);
-                if (typeof renderTagPanel === 'function') renderTagPanel();
+                const _t = (key, fb) => (window.t ? window.t(key) : fb);
+                const msg = _t('confirmDeleteTag', 'Delete tag "' + tag.name + '"?').replace('{name}', tag.name);
+                const title = _t('confirmDeleteTagTitle', 'Delete Tag');
+                const deleteLabel = _t('delete', 'Delete');
+                const cancelLabel = _t('cancel', 'Cancel');
+                const confirmOv = document.createElement('div');
+                confirmOv.className = 'lne-modal-ov';
+                confirmOv.innerHTML = '<div class="lne-modal" style="max-width:360px"><div class="lne-mhd"><h3><i class="bi bi-trash"></i> ' + title + '</h3><button class="lne-mclose"><i class="bi bi-x-lg"></i></button></div>' +
+                    '<div class="lne-mbody"><p>' + msg + '</p></div>' +
+                    '<div class="lne-mft">' +
+                    '<button class="lne-mbtn lne-mbtn-sec lne-mcancel"><i class="bi bi-x-lg"></i> ' + cancelLabel + '</button>' +
+                    '<button class="lne-mbtn lne-mbtn-danger lne-mok"><i class="bi bi-trash"></i> ' + deleteLabel + '</button>' +
+                    '</div></div>';
+                document.body.appendChild(confirmOv);
+                const closeConfirm = () => { if (confirmOv.parentNode) document.body.removeChild(confirmOv); };
+                confirmOv.querySelector('.lne-mclose').addEventListener('click', closeConfirm);
+                confirmOv.querySelector('.lne-mcancel').addEventListener('click', closeConfirm);
+                confirmOv.addEventListener('click', e2 => { if (e2.target === confirmOv) closeConfirm(); });
+                confirmOv.querySelector('.lne-mok').addEventListener('click', async () => {
+                    closeConfirm();
+                    if (typeof deleteTag === 'function') await deleteTag(tag.id);
+                    meta.tags = (meta.tags || []).filter(t => t !== tag.id);
+                    const freshTags = typeof getTags === 'function' ? await getTags() : [];
+                    render(freshTags);
+                    if (typeof renderTagPanel === 'function') renderTagPanel();
+                });
             });
         });
 

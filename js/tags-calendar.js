@@ -183,11 +183,31 @@ async function renderTagPanel() {
         delBtn.innerHTML = '<i class="bi bi-trash"></i>';
         delBtn.addEventListener('click', async e => {
             e.stopPropagation();
-            if (!confirm('Delete tag "' + tag.name + '"?')) return;
-            await deleteTag(tag.id);
-            if (activeTagFilter === tag.id) activeTagFilter = null;
-            await renderTagPanel();
-            await loadNotes();
+            const _t = (key, fb) => (window.t ? window.t(key) : fb);
+            const msg = _t('confirmDeleteTag', 'Delete tag "' + tag.name + '"?').replace('{name}', tag.name);
+            const title = _t('confirmDeleteTagTitle', 'Delete Tag');
+            const deleteLabel = _t('delete', 'Delete');
+            const cancelLabel = _t('cancel', 'Cancel');
+            const ov = document.createElement('div');
+            ov.className = 'lne-modal-ov';
+            ov.innerHTML = '<div class="lne-modal" style="max-width:360px"><div class="lne-mhd"><h3><i class="bi bi-trash"></i> ' + title + '</h3><button class="lne-mclose"><i class="bi bi-x-lg"></i></button></div>' +
+                '<div class="lne-mbody"><p>' + msg + '</p></div>' +
+                '<div class="lne-mft">' +
+                '<button class="lne-mbtn lne-mbtn-sec lne-mcancel"><i class="bi bi-x-lg"></i> ' + cancelLabel + '</button>' +
+                '<button class="lne-mbtn lne-mbtn-danger lne-mok"><i class="bi bi-trash"></i> ' + deleteLabel + '</button>' +
+                '</div></div>';
+            document.body.appendChild(ov);
+            const closeOv = () => { if (ov.parentNode) document.body.removeChild(ov); };
+            ov.querySelector('.lne-mclose').addEventListener('click', closeOv);
+            ov.querySelector('.lne-mcancel').addEventListener('click', closeOv);
+            ov.addEventListener('click', e2 => { if (e2.target === ov) closeOv(); });
+            ov.querySelector('.lne-mok').addEventListener('click', async () => {
+                closeOv();
+                await deleteTag(tag.id);
+                if (activeTagFilter === tag.id) activeTagFilter = null;
+                await renderTagPanel();
+                await loadNotes();
+            });
         });
 
         row.appendChild(btn); row.appendChild(editBtn); row.appendChild(delBtn);
@@ -202,7 +222,8 @@ async function renderTagPanel() {
 
 function showTagEditModal(tag, onCreated) {
     const isNew = !tag;
-    const title = isNew ? 'Create Tag' : 'Edit Tag';
+    const _t = (key, fb) => (window.t ? window.t(key) : fb);
+    const title = isNew ? _t('createTagTitle', 'Create Tag') : _t('editTagTitle', 'Edit Tag');
     const name = tag ? tag.name : '';
     const colorId = tag ? tag.colorId : 'green';
 
@@ -214,12 +235,12 @@ function showTagEditModal(tag, onCreated) {
     modal.className = 'lne-modal-ov';
     modal.innerHTML = '<div class="lne-modal" style="max-width:360px"><div class="lne-mhd"><h3><i class="bi bi-tag"></i> ' + title + '</h3><button class="lne-mclose"><i class="bi bi-x-lg"></i></button></div>' +
         '<div class="lne-mbody">' +
-        '<div class="lne-fg"><label>Tag name</label><input type="text" id="tag-name-inp" class="lne-inp" value="' + escapeHtml(name) + '" placeholder="My tag..." maxlength="32"></div>' +
-        '<div class="lne-fg"><label>Color</label><div class="tc-swatches">' + swatches + '</div></div>' +
+        '<div class="lne-fg"><label>' + _t('tagNameLabel', 'Tag name') + '</label><input type="text" id="tag-name-inp" class="lne-inp" value="' + escapeHtml(name) + '" placeholder="' + _t('tagNamePlaceholder', 'My tag...') + '" maxlength="32"></div>' +
+        '<div class="lne-fg"><label>' + _t('tagColorLabel', 'Color') + '</label><div class="tc-swatches">' + swatches + '</div></div>' +
         '</div>' +
         '<div class="lne-mft">' +
-        '<button class="lne-mbtn lne-mbtn-sec lne-mcancel"><i class="bi bi-x-lg"></i> Cancel</button>' +
-        '<button class="lne-mbtn lne-mbtn-pri lne-mok"><i class="bi bi-check-lg"></i> ' + (isNew ? 'Create' : 'Save') + '</button>' +
+        '<button class="lne-mbtn lne-mbtn-sec lne-mcancel"><i class="bi bi-x-lg"></i> ' + _t('cancel', 'Cancel') + '</button>' +
+        '<button class="lne-mbtn lne-mbtn-pri lne-mok"><i class="bi bi-check-lg"></i> ' + (isNew ? _t('tagCreate', 'Create') : _t('tagSave', 'Save')) + '</button>' +
         '</div></div>';
     document.body.appendChild(modal);
 
@@ -907,7 +928,26 @@ function showTagsPanel() {
                     getTags().then(function(tgs) {
                         var tag = tgs.find(function(t) { return t.id === id; });
                         if (!tag) return;
-                        if (confirm('Delete tag "' + tag.name + '"?')) {
+                        var _t2 = function(key, fb) { return window.t ? window.t(key) : fb; };
+                        var msg = _t2('confirmDeleteTag', 'Delete tag "' + tag.name + '"?').replace('{name}', tag.name);
+                        var title = _t2('confirmDeleteTagTitle', 'Delete Tag');
+                        var deleteLabel = _t2('delete', 'Delete');
+                        var cancelLabel = _t2('cancel', 'Cancel');
+                        var ov = document.createElement('div');
+                        ov.className = 'lne-modal-ov';
+                        ov.innerHTML = '<div class="lne-modal" style="max-width:360px"><div class="lne-mhd"><h3><i class="bi bi-trash"></i> ' + title + '</h3><button class="lne-mclose"><i class="bi bi-x-lg"></i></button></div>' +
+                            '<div class="lne-mbody"><p>' + msg + '</p></div>' +
+                            '<div class="lne-mft">' +
+                            '<button class="lne-mbtn lne-mbtn-sec lne-mcancel"><i class="bi bi-x-lg"></i> ' + cancelLabel + '</button>' +
+                            '<button class="lne-mbtn lne-mbtn-danger lne-mok"><i class="bi bi-trash"></i> ' + deleteLabel + '</button>' +
+                            '</div></div>';
+                        document.body.appendChild(ov);
+                        var closeOv = function() { if (ov.parentNode) document.body.removeChild(ov); };
+                        ov.querySelector('.lne-mclose').addEventListener('click', closeOv);
+                        ov.querySelector('.lne-mcancel').addEventListener('click', closeOv);
+                        ov.addEventListener('click', function(e2) { if (e2.target === ov) closeOv(); });
+                        ov.querySelector('.lne-mok').addEventListener('click', function() {
+                            closeOv();
                             deleteTag(id).then(function() {
                                 if (activeTagFilter === id) {
                                     activeTagFilter = null;
@@ -918,7 +958,7 @@ function showTagsPanel() {
                                 panel.remove();
                                 showTagsPanel();
                             });
-                        }
+                        });
                     });
                 });
             });

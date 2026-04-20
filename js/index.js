@@ -986,6 +986,48 @@ function showCustomAlert(title, message, type = 'info') {
     alertModal.addEventListener('click', e => { if (e.target === alertModal) close(); });
 }
 
+function showCustomPrompt(title, message, defaultValue = '', onConfirm = null) {
+    const promptModal = document.createElement('div');
+    promptModal.className = 'modal';
+    promptModal.id = 'customPromptModal';
+    promptModal.innerHTML = `
+        <div class="modal-content-error">
+            <h3 style="display:flex;align-items:center;gap:10px;color:#007bff;">
+                <span style="font-size:24px;">✏️</span>${title}
+            </h3>
+            <p style="margin:15px 0;line-height:1.5;">${message}</p>
+            <input id="customPromptInput" type="text" value="${defaultValue.replace(/"/g, '&quot;')}"
+                style="width:100%;box-sizing:border-box;padding:8px 12px;font-size:15px;border:1px solid #ccc;border-radius:5px;margin-bottom:15px;">
+            <div style="display:flex;justify-content:center;gap:10px;margin-top:5px;">
+                <button id="customPromptCancel" style="background:#6c757d;color:white;border:none;padding:10px 24px;border-radius:5px;cursor:pointer;font-size:15px;">
+                    ${window.t ? window.t('cancel') : 'Cancel'}
+                </button>
+                <button id="customPromptOk" style="background:#007bff;color:white;border:none;padding:10px 24px;border-radius:5px;cursor:pointer;font-size:15px;">OK</button>
+            </div>
+        </div>`;
+    document.body.appendChild(promptModal);
+    promptModal.style.display = 'block';
+    const input = promptModal.querySelector('#customPromptInput');
+    const okBtn = promptModal.querySelector('#customPromptOk');
+    const cancelBtn = promptModal.querySelector('#customPromptCancel');
+    input.focus();
+    input.select();
+    const close = (value) => {
+        if (promptModal.parentNode) document.body.removeChild(promptModal);
+        document.removeEventListener('keydown', kh);
+        if (typeof onConfirm === 'function') onConfirm(value);
+    };
+    okBtn.addEventListener('click', () => close(input.value));
+    cancelBtn.addEventListener('click', () => close(null));
+    function kh(e) {
+        if (e.key === 'Enter') { close(input.value); }
+        else if (e.key === 'Escape') { close(null); }
+    }
+    document.addEventListener('keydown', kh);
+    promptModal.addEventListener('pointerdown', e => { if (e.target === promptModal) close(null); });
+    promptModal.addEventListener('click', e => { if (e.target === promptModal) close(null); });
+}
+
 function showEncryptModal(onSubmit) {
     const ov = document.createElement('div');
     ov.className = 'dcm-overlay';

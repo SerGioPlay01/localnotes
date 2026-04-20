@@ -268,6 +268,8 @@ textarea.lne-inp { resize: vertical; }
 .lne-mbtn-pri { background: var(--primary-color,#28a745); border-color: var(--primary-color,#28a745); color: #fff; }
 .lne-mbtn-pri:hover { background: var(--primary-hover,#218838); }
 .lne-mbtn-sec:hover { background: var(--button-hover,#2d2d2d); }
+.lne-mbtn-danger { background: #dc3545; border-color: #dc3545; color: #fff; }
+.lne-mbtn-danger:hover { background: #c82333; border-color: #bd2130; }
 
 /* Tabs */
 .lne-tabs { display: flex; gap: 3px; flex-wrap: wrap; }

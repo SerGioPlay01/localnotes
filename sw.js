@@ -1,5 +1,5 @@
 // Service Worker для Local Notes
-const CACHE_VERSION = 'v1.2.0';
+const CACHE_VERSION = 'v1.2.1';
 const STATIC_CACHE  = `static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
 const CACHE_LIMIT   = 60;
@@ -14,7 +14,6 @@ const STATIC_FILES = [
     // CSS
     '/css/index.css',
     '/css/img.css',
-    '/css/preloader.css',
     '/css/highlight.css',
     '/css/editor-modal.css',
     '/css/tags-calendar.css',

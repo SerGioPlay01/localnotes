@@ -238,7 +238,7 @@ python -m http.server 8000
 
 ## 📋 История изменений
 
-### v1.2.0 (текущая)
+### v1.2.1 (текущая)
 - **🔐 Шифрование v4 (Max-2026)** — PBKDF2-SHA-512 (600k итер.) + HKDF → 5 ключей + XOR-поток + перестановка блоков + HMAC-SHA-512 + canary bytes + zeroize
 - **🔗 Привязка к домену** — `.note` файлы криптографически привязаны к `localnotes-three.vercel.app`
 - **🔒 SecureStorage** — localStorage теперь шифруется AES-256-GCM + HMAC (сессионный ключ через HKDF)

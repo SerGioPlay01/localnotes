@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+    <!-- ==================== MAIN INDEX PAGES ==================== -->
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <image:image>
+            <image:loc>https://localnotes-three.vercel.app/resources/obl_web.jpg</image:loc>
+            <image:title>Local Notes — Secure Note Taking App with AES-256 Encryption</image:title>
+            <image:caption>Free, private, offline-ready note-taking app in 12 languages. No registration required.</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/ru/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.98</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <image:image>
+            <image:loc>https://localnotes-three.vercel.app/resources/obl_web_ru.jpg</image:loc>
+            <image:title>Локальные заметки — Безопасные заметки в браузере | Шифрование AES-256</image:title>
+            <image:caption>Бесплатное приложение для заметок с шифрованием AES-256. Без регистрации и сервера.</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/ua/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.97</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <image:image>
+            <image:loc>https://localnotes-three.vercel.app/resources/obl_web_ua.jpg</image:loc>
+            <image:title>Локальні Нотатки — Безпечні нотатки в браузері | Шифрування AES-256</image:title>
+            <image:caption>Безкоштовний додаток для нотаток з шифруванням AES-256. Без реєстрації та сервера.</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/pl/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.96</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <image:image>
+            <image:loc>https://localnotes-three.vercel.app/resources/obl_web_pl.jpg</image:loc>
+            <image:title>Lokalne Notatki — Bezpieczne notatki w przeglądarce | Szyfrowanie AES-256</image:title>
+            <image:caption>Darmowa aplikacja do notatek z szyfrowaniem AES-256. Bez rejestracji i serwera.</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/cs/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.95</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+        <image:image>
+            <image:loc>https://localnotes-three.vercel.app/resources/obl_web_cs.jpg</image:loc>
+            <image:title>Místní Poznámky — Bezpečné poznámky v prohlížeči | Šifrování AES-256</image:title>
+            <image:caption>Bezplatná aplikace pro poznámky se šifrováním AES-256. Bez registrace a serveru.</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/sk/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.94</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+    </url>
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/bg/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.93</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+    </url>
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/hr/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.92</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+    </url>
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/sr/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.91</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+    </url>
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/bs/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.90</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+    </url>
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/mk/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.90</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+    </url>
+
+    <url>
+        <loc>https://localnotes-three.vercel.app/sl/</loc>
+        <lastmod>2026-04-21</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.90</priority>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/"/>
+        <xhtml:link rel="alternate" hreflang="uk" href="https://localnotes-three.vercel.app/ua/"/>
+        <xhtml:link rel="alternate" hreflang="pl" href="https://localnotes-three.vercel.app/pl/"/>
+        <xhtml:link rel="alternate" hreflang="cs" href="https://localnotes-three.vercel.app/cs/"/>
+        <xhtml:link rel="alternate" hreflang="sk" href="https://localnotes-three.vercel.app/sk/"/>
+        <xhtml:link rel="alternate" hreflang="bg" href="https://localnotes-three.vercel.app/bg/"/>
+        <xhtml:link rel="alternate" hreflang="hr" href="https://localnotes-three.vercel.app/hr/"/>
+        <xhtml:link rel="alternate" hreflang="sr" href="https://localnotes-three.vercel.app/sr/"/>
+        <xhtml:link rel="alternate" hreflang="bs" href="https://localnotes-three.vercel.app/bs/"/>
+        <xhtml:link rel="alternate" hreflang="mk" href="https://localnotes-three.vercel.app/mk/"/>
+        <xhtml:link rel="alternate" hreflang="sl" href="https://localnotes-three.vercel.app/sl/"/>
+    </url>
+
+</urlset>

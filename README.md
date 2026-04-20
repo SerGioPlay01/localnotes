@@ -238,7 +238,7 @@ Click the install icon in Chrome/Edge address bar and confirm.
 
 ## 🆕 Changelog
 
-### v1.2.0 (current)
+### v1.2.1 (current)
 - **🔐 Encryption v4 (Max-2026)** — PBKDF2-SHA-512 (600k iter) + HKDF → 5 keys + XOR-stream + block shuffle + HMAC-SHA-512 + canary bytes + zeroize
 - **🔗 Domain binding** — `.note` files cryptographically tied to `localnotes-three.vercel.app`
 - **🔒 SecureStorage** — localStorage now encrypted with AES-256-GCM + HMAC (session key via HKDF)

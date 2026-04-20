@@ -1,31 +1,12 @@
 # Robots.txt for Local Notes - Secure Note Taking App
-# Optimized for instant indexing by all major search engines
-# Updated: 2025-01-22
+# Updated: 2026-04-21
 
-# Global rules for all bots - Maximum crawling efficiency
+# Global rules — allow all content pages
 User-agent: *
 Allow: /
-Allow: /ru/
-Allow: /ua/
-Allow: /pl/
-Allow: /cs/
-Allow: /sk/
-Allow: /bg/
-Allow: /hr/
-Allow: /sr/
-Allow: /bs/
-Allow: /mk/
-Allow: /sl/
-Allow: /cookie.html
-Allow: /privacy_policy.html
-Allow: /usage_policy.html
-Allow: /resources/obl_web*.jpg
-Allow: /favicon/
-Allow: /manifest.json
-Allow: /sw.js
 Crawl-delay: 0
 
-# Disallow technical directories to focus crawl budget
+# Disallow technical/asset directories to preserve crawl budget
 Disallow: /css/
 Disallow: /fonts/
 Disallow: /js/
@@ -34,42 +15,35 @@ Disallow: /lottiesnimstion/
 Disallow: /json/
 Disallow: /.vscode/
 Disallow: /cookies_banner_universal/
+Disallow: /landing/
+Disallow: /localnoteseditor/
 
-# Allow verification files
-Allow: /yandex_0b28e38b8ad365b2.html
-Allow: /google498025cb8703b0b0.html
-Allow: /indexnow.txt
-
-# Specific rules for Google - Highest priority
+# Specific rules for Google
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 0
-Request-rate: 10/1m
 
-# Specific rules for Bing - High priority
+# Specific rules for Bing
 User-agent: Bingbot
 Allow: /
 Crawl-delay: 0
-Request-rate: 8/1m
 
-# Specific rules for Yandex - High priority for Russian content
+# Specific rules for Yandex
 User-agent: YandexBot
 Allow: /
 Crawl-delay: 0
-Request-rate: 8/1m
 
-# Specific rules for Baidu - For Chinese market
+# Specific rules for Baidu
 User-agent: Baiduspider
 Allow: /
 Crawl-delay: 1
-Request-rate: 5/1m
 
 # Specific rules for DuckDuckGo
 User-agent: DuckDuckBot
 Allow: /
 Crawl-delay: 0
 
-# Block resource-heavy bots to preserve server resources
+# Block SEO audit bots to preserve crawl budget
 User-agent: AhrefsBot
 Disallow: /
 
@@ -85,10 +59,11 @@ Disallow: /
 User-agent: MegaIndex
 Disallow: /
 
-# Site information for search engines
-Host: https://localnotes-three.vercel.app
+# Sitemaps — submit all to search engines
 Sitemap: https://localnotes-three.vercel.app/sitemap.xml
+Sitemap: https://localnotes-three.vercel.app/sitemap-main.xml
+Sitemap: https://localnotes-three.vercel.app/sitemap-pages.xml
 
-# IndexNow for instant indexing
-# Microsoft Bing IndexNow
-# https://www.bing.com/indexnow?url=https://localnotes-three.vercel.app/&key=your-key
+# Verification files
+# Google: https://localnotes-three.vercel.app/google498025cb8703b0b0.html
+# Yandex: https://localnotes-three.vercel.app/yandex_0b28e38b8ad365b2.html

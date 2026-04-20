@@ -95,6 +95,8 @@
     <meta name="author" content="SerGio Play">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <!-- Sitemap reference for crawlers -->
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://localnotes-three.vercel.app/sitemap.xml">
     <link rel="canonical" href="https://localnotes-three.vercel.app/sr/">
     <link rel="alternate" hreflang="en" href="https://localnotes-three.vercel.app/">
     <link rel="alternate" hreflang="ru" href="https://localnotes-three.vercel.app/ru/">
@@ -125,31 +127,6 @@
     <meta name="twitter:image" content="https://localnotes-three.vercel.app/resources/obl_web_sr.jpg">
     <meta name="twitter:image:alt" content="Local Notes — Сигурна апликација за белешке">
 
-    <!-- Enhanced Open Graph Meta Tags -->
-    <meta property="og:title" content="?? Local Notes - Secure Note Taking App | AES-256 Encryption & 12 Languages">
-    <meta property="og:site_name" content="Local Notes">
-    <meta property="og:url" content="https://localnotes-three.vercel.app/">
-    <meta property="og:description" content="?? Secure note-taking app with AES-256 encryption, 12 languages support, offline functionality. Create, store, and export notes directly in your browser. Free, private, and fast. No registration required!">
-    <meta property="og:image" content="https://localnotes-three.vercel.app/resources/obl_web.jpg">
-    <meta property="og:image:secure_url" content="https://localnotes-three.vercel.app/resources/obl_web.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Local Notes - Secure Note Taking Application with AES-256 Encryption">
-    <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:locale:alternate" content="ru_RU">
-    <meta property="og:locale:alternate" content="uk_UA">
-    <meta property="og:locale:alternate" content="pl_PL">
-    <meta property="og:locale:alternate" content="cs_CZ">
-    <meta property="og:locale:alternate" content="sk_SK">
-    <meta property="og:locale:alternate" content="bg_BG">
-    <meta property="og:locale:alternate" content="hr_HR">
-    <meta property="og:locale:alternate" content="sr_RS">
-    <meta property="og:locale:alternate" content="bs_BA">
-    <meta property="og:locale:alternate" content="mk_MK">
-    <meta property="og:locale:alternate" content="sl_SI">
-    
     <!-- Additional Open Graph Meta Tags for Better Social Sharing -->
     <meta property="og:updated_time" content="2025-01-12T00:00:00Z">
     <meta property="og:see_also" content="https://localnotes-three.vercel.app/ru/">
@@ -171,27 +148,6 @@
     <meta property="article:tag" content="AES-256">
     <meta property="article:tag" content="free">
     <meta property="article:tag" content="no registration">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@LocalNotesApp">
-    <meta name="twitter:creator" content="@SerGioPlay">
-    <meta name="twitter:title" content="?? Local Notes - Secure Note Taking App | AES-256 Encryption & 12 Languages">
-    <meta name="twitter:description" content="?? Secure note-taking app with AES-256 encryption, 12 languages support, offline functionality. Create, store, and export notes directly in your browser. Free, private, and fast. No registration required!">
-    <meta name="twitter:image" content="https://localnotes-three.vercel.app/resources/obl_web.jpg">
-    <meta name="twitter:image:alt" content="Local Notes - Secure Note Taking Application with AES-256 Encryption">
-    <meta name="twitter:domain" content="localnotes-three.vercel.app">
-    <meta name="twitter:url" content="https://localnotes-three.vercel.app/">
-    <meta name="twitter:label1" content="Features">
-    <meta name="twitter:data1" content="AES-256 Encryption, 12 Languages, Offline, PWA">
-    <meta name="twitter:label2" content="Price">
-    <meta name="twitter:data2" content="Free">
-    <meta name="twitter:app:name:iphone" content="Local Notes">
-    <meta name="twitter:app:name:ipad" content="Local Notes">
-    <meta name="twitter:app:name:googleplay" content="Local Notes">
-    <meta name="twitter:app:url:iphone" content="https://localnotes-three.vercel.app/">
-    <meta name="twitter:app:url:ipad" content="https://localnotes-three.vercel.app/">
-    <meta name="twitter:app:url:googleplay" content="https://localnotes-three.vercel.app/">
     
     <!-- Additional SEO Meta Tags -->
     <meta name="application-name" content="Local Notes">
@@ -242,9 +198,9 @@
             "url": "https://sergioplay-dev.vercel.app/"
         },
         "datePublished": "2024-01-01",
-        "dateModified": "2026-04-18",
-        "version": "1.2.0",
-        "softwareVersion": "1.2.0",
+        "dateModified": "2026-04-21",
+        "version": "1.2.1",
+        "softwareVersion": "1.2.1",
         "browserRequirements": "Requires JavaScript. Requires HTML5.",
         "memoryRequirements": "Minimal",
         "storageRequirements": "Browser Local Storage",
@@ -444,8 +400,6 @@
                 /\[GET_CSS\]/,
                 /content-scripts\.js/,
                 /Loading the (font|script)/,
-                /?/,
-                /?/,
                 /Live reload/,
                 /Google Analytics script failed/,
                 /Initializing language/,
@@ -485,25 +439,25 @@
                 'color: #4CAF50; font-weight: bold; font-size: 12px; font-family: monospace;'
             );
             
-            originalLog('%c\n?? SECURITY', 'color: #FF5722; font-size: 16px; font-weight: bold;');
-            originalLog('%c   ? AES-256 industry-standard encryption', 'color: #666; font-size: 12px;');
-            originalLog('%c   ? All data stored locally', 'color: #666; font-size: 12px;');
-            originalLog('%c   ? No data sent to servers', 'color: #666; font-size: 12px;');
+            originalLog('%c\n🔒 SECURITY', 'color: #FF5722; font-size: 16px; font-weight: bold;');
+            originalLog('%c   ✅ AES-256 industry-standard encryption', 'color: #666; font-size: 12px;');
+            originalLog('%c   ✅ All data stored locally', 'color: #666; font-size: 12px;');
+            originalLog('%c   ✅ No data sent to servers', 'color: #666; font-size: 12px;');
             
-            originalLog('%c\n?? FEATURES', 'color: #2196F3; font-size: 16px; font-weight: bold;');
-            originalLog('%c   ? 12 interface languages', 'color: #666; font-size: 12px;');
-            originalLog('%c   ? PWA - works as an app', 'color: #666; font-size: 12px;');
+            originalLog('%c\n📋 FEATURES', 'color: #2196F3; font-size: 16px; font-weight: bold;');
+            originalLog('%c   ✅ 12 interface languages', 'color: #666; font-size: 12px;');
+            originalLog('%c   ✅ PWA - works as an app', 'color: #666; font-size: 12px;');
             originalLog('%c   ? Offline mode', 'color: #666; font-size: 12px;');
             originalLog('%c   ? LocalNotesEditor - rich text editing', 'color: #666; font-size: 12px;');
-            originalLog('%c   ? Search with transliteration', 'color: #666; font-size: 12px;');
+            originalLog('%c   ✅ Search with transliteration', 'color: #666; font-size: 12px;');
             
-            originalLog('%c\n?? INFORMATION', 'color: #9C27B0; font-size: 16px; font-weight: bold;');
-            originalLog('%c   Version:  1.2.0', 'color: #666; font-size: 12px;');
+            originalLog('%c\n📊 INFORMATION', 'color: #9C27B0; font-size: 16px; font-weight: bold;');
+            originalLog('%c   Version:  1.2.1', 'color: #666; font-size: 12px;');
             originalLog('%c   Author:   SerGio Play', 'color: #666; font-size: 12px;');
             originalLog('%c   Website:  https://localnotes-three.vercel.app/', 'color: #666; font-size: 12px;');
             originalLog('%c   GitHub:   https://github.com/SerGioPlay01/localnotes', 'color: #666; font-size: 12px;');
             
-            originalLog('%c\n?? TIP', 'color: #FF9800; font-size: 16px; font-weight: bold;');
+            originalLog('%c\n💡 TIP', 'color: #FF9800; font-size: 16px; font-weight: bold;');
             originalLog('%c   Use search with transliteration for convenient searching!', 'color: #666; font-size: 12px;');
             originalLog('%c   Cyrillic - Latin automatically', 'color: #666; font-size: 12px;');
             
@@ -523,29 +477,25 @@
 
     </script>
 
-    <!-- Preload critical fonts -->
-    <link rel="preload" href="../fonts/golos_web/GolosTextVF-Regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="../fonts/intro/Intro.woff2" as="font" type="font/woff2" crossorigin>
-
     <!-- Critical CSS -->
-    <link rel="stylesheet" href="../css/index.css?v=1.2.0">
+    <link rel="stylesheet" href="../css/index.css?v=1.2.1">
 
     <!-- Non-critical CSS — loaded async to avoid render blocking -->
-    <link rel="stylesheet" href="../css/img.css?v=1.2.0" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/img.css?v=1.2.1" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="/localnoteseditor/bootstrap-icons/font/bootstrap-icons.min.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../css/highlight.css?v=1.2.0" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.2.0" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../css/editor-modal.css?v=1.2.0" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../css/apple.css?v=1.2.0" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../css/tags-calendar.css?v=1.2.0" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/highlight.css?v=1.2.1" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.2.1" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/editor-modal.css?v=1.2.1" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/apple.css?v=1.2.1" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/tags-calendar.css?v=1.2.1" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="../css/img.css?v=1.2.0">
+        <link rel="stylesheet" href="../css/img.css?v=1.2.1">
         <link rel="stylesheet" href="/localnoteseditor/bootstrap-icons/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="../css/highlight.css?v=1.2.0">
-        <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.2.0">
-        <link rel="stylesheet" href="../css/editor-modal.css?v=1.2.0">
-        <link rel="stylesheet" href="../css/apple.css?v=1.2.0">
-        <link rel="stylesheet" href="../css/tags-calendar.css?v=1.2.0">
+        <link rel="stylesheet" href="../css/highlight.css?v=1.2.1">
+        <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.2.1">
+        <link rel="stylesheet" href="../css/editor-modal.css?v=1.2.1">
+        <link rel="stylesheet" href="../css/apple.css?v=1.2.1">
+        <link rel="stylesheet" href="../css/tags-calendar.css?v=1.2.1">
     </noscript>
     
     <!-- Prevent FOUC: hide only main content, NOT the preloader -->
@@ -588,7 +538,7 @@
         body.styles-loading footer { visibility: hidden; }
     </style>
     <script>
-        document.body.classList.add('styles-loading');
+        if (document.body) { document.body.classList.add('styles-loading'); }
         document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.remove('styles-loading');
             document.body.classList.add('styles-loaded');
@@ -612,7 +562,7 @@
     <!-- Hreflang tags for SEO — defined once above -->
 </head>
 
-<body>
+<body class="styles-loading">
 
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MVKPW88F" height="0" width="0"
@@ -724,16 +674,16 @@
 
 
     <!-- Critical JavaScript loaded first with cache busting -->
-    <script src="../js/utils.js?v=1.2.0"></script>
-    <script src="../js/selectors.js?v=1.2.0"></script>
-    <script src="../js/translate.js?v=1.2.0"></script>
-    <script src="../js/themes.js?v=1.2.0"></script>
-    <script src="../js/performance.js?v=1.2.0"></script>
-    <script src="../js/security.js?v=1.2.0"></script>
-    <script src="../js/preloader.js?v=1.2.0"></script>
+    <script src="../js/utils.js?v=1.2.1"></script>
+    <script src="../js/selectors.js?v=1.2.1"></script>
+    <script src="../js/translate.js?v=1.2.1"></script>
+    <script src="../js/themes.js?v=1.2.1"></script>
+    <script src="../js/performance.js?v=1.2.1"></script>
+    <script src="../js/security.js?v=1.2.1"></script>
+    <script src="../js/preloader.js?v=1.2.1"></script>
     
     <!-- LocalNotesEditor -->
-    <script src="../localnoteseditor/core.js?v=1.2.0" defer></script>
+    <script src="../localnoteseditor/core.js?v=1.2.1" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
     <script>
@@ -759,15 +709,15 @@
         // Load scripts after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             const scripts = [
-                '/js/magicurl.js?v=1.2.0',
-                '/js/highlight.min.js?v=1.2.0',
-                '/js/translations.js?v=1.2.0',
-                '/js/img.js?v=1.2.0',
-                '/js/date-utils.js?v=1.2.0',
-                '/js/editor-integration.js?v=1.2.0',
-                '/js/markdown.js?v=1.2.0',
-                '/js/tags-calendar.js?v=1.2.0',
-                '/js/index.js?v=1.2.0'
+                '/js/magicurl.js?v=1.2.1',
+                '/js/highlight.min.js?v=1.2.1',
+                '/js/translations.js?v=1.2.1',
+                '/js/img.js?v=1.2.1',
+                '/js/date-utils.js?v=1.2.1',
+                '/js/editor-integration.js?v=1.2.1',
+                '/js/markdown.js?v=1.2.1',
+                '/js/tags-calendar.js?v=1.2.1',
+                '/js/index.js?v=1.2.1'
             ];
             
             loadScriptsSequentially(scripts);
@@ -775,8 +725,8 @@
     </script>
     
     <!-- Service Worker + PWA Modal -->
-    <script src="../js/pwa.js?v=1.2.0"></script>
-    <script src="../js/network-mode.js?v=1.2.0"></script>
+    <script src="../js/pwa.js?v=1.2.1"></script>
+    <script src="../js/network-mode.js?v=1.2.1"></script>
 
     <!-- Universal Cookies Banner -->
     <script src="../cookies_banner_universal/cookies-banner.js"></script>

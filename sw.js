@@ -160,7 +160,9 @@ self.addEventListener('install', event => {
                         .catch(() => {})
                 )
             );
-        }).then(() => self.skipWaiting())
+        })
+        // НЕ вызываем self.skipWaiting() здесь — SW должен ждать явного сигнала
+        // от пользователя через тост, иначе каждое обновление вызывает reload страницы
     );
 });
 

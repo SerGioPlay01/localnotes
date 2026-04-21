@@ -296,7 +296,17 @@ async function networkFirst(cleanReq, origReq) {
         const cached = await caches.match(cleanReq, { ignoreSearch: true })
                     || await caches.match(origReq,  { ignoreSearch: true });
         if (cached) return cached;
-        if (origReq.mode === 'navigate') return await caches.match('/index.html');
+        if (origReq.mode === 'navigate') {
+            // Для языковых страниц (/ru/, /ua/ и т.д.) пробуем их кэш, не корневой index.html
+            const url = new URL(origReq.url);
+            const langMatch = url.pathname.match(/^\/([a-z]{2})\//);
+            if (langMatch) {
+                const langCached = await caches.match(url.pathname)
+                                || await caches.match(url.pathname + 'index.html');
+                if (langCached) return langCached;
+            }
+            return await caches.match('/index.html');
+        }
         return new Response('', { status: 503, statusText: 'Offline' });
     }
 }

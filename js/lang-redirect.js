@@ -22,7 +22,12 @@ if (!isRootPage) {
     if (pathMatch) window.currentLang = pathMatch[1];
 } else {
     // On root page — detect language and redirect if needed
-    document.addEventListener('DOMContentLoaded', function() {
+    // Флаг предотвращает двойной редирект (DOMContentLoaded + readyState fallback)
+    var _langRedirectDone = false;
+
+    function _doLangRedirect() {
+        if (_langRedirectDone) return;
+        _langRedirectDone = true;
         var userLang = getUserLanguage();
         if (userLang !== 'en' && languageMap[userLang]) {
             localStorage.setItem('preferredLanguage', userLang);
@@ -32,18 +37,12 @@ if (!isRootPage) {
             localStorage.removeItem('preferredLanguage');
             showMainPage();
         }
-    });
+    }
 
-    // Fallback if DOMContentLoaded already fired
-    if (document.readyState !== 'loading') {
-        var userLang = getUserLanguage();
-        if (userLang !== 'en' && languageMap[userLang]) {
-            localStorage.setItem('preferredLanguage', userLang);
-            window.location.replace(languageMap[userLang]);
-        } else {
-            localStorage.removeItem('preferredLanguage');
-            showMainPage();
-        }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', _doLangRedirect);
+    } else {
+        _doLangRedirect();
     }
 }
 

@@ -52,7 +52,10 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
         navigator.serviceWorker.register('/sw.js')
             .then(function(registration) {
-                registration.update();
+                // Не вызываем registration.update() при каждой загрузке —
+                // браузер сам проверяет обновления SW каждые 24ч.
+                // Принудительный update() при каждом load + skipWaiting в install
+                // создавал бесконечный цикл перезагрузок.
 
                 registration.addEventListener('updatefound', function() {
                     var newWorker = registration.installing;
@@ -91,11 +94,12 @@ if ('serviceWorker' in navigator) {
             }
         });
 
-        // Если SW активировался пока страница была открыта — перезагружаем
-        // Флаг предотвращает повторный reload если controllerchange сработает несколько раз
+        // Перезагружаем только если контроллер уже был (реальное обновление SW),
+        // но не при первой установке (clients.claim() на новой вкладке без контроллера)
+        var _hadController = !!navigator.serviceWorker.controller;
         var _reloading = false;
         navigator.serviceWorker.addEventListener('controllerchange', function() {
-            if (_reloading) return;
+            if (!_hadController || _reloading) return;
             _reloading = true;
             window.location.reload();
         });

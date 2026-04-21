@@ -1413,6 +1413,84 @@ class LocalNotesEditor {
             if (title) attrs += ' title="' + title + '"';
             if (rel) attrs += ' rel="' + rel + '"';
             self._insertHTML('<a' + attrs + '>' + text + '</a>');
+            self._initContextToolbars();
+            close();
+        });
+    }
+
+    // ── Link context toolbar ─────────────────────────────────────────────
+
+    _showLinkCtx(anchor) {
+        var self = this;
+        var bar = this._ctxBar([
+            {
+                icon: 'bi bi-box-arrow-up-right', label: this._('openLink', 'Open link'),
+                action: function() { window.open(anchor.href, '_blank', 'noopener'); }
+            },
+            {
+                icon: 'bi bi-pencil', label: this._('editLink', 'Edit link'),
+                action: function() { if (self._removeCtx) self._removeCtx(); self._modalLinkEdit(anchor); }
+            },
+            {
+                icon: 'bi bi-scissors', label: this._('unlink', 'Remove link'),
+                action: function() {
+                    self._saveSnap();
+                    var parent = anchor.parentNode;
+                    while (anchor.firstChild) parent.insertBefore(anchor.firstChild, anchor);
+                    parent.removeChild(anchor);
+                    self._syncState();
+                    if (self._removeCtx) self._removeCtx();
+                }
+            }
+        ]);
+        this._positionCtx(bar, anchor);
+        return bar;
+    }
+
+    _modalLinkEdit(anchor) {
+        var self = this;
+        var curUrl   = anchor.getAttribute('href') || '';
+        var curText  = anchor.textContent || '';
+        var curTitle = anchor.getAttribute('title') || '';
+        var curTgt   = anchor.getAttribute('target') || '_blank';
+        var curRel   = anchor.getAttribute('rel') || '';
+
+        this._modal(this._('editLink', 'Edit Link'), 'bi bi-link-45deg',
+            '<div class="lne-fg"><label>' + this._('linkUrl','URL') + '</label>' +
+            '<input type="url" id="lnk-url" class="lne-inp" value="' + curUrl.replace(/"/g,'&quot;') + '" placeholder="https://example.com"></div>' +
+            '<div class="lne-fg"><label>' + this._('linkText','Text') + '</label>' +
+            '<input type="text" id="lnk-txt" class="lne-inp" value="' + curText.replace(/"/g,'&quot;') + '"></div>' +
+            '<div class="lne-fg"><label>' + this._('linkTitle','Title (tooltip)') + '</label>' +
+            '<input type="text" id="lnk-ttl" class="lne-inp" value="' + curTitle.replace(/"/g,'&quot;') + '" placeholder="Optional"></div>' +
+            '<div class="lne-row">' +
+            '<div class="lne-fg" style="flex:1"><label>' + this._('linkTarget','Open in') + '</label>' +
+            '<select id="lnk-tgt" class="lne-inp">' +
+            '<option value="_blank"' + (curTgt === '_blank' ? ' selected' : '') + '>New tab</option>' +
+            '<option value="_self"' + (curTgt === '_self' ? ' selected' : '') + '>Same tab</option>' +
+            '</select></div>' +
+            '<div class="lne-fg" style="flex:1"><label>' + this._('linkRel','Relation') + '</label>' +
+            '<select id="lnk-rel" class="lne-inp">' +
+            '<option value=""' + (!curRel ? ' selected' : '') + '>None</option>' +
+            '<option value="nofollow"' + (curRel === 'nofollow' ? ' selected' : '') + '>nofollow</option>' +
+            '<option value="noopener"' + (curRel === 'noopener' ? ' selected' : '') + '>noopener</option>' +
+            '</select></div>' +
+            '</div>',
+        function(ov, close) {
+            var url = ov.querySelector('#lnk-url').value.trim();
+            if (!url) return;
+            var text  = ov.querySelector('#lnk-txt').value.trim() || url;
+            var title = ov.querySelector('#lnk-ttl').value.trim();
+            var tgt   = ov.querySelector('#lnk-tgt').value;
+            var rel   = ov.querySelector('#lnk-rel').value;
+            self._saveSnap();
+            anchor.setAttribute('href', url);
+            anchor.setAttribute('target', tgt);
+            anchor.textContent = text;
+            if (title) anchor.setAttribute('title', title);
+            else anchor.removeAttribute('title');
+            if (rel) anchor.setAttribute('rel', rel);
+            else anchor.removeAttribute('rel');
+            self._syncState();
             close();
         });
     }
@@ -2119,6 +2197,64 @@ class LocalNotesEditor {
                 }, { passive: false });
             }
         };
+
+        // LINK
+        this.ed.querySelectorAll('a[href]').forEach(function(anchor) {
+            if (anchor._lneCtxBound) return;
+            anchor._lneCtxBound = true;
+
+            var handleLinkActivate = function(e) {
+                // Only activate context toolbar on click, don't follow the link
+                e.preventDefault();
+                e.stopPropagation();
+                clearTimeout(self._ctxHoverTimer);
+                if (self._ctxActiveBar && self._ctxActiveBar._forEl === anchor) {
+                    removeCtx();
+                    return;
+                }
+                removeCtx();
+                self._ctxActiveBar = self._showLinkCtx(anchor);
+                if (self._ctxActiveBar) {
+                    self._ctxActiveBar._forEl = anchor;
+                    if (!isTouchDevice) {
+                        self._ctxActiveBar.addEventListener('mouseenter', function() { clearTimeout(self._ctxHoverTimer); });
+                        self._ctxActiveBar.addEventListener('mouseleave', function() { self._ctxHoverTimer = setTimeout(removeCtx, 350); });
+                    }
+                }
+            };
+
+            anchor.addEventListener('click', handleLinkActivate);
+
+            if (isTouchDevice) {
+                anchor.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    clearTimeout(self._ctxHoverTimer);
+                    if (self._ctxActiveBar && self._ctxActiveBar._forEl === anchor) { removeCtx(); return; }
+                    removeCtx();
+                    self._ctxActiveBar = self._showLinkCtx(anchor);
+                    if (self._ctxActiveBar) self._ctxActiveBar._forEl = anchor;
+                }, { passive: false });
+            }
+
+            if (!isTouchDevice) {
+                anchor.addEventListener('mouseenter', function() {
+                    clearTimeout(self._ctxHoverTimer);
+                    self._ctxHoverTimer = setTimeout(function() {
+                        removeCtx();
+                        self._ctxActiveBar = self._showLinkCtx(anchor);
+                        if (self._ctxActiveBar) {
+                            self._ctxActiveBar._forEl = anchor;
+                            self._ctxActiveBar.addEventListener('mouseenter', function() { clearTimeout(self._ctxHoverTimer); });
+                            self._ctxActiveBar.addEventListener('mouseleave', function() { self._ctxHoverTimer = setTimeout(removeCtx, 350); });
+                        }
+                    }, 180);
+                });
+                anchor.addEventListener('mouseleave', function() {
+                    self._ctxHoverTimer = setTimeout(removeCtx, 350);
+                });
+            }
+        });
 
         // IMAGE
         this.ed.querySelectorAll('img').forEach(function(img) {

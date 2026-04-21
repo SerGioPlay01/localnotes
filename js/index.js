@@ -1720,7 +1720,14 @@ async function loadNotes() {
             notePreview.innerHTML = DOMPurify.sanitize(note.content, {
                 ADD_TAGS: ['iframe', 'video', 'source'],
                 ADD_ATTR: ['data-checked', 'data-cl-color', 'data-cl-priority', 'data-cl-tag', 'value', 'checked', 'type', 'placeholder', 'autocomplete', 'spellcheck',
-                           'allowfullscreen', 'frameborder', 'scrolling', 'allow', 'src', 'width', 'height', 'controls', 'autoplay', 'muted', 'loop']
+                           'allowfullscreen', 'frameborder', 'scrolling', 'allow', 'src', 'width', 'height', 'controls', 'autoplay', 'muted', 'loop',
+                           'target', 'rel']
+            });
+
+            // Ensure links open in new tab (target may be stripped by browser in contenteditable)
+            notePreview.querySelectorAll('a[href]').forEach(a => {
+                if (!a.getAttribute('target')) a.setAttribute('target', '_blank');
+                if (!a.getAttribute('rel')) a.setAttribute('rel', 'noopener');
             });
 
             // Restore input values from HTML attributes (DOMPurify preserves them but browser doesn't auto-sync)

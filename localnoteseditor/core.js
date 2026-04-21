@@ -472,6 +472,11 @@ class LocalNotesEditor {
         d.querySelectorAll('.cl-opts-btn').forEach(function(btn) {
             btn.remove();
         });
+        // Persist target="_blank" so it survives DOMPurify on next load
+        d.querySelectorAll('a[href]').forEach(function(a) {
+            if (!a.getAttribute('target')) a.setAttribute('target', '_blank');
+            if (!a.getAttribute('rel')) a.setAttribute('rel', 'noopener');
+        });
         return d.innerHTML;
     }
     _snapDecode(container) {
@@ -2768,6 +2773,11 @@ class LocalNotesEditor {
         // Ensure video wrappers are non-editable atoms so the cursor can't enter them
         this.ed.querySelectorAll('.lne-video-wrapper, .video-embed-wrapper').forEach(function(vw) {
             vw.setAttribute('contenteditable', 'false');
+        });
+        // Restore target="_blank" — browsers may strip it from contenteditable
+        this.ed.querySelectorAll('a[href]').forEach(function(a) {
+            if (!a.getAttribute('target')) a.setAttribute('target', '_blank');
+            if (!a.getAttribute('rel')) a.setAttribute('rel', 'noopener');
         });
         this._initChecklists();
         this._initCodeBlocks();

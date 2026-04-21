@@ -2,42 +2,14 @@
 <html lang="bg">
 
 <head>
-    <!-- Google Analytics — Consent Mode v2: default denied until user consents -->
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('consent', 'default', {
-            analytics_storage: 'denied',
-            ad_storage: 'denied',
-            ad_user_data: 'denied',
-            ad_personalization: 'denied',
-            wait_for_update: 500
-        });
-    </script>
-    <!-- GA script loaded only after consent check -->
-    <script>
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                var s = document.createElement('script');
-                s.async = true;
-                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-HR9HLBQFCR';
-                s.onload = function() {
-                    gtag('js', new Date());
-                    gtag('config', 'G-HR9HLBQFCR');
-                };
-                document.head.appendChild(s);
-            }, 2000);
-        });
-    </script>
-
     <meta charset="UTF-8">
     <!-- Preconnect to external origins -->
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
     <link rel="dns-prefetch" href="https://www.google-analytics.com">
     <meta http-equiv="Permissions-Policy" content="browsing-topics=(), run-ad-auction=(), camera=(), microphone=(), geolocation=()">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com chrome-extension:; connect-src 'self' blob: https://www.google-analytics.com https://analytics.google.com; frame-src 'self' https://www.youtube.com https://youtu.be https://www.youtube-nocookie.com https://rutube.ru https://vk.com https://vkvideo.ru https://vk.ru https://ok.ru https://www.tiktok.com https://player.vimeo.com https://www.dailymotion.com https://player.twitch.tv https://clips.twitch.tv; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; upgrade-insecure-requests;">
-
-    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com; script-src-elem 'self' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com chrome-extension:; connect-src 'self' blob: https://www.google-analytics.com https://analytics.google.com; frame-src 'self' https://www.youtube.com https://youtu.be https://www.youtube-nocookie.com https://rutube.ru https://vk.com https://vkvideo.ru https://vk.ru https://ok.ru https://www.tiktok.com https://player.vimeo.com https://www.dailymotion.com https://player.twitch.tv https://clips.twitch.tv; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self'; upgrade-insecure-requests;">
+    <!-- Google Analytics — Consent Mode v2 + loader (no inline scripts) -->
+    <script src="/js/ga-init.js?v=1.6.0"></script>
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -209,8 +181,8 @@
         },
         "datePublished": "2024-01-01",
         "dateModified": "2026-04-21",
-        "version": "1.5.0",
-        "softwareVersion": "1.5.0",
+        "version": "1.6.0",
+        "softwareVersion": "1.6.0",
         "browserRequirements": "Requires JavaScript. Requires HTML5.",
         "memoryRequirements": "Minimal",
         "storageRequirements": "Browser Local Storage",
@@ -257,255 +229,18 @@
     }
     </script>
 
-    <!-- Language Detection and Redirect -->
-    <script>
-        // Language mapping for automatic redirection
-        const languageMap = {
-            'ru': '/ru/',
-            'uk': '/ua/',
-            'pl': '/pl/',
-            'cs': '/cs/',
-            'sk': '/sk/',
-            'bg': '/bg/',
-            'hr': '/hr/',
-            'sr': '/sr/',
-            'bs': '/bs/',
-            'mk': '/mk/',
-            'sl': '/sl/'
-        };
-
-        // Get user's preferred language
-        function getUserLanguage() {
-            // Check URL parameter first
-            const urlParams = new URLSearchParams(window.location.search);
-            const langParam = urlParams.get('lang');
-            if (langParam && languageMap[langParam]) {
-                return langParam;
-            }
-
-            // Check localStorage
-            const savedLang = localStorage.getItem('preferredLanguage');
-            if (savedLang && languageMap[savedLang]) {
-                return savedLang;
-            }
-
-            // Check all browser languages (more comprehensive)
-            const browserLanguages = navigator.languages || [navigator.language || navigator.userLanguage];
-            
-            for (let browserLang of browserLanguages) {
-                const langCode = browserLang.split('-')[0].toLowerCase();
-                
-                if (languageMap[langCode]) {
-                    return langCode;
-                }
-                
-                // Check for specific country codes
-                const countryCode = browserLang.split('-')[1]?.toLowerCase();
-                if (countryCode) {
-                    // Special cases for countries
-                    if (countryCode === 'ua') {
-                        return 'uk';
-                    }
-                    if (countryCode === 'by') {
-                        return 'ru';
-                    }
-                    if (countryCode === 'kz') {
-                        return 'ru';
-                    }
-                    if (countryCode === 'md') {
-                        return 'ru';
-                    }
-                    if (countryCode === 'ru') {
-                        return 'ru';
-                    }
-                }
-            }
-
-            // Check system language via Intl API
-            try {
-                const systemLang = Intl.DateTimeFormat().resolvedOptions().locale;
-                const systemLangCode = systemLang.split('-')[0].toLowerCase();
-                
-                if (languageMap[systemLangCode]) {
-                    return systemLangCode;
-                }
-            } catch (e) {
-                // Ignore errors
-            }
-
-            // Check timezone for additional hints
-            try {
-                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                
-                // Russian timezones
-                if (timezone.includes('Moscow') || timezone.includes('Europe/Moscow') || 
-                    timezone.includes('Asia/Yekaterinburg') || timezone.includes('Asia/Novosibirsk') ||
-                    timezone.includes('Asia/Krasnoyarsk') || timezone.includes('Asia/Irkutsk') ||
-                    timezone.includes('Asia/Yakutsk') || timezone.includes('Asia/Vladivostok')) {
-                    return 'ru';
-                }
-                
-                // Ukrainian timezone
-                if (timezone.includes('Kiev') || timezone.includes('Europe/Kiev')) {
-                    return 'uk';
-                }
-            } catch (e) {
-                // Ignore errors
-            }
-
-            // Check for Russian/Ukrainian characters in user agent or other hints
-            try {
-                const userAgent = navigator.userAgent;
-                
-                // Check if user agent contains Cyrillic or Russian-specific strings
-                if (userAgent.includes('ru-RU') || userAgent.includes('ru_ru') || 
-                    userAgent.includes('Russian') || userAgent.includes('Русский')) {
-                    return 'ru';
-                }
-                
-                if (userAgent.includes('uk-UA') || userAgent.includes('uk_ua') || 
-                    userAgent.includes('Ukrainian') || userAgent.includes('Українська')) {
-                    return 'uk';
-                }
-            } catch (e) {
-                // Ignore errors
-            }
-
-            // Default to English
-            return 'en';
-
-        
-            
-            // If English or no specific language, show the main page
-            showMainPage();
-        }
-
-        // Show main page content
-        function showMainPage() {
-            // Set English as default language
-            window.currentLang = 'bg';
-            
-            // Clear console and show beautiful project information
-            console.clear();
-            
-            // Фильтруем нежелательные логи
-            const originalLog = console.log;
-            const originalWarn = console.warn;
-            const originalError = console.error;
-            
-            const filterPatterns = [
-                /ISOLATED@/,
-                /got message/,
-                /Worlds\.js/,
-                /mbEGGjir\.js/,
-                /Service Worker/,
-                /violates the following Content Security Policy/,
-                /preload/,
-                /crossorigin attribute/,
-                /deprecated features/,
-                /TinyMCE/,
-                /Google Analytics/,
-                /searchAnalyzer/,
-                /Search engine null/,
-                /\[GET_CSS\]/,
-                /content-scripts\.js/,
-                /Loading the (font|script)/,
-                /Live reload/,
-                /Google Analytics script failed/,
-                /Initializing language/,
-                /The resource.*was preloaded/
-            ];
-            
-            const shouldFilter = (args) => {
-                const message = args.join(' ');
-                return filterPatterns.some(pattern => pattern.test(message));
-            };
-            
-            console.log = function(...args) {
-                if (!shouldFilter(args)) {
-                    originalLog.apply(console, args);
-                }
-            };
-            
-            console.warn = function(...args) {
-                if (!shouldFilter(args)) {
-                    originalWarn.apply(console, args);
-                }
-            };
-            
-            console.error = function(...args) {
-                if (!shouldFilter(args)) {
-                    originalError.apply(console, args);
-                }
-            };
-            
-            // ASCII Art Banner
-            originalLog('%c' + 
-                '╔═══════════════════════════════════════════════════════════╗\n' +
-                '║                                                           ║\n' +
-                '║              📝  LOCAL NOTES - SECURE NOTES  📝            ║\n' +
-                '║                                                           ║\n' +
-                '╚═══════════════════════════════════════════════════════════╝',
-                'color: #4CAF50; font-weight: bold; font-size: 12px; font-family: monospace;'
-            );
-            
-            originalLog('%c\n🔒 SECURITY', 'color: #FF5722; font-size: 16px; font-weight: bold;');
-            originalLog('%c   ✅ AES-256 industry-standard encryption', 'color: #666; font-size: 12px;');
-            originalLog('%c   ✅ All data stored locally', 'color: #666; font-size: 12px;');
-            originalLog('%c   ✅ No data sent to servers', 'color: #666; font-size: 12px;');
-            
-            originalLog('%c\n📋 FEATURES', 'color: #2196F3; font-size: 16px; font-weight: bold;');
-            originalLog('%c   ✅ 12 interface languages', 'color: #666; font-size: 12px;');
-            originalLog('%c   ✅ PWA - works as an app', 'color: #666; font-size: 12px;');
-            originalLog('%c   ? Offline mode', 'color: #666; font-size: 12px;');
-            originalLog('%c   ? LocalNotesEditor - rich text editing', 'color: #666; font-size: 12px;');
-            originalLog('%c   ✅ Search with transliteration', 'color: #666; font-size: 12px;');
-            
-            originalLog('%c\n📊 INFORMATION', 'color: #9C27B0; font-size: 16px; font-weight: bold;');
-            originalLog('%c   Version:  1.5.0', 'color: #666; font-size: 12px;');
-            originalLog('%c   Author:   SerGio Play', 'color: #666; font-size: 12px;');
-            originalLog('%c   Website:  https://localnotes-three.vercel.app/', 'color: #666; font-size: 12px;');
-            originalLog('%c   GitHub:   https://github.com/SerGioPlay01/localnotes', 'color: #666; font-size: 12px;');
-            
-            originalLog('%c\n💡 TIP', 'color: #FF9800; font-size: 16px; font-weight: bold;');
-            originalLog('%c   Use search with transliteration for convenient searching!', 'color: #666; font-size: 12px;');
-            originalLog('%c   Cyrillic - Latin automatically', 'color: #666; font-size: 12px;');
-            
-            originalLog('%c\n' + '='.repeat(63) + '\n', 'color: #4CAF50; font-weight: bold;');
-            
-            // Обновляем текст кнопок после загрузки страницы
-            if (typeof updateButtonTexts === 'function') {
-                setTimeout(updateButtonTexts, 200);
-            }
-        }
-// Fallback: show page after 1 second if no redirect happened
-        setTimeout(function() {
-            if (!document.body.classList.contains('styles-loaded')) {
-                showMainPage();
-            }
-        }, 1000);
-
-    </script>
-
     <!-- Critical CSS -->
-    <link rel="stylesheet" href="../css/index.css?v=1.5.0">
+    <link rel="stylesheet" href="../css/index.css?v=1.6.0">
 
-    <!-- Non-critical CSS — loaded async to avoid render blocking -->
-    <link rel="stylesheet" href="../css/img.css?v=1.5.0" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="/localnoteseditor/bootstrap-icons/font/bootstrap-icons.min.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../css/highlight.css?v=1.5.0" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.5.0" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../css/editor-modal.css?v=1.5.0" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../css/apple.css?v=1.5.0" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../css/tags-calendar.css?v=1.5.0" media="print" onload="this.media='all'">
+    <!-- Non-critical CSS — loaded async via page-init.js (no onload= handlers) -->
     <noscript>
-        <link rel="stylesheet" href="../css/img.css?v=1.5.0">
+        <link rel="stylesheet" href="../css/img.css?v=1.6.0">
         <link rel="stylesheet" href="/localnoteseditor/bootstrap-icons/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="../css/highlight.css?v=1.5.0">
-        <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.5.0">
-        <link rel="stylesheet" href="../css/editor-modal.css?v=1.5.0">
-        <link rel="stylesheet" href="../css/apple.css?v=1.5.0">
-        <link rel="stylesheet" href="../css/tags-calendar.css?v=1.5.0">
+        <link rel="stylesheet" href="../css/highlight.css?v=1.6.0">
+        <link rel="stylesheet" href="../localnoteseditor/styles.css?v=1.6.0">
+        <link rel="stylesheet" href="../css/editor-modal.css?v=1.6.0">
+        <link rel="stylesheet" href="../css/apple.css?v=1.6.0">
+        <link rel="stylesheet" href="../css/tags-calendar.css?v=1.6.0">
     </noscript>
     
     <!-- Prevent FOUC: hide only main content, NOT the preloader -->
@@ -547,22 +282,8 @@
         body.styles-loading .app-notes-center,
         body.styles-loading footer { visibility: hidden; }
     </style>
-    <script>
-        if (document.body) { document.body.classList.add('styles-loading'); }
-        document.addEventListener('DOMContentLoaded', function() {
-            document.body.classList.remove('styles-loading');
-            document.body.classList.add('styles-loaded');
-        });
-        if ('caches' in window) {
-            caches.keys().then(function(cacheNames) {
-                cacheNames.forEach(function(cacheName) {
-                    if (cacheName.includes('v1.0.2') || cacheName.includes('v1.0.3') || cacheName.includes('v1.0.4') || cacheName.includes('v1.0.5') || cacheName.includes('v1.1.0') || cacheName.includes('v1.1.1') || cacheName.includes('v1.1.2') || cacheName.includes('v1.1.3')) {
-                        caches.delete(cacheName);
-                    }
-                });
-            });
-        }
-    </script>
+    <!-- Page init: styles-loading class, cache cleanup, async CSS loading -->
+    <script src="/js/page-init.js?v=1.6.0"></script>
     
     <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
@@ -684,60 +405,24 @@
 
 
     <!-- Critical JavaScript loaded first with cache busting -->
-    <script src="../js/purify.min.js?v=1.5.0"></script>
-    <script src="../js/utils.js?v=1.5.0"></script>
-    <script src="../js/selectors.js?v=1.5.0"></script>
-    <script src="../js/translate.js?v=1.5.0"></script>
-    <script src="../js/themes.js?v=1.5.0"></script>
-    <script src="../js/performance.js?v=1.5.0"></script>
-    <script src="../js/security.js?v=1.5.0"></script>
-    <script src="../js/preloader.js?v=1.5.0"></script>
+    <script src="../js/purify.min.js?v=1.6.0"></script>
+    <script src="../js/utils.js?v=1.6.0"></script>
+    <script src="../js/selectors.js?v=1.6.0"></script>
+    <script src="../js/translate.js?v=1.6.0"></script>
+    <script src="../js/themes.js?v=1.6.0"></script>
+    <script src="../js/performance.js?v=1.6.0"></script>
+    <script src="../js/security.js?v=1.6.0"></script>
+    <script src="../js/preloader.js?v=1.6.0"></script>
     
     <!-- LocalNotesEditor -->
-    <script src="../localnoteseditor/core.js?v=1.5.0" defer></script>
+    <script src="../localnoteseditor/core.js?v=1.6.0" defer></script>
     
     <!-- Non-critical JavaScript loaded asynchronously -->
-    <script>
-        // Load scripts sequentially to ensure proper order
-        function loadScriptsSequentially(scripts, index = 0) {
-            if (index >= scripts.length) {
-                return;
-            }
-
-            const script = document.createElement('script');
-            script.src = scripts[index];
-            script.async = false;
-            script.onload = () => {
-                loadScriptsSequentially(scripts, index + 1);
-            };
-            script.onerror = () => {
-                console.error(`? Failed to load: ${scripts[index]}`);
-                loadScriptsSequentially(scripts, index + 1);
-            };
-            document.head.appendChild(script);
-        }
-        
-        // Load scripts after DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            const scripts = [
-                '/js/magicurl.js?v=1.5.0',
-                '/js/highlight.min.js?v=1.5.0',
-                '/js/translations.js?v=1.5.0',
-                '/js/img.js?v=1.5.0',
-                '/js/date-utils.js?v=1.5.0',
-                '/js/editor-integration.js?v=1.5.0',
-                '/js/markdown.js?v=1.5.0',
-                '/js/tags-calendar.js?v=1.5.0',
-                '/js/index.js?v=1.5.0'
-            ];
-            
-            loadScriptsSequentially(scripts);
-        });
-    </script>
+    <script src="/js/script-loader.js?v=1.6.0"></script>
     
     <!-- Service Worker + PWA Modal -->
-    <script src="../js/pwa.js?v=1.5.0"></script>
-    <script src="../js/network-mode.js?v=1.5.0"></script>
+    <script src="../js/pwa.js?v=1.6.0"></script>
+    <script src="../js/network-mode.js?v=1.6.0"></script>
 
     <!-- Universal Cookies Banner -->
     <script src="../cookies_banner_universal/cookies-banner.js"></script>

@@ -1398,9 +1398,16 @@ class LocalNotesEditor {
             '<input type="text" id="lnk-ttl" class="lne-inp" placeholder="Optional"></div>' +
             '<div class="lne-row">' +
             '<div class="lne-fg" style="flex:1"><label>' + this._('linkTarget','Open in') + '</label>' +
-            '<select id="lnk-tgt" class="lne-inp"><option value="_blank">New tab</option><option value="_self">Same tab</option></select></div>' +
+            '<select id="lnk-tgt" class="lne-inp">' +
+            '<option value="_blank">' + this._('linkTargetBlank','New tab') + '</option>' +
+            '<option value="_self">' + this._('linkTargetSelf','Same tab') + '</option>' +
+            '</select></div>' +
             '<div class="lne-fg" style="flex:1"><label>' + this._('linkRel','Relation') + '</label>' +
-            '<select id="lnk-rel" class="lne-inp"><option value="">None</option><option value="nofollow">nofollow</option><option value="noopener">noopener</option></select></div>' +
+            '<select id="lnk-rel" class="lne-inp">' +
+            '<option value="">' + this._('linkRelNone','None') + '</option>' +
+            '<option value="nofollow">nofollow</option>' +
+            '<option value="noopener">noopener</option>' +
+            '</select></div>' +
             '</div>',
         function(ov, close) {
             var url = ov.querySelector('#lnk-url').value.trim();
@@ -1442,7 +1449,7 @@ class LocalNotesEditor {
         var bar = this._ctxBar([
             {
                 icon: 'bi bi-box-arrow-up-right', label: this._('openLink', 'Open link'),
-                action: function() { window.open(anchor.href, '_blank', 'noopener'); }
+                action: function() { var a = document.createElement('a'); a.href = anchor.href; a.target = '_blank'; a.rel = 'noopener'; a.click(); }
             },
             {
                 icon: 'bi bi-pencil', label: this._('editLink', 'Edit link'),
@@ -1482,12 +1489,12 @@ class LocalNotesEditor {
             '<div class="lne-row">' +
             '<div class="lne-fg" style="flex:1"><label>' + this._('linkTarget','Open in') + '</label>' +
             '<select id="lnk-tgt" class="lne-inp">' +
-            '<option value="_blank"' + (curTgt === '_blank' ? ' selected' : '') + '>New tab</option>' +
-            '<option value="_self"' + (curTgt === '_self' ? ' selected' : '') + '>Same tab</option>' +
+            '<option value="_blank"' + (curTgt === '_blank' ? ' selected' : '') + '>' + this._('linkTargetBlank','New tab') + '</option>' +
+            '<option value="_self"' + (curTgt === '_self' ? ' selected' : '') + '>' + this._('linkTargetSelf','Same tab') + '</option>' +
             '</select></div>' +
             '<div class="lne-fg" style="flex:1"><label>' + this._('linkRel','Relation') + '</label>' +
             '<select id="lnk-rel" class="lne-inp">' +
-            '<option value=""' + (!curRel ? ' selected' : '') + '>None</option>' +
+            '<option value=""' + (!curRel ? ' selected' : '') + '>' + this._('linkRelNone','None') + '</option>' +
             '<option value="nofollow"' + (curRel === 'nofollow' ? ' selected' : '') + '>nofollow</option>' +
             '<option value="noopener"' + (curRel === 'noopener' ? ' selected' : '') + '>noopener</option>' +
             '</select></div>' +

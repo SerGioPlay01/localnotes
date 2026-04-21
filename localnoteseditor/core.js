@@ -1409,10 +1409,27 @@ class LocalNotesEditor {
             var title = ov.querySelector('#lnk-ttl').value.trim();
             var tgt = ov.querySelector('#lnk-tgt').value;
             var rel = ov.querySelector('#lnk-rel').value;
-            var attrs = ' href="' + url + '" target="' + tgt + '"';
-            if (title) attrs += ' title="' + title + '"';
-            if (rel) attrs += ' rel="' + rel + '"';
-            self._insertHTML('<a' + attrs + '>' + text + '</a>');
+            self._saveSnap();
+            self._restoreRange();
+            var a = document.createElement('a');
+            a.href = url;
+            a.target = tgt;
+            a.textContent = text;
+            if (title) a.title = title;
+            if (rel) a.rel = rel;
+            var sel = window.getSelection();
+            if (sel && sel.rangeCount) {
+                var range = sel.getRangeAt(0);
+                range.deleteContents();
+                range.insertNode(a);
+                range.setStartAfter(a);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } else {
+                self.ed.appendChild(a);
+            }
+            self._syncState();
             self._initContextToolbars();
             close();
         });

@@ -5,109 +5,18 @@ class SecurityManager {
     }
 
     init() {
-        this.setupCSP();
-        this.setupXSSProtection();
         this.setupClickjackingProtection();
-        this.setupSecureHeaders();
-        this.monitorSecurityEvents();
     }
 
-    // Content Security Policy validation
-    setupCSP() {
-        // Check if CSP is properly configured
-        const metaCSP = document.querySelector('meta[http-equiv="Content-Security-Policy"]');
-        if (!metaCSP) {
-            console.warn('CSP not found - security risk');
-        } else {
-        }
-    }
-
-    // XSS Protection
-    setupXSSProtection() {
-        // Sanitize user input
-        this.sanitizeInput = (input) => {
-            if (typeof input !== 'string') return input;
-            
-            // Remove potentially dangerous characters
-            return input
-                .replace(/[<>]/g, '') // Remove < and >
-                .replace(/javascript:/gi, '') // Remove javascript: protocol
-                .replace(/on\w+=/gi, '') // Remove event handlers
-                .trim();
-        };
-
-        // Override innerHTML to prevent XSS
-        this.secureInnerHTML = (element, content) => {
-            if (element && content) {
-                element.textContent = content; // Use textContent instead of innerHTML
-            }
-        };
-    }
-
-    // Clickjacking protection
+    // Clickjacking protection — реальный frame-busting
     setupClickjackingProtection() {
-        // Check for frame busting
         if (window.top !== window.self) {
-            console.warn('Page is being framed - potential clickjacking attack');
-            // Optionally redirect to top frame
-            // window.top.location = window.self.location;
-        }
-    }
-
-    // Secure headers validation
-    setupSecureHeaders() {
-        // Check for secure headers (this would normally be done server-side)
-        const secureHeaders = [
-            'X-Content-Type-Options',
-            'X-Frame-Options',
-            'X-XSS-Protection',
-            'Strict-Transport-Security'
-        ];
-
-        // Log missing headers (for development)
-    }
-
-    // Monitor security events
-    monitorSecurityEvents() {
-        // Monitor for suspicious activity
-        let suspiciousActivity = 0;
-        
-        // Monitor rapid clicks (potential bot activity)
-        let clickCount = 0;
-        let lastClickTime = 0;
-        
-        document.addEventListener('click', (e) => {
-            const now = Date.now();
-            if (now - lastClickTime < 100) { // Less than 100ms between clicks
-                clickCount++;
-                if (clickCount > 10) {
-                    console.warn('Suspicious rapid clicking detected');
-                    suspiciousActivity++;
-                }
-            } else {
-                clickCount = 0;
+            try {
+                window.top.location = window.self.location;
+            } catch (e) {
+                // Cross-origin frame: top.location недоступен — скрываем страницу
+                document.documentElement.style.display = 'none';
             }
-            lastClickTime = now;
-        });
-
-        // Monitor for console access attempts (only in development)
-        if (window.location.hostname === 'localhost' || window.location.hostname.includes('dev')) {
-            const originalConsole = window.console;
-            window.console = new Proxy(originalConsole, {
-                get(target, prop) {
-                    if (prop === 'log' || prop === 'warn' || prop === 'error') {
-                        return function(...args) {
-                            // Log console access for security monitoring
-                            if (args.some(arg => typeof arg === 'string' && 
-                                (arg.includes('password') || arg.includes('token') || arg.includes('key')))) {
-                                console.warn('Potential sensitive data in console');
-                            }
-                            return target[prop].apply(target, args);
-                        };
-                    }
-                    return target[prop];
-                }
-            });
         }
     }
 

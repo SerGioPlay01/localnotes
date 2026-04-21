@@ -207,7 +207,7 @@ class NotesDatabase {
     }
     extractTitle(content) {
         const d = document.createElement('div');
-        d.innerHTML = content || '';
+        d.innerHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(content || '') : (content || '');
         const h = d.querySelector('h1,h2,h3,h4,h5,h6');
         if (h) return h.textContent.trim();
         const p = d.querySelector('p');
@@ -272,9 +272,13 @@ const constTimeEqual = (a, b) => {
 
 // ── CryptoMutations: Promise-мутации шифрования ──────────────────────────────
 const CryptoMutations = (() => {
-    // Случайная задержка [min, max] мс — ломает timing-атаки
-    const jitter = (min = 2, max = 18) =>
-        new Promise(resolve => setTimeout(resolve, min + Math.random() * (max - min)));
+    // Случайная задержка [min, max] мс — ломает timing-атаки (CSPRNG)
+    const jitter = (min = 2, max = 18) => {
+        const arr = new Uint8Array(1);
+        crypto.getRandomValues(arr);
+        const delay = min + (arr[0] / 255) * (max - min);
+        return new Promise(resolve => setTimeout(resolve, delay));
+    };
 
     // Мутация 1: XOR-поток на основе CSPRNG-seed (ChaCha-like keystream без WASM)
     // Использует SHA-512 как PRF для генерации keystream блоков
@@ -464,13 +468,15 @@ class AdvancedEncryption {
         return this._worker;
     }
 
-    _kdfCacheKey(password, salt) {
-        const hex = Array.from(salt.slice(0, 8)).map(b => b.toString(16).padStart(2,'0')).join('');
-        return `${password}::${hex}`;
+    async _kdfCacheKey(password, salt) {
+        const saltHex = Array.from(salt.slice(0, 8)).map(b => b.toString(16).padStart(2,'0')).join('');
+        const pwBytes = new TextEncoder().encode(password + '::' + saltHex);
+        const hashBuf = await crypto.subtle.digest('SHA-256', pwBytes);
+        return Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2,'0')).join('');
     }
 
     async _deriveRawBits(password, salt, originInfo) {
-        const cacheKey = this._kdfCacheKey(password, salt);
+        const cacheKey = await this._kdfCacheKey(password, salt);
         const cached = this._kdfCache?.get(cacheKey);
         if (cached && Date.now() - cached.ts < 5 * 60 * 1000) return cached.bits;
 
@@ -479,7 +485,8 @@ class AdvancedEncryption {
 
         if (worker) {
             bits = await new Promise((resolve, reject) => {
-                const id = Math.random().toString(36).slice(2);
+                const idArr = new Uint8Array(9); crypto.getRandomValues(idArr);
+                const id = Array.from(idArr).map(b => b.toString(36)).join('');
                 const handler = ({ data }) => {
                     if (data.id !== id) return;
                     worker.removeEventListener('message', handler);
@@ -582,7 +589,8 @@ class AdvancedEncryption {
         return new Promise((resolve, reject) => {
             const worker = this._getWorker();
             if (!worker) { reject(new Error('Worker unavailable')); return; }
-            const id = Math.random().toString(36).slice(2);
+            const idArr = new Uint8Array(9); crypto.getRandomValues(idArr);
+            const id = Array.from(idArr).map(b => b.toString(36)).join('');
             const timer = setTimeout(() => {
                 worker.removeEventListener('message', handler);
                 reject(new Error('Worker timeout'));
@@ -761,7 +769,8 @@ function isEncryptedFile(content) {
 function validateAndFixImages(content) {
     if (!content) return content;
     try {
-        const d = document.createElement('div'); d.innerHTML = content;
+        const safe = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(content) : content;
+        const d = document.createElement('div'); d.innerHTML = safe;
         d.querySelectorAll('img').forEach(img => {
             if (!img.src) { img.remove(); return; }
             if (img.src.startsWith('blob:')) img.remove();
@@ -776,7 +785,8 @@ function validateAndFixImages(content) {
 
 function fixChecklistStructure(content) {
     if (!content) return content;
-    const d = document.createElement('div'); d.innerHTML = content;
+    const safe = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(content) : content;
+    const d = document.createElement('div'); d.innerHTML = safe;
     d.querySelectorAll('.checklist-item-wrapper').forEach(wrapper => {
         let cb = wrapper.querySelector('.checklist-checkbox-ios');
         let span = wrapper.querySelector('.checklist-text-content');
@@ -796,7 +806,8 @@ function fixChecklistStructure(content) {
 
 function getChecklistProgress(content) {
     if (!content) return null;
-    const d = document.createElement('div'); d.innerHTML = content;
+    const safe = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(content) : content;
+    const d = document.createElement('div'); d.innerHTML = safe;
     const all = d.querySelectorAll('.checklist-checkbox-ios, input[type="checkbox"]:not([data-md-checkbox])');
     if (all.length === 0) return null;
     const checked = [...all].filter(cb => cb.checked || cb.getAttribute('data-checked') === 'true').length;
@@ -809,7 +820,8 @@ function blobToBase64(blob) {
 
 async function processMediaContent(content) {
     if (!content) return content;
-    const d = document.createElement('div'); d.innerHTML = content;
+    const safe = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(content) : content;
+    const d = document.createElement('div'); d.innerHTML = safe;
     const imgs = d.querySelectorAll('img[src^="blob:"]');
     for (const img of imgs) {
         try { const resp = await fetch(img.src); const blob = await resp.blob(); img.src = await blobToBase64(blob); }
@@ -969,14 +981,16 @@ function showCustomAlert(title, message, type = 'info') {
     alertModal.innerHTML = `
         <div class="modal-content-error">
             <h3 style="display:flex;align-items:center;gap:10px;color:${colorMap[type]};">
-                <span style="font-size:24px;">${iconMap[type]}</span>${title}
+                <span style="font-size:24px;">${iconMap[type]}</span><span id="_caa_title"></span>
             </h3>
-            <p style="margin:15px 0;line-height:1.5;">${message}</p>
+            <p style="margin:15px 0;line-height:1.5;" id="_caa_msg"></p>
             <div style="display:flex;justify-content:center;margin-top:20px;">
                 <button id="customAlertOk" style="background:${colorMap[type]};color:white;border:none;padding:10px 30px;border-radius:5px;cursor:pointer;font-size:16px;">OK</button>
             </div>
         </div>`;
     document.body.appendChild(alertModal);
+    alertModal.querySelector('#_caa_title').textContent = title;
+    alertModal.querySelector('#_caa_msg').textContent = message;
     alertModal.style.display = 'block';
     const ok = alertModal.querySelector('#customAlertOk');
     const close = () => { if (alertModal.parentNode) document.body.removeChild(alertModal); };
@@ -993,10 +1007,10 @@ function showCustomPrompt(title, message, defaultValue = '', onConfirm = null) {
     promptModal.innerHTML = `
         <div class="modal-content-error">
             <h3 style="display:flex;align-items:center;gap:10px;color:#007bff;">
-                <span style="font-size:24px;">✏️</span>${title}
+                <span style="font-size:24px;">✏️</span><span id="_csp_title"></span>
             </h3>
-            <p style="margin:15px 0;line-height:1.5;">${message}</p>
-            <input id="customPromptInput" type="text" value="${defaultValue.replace(/"/g, '&quot;')}"
+            <p style="margin:15px 0;line-height:1.5;" id="_csp_msg"></p>
+            <input id="customPromptInput" type="text" value=""
                 style="width:100%;box-sizing:border-box;padding:8px 12px;font-size:15px;border:1px solid #ccc;border-radius:5px;margin-bottom:15px;">
             <div style="display:flex;justify-content:center;gap:10px;margin-top:5px;">
                 <button id="customPromptCancel" style="background:#6c757d;color:white;border:none;padding:10px 24px;border-radius:5px;cursor:pointer;font-size:15px;">
@@ -1006,6 +1020,9 @@ function showCustomPrompt(title, message, defaultValue = '', onConfirm = null) {
             </div>
         </div>`;
     document.body.appendChild(promptModal);
+    promptModal.querySelector('#_csp_title').textContent = title;
+    promptModal.querySelector('#_csp_msg').textContent = message;
+    promptModal.querySelector('#customPromptInput').value = defaultValue;
     promptModal.style.display = 'block';
     const input = promptModal.querySelector('#customPromptInput');
     const okBtn = promptModal.querySelector('#customPromptOk');
@@ -1125,6 +1142,13 @@ function showEncryptModal(onSubmit) {
 
 function escapeHtml(text) { const d = document.createElement('div'); d.textContent = text || ''; return d.innerHTML; }
 
+function secureNoteId() {
+    const arr = new Uint8Array(9);
+    crypto.getRandomValues(arr);
+    const rand = Array.from(arr).map(b => b.toString(36)).join('').slice(0, 9);
+    return 'note_' + Date.now() + '_' + rand;
+}
+
 function showConfirmModal(message, onConfirm) {
     const modal = document.getElementById('confirmModal');
     if (!modal) { if (confirm(message)) onConfirm?.(); return; }
@@ -1142,22 +1166,31 @@ function showClearAllConfirmationModal() {
     modal.className = 'modal'; modal.style.display = 'block';
     modal.innerHTML = `<div class="modal-content modal-content-warning">
         <div class="modal-content-inner">
-            <h3><i class="bi bi-exclamation-triangle"></i> ${(typeof t === 'function' ? t('confirmDeleteAllTitle') : 'Delete All Notes')}</h3>
-            <p>${(typeof t === 'function' ? t('confirmDeleteAll') : 'Delete ALL notes?')}</p>
+            <h3><i class="bi bi-exclamation-triangle"></i> <span id="_sca_title"></span></h3>
+            <p id="_sca_msg"></p>
             <div class="warning-details">
-                <p><strong>⚠️ ${(typeof t === 'function' ? t('warning') : 'Warning')}:</strong> ${(typeof t === 'function' ? t('clearAllWarning') : 'This action is irreversible!')}</p>
+                <p><strong>⚠️ <span id="_sca_warn_label"></span>:</strong> <span id="_sca_warn"></span></p>
                 <ul>
-                    <li>${(typeof t === 'function' ? t('clearAllWarning1') : 'All notes will be deleted permanently')}</li>
-                    <li>${(typeof t === 'function' ? t('clearAllWarning2') : 'Recovery will be impossible')}</li>
-                    <li>${(typeof t === 'function' ? t('clearAllWarning3') : 'Make a backup before deleting')}</li>
+                    <li id="_sca_w1"></li>
+                    <li id="_sca_w2"></li>
+                    <li id="_sca_w3"></li>
                 </ul>
             </div>
         </div>
         <div class="modal-buttons-container">
-            <button id="confirmClearAllBtn" class="btn cancel"><i class="bi bi-trash3"></i> ${(typeof t === 'function' ? t('deleteAll') : 'Delete All')}</button>
-            <button id="cancelClearAllBtn" class="btn save"><i class="bi bi-x-lg"></i> ${(typeof t === 'function' ? t('cancel') : 'Cancel')}</button>
+            <button id="confirmClearAllBtn" class="btn cancel"><i class="bi bi-trash3"></i> <span id="_sca_del"></span></button>
+            <button id="cancelClearAllBtn" class="btn save"><i class="bi bi-x-lg"></i> <span id="_sca_cancel"></span></button>
         </div></div>`;
     document.body.appendChild(modal);
+    modal.querySelector('#_sca_title').textContent   = typeof t === 'function' ? t('confirmDeleteAllTitle') : 'Delete All Notes';
+    modal.querySelector('#_sca_msg').textContent     = typeof t === 'function' ? t('confirmDeleteAll') : 'Delete ALL notes?';
+    modal.querySelector('#_sca_warn_label').textContent = typeof t === 'function' ? t('warning') : 'Warning';
+    modal.querySelector('#_sca_warn').textContent    = typeof t === 'function' ? t('clearAllWarning') : 'This action is irreversible!';
+    modal.querySelector('#_sca_w1').textContent      = typeof t === 'function' ? t('clearAllWarning1') : 'All notes will be deleted permanently';
+    modal.querySelector('#_sca_w2').textContent      = typeof t === 'function' ? t('clearAllWarning2') : 'Recovery will be impossible';
+    modal.querySelector('#_sca_w3').textContent      = typeof t === 'function' ? t('clearAllWarning3') : 'Make a backup before deleting';
+    modal.querySelector('#_sca_del').textContent     = typeof t === 'function' ? t('deleteAll') : 'Delete All';
+    modal.querySelector('#_sca_cancel').textContent  = typeof t === 'function' ? t('cancel') : 'Cancel';
     document.body.classList.add('modal-open');
     const close = () => { if (modal.parentNode) document.body.removeChild(modal); document.body.classList.remove('modal-open'); };
     document.getElementById('confirmClearAllBtn').addEventListener('click', () => { clearAllNotes(); close(); });
@@ -1343,13 +1376,17 @@ function openNoteSettings(noteId) {
                 const cancelLabel = _t('cancel', 'Cancel');
                 const confirmOv = document.createElement('div');
                 confirmOv.className = 'lne-modal-ov';
-                confirmOv.innerHTML = '<div class="lne-modal" style="max-width:360px"><div class="lne-mhd"><h3><i class="bi bi-trash"></i> ' + title + '</h3><button class="lne-mclose"><i class="bi bi-x-lg"></i></button></div>' +
-                    '<div class="lne-mbody"><p>' + msg + '</p></div>' +
+                confirmOv.innerHTML = '<div class="lne-modal" style="max-width:360px"><div class="lne-mhd"><h3><i class="bi bi-trash"></i> <span id="_cdel_title"></span></h3><button class="lne-mclose"><i class="bi bi-x-lg"></i></button></div>' +
+                    '<div class="lne-mbody"><p id="_cdel_msg"></p></div>' +
                     '<div class="lne-mft">' +
-                    '<button class="lne-mbtn lne-mbtn-sec lne-mcancel"><i class="bi bi-x-lg"></i> ' + cancelLabel + '</button>' +
-                    '<button class="lne-mbtn lne-mbtn-danger lne-mok"><i class="bi bi-trash"></i> ' + deleteLabel + '</button>' +
+                    '<button class="lne-mbtn lne-mbtn-sec lne-mcancel"><i class="bi bi-x-lg"></i> <span id="_cdel_cancel"></span></button>' +
+                    '<button class="lne-mbtn lne-mbtn-danger lne-mok"><i class="bi bi-trash"></i> <span id="_cdel_ok"></span></button>' +
                     '</div></div>';
                 document.body.appendChild(confirmOv);
+                confirmOv.querySelector('#_cdel_title').textContent = title;
+                confirmOv.querySelector('#_cdel_msg').textContent = msg;
+                confirmOv.querySelector('#_cdel_cancel').textContent = cancelLabel;
+                confirmOv.querySelector('#_cdel_ok').textContent = deleteLabel;
                 const closeConfirm = () => { if (confirmOv.parentNode) document.body.removeChild(confirmOv); };
                 confirmOv.querySelector('.lne-mclose').addEventListener('click', closeConfirm);
                 confirmOv.querySelector('.lne-mcancel').addEventListener('click', closeConfirm);
@@ -1498,7 +1535,7 @@ function openModal(noteId, noteContent, noteCreationTime) {
         try {
             const processedContent = await processMediaContent(content);
             const timestamp = Date.now();
-            const noteId2 = currentNoteId || 'note_' + timestamp + '_' + Math.random().toString(36).substr(2, 9);
+            const noteId2 = currentNoteId || secureNoteId();
             const meta = window._noteMeta || {};
             const note = {
                 id: noteId2,
@@ -1649,7 +1686,7 @@ async function loadNotes() {
             const progress = getChecklistProgress(note.content);
             if (progress) {
                 const pct = Math.round(progress.checked / progress.total * 100);
-                const doneLbl = window.translations?.[actualLang]?.checklistDone || 'done';
+                const doneLbl = escapeHtml(window.translations?.[actualLang]?.checklistDone || 'done');
                 const pc = document.createElement('div');
                 pc.classList.add('checklist-progress');
                 pc.innerHTML = `<div class="checklist-progress-header"><span class="checklist-progress-label">☑ ${progress.checked}/${progress.total} ${doneLbl}</span><span class="checklist-progress-pct">${pct}%</span></div><div class="checklist-progress-bar-track"><div class="checklist-progress-bar-fill" style="width:${pct}%"></div></div>`;
@@ -1659,7 +1696,9 @@ async function loadNotes() {
             // Content
             const notePreview = document.createElement('div');
             notePreview.classList.add('noteContent');
-            notePreview.innerHTML = note.content;
+            notePreview.innerHTML = typeof DOMPurify !== 'undefined'
+                ? DOMPurify.sanitize(note.content)
+                : note.content;
 
             // Remove any stale video touch overlays saved in note content
             notePreview.querySelectorAll('.lne-video-touch-overlay').forEach(ov => ov.remove());
@@ -2603,10 +2642,18 @@ function importNotesWithFormat(event) {
 async function importNotesHTML(files) {
     // Strip dangerous/style-breaking tags from imported HTML
     function sanitizeImportedHTML(html) {
+        if (typeof DOMPurify !== 'undefined') {
+            return DOMPurify.sanitize(html);
+        }
+        // Fallback: strip known dangerous tags (DOMPurify unavailable)
         const doc = new DOMParser().parseFromString(html, 'text/html');
-        // Remove all elements that break app styles
         doc.querySelectorAll('style, link, script, meta, head, noscript').forEach(el => el.remove());
-        // Return only body content, or full parsed text if no body
+        // Strip event handler attributes
+        doc.querySelectorAll('*').forEach(el => {
+            [...el.attributes].forEach(attr => {
+                if (/^on/i.test(attr.name)) el.removeAttribute(attr.name);
+            });
+        });
         const body = doc.body;
         return body ? body.innerHTML : doc.documentElement.innerHTML;
     }
@@ -2620,8 +2667,8 @@ async function importNotesHTML(files) {
             let content = sanitizeImportedHTML(text);
             if (tag.test(text)) {
                 const notes = text.replace(tag,'').trim().split('\n\n---\n\n');
-                for (const n of notes) if (n.trim()) { await notesDB.saveNote({ id: 'note_'+Date.now()+'_'+Math.random().toString(36).substr(2,9), content: sanitizeImportedHTML(n), creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(n) }); imported++; }
-            } else { await notesDB.saveNote({ id: 'note_'+Date.now()+'_'+Math.random().toString(36).substr(2,9), content, creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(content) }); imported++; }
+                for (const n of notes) if (n.trim()) { await notesDB.saveNote({ id: secureNoteId(), content: sanitizeImportedHTML(n), creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(n) }); imported++; }
+            } else { await notesDB.saveNote({ id: secureNoteId(), content, creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(content) }); imported++; }
         } catch (e) { errors++; showCustomAlert(typeof t === 'function' ? t('error') : 'Error', typeof t === 'function' ? t('importFileError', { name: file.name, message: e.message }) || (file.name + ': ' + e.message) : file.name + ': ' + e.message, 'error'); }
     }
     if (imported > 0) {
@@ -2646,7 +2693,7 @@ async function importNotesMarkdown(files) {
             const html = (typeof LNMarkdown !== 'undefined')
                 ? LNMarkdown.parse(text)
                 : text.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>').replace(/\n\n+/g,'</p><p>').replace(/^/,'<p>').replace(/$/, '</p>');
-            await notesDB.saveNote({ id: 'note_'+Date.now()+'_'+Math.random().toString(36).substr(2,9), content: html, creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(html) });
+            await notesDB.saveNote({ id: secureNoteId(), content: html, creationTime: Date.now(), lastModified: Date.now(), title: notesDB.extractTitle(html) });
             imported++;
         } catch (e) { errors++; showCustomAlert(typeof t === 'function' ? t('error') : 'Error', typeof t === 'function' ? t('importFileError', { name: file.name, message: e.message }) || (file.name + ': ' + e.message) : file.name + ': ' + e.message, 'error'); }
     }
@@ -2795,7 +2842,7 @@ async function importNotesFiles(files) {
             async (content) => {
                 try {
                     await notesDB.saveNote({
-                        id: 'note_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                        id: secureNoteId(),
                         content, creationTime: Date.now(), lastModified: Date.now(),
                         title: notesDB.extractTitle(content)
                     });

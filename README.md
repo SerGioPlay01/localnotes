@@ -2,7 +2,7 @@
 
 ![Local Notes Screenshot](https://github.com/SerGioPlay01/localnotes/blob/main/sccc.png?raw=true)
 
-[![Version](https://img.shields.io/badge/Version-1.5.0-brightgreen.svg)](https://github.com/SerGioPlay01/localnotes/releases)
+[![Version](https://img.shields.io/badge/Version-1.6.0-brightgreen.svg)](https://github.com/SerGioPlay01/localnotes/releases)
 [![Security](https://img.shields.io/badge/Security-AES--256--GCM%20%2B%20HMAC--SHA--512-blue.svg)](https://github.com/SerGioPlay01/localnotes)
 [![DOMPurify](https://img.shields.io/badge/XSS-DOMPurify-red.svg)](https://github.com/cure53/DOMPurify)
 [![PWA](https://img.shields.io/badge/PWA-Enabled-purple.svg)](https://github.com/SerGioPlay01/localnotes)
@@ -48,6 +48,8 @@
 - **🏷️ Tags & colors** — organize notes by topic with color labels
 - **📅 Built-in calendar** — view notes by date (month / week / agenda)
 - **🔄 Offline** — Service Worker caching for full offline use
+- **✅ Smart checklists** — flat checkbox + input design, per-item customization (color, priority, label)
+- **📋 11 editor templates** — meeting, project, report, brainstorm, lecture, flashcard, research, daily planner, weekly review, OKR goals, habit tracker
 
 ---
 
@@ -265,17 +267,15 @@ Click the install icon in Chrome/Edge address bar and confirm.
 
 ## 🆕 Changelog
 
-### v1.5.0 (current)
-- **🛡️ DOMPurify integration** — all `innerHTML` assignments now sanitized; `sanitizeImportedHTML()` replaced with DOMPurify; served locally (no CDN, CSP-safe)
-- **🔑 KDF cache hardening** — cache key is now `SHA-256(password + salt)`, password never stored in plaintext as Map key
-- **🎲 CSPRNG everywhere** — note IDs, worker message IDs, timing jitter all use `crypto.getRandomValues()` instead of `Math.random()`
-- **🔒 CSP tightened** — `unsafe-eval` removed; `assets.twitch.tv` / `api.twitch.tv` removed from `script-src` / `connect-src`
-- **📊 GA Consent Mode v2** — `analytics_storage: 'denied'` by default before user consent; GA script loads after consent block
-- **🖼️ Clickjacking fix** — real frame-busting (`window.top.location`) with cross-origin fallback (`display:none`)
-- **🧹 SecurityManager cleanup** — removed decorative methods (`setupCSP`, `setupXSSProtection`, `setupSecureHeaders`, `monitorSecurityEvents`)
-- **🔐 Service Worker origin validation** — `message` handler validates source origin against allowlist
-- **💬 XSS-safe modals** — `showCustomAlert`, `showCustomPrompt`, `showClearAllConfirmationModal`, tag delete modal all use `textContent` instead of `innerHTML` for user-controlled strings
-- **� Version bump** — all asset cache-busting query strings updated to `?v=1.5.0`
+### v1.6.0 (current)
+- **🛡️ CSP hardened** — `unsafe-inline` removed from `script-src`; all inline scripts extracted to external files (`ga-init.js`, `script-loader.js`, `lang-redirect.js`, `page-init.js`)
+- **🔒 DOMPurify hard-fail** — `index.js` throws on startup if DOMPurify is missing; all unsafe fallbacks removed
+- **✅ Checklist redesigned** — flat `checkbox + input` layout, no wrapper blocks; customization panel per item: color (7 swatches), priority (low/mid/high), text label; Enter/Backspace keyboard navigation
+- **📋 11 editor templates** — Business (meeting, project, report, brainstorm), Study (lecture, flashcard, research), Planning (daily, weekly, goals, habits); all translated into 12 languages
+- **🎨 Note priority styles** — color accent now shows gradient background tint + top bar; overdue/today/soon states override user color with `!important`; due date badges larger and bolder
+- **🔔 PWA update toast fixed** — detects already-waiting SW; `controllerchange` auto-reload; toast text translated in all 12 languages
+- **🌍 Full i18n** — checklist customization, template labels and content — all 12 languages
+- **🐛 Redirect loop fixed** — `lang-redirect.js` only runs on root `/`; English version clears stale `preferredLanguage` from localStorage
 
 ### v1.2.1
 - **�🔐 Encryption v4 (Max-2026)** — PBKDF2-SHA-512 (600k iter) + HKDF → 5 keys + XOR-stream + block shuffle + HMAC-SHA-512 + canary bytes + zeroize

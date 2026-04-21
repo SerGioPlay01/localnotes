@@ -1,80 +1,100 @@
-# Release Checklist — Local Notes v1.1.0
+# Release Checklist — Local Notes v1.6.0
 
-## ✅ Editor
-- [x] Replaced TinyMCE with LocalNotesEditor (~15KB, no deps)
-- [x] Text color & highlight color sync with cursor position
-- [x] Caret color syncs with selected text color
-- [x] Paragraph styles, font, size selects — all translated
-- [x] Editor modal fills full height (flex layout, no empty space)
-- [x] History reset on setContent (shows 0 on new note)
-- [x] History counter removed from statusbar
+## ✅ Security / CSP
+- [x] `unsafe-inline` removed from `script-src` and `script-src-elem`
+- [x] Inline GA scripts moved to `js/ga-init.js`
+- [x] Inline `loadScriptsSequentially` moved to `js/script-loader.js`
+- [x] Inline lang-redirect script moved to `js/lang-redirect.js`
+- [x] Inline styles-loading + cache cleanup moved to `js/page-init.js`
+- [x] `onload=` event handlers on `<link>` tags replaced with JS loader
+- [x] `ga-init.js` uses `addEventListener('load')` instead of `s.onload =`
+- [x] `onclick=` in JS template strings replaced with `addEventListener`
+- [x] `ga-init.js` placed after CSP meta tag in all HTML files
+- [x] DOMPurify hard-fail guard added to `index.js`
+- [x] All `typeof DOMPurify !== 'undefined' ? ... : content` fallbacks removed
+- [x] Applied to all 11 language index.html files
 
-## ✅ i18n — All 12 Languages
-- [x] Calendar: Month, Week, Agenda, Today, No notes — translated
-- [x] Decrypt Note modal — all strings translated
-- [x] Note Settings modal — Tags, Due date, Color, Pin, New tag — translated
-- [x] Calendar button in header — translated and updated on language switch
-- [x] Due date badge in note footer — uses app locale for date formatting
-- [x] Editor selects: Paragraph, Heading 1–6, Preformatted, Font, Size — translated
-- [x] `t()` function handles arrays (months, weekdays) without crashing
+## ✅ Checklist — New Design
+- [x] Flat `div.cl-item` with `input.cl-text` + `input[type=checkbox].cl-cb`
+- [x] `contenteditable=false` on item — no nested contenteditable issues
+- [x] Enter creates new item, Backspace on empty removes item
+- [x] Customization panel: color (7 swatches), priority (none/low/mid/high), label tag
+- [x] Color accent applied to border-left + background tint + checkbox border
+- [x] Priority: high=red, mid=yellow, low=blue border
+- [x] Tag badge rendered via `::after` with accent color
+- [x] `cl-opts-btn` always visible on touch devices (`@media (hover: none)`)
+- [x] Panel positions within viewport (flips up if no space below)
+- [x] `_snapEncode` syncs `input.value` → `setAttribute('value')`
+- [x] `getContent()` calls `_cleanForSave()` — strips `data-cl-bound` and `cl-opts-btn`
+- [x] `_snapDecode` clears `data-cl-bound` for re-init on undo/redo
+- [x] `_initChecklists` adds missing `cl-opts-btn` and restores `inp.value`
+- [x] Legacy `.checklist-item-wrapper` migrated to `.cl-item` on load
+- [x] `cl-opts-btn` removed from note cards in `loadNotes`
+- [x] `syncClInputs()` called before every `innerHTML` read for saving
+- [x] `blur` handler on `cl-text` in note cards saves to DB
 
-## ✅ Tags & Calendar
-- [x] Color tags with filtering
-- [x] Due date with overdue/today/soon indicators
-- [x] Calendar: month/week/agenda views
-- [x] Calendar uses translated month names and weekday abbreviations
-- [x] Note Settings modal fully translated
+## ✅ Editor Templates
+- [x] 11 templates: meeting, project, report, brainstorm, lecture, flashcard, research, daily, weekly, goals, habit
+- [x] Template row in toolbar: horizontal scroll, no wrap
+- [x] Mobile: icon-only buttons (text hidden), larger tap targets
+- [x] All template content strings use `this._('key', 'fallback')`
+- [x] All 12 languages have full template content translations
+- [x] Date formatted in current app locale
 
-## ✅ Import UX
-- [x] Loading overlay shown immediately after file selection
-- [x] Overlay uses pure CSS spinner (no icon font dependency)
-- [x] Format selection modal has slide-up animation
-- [x] Encrypted files read lazily (one at a time, not all upfront)
+## ✅ i18n
+- [x] Checklist customization: color, priority, label, delete — all 12 languages
+- [x] Template button labels — all 12 languages
+- [x] Template content strings — all 12 languages
+- [x] PWA update toast text — all 12 languages
 
-## ✅ Responsive
-- [x] Horizontal scroll for toolbar buttons on 769–1366px (tablets)
-- [x] Editor modal: 98% width on 769–1024px, 96% on 1025–1366px
-- [x] Editor select widths use min-width/max-width (auto-fit content)
+## ✅ Note Priority Styles
+- [x] `note[data-color]` — gradient background tint + top accent bar (`::before`)
+- [x] Hover glow in accent color
+- [x] Overdue/today/soon use `!important` to override user color
+- [x] `::before` top bar overridden for priority states
+- [x] `note-due-badge` — larger font, bolder weight, glow on overdue/today
+- [x] Color swatches in Note Settings — 30px, active state with inner dot
 
-## ✅ Service Worker
-- [x] Version bumped to v1.1.0
-- [x] Removed TinyMCE files from cache list
-- [x] Added all current CSS/JS files to static cache
-- [x] Added localnoteseditor/core.js and styles.css
+## ✅ PWA Update Notification
+- [x] `registration.waiting` check — shows toast if SW already waiting
+- [x] `controllerchange` listener — auto-reload after SW activation
+- [x] Toast text via `t()` with fallback
+- [x] SW registered without version query string (`/sw.js`)
 
 ## ✅ Bug Fixes
-- [x] Green border on editor modal no longer floats to top of page (position: relative added)
-- [x] `t('months')` no longer throws — t() returns arrays as-is
-- [x] Calendar Today button translated
-- [x] No notes in week view translated
+- [x] Infinite redirect loop on language pages fixed (lang-redirect removed from lang pages)
+- [x] English version infinite reload fixed (localStorage cleared on English)
+- [x] Checklist cursor visible on empty input (`min-height`, `caret-color`)
+- [x] `script-loader.js` uses `readyState` check — no DOMContentLoaded race
+- [x] `page-init.js` removes `styles-loading` via DOMContentLoaded
 
 ## 🔄 Pre-Release
 - [ ] Test on Chrome, Firefox, Safari, Edge
 - [ ] Test on iOS Safari and Android Chrome
-- [ ] Test PWA install flow
+- [ ] Test PWA install and update flow
 - [ ] Test import/export encrypted notes
 - [ ] Test all 12 language versions
-- [ ] Verify calendar on all three views
+- [ ] Test checklist: create, customize, save, reopen, edit
+- [ ] Test templates in all languages
+- [ ] Verify note color + priority display
 - [ ] Check offline mode after SW install
-- [ ] Update version in manifest.json
+- [ ] Update version in `manifest.json` and `sw.js`
 
 ## 📊 Performance Targets
 - LCP < 2.5s
 - FID < 100ms
 - CLS < 0.1
-- Bundle < 1MB
 
 ## 🔒 Security
-- [x] AES-256-GCM encryption
-- [x] PBKDF2 key derivation (100,000 iterations)
-- [x] Lockout after 5 failed decrypt attempts
-- [x] CSP configured
-- [x] XSS sanitization
+- [x] CSP: no `unsafe-inline` in script-src
+- [x] DOMPurify hard-fail (throws if not loaded)
+- [x] AES-256-GCM + HMAC-SHA-512 + PBKDF2-SHA-512 (600k iter)
+- [x] Domain binding via HKDF
+- [x] CSPRNG for all IDs
 
 ## 🌐 Languages
 - [x] EN, RU, UA, PL, CS, SK, BG, HR, SR, BS, MK, SL
-- [x] Auto language detection from URL/browser
-- [x] All new features translated in all 12 languages
+- [x] All new UI strings translated in all 12 languages
 
 ---
 

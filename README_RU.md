@@ -2,7 +2,7 @@
 
 ![Local Notes Screenshot](https://github.com/SerGioPlay01/localnotes/blob/main/sccc.png?raw=true)
 
-[![Version](https://img.shields.io/badge/Version-1.5.0-brightgreen.svg)](https://github.com/SerGioPlay01/localnotes/releases)
+[![Version](https://img.shields.io/badge/Version-1.6.0-brightgreen.svg)](https://github.com/SerGioPlay01/localnotes/releases)
 [![Security](https://img.shields.io/badge/Security-AES--256--GCM%20%2B%20HMAC--SHA--512-blue.svg)](https://github.com/SerGioPlay01/localnotes)
 [![DOMPurify](https://img.shields.io/badge/XSS-DOMPurify-red.svg)](https://github.com/cure53/DOMPurify)
 [![PWA](https://img.shields.io/badge/PWA-Enabled-purple.svg)](https://github.com/SerGioPlay01/localnotes)
@@ -48,6 +48,8 @@
 - **🏷️ Теги и цветовые метки** — организация заметок по темам
 - **📅 Встроенный календарь** — просмотр заметок по датам (месяц / неделя / повестка)
 - **🔄 Офлайн работа** — Service Worker для автономной работы
+- **✅ Умные чеклисты** — плоский дизайн checkbox + input, кастомизация каждого пункта (цвет, приоритет, метка)
+- **📋 11 шаблонов редактора** — встреча, проект, отчёт, мозговой штурм, лекция, карточка, исследование, дневной планировщик, недельный обзор, OKR, трекер привычек
 
 ---
 
@@ -265,17 +267,15 @@ python -m http.server 8000
 
 ## 📋 История изменений
 
-### v1.5.0 (текущая)
-- **🛡️ Интеграция DOMPurify** — все присвоения `innerHTML` теперь санитизированы; `sanitizeImportedHTML()` заменена на DOMPurify; раздаётся локально (без CDN, совместимо с CSP)
-- **🔑 Защита KDF-кэша** — ключ кэша теперь `SHA-256(пароль + соль)`, пароль никогда не хранится в открытом виде как ключ Map
-- **🎲 CSPRNG везде** — ID заметок, ID сообщений воркера, timing jitter — всё через `crypto.getRandomValues()` вместо `Math.random()`
-- **🔒 Ужесточение CSP** — удалён `unsafe-eval`; удалены `assets.twitch.tv` / `api.twitch.tv` из `script-src` / `connect-src`
-- **📊 GA Consent Mode v2** — `analytics_storage: 'denied'` по умолчанию до согласия пользователя; GA-скрипт загружается после блока consent
-- **🖼️ Исправление Clickjacking** — реальный frame-busting (`window.top.location`) с fallback для cross-origin (`display:none`)
-- **🧹 Очистка SecurityManager** — удалены декоративные методы (`setupCSP`, `setupXSSProtection`, `setupSecureHeaders`, `monitorSecurityEvents`)
-- **🔐 Валидация origin в Service Worker** — обработчик `message` проверяет origin источника по белому списку
-- **💬 XSS-безопасные модалы** — `showCustomAlert`, `showCustomPrompt`, `showClearAllConfirmationModal`, модал удаления тега используют `textContent` вместо `innerHTML` для пользовательских строк
-- **📦 Обновление версии** — все строки cache-busting обновлены до `?v=1.5.0`
+### v1.6.0 (текущая)
+- **🛡️ Ужесточение CSP** — `unsafe-inline` удалён из `script-src`; все инлайн-скрипты вынесены во внешние файлы (`ga-init.js`, `script-loader.js`, `lang-redirect.js`, `page-init.js`)
+- **🔒 DOMPurify hard-fail** — `index.js` бросает исключение при старте если DOMPurify не загружен; все небезопасные fallback удалены
+- **✅ Переработанный чеклист** — плоский дизайн `checkbox + input` без блоков-обёрток; панель кастомизации каждого пункта: цвет (7 вариантов), приоритет (низкий/средний/высокий), текстовая метка; навигация Enter/Backspace
+- **📋 11 шаблонов редактора** — Бизнес (встреча, проект, отчёт, мозговой штурм), Учёба (лекция, карточка, исследование), Планирование (день, неделя, OKR, трекер привычек); все переведены на 12 языков
+- **🎨 Стили приоритета заметок** — цветной акцент теперь показывает градиентный фон + верхнюю полоску; состояния просрочено/сегодня/скоро перекрывают пользовательский цвет; бейджи дедлайна крупнее и жирнее
+- **🔔 Исправлен PWA-тост обновления** — определяет уже ожидающий SW; `controllerchange` авто-перезагрузка; текст тоста переведён на 12 языков
+- **🌍 Полная локализация** — кастомизация чеклиста, метки и контент шаблонов — все 12 языков
+- **🐛 Исправлен цикл редиректов** — `lang-redirect.js` работает только на корневой `/`; английская версия очищает устаревший `preferredLanguage` из localStorage
 
 ### v1.2.1
 - **🔐 Шифрование v4 (Max-2026)** — PBKDF2-SHA-512 (600k итер.) + HKDF → 5 ключей + XOR-поток + перестановка блоков + HMAC-SHA-512 + canary bytes + zeroize

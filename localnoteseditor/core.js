@@ -157,6 +157,33 @@ class LocalNotesEditor {
         B('wordCount','bi bi-bar-chart-line',_('wordCount','Word count')) +
         B('fullscreen','bi bi-fullscreen',_('fullscreen','Fullscreen')+'  F11') +
         GE +
+        '</div>' +
+
+        /* Row 3 — Templates */
+        '<div class="lne-toolbar-row lne-templates-row">' +
+        '<span class="lne-tpl-label">' + _('tplTemplates','Templates') + ':</span>' +
+
+        /* Business */
+        '<span class="lne-tpl-group-label"><i class="bi bi-briefcase"></i></span>' +
+        '<button class="lne-btn lne-tpl-btn" data-cmd="tplMeeting"       title="' + _('tplMeeting','Meeting notes') + '"><i class="bi bi-people"></i><span class="lne-btn-label">' + _('tplMeeting','Meeting') + '</span></button>' +
+        '<button class="lne-btn lne-tpl-btn" data-cmd="tplProject"       title="' + _('tplProject','Project plan') + '"><i class="bi bi-kanban"></i><span class="lne-btn-label">' + _('tplProject','Project') + '</span></button>' +
+        '<button class="lne-btn lne-tpl-btn" data-cmd="tplReport"        title="' + _('tplReport','Status report') + '"><i class="bi bi-file-earmark-bar-graph"></i><span class="lne-btn-label">' + _('tplReport','Report') + '</span></button>' +
+        '<button class="lne-btn lne-tpl-btn" data-cmd="tplBrainstorm"    title="' + _('tplBrainstorm','Brainstorm') + '"><i class="bi bi-lightbulb"></i><span class="lne-btn-label">' + _('tplBrainstorm','Ideas') + '</span></button>' +
+        '<div class="lne-sep"></div>' +
+
+        /* Study */
+        '<span class="lne-tpl-group-label"><i class="bi bi-mortarboard"></i></span>' +
+        '<button class="lne-btn lne-tpl-btn" data-cmd="tplLecture"       title="' + _('tplLecture','Lecture notes') + '"><i class="bi bi-journal-text"></i><span class="lne-btn-label">' + _('tplLecture','Lecture') + '</span></button>' +
+        '<button class="lne-btn lne-tpl-btn" data-cmd="tplFlashcard"     title="' + _('tplFlashcard','Flashcard') + '"><i class="bi bi-card-text"></i><span class="lne-btn-label">' + _('tplFlashcard','Flashcard') + '</span></button>' +
+        '<button class="lne-btn lne-tpl-btn" data-cmd="tplResearch"      title="' + _('tplResearch','Research notes') + '"><i class="bi bi-search-heart"></i><span class="lne-btn-label">' + _('tplResearch','Research') + '</span></button>' +
+        '<div class="lne-sep"></div>' +
+
+        /* Planning */
+        '<span class="lne-tpl-group-label"><i class="bi bi-calendar3"></i></span>' +
+        '<button class="lne-btn lne-tpl-btn" data-cmd="tplDaily"         title="' + _('tplDaily','Daily planner') + '"><i class="bi bi-sun"></i><span class="lne-btn-label">' + _('tplDaily','Daily') + '</span></button>' +
+        '<button class="lne-btn lne-tpl-btn" data-cmd="tplWeekly"        title="' + _('tplWeekly','Weekly review') + '"><i class="bi bi-calendar-week"></i><span class="lne-btn-label">' + _('tplWeekly','Weekly') + '</span></button>' +
+        '<button class="lne-btn lne-tpl-btn" data-cmd="tplGoals"         title="' + _('tplGoals','Goals & OKR') + '"><i class="bi bi-trophy"></i><span class="lne-btn-label">' + _('tplGoals','Goals') + '</span></button>' +
+        '<button class="lne-btn lne-tpl-btn" data-cmd="tplHabit"         title="' + _('tplHabit','Habit tracker') + '"><i class="bi bi-check2-all"></i><span class="lne-btn-label">' + _('tplHabit','Habits') + '</span></button>' +
         '</div>';
 
         this._colorBars();
@@ -217,7 +244,18 @@ class LocalNotesEditor {
             insertChecklist:  function() { this._insertChecklist(); },
             insertCode:       function() { this._insertCodeBlock(); },
             insertBlockquote: function() { this._insertBlockquote(); },
-            fullscreen:       function() { this._toggleFullscreen(); }
+            fullscreen:       function() { this._toggleFullscreen(); },
+            tplMeeting:       function() { this._insertTemplate('meeting'); },
+            tplProject:       function() { this._insertTemplate('project'); },
+            tplReport:        function() { this._insertTemplate('report'); },
+            tplBrainstorm:    function() { this._insertTemplate('brainstorm'); },
+            tplLecture:       function() { this._insertTemplate('lecture'); },
+            tplFlashcard:     function() { this._insertTemplate('flashcard'); },
+            tplResearch:      function() { this._insertTemplate('research'); },
+            tplDaily:         function() { this._insertTemplate('daily'); },
+            tplWeekly:        function() { this._insertTemplate('weekly'); },
+            tplGoals:         function() { this._insertTemplate('goals'); },
+            tplHabit:         function() { this._insertTemplate('habit'); }
         };
         if (map[cmd]) { map[cmd].call(this); return; }
         this._saveSnap();
@@ -412,10 +450,42 @@ class LocalNotesEditor {
         this.ed.querySelectorAll('iframe').forEach(function(f) {
             if (f.src && f.src !== 'about:blank') f.setAttribute('data-src', f.src);
         });
+        // Sync cl-text input values to HTML attribute so innerHTML captures them
+        this.ed.querySelectorAll('.cl-item .cl-text').forEach(function(inp) {
+            inp.setAttribute('value', inp.value);
+        });
+        // Sync cl-cb checked state to attribute
+        this.ed.querySelectorAll('.cl-item .cl-cb').forEach(function(cb) {
+            cb.setAttribute('data-checked', cb.checked ? 'true' : 'false');
+            if (cb.checked) cb.setAttribute('checked', '');
+            else cb.removeAttribute('checked');
+        });
+    }
+
+    // Clean HTML for persistence — strips runtime-only attributes and UI elements
+    _cleanForSave(html) {
+        var d = document.createElement('div');
+        d.innerHTML = html;
+        d.querySelectorAll('.cl-item').forEach(function(item) {
+            item.removeAttribute('data-cl-bound');
+        });
+        d.querySelectorAll('.cl-opts-btn').forEach(function(btn) {
+            btn.remove();
+        });
+        return d.innerHTML;
     }
     _snapDecode(container) {
         (container || this.ed).querySelectorAll('iframe[data-src]').forEach(function(f) {
             f.src = f.getAttribute('data-src');
+        });
+        // Restore cl-text input values from HTML attribute
+        (container || this.ed).querySelectorAll('.cl-item .cl-text').forEach(function(inp) {
+            var v = inp.getAttribute('value');
+            if (v !== null) inp.value = v;
+        });
+        // Clear bound flag so _initChecklists re-wires everything
+        (container || this.ed).querySelectorAll('.cl-item[data-cl-bound]').forEach(function(item) {
+            item.removeAttribute('data-cl-bound');
         });
     }
 
@@ -614,78 +684,277 @@ class LocalNotesEditor {
 
     _insertChecklist() {
         this._saveSnap();
-        var wrapper = this._makeChecklistItem('');
-        this._insertBlockNode(wrapper, wrapper.querySelector('.checklist-text-content'));
+        var item = this._makeChecklistItem('');
+        // Insert as atomic block — place cursor after it
+        this._restoreRange();
+        var sel = window.getSelection();
+        var range = sel && sel.rangeCount ? sel.getRangeAt(0) : null;
+        if (range) {
+            range.deleteContents();
+            range.insertNode(item);
+            // Move cursor after the inserted item
+            var after = document.createRange();
+            after.setStartAfter(item);
+            after.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(after);
+        } else {
+            this.ed.appendChild(item);
+        }
+        // Focus the input
+        var inp = item.querySelector('.cl-text');
+        if (inp) setTimeout(function() { inp.focus(); }, 0);
+        this._syncState();
+        this._saveSnap();
     }
 
-    _makeChecklistItem(text, description, checked) {
+    _makeChecklistItem(text, opts) {
+        opts = opts || {};
         var self = this;
-        var wrapper = document.createElement('div');
-        wrapper.className = 'checklist-item-wrapper';
-        if (description) wrapper.classList.add('checklist-has-desc');
+
+        // The whole item is contenteditable=false — an atomic block inside the editor
+        var item = document.createElement('div');
+        item.className = 'cl-item' + (opts.checked ? ' cl-item-done' : '');
+        item.contentEditable = 'false';
+        if (opts.color)    item.dataset.clColor    = opts.color;
+        if (opts.priority) item.dataset.clPriority = opts.priority;
+        if (opts.tag)      item.dataset.clTag      = opts.tag;
 
         // Checkbox
         var cb = document.createElement('input');
         cb.type = 'checkbox';
-        cb.className = 'checklist-checkbox-ios';
-        cb.setAttribute('data-checked', checked ? 'true' : 'false');
-        if (checked) cb.checked = true;
+        cb.className = 'cl-cb';
+        cb.setAttribute('data-checked', opts.checked ? 'true' : 'false');
+        if (opts.checked) cb.checked = true;
 
-        // Main text
-        var textSpan = document.createElement('span');
-        textSpan.className = 'checklist-text-content checklist-text-ios';
-        textSpan.contentEditable = 'true';
-        textSpan.textContent = text || '';
-        if (checked) textSpan.classList.add('checklist-done');
+        // Text input — plain <input>, no contenteditable nesting issues
+        var inp = document.createElement('input');
+        inp.type = 'text';
+        inp.className = 'cl-text' + (opts.checked ? ' cl-done' : '');
+        inp.value = text || '';
+        inp.placeholder = this._('clTaskPlaceholder','Task…');
+        inp.autocomplete = 'off';
+        inp.spellcheck = true;
 
-        // Add description button
-        var addDescBtn = document.createElement('button');
-        addDescBtn.className = 'checklist-add-desc';
-        addDescBtn.contentEditable = 'false';
-        addDescBtn.title = 'Add description';
-        addDescBtn.innerHTML = '<i class="bi bi-text-wrap"></i>';
+        // Options button
+        var optBtn = document.createElement('button');
+        optBtn.type = 'button';
+        optBtn.className = 'cl-opts-btn';
+        optBtn.title = 'Customize';
+        optBtn.innerHTML = '<i class="bi bi-three-dots"></i>';
 
-        // Description area (hidden by default if no description)
-        var descWrap = document.createElement('div');
-        descWrap.className = 'checklist-desc-wrap';
-        if (description) descWrap.classList.add('checklist-desc-open');
+        // Toggle check
+        var toggleCheck = function() {
+            cb.setAttribute('data-checked', cb.checked ? 'true' : 'false');
+            inp.classList.toggle('cl-done', cb.checked);
+            item.classList.toggle('cl-item-done', cb.checked);
+        };
+        cb.addEventListener('change', toggleCheck);
+        cb.addEventListener('touchend', function() { cb.checked = !cb.checked; toggleCheck(); }, { passive: true });
 
-        var descArea = document.createElement('div');
-        descArea.className = 'checklist-desc';
-        descArea.contentEditable = 'true';
-        descArea.dataset.placeholder = 'Add description...';
-        descArea.textContent = description || '';
-        descWrap.appendChild(descArea);
+        // Save on input — dispatch to editor so standard save pipeline fires
+        inp.addEventListener('input', function() {
+            inp.setAttribute('value', inp.value);
+            var ev = new Event('input', { bubbles: false });
+            self.ed.dispatchEvent(ev);
+        });
 
-        // Toggle description
-        var toggleDescNew = function(e) {
+        // Enter key → insert new checklist item after
+        inp.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                var newItem = self._makeChecklistItem('');
+                item.parentNode.insertBefore(newItem, item.nextSibling);
+                var newInp = newItem.querySelector('.cl-text');
+                if (newInp) newInp.focus();
+                self._saveSnap();
+            }
+            if (e.key === 'Backspace' && inp.value === '') {
+                e.preventDefault();
+                var prev = item.previousSibling;
+                item.remove();
+                // Focus previous item's input or editor
+                if (prev) {
+                    var prevInp = prev.querySelector && prev.querySelector('.cl-text');
+                    if (prevInp) { prevInp.focus(); prevInp.setSelectionRange(prevInp.value.length, prevInp.value.length); }
+                } else {
+                    self.ed.focus();
+                }
+                self._saveSnap();
+            }
+        });
+
+        // Options panel
+        optBtn.addEventListener('mousedown', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            var isOpen = descWrap.classList.toggle('checklist-desc-open');
-            addDescBtn.classList.toggle('active', isOpen);
-            if (isOpen) setTimeout(function() { descArea.focus(); }, 50);
-        };
-        addDescBtn.addEventListener('mousedown', toggleDescNew);
-        addDescBtn.addEventListener('touchend', toggleDescNew, { passive: false });
-        if (description) addDescBtn.classList.add('active');
+            self._showChecklistOpts(item, optBtn);
+        });
+        optBtn.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            self._showChecklistOpts(item, optBtn);
+        }, { passive: false });
 
-        // Checkbox toggle — iOS Safari needs touchend fallback
-        var toggleCheckNew = function() {
-            cb.setAttribute('data-checked', cb.checked ? 'true' : 'false');
-            textSpan.classList.toggle('checklist-done', cb.checked);
-            wrapper.classList.toggle('checklist-item-done', cb.checked);
-        };
-        cb.addEventListener('change', toggleCheckNew);
-        cb.addEventListener('touchend', function() {
-            cb.checked = !cb.checked;
-            toggleCheckNew();
-        }, { passive: true });
+        item.appendChild(cb);
+        item.appendChild(inp);
+        item.appendChild(optBtn);
+        return item;
+    }
 
-        wrapper.appendChild(addDescBtn);  // ← dropdown arrow FIRST
-        wrapper.appendChild(cb);
-        wrapper.appendChild(textSpan);
-        wrapper.appendChild(descWrap);
-        return wrapper;
+    _showChecklistOpts(item, anchor) {
+        // Remove any existing panel
+        var existing = document.querySelector('.cl-opts-panel');
+        if (existing) { existing.remove(); if (existing._item === item) return; }
+
+        var self = this;
+        var panel = document.createElement('div');
+        panel.className = 'cl-opts-panel';
+        panel._item = item;
+
+        var colors = [
+            { v: '',        reset: true,  title: this._('clColorDefault','Default') },
+            { v: '#aefc6e', title: this._('clColorGreen','Green') },
+            { v: '#60a5fa', title: this._('clColorBlue','Blue') },
+            { v: '#f87171', title: this._('clColorRed','Red') },
+            { v: '#fbbf24', title: this._('clColorYellow','Yellow') },
+            { v: '#c084fc', title: this._('clColorPurple','Purple') },
+            { v: '#fb923c', title: this._('clColorOrange','Orange') }
+        ];
+
+        var priorities = [
+            { v: '',     icon: 'bi-dash',              label: this._('clPriorityNone','None') },
+            { v: 'low',  icon: 'bi-arrow-down-circle', label: this._('clPriorityLow','Low') },
+            { v: 'mid',  icon: 'bi-dash-circle',       label: this._('clPriorityMid','Medium') },
+            { v: 'high', icon: 'bi-arrow-up-circle',   label: this._('clPriorityHigh','High') }
+        ];
+
+        // Color row
+        var colorRow = document.createElement('div');
+        colorRow.className = 'cl-opts-row';
+        colorRow.innerHTML = '<span class="cl-opts-lbl">' + this._('clColor','Color') + '</span>';
+        var colorBtns = document.createElement('div');
+        colorBtns.className = 'cl-opts-colors';
+        colors.forEach(function(c) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'cl-color-dot' + ((item.dataset.clColor === c.v || (!item.dataset.clColor && c.reset)) ? ' active' : '');
+            btn.title = c.title;
+            if (c.reset) btn.dataset.reset = '1';
+            else btn.style.background = c.v;
+            if (c.reset) btn.textContent = '✕';
+            btn.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                if (!c.reset) {
+                    item.dataset.clColor = c.v;
+                    item.style.setProperty('--cl-accent', c.v);
+                    item.style.setProperty('--cl-accent-bg', c.v.replace('#', 'rgba(') + ',0.07)');
+                } else {
+                    delete item.dataset.clColor;
+                    item.style.removeProperty('--cl-accent');
+                    item.style.removeProperty('--cl-accent-bg');
+                }
+                colorBtns.querySelectorAll('.cl-color-dot').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                self._saveSnap();
+            });
+            colorBtns.appendChild(btn);
+        });
+        colorRow.appendChild(colorBtns);
+
+        // Priority row
+        var prioRow = document.createElement('div');
+        prioRow.className = 'cl-opts-row';
+        prioRow.innerHTML = '<span class="cl-opts-lbl">' + this._('clPriority','Priority') + '</span>';
+        var prioBtns = document.createElement('div');
+        prioBtns.className = 'cl-opts-prios';
+        priorities.forEach(function(p) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'cl-prio-btn' + (item.dataset.clPriority === p.v ? ' active' : '');
+            btn.title = p.label;
+            if (p.v) btn.dataset.prio = p.v;
+            btn.innerHTML = '<i class="bi ' + p.icon + '"></i><span>' + p.label + '</span>';
+            btn.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                if (p.v) item.dataset.clPriority = p.v;
+                else delete item.dataset.clPriority;
+                prioBtns.querySelectorAll('.cl-prio-btn').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                self._saveSnap();
+            });
+            prioBtns.appendChild(btn);
+        });
+        prioRow.appendChild(prioBtns);
+
+        // Tag row
+        var tagRow = document.createElement('div');
+        tagRow.className = 'cl-opts-row';
+        tagRow.innerHTML = '<span class="cl-opts-lbl">' + this._('clLabel','Label') + '</span>';
+        var tagInp = document.createElement('input');
+        tagInp.type = 'text';
+        tagInp.className = 'cl-tag-inp';
+        tagInp.placeholder = this._('clLabel','e.g. work, urgent…');
+        tagInp.value = item.dataset.clTag || '';
+        tagInp.addEventListener('input', function() {
+            if (tagInp.value.trim()) item.dataset.clTag = tagInp.value.trim();
+            else delete item.dataset.clTag;
+        });
+        tagRow.appendChild(tagInp);
+
+        // Delete button
+        var delRow = document.createElement('div');
+        delRow.className = 'cl-opts-row cl-opts-del-row';
+        var delBtn = document.createElement('button');
+        delBtn.className = 'cl-del-btn';
+        delBtn.innerHTML = '<i class="bi bi-trash3"></i> ' + this._('clDeleteItem','Delete item');
+        delBtn.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            panel.remove();
+            self._saveSnap();
+            item.remove();
+        });
+        delRow.appendChild(delBtn);
+
+        panel.appendChild(colorRow);
+        panel.appendChild(prioRow);
+        panel.appendChild(tagRow);
+        panel.appendChild(delRow);
+
+        // Position panel — keep within viewport
+        document.body.appendChild(panel);
+        var rect = anchor.getBoundingClientRect();
+        var pw = panel.offsetWidth || 232;
+        var ph = panel.offsetHeight || 280;
+        var vw = window.innerWidth;
+        var vh = window.innerHeight;
+
+        var top = rect.bottom + window.scrollY + 4;
+        var left = rect.left + window.scrollX;
+
+        // Flip up if not enough space below
+        if (rect.bottom + ph + 8 > vh) {
+            top = rect.top + window.scrollY - ph - 4;
+        }
+        // Keep within horizontal bounds
+        if (left + pw > vw - 8) left = vw - pw - 8;
+        if (left < 8) left = 8;
+
+        panel.style.top  = Math.max(8, top) + 'px';
+        panel.style.left = left + 'px';
+
+        // Close on outside click
+        var closePanel = function(e) {
+            if (!panel.contains(e.target) && e.target !== anchor) {
+                panel.remove();
+                document.removeEventListener('mousedown', closePanel);
+                document.removeEventListener('touchstart', closePanel);
+            }
+        };
+        setTimeout(function() {
+            document.addEventListener('mousedown', closePanel);
+            document.addEventListener('touchstart', closePanel);
+        }, 10);
     }
 
     // ── Code block ───────────────────────────────────────────────────────
@@ -764,6 +1033,222 @@ class LocalNotesEditor {
         this._saveSnap();
         document.execCommand('formatBlock', false, 'blockquote');
         this._syncState();
+    }
+
+    _insertTemplate(type) {
+        this._saveSnap();
+        var _ = this._.bind(this);
+        var lang = (typeof getCurrentLanguage === 'function' ? getCurrentLanguage() : null) ||
+                   (typeof window.currentLang !== 'undefined' ? window.currentLang : 'en');
+        var today = new Date().toLocaleDateString(lang === 'ru' ? 'ru-RU' : lang === 'ua' ? 'uk-UA' : 'en-GB', { day:'2-digit', month:'short', year:'numeric' });
+        var h = function(tag, cls, text) {
+            return '<' + tag + (cls ? ' style="' + cls + '"' : '') + '>' + text + '</' + tag + '>';
+        };
+        var hr = '<hr style="border:none;border-top:1px solid rgba(174,252,110,.2);margin:12px 0;">';
+        var br = '<p><br></p>';
+        var meta = 'color:var(--text-secondary,#888);font-size:.9em';
+        var thStyle = 'border:1px solid var(--border-color,#333);padding:6px 10px;background:var(--bg-secondary,#111)';
+        var tdStyle = 'border:1px solid var(--border-color,#333);padding:6px 10px';
+
+        var templates = {
+            meeting: [
+                h('h2','','📋 ' + _('tplMeetingTitle','Meeting Notes')),
+                h('p',meta,'📅 ' + _('tplDate','Date') + ': ' + today + ' &nbsp;|&nbsp; 👥 ' + _('tplAttendees','Attendees') + ': '),
+                hr,
+                h('h3','','🎯 ' + _('tplAgenda','Agenda')),
+                '<ol><li>' + _('tplTopic','Topic') + ' 1</li><li>' + _('tplTopic','Topic') + ' 2</li><li>' + _('tplTopic','Topic') + ' 3</li></ol>',
+                h('h3','','💬 ' + _('tplDiscussion','Discussion')),
+                h('p','',''),
+                h('h3','','✅ ' + _('tplActionItems','Action Items')),
+                '<ul><li>' + _('tplTaskOwnerDue','Task — Owner — Due date') + '</li><li>' + _('tplTaskOwnerDue','Task — Owner — Due date') + '</li></ul>',
+                h('h3','','📌 ' + _('tplNextMeeting','Next Meeting')),
+                h('p','',_('tplDate','Date') + ': &nbsp;&nbsp; ' + _('tplAgenda','Agenda') + ': '),
+                br
+            ].join(''),
+
+            project: [
+                h('h2','','🚀 ' + _('tplProjectTitle','Project Plan')),
+                h('p',meta,'📅 ' + _('tplStart','Start') + ': ' + today + ' &nbsp;|&nbsp; 🏁 ' + _('tplDeadline','Deadline') + ': &nbsp;&nbsp; | ' + _('tplStatus','Status') + ': 🟡 ' + _('tplInProgress','In Progress')),
+                hr,
+                h('h3','','🎯 ' + _('tplGoal','Goal')),
+                h('p','',''),
+                h('h3','','📦 ' + _('tplDeliverables','Deliverables')),
+                '<ul><li>' + _('tplDeliverable','Deliverable') + ' 1</li><li>' + _('tplDeliverable','Deliverable') + ' 2</li></ul>',
+                h('h3','','🗓 ' + _('tplMilestones','Milestones')),
+                '<table style="border-collapse:collapse;width:100%;margin:8px 0"><thead><tr>' +
+                '<th style="' + thStyle + '">' + _('tplMilestone','Milestone') + '</th>' +
+                '<th style="' + thStyle + '">' + _('tplDue','Due') + '</th>' +
+                '<th style="' + thStyle + '">' + _('tplStatus','Status') + '</th>' +
+                '</tr></thead><tbody>' +
+                '<tr><td style="' + tdStyle + '">' + _('tplPhase','Phase') + ' 1</td><td style="' + tdStyle + '"></td><td style="' + tdStyle + '">🟡</td></tr>' +
+                '<tr><td style="' + tdStyle + '">' + _('tplPhase','Phase') + ' 2</td><td style="' + tdStyle + '"></td><td style="' + tdStyle + '">⚪</td></tr>' +
+                '</tbody></table>',
+                h('h3','','⚠️ ' + _('tplRisks','Risks')),
+                '<ul><li>' + _('tplRisk','Risk') + ' 1</li></ul>',
+                br
+            ].join(''),
+
+            report: [
+                h('h2','','📊 ' + _('tplReportTitle','Status Report')),
+                h('p',meta,'📅 ' + today + ' &nbsp;|&nbsp; ' + _('tplPeriod','Period') + ': '),
+                hr,
+                h('h3','','🟢 ' + _('tplCompleted','Completed')),
+                '<ul><li>' + _('tplItem','Item') + ' 1</li><li>' + _('tplItem','Item') + ' 2</li></ul>',
+                h('h3','','🟡 ' + _('tplInProgress','In Progress')),
+                '<ul><li>' + _('tplItem','Item') + ' 1 — <em>ETA: </em></li></ul>',
+                h('h3','','🔴 ' + _('tplBlocked','Blocked')),
+                '<ul><li>' + _('tplBlocker','Blocker') + ' — <em>' + _('tplReason','Reason') + ': </em></li></ul>',
+                h('h3','','📈 ' + _('tplMetrics','Metrics')),
+                h('p','',''),
+                h('h3','','🔜 ' + _('tplNextSteps','Next Steps')),
+                '<ol><li>' + _('tplStep','Step') + ' 1</li><li>' + _('tplStep','Step') + ' 2</li></ol>',
+                br
+            ].join(''),
+
+            brainstorm: [
+                h('h2','','💡 ' + _('tplBrainstormTitle','Brainstorm')),
+                h('p',meta,'📅 ' + today + ' &nbsp;|&nbsp; ' + _('tplTopic','Topic') + ': '),
+                hr,
+                h('h3','','🧠 ' + _('tplRawIdeas','Raw Ideas')),
+                '<ul><li>' + _('tplIdea','Idea') + ' 1</li><li>' + _('tplIdea','Idea') + ' 2</li><li>' + _('tplIdea','Idea') + ' 3</li><li>' + _('tplIdea','Idea') + ' 4</li></ul>',
+                h('h3','','⭐ ' + _('tplTopPicks','Top Picks')),
+                '<ol><li></li><li></li></ol>',
+                h('h3','','❓ ' + _('tplQuestionsExplore','Questions to Explore')),
+                '<ul><li></li></ul>',
+                h('h3','','🔗 ' + _('tplResources','Resources')),
+                '<ul><li></li></ul>',
+                br
+            ].join(''),
+
+            lecture: [
+                h('h2','','📖 ' + _('tplLectureTitle','Lecture Notes')),
+                h('p',meta,'📅 ' + today + ' &nbsp;|&nbsp; ' + _('tplSubject','Subject') + ': &nbsp;&nbsp; | ' + _('tplLecturer','Lecturer') + ': '),
+                hr,
+                h('h3','','🎯 ' + _('tplKeyConcepts','Key Concepts')),
+                '<ul><li>' + _('tplConcept','Concept') + ' 1</li><li>' + _('tplConcept','Concept') + ' 2</li></ul>',
+                h('h3','','📝 ' + _('tplNotes','Notes')),
+                h('p','',''),
+                h('h3','','💡 ' + _('tplImportantQuotes','Important Quotes')),
+                '<blockquote style="border-left:3px solid rgba(174,252,110,.5);margin:8px 0;padding:6px 12px;color:var(--text-secondary,#aaa)"><em>' + _('tplQuoteHere','Quote here') + '</em></blockquote>',
+                h('h3','','❓ ' + _('tplQuestions','Questions')),
+                '<ul><li></li></ul>',
+                h('h3','','📚 ' + _('tplReferences','References')),
+                '<ul><li></li></ul>',
+                br
+            ].join(''),
+
+            flashcard: [
+                h('h2','','🃏 ' + _('tplFlashcardTitle','Flashcard')),
+                h('p',meta,'📅 ' + today + ' &nbsp;|&nbsp; ' + _('tplTopic','Topic') + ': '),
+                hr,
+                h('h3','color:rgba(174,252,110,.9)','❓ ' + _('tplQuestion','Question')),
+                h('p','min-height:3em;padding:10px;background:var(--bg-secondary,#111);border-radius:8px;border:1px solid var(--border-color,#333)',''),
+                h('h3','color:rgba(174,252,110,.9)','✅ ' + _('tplAnswer','Answer')),
+                h('p','min-height:3em;padding:10px;background:var(--bg-secondary,#111);border-radius:8px;border:1px solid var(--border-color,#333)',''),
+                h('h3','','🔗 ' + _('tplRelated','Related')),
+                h('p','',''),
+                br
+            ].join(''),
+
+            research: [
+                h('h2','','🔬 ' + _('tplResearchTitle','Research Notes')),
+                h('p',meta,'📅 ' + today + ' &nbsp;|&nbsp; ' + _('tplTopic','Topic') + ': '),
+                hr,
+                h('h3','','🎯 ' + _('tplResearchQuestion','Research Question')),
+                h('p','',''),
+                h('h3','','📚 ' + _('tplSources','Sources')),
+                '<ol><li><a href="#">' + _('tplSource','Source') + ' 1</a> — ' + _('tplKeyFinding','Key finding') + ': </li></ol>',
+                h('h3','','🔍 ' + _('tplFindings','Findings')),
+                '<ul><li>' + _('tplFinding','Finding') + ' 1</li></ul>',
+                h('h3','','⚖️ ' + _('tplAnalysis','Analysis')),
+                h('p','',''),
+                h('h3','','📌 ' + _('tplConclusion','Conclusion')),
+                h('p','',''),
+                br
+            ].join(''),
+
+            daily: [
+                h('h2','','☀️ ' + _('tplDailyTitle','Daily Planner') + ' — ' + today),
+                hr,
+                h('h3','','🎯 ' + _('tplTop3','Top 3 Priorities')),
+                '<ol><li></li><li></li><li></li></ol>',
+                h('h3','','⏰ ' + _('tplSchedule','Schedule')),
+                '<table style="border-collapse:collapse;width:100%;margin:8px 0"><tbody>' +
+                [_('tplMorning','Morning'), _('tplAfternoon','Afternoon'), _('tplEvening','Evening')].map(function(t) {
+                    return '<tr><td style="' + tdStyle + ';width:110px;color:var(--text-secondary,#888)">' + t + '</td><td style="' + tdStyle + '"></td></tr>';
+                }).join('') +
+                '</tbody></table>',
+                h('h3','','✅ ' + _('tplTasks','Tasks')),
+                '<ul><li>' + _('tplTask','Task') + ' 1</li><li>' + _('tplTask','Task') + ' 2</li></ul>',
+                h('h3','','💭 ' + _('tplReflections','Notes & Reflections')),
+                h('p','',''),
+                br
+            ].join(''),
+
+            weekly: [
+                h('h2','','📅 ' + _('tplWeeklyTitle','Weekly Review')),
+                h('p',meta,_('tplWeekOf','Week of') + ': ' + today),
+                hr,
+                h('h3','','🏆 ' + _('tplWins','Wins This Week')),
+                '<ul><li></li><li></li></ul>',
+                h('h3','','😓 ' + _('tplChallenges','Challenges')),
+                '<ul><li></li></ul>',
+                h('h3','','📊 ' + _('tplProgressGoals','Progress on Goals')),
+                '<ul><li>' + _('tplGoalItem','Goal') + ' 1 — <strong>%</strong> ' + _('tplComplete','complete') + '</li><li>' + _('tplGoalItem','Goal') + ' 2 — <strong>%</strong> ' + _('tplComplete','complete') + '</li></ul>',
+                h('h3','','🔜 ' + _('tplNextWeekFocus','Next Week Focus')),
+                '<ol><li></li><li></li><li></li></ol>',
+                h('h3','','💡 ' + _('tplLessonsLearned','Lessons Learned')),
+                h('p','',''),
+                br
+            ].join(''),
+
+            goals: [
+                h('h2','','🏆 ' + _('tplGoalsTitle','Goals & OKR')),
+                h('p',meta,'📅 ' + today + ' &nbsp;|&nbsp; ' + _('tplQuarter','Quarter') + ': '),
+                hr,
+                h('h3','','🎯 ' + _('tplObjective','Objective')),
+                h('p','padding:10px;background:var(--bg-secondary,#111);border-radius:8px;border-left:3px solid rgba(174,252,110,.6)',''),
+                h('h3','','📏 ' + _('tplKeyResults','Key Results')),
+                '<ol>' +
+                '<li>KR1: <strong>' + _('tplTarget','Target') + ':</strong> &nbsp; <strong>' + _('tplCurrent','Current') + ':</strong> </li>' +
+                '<li>KR2: <strong>' + _('tplTarget','Target') + ':</strong> &nbsp; <strong>' + _('tplCurrent','Current') + ':</strong> </li>' +
+                '<li>KR3: <strong>' + _('tplTarget','Target') + ':</strong> &nbsp; <strong>' + _('tplCurrent','Current') + ':</strong> </li>' +
+                '</ol>',
+                h('h3','','🗺 ' + _('tplActionPlan','Action Plan')),
+                '<ul><li>' + _('tplAction','Action') + ' 1</li><li>' + _('tplAction','Action') + ' 2</li></ul>',
+                h('h3','','📈 ' + _('tplProgress','Progress')),
+                h('p','','0% ░░░░░░░░░░ 100%'),
+                br
+            ].join(''),
+
+            habit: [
+                h('h2','','✅ ' + _('tplHabitTitle','Habit Tracker')),
+                h('p',meta,'📅 ' + today),
+                hr,
+                '<table style="border-collapse:collapse;width:100%;margin:8px 0"><thead><tr>' +
+                '<th style="' + thStyle + ';text-align:left">' + _('tplHabitName','Habit') + '</th>' +
+                ['M','T','W','T','F','S','S'].map(function(d) {
+                    return '<th style="' + thStyle + ';text-align:center;width:32px">' + d + '</th>';
+                }).join('') +
+                '<th style="' + thStyle + ';text-align:center">%</th>' +
+                '</tr></thead><tbody>' +
+                [1,2,3,4].map(function(i) {
+                    return '<tr><td style="' + tdStyle + '">' + _('tplHabitName','Habit') + ' ' + i + '</td>' +
+                    '⬜⬜⬜⬜⬜⬜⬜'.split('').map(function(c) {
+                        return '<td style="' + tdStyle + ';text-align:center">' + c + '</td>';
+                    }).join('') +
+                    '<td style="' + tdStyle + ';text-align:center">0%</td></tr>';
+                }).join('') +
+                '</tbody></table>',
+                h('h3','','💭 ' + _('tplReflections','Reflection')),
+                h('p','',''),
+                br
+            ].join('')
+        };
+
+        var html = templates[type];
+        if (html) this._insertHTML(html);
+        this._initContextToolbars && this._initContextToolbars();
     }
 
     // ── Fullscreen ───────────────────────────────────────────────────────
@@ -1441,80 +1926,97 @@ class LocalNotesEditor {
 
     _initChecklists() {
         var self = this;
-        this.ed.querySelectorAll('.checklist-item-wrapper').forEach(function(wrapper) {
-            if (wrapper.dataset.clBound) return;
-            wrapper.dataset.clBound = '1';
 
-            var cb       = wrapper.querySelector('.checklist-checkbox-ios');
-            var textSpan = wrapper.querySelector('.checklist-text-content');
-            var descWrap = wrapper.querySelector('.checklist-desc-wrap');
-            var descArea = wrapper.querySelector('.checklist-desc');
-            var addDescBtn = wrapper.querySelector('.checklist-add-desc');
+        // Wire new-style .cl-item
+        this.ed.querySelectorAll('.cl-item').forEach(function(item) {
+            if (item.dataset.clBound) return;
+            item.dataset.clBound = '1';
+
+            var cb   = item.querySelector('.cl-cb');
+            var inp  = item.querySelector('.cl-text');
+            var optBtn = item.querySelector('.cl-opts-btn');
 
             if (!cb) return;
+
+            // Restore color accent
+            if (item.dataset.clColor) item.style.setProperty('--cl-accent', item.dataset.clColor);
+
+            // Restore input value from attribute (after setContent)
+            if (inp && inp.tagName === 'INPUT') {
+                var savedVal = inp.getAttribute('value');
+                if (savedVal !== null) inp.value = savedVal;
+            }
+
+            // Add opts button if missing (e.g. saved without it)
+            if (!optBtn) {
+                optBtn = document.createElement('button');
+                optBtn.type = 'button';
+                optBtn.className = 'cl-opts-btn';
+                optBtn.title = 'Customize';
+                optBtn.innerHTML = '<i class="bi bi-three-dots"></i>';
+                item.appendChild(optBtn);
+            }
 
             // Restore checked state
             if (cb.getAttribute('data-checked') === 'true') {
                 cb.checked = true;
-                if (textSpan) textSpan.classList.add('checklist-done');
-                wrapper.classList.add('checklist-item-done');
+                if (inp) inp.classList.add('cl-done');
+                item.classList.add('cl-item-done');
             }
 
-            // If no add-desc button, add it (legacy items)
-            if (!addDescBtn && textSpan) {
-                addDescBtn = document.createElement('button');
-                addDescBtn.className = 'checklist-add-desc';
-                addDescBtn.contentEditable = 'false';
-                addDescBtn.title = 'Add description';
-                addDescBtn.innerHTML = '<i class="bi bi-text-wrap"></i>';
-                // Insert BEFORE checkbox
-                wrapper.insertBefore(addDescBtn, cb);
-            }
-
-            // If no desc wrap, add it (legacy items)
-            if (!descWrap) {
-                descWrap = document.createElement('div');
-                descWrap.className = 'checklist-desc-wrap';
-                descArea = document.createElement('div');
-                descArea.className = 'checklist-desc';
-                descArea.contentEditable = 'true';
-                descArea.dataset.placeholder = 'Add description...';
-                descWrap.appendChild(descArea);
-                wrapper.appendChild(descWrap);
-            }
-
-            // Wire add-desc button
-            if (addDescBtn) {
-                // Check if already open
-                if (descArea && descArea.textContent.trim()) {
-                    descWrap.classList.add('checklist-desc-open');
-                    addDescBtn.classList.add('active');
-                    wrapper.classList.add('checklist-has-desc');
-                }
-                var toggleDesc = function(e) {
-                    e.preventDefault(); e.stopPropagation();
-                    var isOpen = descWrap.classList.toggle('checklist-desc-open');
-                    addDescBtn.classList.toggle('active', isOpen);
-                    wrapper.classList.toggle('checklist-has-desc', isOpen);
-                    if (isOpen && descArea) setTimeout(function() { descArea.focus(); }, 50);
-                };
-                addDescBtn.addEventListener('mousedown', toggleDesc);
-                addDescBtn.addEventListener('touchend', toggleDesc, { passive: false });
-            }
-
-            // Wire checkbox — iOS Safari needs touchend fallback
             var toggleCheck = function() {
                 cb.setAttribute('data-checked', cb.checked ? 'true' : 'false');
-                if (textSpan) textSpan.classList.toggle('checklist-done', cb.checked);
-                wrapper.classList.toggle('checklist-item-done', cb.checked);
+                if (inp) inp.classList.toggle('cl-done', cb.checked);
+                item.classList.toggle('cl-item-done', cb.checked);
             };
             cb.addEventListener('change', toggleCheck);
-            // iOS Safari sometimes doesn't fire 'change' on contentEditable parent
-            cb.addEventListener('touchend', function(e) {
-                // Only toggle if the touch didn't move (tap)
-                cb.checked = !cb.checked;
-                toggleCheck();
-            }, { passive: true });
+            cb.addEventListener('touchend', function() { cb.checked = !cb.checked; toggleCheck(); }, { passive: true });
+
+            if (inp && inp.tagName === 'INPUT') {
+                inp.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        var newItem = self._makeChecklistItem('');
+                        item.parentNode.insertBefore(newItem, item.nextSibling);
+                        var newInp = newItem.querySelector('.cl-text');
+                        if (newInp) newInp.focus();
+                        self._saveSnap();
+                    }
+                    if (e.key === 'Backspace' && inp.value === '') {
+                        e.preventDefault();
+                        var prev = item.previousSibling;
+                        item.remove();
+                        if (prev) {
+                            var prevInp = prev.querySelector && prev.querySelector('.cl-text');
+                            if (prevInp) { prevInp.focus(); prevInp.setSelectionRange(prevInp.value.length, prevInp.value.length); }
+                        } else {
+                            self.ed.focus();
+                        }
+                        self._saveSnap();
+                    }
+                });
+            }
+
+            optBtn.addEventListener('mousedown', function(e) {
+                e.preventDefault(); e.stopPropagation();
+                self._showChecklistOpts(item, optBtn);
+            });
+            optBtn.addEventListener('touchend', function(e) {
+                e.preventDefault(); e.stopPropagation();
+                self._showChecklistOpts(item, optBtn);
+            }, { passive: false });
+        });
+
+        // Legacy: migrate old .checklist-item-wrapper to new .cl-item
+        this.ed.querySelectorAll('.checklist-item-wrapper').forEach(function(wrapper) {
+            var cb   = wrapper.querySelector('.checklist-checkbox-ios');
+            var span = wrapper.querySelector('.checklist-text-content');
+            if (!cb) return;
+            var newItem = self._makeChecklistItem(
+                span ? (span.textContent || span.innerText || '') : '',
+                { checked: cb.getAttribute('data-checked') === 'true' }
+            );
+            wrapper.parentNode.replaceChild(newItem, wrapper);
         });
     }
 
@@ -2086,7 +2588,7 @@ class LocalNotesEditor {
 
     getContent() {
         this._snapEncode();
-        return this.ed.innerHTML;
+        return this._cleanForSave(this.ed.innerHTML);
     }
     getText()     { return this.ed.innerText; }
 

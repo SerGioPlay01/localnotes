@@ -3,6 +3,11 @@
  * Based on original code, TinyMCE replaced with LocalNotesEditor
  */
 
+// DOMPurify is a hard dependency — abort early if missing
+if (typeof DOMPurify === 'undefined') {
+    throw new Error('DOMPurify failed to load — aborting to prevent XSS');
+}
+
 // ============================================================================
 // RESPONSIVE MANAGER
 // ============================================================================
@@ -207,7 +212,7 @@ class NotesDatabase {
     }
     extractTitle(content) {
         const d = document.createElement('div');
-        d.innerHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(content || '') : (content || '');
+        d.innerHTML = DOMPurify.sanitize(content || '');
         const h = d.querySelector('h1,h2,h3,h4,h5,h6');
         if (h) return h.textContent.trim();
         const p = d.querySelector('p');
@@ -769,7 +774,7 @@ function isEncryptedFile(content) {
 function validateAndFixImages(content) {
     if (!content) return content;
     try {
-        const safe = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(content) : content;
+        const safe = DOMPurify.sanitize(content);
         const d = document.createElement('div'); d.innerHTML = safe;
         d.querySelectorAll('img').forEach(img => {
             if (!img.src) { img.remove(); return; }
@@ -785,7 +790,7 @@ function validateAndFixImages(content) {
 
 function fixChecklistStructure(content) {
     if (!content) return content;
-    const safe = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(content) : content;
+    const safe = DOMPurify.sanitize(content);
     const d = document.createElement('div'); d.innerHTML = safe;
     d.querySelectorAll('.checklist-item-wrapper').forEach(wrapper => {
         let cb = wrapper.querySelector('.checklist-checkbox-ios');
@@ -806,8 +811,15 @@ function fixChecklistStructure(content) {
 
 function getChecklistProgress(content) {
     if (!content) return null;
-    const safe = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(content) : content;
+    const safe = DOMPurify.sanitize(content);
     const d = document.createElement('div'); d.innerHTML = safe;
+    // New .cl-item structure
+    const newItems = d.querySelectorAll('.cl-item .cl-cb');
+    if (newItems.length > 0) {
+        const checked = [...newItems].filter(cb => cb.checked || cb.getAttribute('data-checked') === 'true').length;
+        return { total: newItems.length, checked };
+    }
+    // Legacy .checklist-item-wrapper
     const all = d.querySelectorAll('.checklist-checkbox-ios, input[type="checkbox"]:not([data-md-checkbox])');
     if (all.length === 0) return null;
     const checked = [...all].filter(cb => cb.checked || cb.getAttribute('data-checked') === 'true').length;
@@ -820,7 +832,7 @@ function blobToBase64(blob) {
 
 async function processMediaContent(content) {
     if (!content) return content;
-    const safe = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(content) : content;
+    const safe = DOMPurify.sanitize(content);
     const d = document.createElement('div'); d.innerHTML = safe;
     const imgs = d.querySelectorAll('img[src^="blob:"]');
     for (const img of imgs) {
@@ -1696,12 +1708,26 @@ async function loadNotes() {
             // Content
             const notePreview = document.createElement('div');
             notePreview.classList.add('noteContent');
-            notePreview.innerHTML = typeof DOMPurify !== 'undefined'
-                ? DOMPurify.sanitize(note.content)
-                : note.content;
+            notePreview.innerHTML = DOMPurify.sanitize(note.content, {
+                ADD_ATTR: ['data-checked', 'data-cl-color', 'data-cl-priority', 'data-cl-tag', 'value', 'checked', 'type', 'placeholder', 'autocomplete', 'spellcheck']
+            });
+
+            // Restore input values from HTML attributes (DOMPurify preserves them but browser doesn't auto-sync)
+            notePreview.querySelectorAll('.cl-item .cl-text').forEach(inp => {
+                const v = inp.getAttribute('value');
+                if (v !== null) inp.value = v;
+            });
+
+            // Restore color accents
+            notePreview.querySelectorAll('.cl-item[data-cl-color]').forEach(item => {
+                item.style.setProperty('--cl-accent', item.dataset.clColor);
+            });
 
             // Remove any stale video touch overlays saved in note content
             notePreview.querySelectorAll('.lne-video-touch-overlay').forEach(ov => ov.remove());
+
+            // Remove checklist options buttons from note cards (editor-only UI)
+            notePreview.querySelectorAll('.cl-opts-btn').forEach(btn => btn.remove());
 
             // Remove contenteditable from all elements in note cards (not in editor)
             notePreview.querySelectorAll('[contenteditable]').forEach(el => {
@@ -1753,21 +1779,43 @@ async function loadNotes() {
                 btn.style.display = 'none';
             });
 
-            // Interactive checkboxes
-            notePreview.querySelectorAll('.checklist-checkbox-ios, input[type="checkbox"]').forEach(cb => {
+            // Save cl-text edits on blur in note cards
+            notePreview.querySelectorAll('.cl-item .cl-text').forEach(inp => {
+                inp.addEventListener('blur', async () => {
+                    inp.setAttribute('value', inp.value);
+                    syncClInputs(notePreview);
+                    const updContent = notePreview.innerHTML;
+                    const ts = Date.now();
+                    try {
+                        await notesDB.saveNote({ id: note.id, content: updContent, creationTime: note.creationTime, lastModified: ts, title: notesDB.extractTitle(updContent) });
+                    } catch (err) { console.error('Checklist text save error:', err); }
+                });
+            });
+
+            // Interactive checkboxes — new .cl-item and legacy .checklist-item-wrapper
+            notePreview.querySelectorAll('.cl-item .cl-cb, .checklist-checkbox-ios, input[type="checkbox"]').forEach(cb => {                const isNew = cb.classList.contains('cl-cb');
+                const item  = isNew ? cb.closest('.cl-item') : cb.closest('.checklist-item-wrapper');
+                const textEl = isNew
+                    ? item?.querySelector('.cl-text')
+                    : item?.querySelector('.checklist-text-content, .checklist-text-ios');
+
                 if (cb.getAttribute('data-checked') === 'true') {
                     cb.checked = true;
-                    // Apply strikethrough to text span
-                    const textSpan = cb.closest('.checklist-item-wrapper')?.querySelector('.checklist-text-content, .checklist-text-ios');
-                    if (textSpan) textSpan.classList.add('checklist-done');
-                    cb.closest('.checklist-item-wrapper')?.classList.add('checklist-item-done');
+                    if (textEl) textEl.classList.add(isNew ? 'cl-done' : 'checklist-done');
+                    if (item)   item.classList.add(isNew ? 'cl-item-done' : 'checklist-item-done');
                 }
+
+                // Restore color accent for new items
+                if (isNew && item?.dataset.clColor) {
+                    item.style.setProperty('--cl-accent', item.dataset.clColor);
+                }
+
                 cb.addEventListener('change', async () => {
                     const isChecked = cb.checked;
                     cb.setAttribute('data-checked', isChecked ? 'true' : 'false');
-                    const textSpan = cb.closest('.checklist-item-wrapper')?.querySelector('.checklist-text-content, .checklist-text-ios');
-                    if (textSpan) textSpan.classList.toggle('checklist-done', isChecked);
-                    cb.closest('.checklist-item-wrapper')?.classList.toggle('checklist-item-done', isChecked);
+                    if (textEl) textEl.classList.toggle(isNew ? 'cl-done' : 'checklist-done', isChecked);
+                    if (item)   item.classList.toggle(isNew ? 'cl-item-done' : 'checklist-item-done', isChecked);
+                    syncClInputs(notePreview);
                     const updContent = notePreview.innerHTML;
                     const ts = Date.now();
                     try {
@@ -1906,9 +1954,11 @@ function showWelcomeMessage() {
         <div class="welcome-section"><h2 class="welcome-section-title">${gt('welcomeGetStarted','Get Started')}</h2>
             <p class="welcome-get-started">${gt('welcomeGetStartedText','Click Add Note to create your first note.')}</p></div>
         <div class="welcome-actions">
-            <button class="welcome-dismiss-btn" onclick="showWelcomeInstructions()">${gt('welcomeDismiss','Show instructions')}</button>
+            <button class="welcome-dismiss-btn" id="welcomeDismissBtn">${gt('welcomeDismiss','Show instructions')}</button>
         </div></div>`;
     notesContainer.appendChild(wc);
+    var dismissBtn = document.getElementById('welcomeDismissBtn');
+    if (dismissBtn) dismissBtn.addEventListener('click', showWelcomeInstructions);
     setTimeout(() => updateWelcomeTranslations(), 100);
 }
 
@@ -2397,7 +2447,18 @@ function enableQuickEditOnNote(noteEl) {
     content.addEventListener('focus', () => clearTimeout(blurTimer));
 }
 
+// Sync cl-text input values to HTML attributes before reading innerHTML
+function syncClInputs(container) {
+    container.querySelectorAll('.cl-item .cl-text').forEach(inp => {
+        inp.setAttribute('value', inp.value);
+    });
+    container.querySelectorAll('.cl-item .cl-cb').forEach(cb => {
+        cb.setAttribute('data-checked', cb.checked ? 'true' : 'false');
+    });
+}
+
 async function saveQuickEdit(noteEl, content, noteId, noteCreationTime) {
+    syncClInputs(content);
     const updatedContent = content.innerHTML;
     const timestamp = Date.now();
     try {
@@ -2642,20 +2703,7 @@ function importNotesWithFormat(event) {
 async function importNotesHTML(files) {
     // Strip dangerous/style-breaking tags from imported HTML
     function sanitizeImportedHTML(html) {
-        if (typeof DOMPurify !== 'undefined') {
-            return DOMPurify.sanitize(html);
-        }
-        // Fallback: strip known dangerous tags (DOMPurify unavailable)
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        doc.querySelectorAll('style, link, script, meta, head, noscript').forEach(el => el.remove());
-        // Strip event handler attributes
-        doc.querySelectorAll('*').forEach(el => {
-            [...el.attributes].forEach(attr => {
-                if (/^on/i.test(attr.name)) el.removeAttribute(attr.name);
-            });
-        });
-        const body = doc.body;
-        return body ? body.innerHTML : doc.documentElement.innerHTML;
+        return DOMPurify.sanitize(html);
     }
 
     let imported = 0, errors = 0;

@@ -1,5 +1,5 @@
 // Service Worker для Local Notes
-const CACHE_VERSION = 'v1.2.1';
+const CACHE_VERSION = 'v1.5.0';
 const STATIC_CACHE  = `static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
 const CACHE_LIMIT   = 60;
@@ -305,6 +305,15 @@ async function networkFirst(cleanReq, origReq) {
 self.addEventListener('message', event => {
     const data = event.data;
     if (!data) return;
+
+    // Validate message origin — only accept from our own clients
+    if (event.source && event.source.url) {
+        try {
+            const sourceOrigin = new URL(event.source.url).origin;
+            const allowedOrigins = ['https://localnotes-three.vercel.app', 'http://localhost'];
+            if (!allowedOrigins.some(o => sourceOrigin === o || sourceOrigin.startsWith('http://localhost'))) return;
+        } catch (e) { return; }
+    }
 
     if (data.type === 'SKIP_WAITING') {
         self.skipWaiting();

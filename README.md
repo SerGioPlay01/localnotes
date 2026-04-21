@@ -2,8 +2,9 @@
 
 ![Local Notes Screenshot](https://github.com/SerGioPlay01/localnotes/blob/main/sccc.png?raw=true)
 
-[![Version](https://img.shields.io/badge/Version-1.2.0-brightgreen.svg)](https://github.com/SerGioPlay01/localnotes/releases)
+[![Version](https://img.shields.io/badge/Version-1.5.0-brightgreen.svg)](https://github.com/SerGioPlay01/localnotes/releases)
 [![Security](https://img.shields.io/badge/Security-AES--256--GCM%20%2B%20HMAC--SHA--512-blue.svg)](https://github.com/SerGioPlay01/localnotes)
+[![DOMPurify](https://img.shields.io/badge/XSS-DOMPurify-red.svg)](https://github.com/cure53/DOMPurify)
 [![PWA](https://img.shields.io/badge/PWA-Enabled-purple.svg)](https://github.com/SerGioPlay01/localnotes)
 [![Offline](https://img.shields.io/badge/Offline-Supported-orange.svg)](https://github.com/SerGioPlay01/localnotes)
 [![Languages](https://img.shields.io/badge/Languages-12-yellow.svg)](https://github.com/SerGioPlay01/localnotes)
@@ -40,12 +41,12 @@
 ### Key Features
 
 - **🔒 Max-2026 encryption** — AES-256-GCM + HMAC-SHA-512 + PBKDF2-SHA-512 (600k iterations) + domain binding
+- **🛡️ DOMPurify XSS protection** — all note content sanitized before rendering
 - **🌍 12 languages** — full UI localization including all modals, buttons and error messages
 - **📱 PWA** — install as a native app on any device
 - **⚡ LocalNotesEditor** — custom lightweight editor (~15KB), no external dependencies
 - **🏷️ Tags & colors** — organize notes by topic with color labels
 - **📅 Built-in calendar** — view notes by date (month / week / agenda)
-- **🛡️ CSP, HTTPS, XSS protection** — hardened security layer
 - **🔄 Offline** — Service Worker caching for full offline use
 
 ---
@@ -83,7 +84,36 @@ ENCRYPT PIPELINE:
 
 **Domain binding:** keys are cryptographically tied to `localnotes-three.vercel.app` via HKDF `info` parameter — files cannot be decrypted on any other domain.
 
+**KDF cache key:** SHA-256(password + salt) — password never stored in plaintext as a Map key.
+
 **Backward compatible** with v2 and v3 formats.
+
+---
+
+## 🛡️ Security Model
+
+### XSS Protection
+- **DOMPurify** (served locally, no CDN) sanitizes all note content before `innerHTML` assignment
+- Applied at render time, import time, and all internal HTML parsing functions
+- `sanitizeImportedHTML()` uses DOMPurify — strips `<script>`, event handlers (`on*`), `javascript:` URLs
+
+### Content Security Policy
+- `unsafe-eval` removed — no dynamic code execution
+- Twitch `assets.twitch.tv` / `api.twitch.tv` removed from `script-src` / `connect-src`
+- Twitch embeds work via `frame-src` only (player.twitch.tv, clips.twitch.tv)
+- GA Consent Mode v2 — `analytics_storage: 'denied'` by default until user consents
+
+### Clickjacking Protection
+- Real frame-busting: `window.top.location = window.self.location`
+- Cross-origin frame fallback: `document.documentElement.style.display = 'none'`
+
+### Cryptographic IDs
+- Note IDs generated with `crypto.getRandomValues()` — not `Math.random()`
+- Worker message IDs use CSPRNG
+- Timing jitter uses CSPRNG (anti-timing attacks)
+
+### Service Worker
+- `message` event validates source origin against allowlist before processing
 
 ---
 
@@ -92,7 +122,7 @@ ENCRYPT PIPELINE:
 ### 📝 Editor (LocalNotesEditor)
 - ~15KB, zero dependencies — replaced TinyMCE (was 500KB+)
 - Rich formatting: headings, lists, tables, links, blockquotes, code blocks
-- Media: images (drag & drop), videos (YouTube, Vimeo, direct URL)
+- Media: images (drag & drop), videos (YouTube, Vimeo, Twitch, Rutube, VK, TikTok)
 - Interactive checklists, emoji picker, special characters
 - Find & Replace, word/character count
 - Text color & highlight with live caret color sync
@@ -105,7 +135,7 @@ ENCRYPT PIPELINE:
 - Due date with overdue / today / soon visual indicators
 - Note Settings modal — tags, due date, color, pin — fully translated
 
-### Calendar
+### 📅 Calendar
 - Three views: Month, Week, Agenda
 - Navigation with Today button
 - Notes linked to creation date and due date
@@ -122,14 +152,6 @@ ENCRYPT PIPELINE:
 - Decrypt modal with live password validation — fully translated
 - Clear error messages: wrong password vs. wrong domain
 
-### 🛡️ Security
-- AES-256-GCM + HMAC-SHA-512 with PBKDF2-SHA-512 (600k iterations)
-- Domain-bound keys — files only decrypt on the official site
-- Lockout after 5 failed attempts
-- Zeroize sensitive buffers after use
-- Constant-time comparisons (anti-timing attacks)
-- All data local — nothing sent to any server
-
 ---
 
 ## 🌐 Translation System
@@ -141,7 +163,7 @@ All 12 languages (EN, RU, UA, PL, CS, SK, BG, HR, SR, BS, MK, SL) have complete 
 - Import errors (encrypted file warning, file error, partial success)
 - Calendar (Month/Week/Agenda buttons, Today, month names, weekdays)
 - Note Settings modal (Tags, Due date, Color, Pin, New tag, Clear, Apply)
-- Editor toolbar (paragraph styles, font, size selects)
+- Editor toolbar
 - All policy pages
 
 Translations live in `js/translations.js` and `json/lang.json`, applied via `window.t(key)`.
@@ -156,21 +178,22 @@ Translations live in `js/translations.js` and `json/lang.json`, applied via `win
 localnotes/
 ├── index.html                    # Main page (EN)
 ├── manifest.json                 # PWA manifest
-├── sw.js                         # Service Worker
+├── sw.js                         # Service Worker (with origin validation)
 ├── robots.txt / sitemap.xml
 │
 ├── css/
 │   ├── index.css                 # Main styles
 │   ├── editor-modal.css          # Editor modal styles
 │   ├── tags-calendar.css         # Tags, calendar, decrypt modal
-│   └── img.css / preloader.css / highlight.css / print.css / page.css
+│   └── img.css / highlight.css / print.css / page.css / apple.css
 │
 ├── js/
 │   ├── index.js                  # App logic, encryption v4, import/export
+│   ├── purify.min.js             # DOMPurify — XSS sanitization (local, no CDN)
 │   ├── translations.js           # 12 languages, 300+ keys
 │   ├── translate.js              # Language detection & switching
 │   ├── tags-calendar.js          # Tags system + calendar
-│   ├── security.js               # SecurityManager + SecureStorage (AES-GCM)
+│   ├── security.js               # SecurityManager (clickjacking) + SecureStorage
 │   ├── themes.js / utils.js / selectors.js
 │   ├── performance.js / editor-integration.js
 │   └── date-utils.js / img.js / preloader.js / magicurl.js / pwa.js
@@ -183,10 +206,11 @@ localnotes/
 │   └── bootstrap-icons/
 │
 ├── fonts/ favicon/ resources/
-├── cookies_banner_universal/     # GDPR cookie banner
+├── cookies_banner_universal/     # GDPR cookie banner (Consent Mode v2)
 │
 └── [lang]/                       # ru, ua, pl, cs, sk, bg, hr, sr, bs, mk, sl
     ├── index.html
+    ├── manifest.json
     ├── privacy_policy.html
     ├── usage_policy.html
     └── cookie_policy.html
@@ -200,16 +224,19 @@ localnotes/
 | Editor | LocalNotesEditor (custom, no deps) |
 | Storage | IndexedDB |
 | Encryption | Web Crypto API — AES-256-GCM + HMAC-SHA-512 + PBKDF2-SHA-512 |
+| XSS Sanitization | DOMPurify (local) |
 | PWA | Service Worker + Web App Manifest |
+| Analytics | Google Analytics with Consent Mode v2 |
 | Icons | Bootstrap Icons |
 
 ### Data Flow
 
 1. **Init** → language detection → theme → editor init
 2. **Create note** → LocalNotesEditor → IndexedDB
-3. **Export** → 5-layer encryption pipeline → `.note` file download
-4. **Import** → Decrypt modal (live password check) → validation → IndexedDB
-5. **Language switch** → `updateButtonTexts()` → all UI elements updated
+3. **Render note** → `DOMPurify.sanitize(content)` → `innerHTML`
+4. **Export** → 5-layer encryption pipeline → `.note` file download
+5. **Import** → `DOMPurify.sanitize()` → Decrypt modal → validation → IndexedDB
+6. **Language switch** → `updateButtonTexts()` → all UI elements updated
 
 ---
 
@@ -238,13 +265,24 @@ Click the install icon in Chrome/Edge address bar and confirm.
 
 ## 🆕 Changelog
 
-### v1.2.1 (current)
-- **🔐 Encryption v4 (Max-2026)** — PBKDF2-SHA-512 (600k iter) + HKDF → 5 keys + XOR-stream + block shuffle + HMAC-SHA-512 + canary bytes + zeroize
+### v1.5.0 (current)
+- **🛡️ DOMPurify integration** — all `innerHTML` assignments now sanitized; `sanitizeImportedHTML()` replaced with DOMPurify; served locally (no CDN, CSP-safe)
+- **🔑 KDF cache hardening** — cache key is now `SHA-256(password + salt)`, password never stored in plaintext as Map key
+- **🎲 CSPRNG everywhere** — note IDs, worker message IDs, timing jitter all use `crypto.getRandomValues()` instead of `Math.random()`
+- **🔒 CSP tightened** — `unsafe-eval` removed; `assets.twitch.tv` / `api.twitch.tv` removed from `script-src` / `connect-src`
+- **📊 GA Consent Mode v2** — `analytics_storage: 'denied'` by default before user consent; GA script loads after consent block
+- **🖼️ Clickjacking fix** — real frame-busting (`window.top.location`) with cross-origin fallback (`display:none`)
+- **🧹 SecurityManager cleanup** — removed decorative methods (`setupCSP`, `setupXSSProtection`, `setupSecureHeaders`, `monitorSecurityEvents`)
+- **🔐 Service Worker origin validation** — `message` handler validates source origin against allowlist
+- **💬 XSS-safe modals** — `showCustomAlert`, `showCustomPrompt`, `showClearAllConfirmationModal`, tag delete modal all use `textContent` instead of `innerHTML` for user-controlled strings
+- **� Version bump** — all asset cache-busting query strings updated to `?v=1.5.0`
+
+### v1.2.1
+- **�🔐 Encryption v4 (Max-2026)** — PBKDF2-SHA-512 (600k iter) + HKDF → 5 keys + XOR-stream + block shuffle + HMAC-SHA-512 + canary bytes + zeroize
 - **🔗 Domain binding** — `.note` files cryptographically tied to `localnotes-three.vercel.app`
 - **🔒 SecureStorage** — localStorage now encrypted with AES-256-GCM + HMAC (session key via HKDF)
-- **� Full i18n for all error modals** — import errors, origin error, integrity errors — all 12 languages
-- **�️ Anti-timing protection** — jitter delays, constant-time comparisons, zeroize buffers
-- **📝 Import UX** — translated error messages for encrypted files, file errors, partial success
+- **🌍 Full i18n for all error modals** — import errors, origin error, integrity errors — all 12 languages
+- **🛡️ Anti-timing protection** — jitter delays, constant-time comparisons, zeroize buffers
 
 ### v1.1.0
 - **LocalNotesEditor** — replaced TinyMCE: 97% smaller, 50× faster init
@@ -279,6 +317,9 @@ Add a language block in `js/translations.js`, create a `[lang]/` folder with HTM
 
 **Does it work offline?**
 Yes — Service Worker caches all resources after first load.
+
+**Is DOMPurify loaded from a CDN?**
+No — `js/purify.min.js` is served locally. This keeps the CSP `script-src 'self'` effective and avoids third-party dependencies.
 
 ---
 

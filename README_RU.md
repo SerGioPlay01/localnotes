@@ -2,8 +2,9 @@
 
 ![Local Notes Screenshot](https://github.com/SerGioPlay01/localnotes/blob/main/sccc.png?raw=true)
 
-[![Version](https://img.shields.io/badge/Version-1.2.0-brightgreen.svg)](https://github.com/SerGioPlay01/localnotes/releases)
+[![Version](https://img.shields.io/badge/Version-1.5.0-brightgreen.svg)](https://github.com/SerGioPlay01/localnotes/releases)
 [![Security](https://img.shields.io/badge/Security-AES--256--GCM%20%2B%20HMAC--SHA--512-blue.svg)](https://github.com/SerGioPlay01/localnotes)
+[![DOMPurify](https://img.shields.io/badge/XSS-DOMPurify-red.svg)](https://github.com/cure53/DOMPurify)
 [![PWA](https://img.shields.io/badge/PWA-Enabled-purple.svg)](https://github.com/SerGioPlay01/localnotes)
 [![Offline](https://img.shields.io/badge/Offline-Supported-orange.svg)](https://github.com/SerGioPlay01/localnotes)
 [![Languages](https://img.shields.io/badge/Languages-12-yellow.svg)](https://github.com/SerGioPlay01/localnotes)
@@ -40,12 +41,12 @@
 ### 🏆 Ключевые особенности
 
 - **🔒 Шифрование Max-2026** — AES-256-GCM + HMAC-SHA-512 + PBKDF2-SHA-512 (600k итераций) + привязка к домену
+- **🛡️ DOMPurify защита от XSS** — весь контент заметок санитизируется перед рендерингом
 - **🌍 12 языков** — полная локализация интерфейса, включая все модальные окна и сообщения об ошибках
 - **📱 PWA поддержка** — установка как нативное приложение на любом устройстве
 - **⚡ Собственный редактор** — LocalNotesEditor (~15KB) без внешних зависимостей
 - **🏷️ Теги и цветовые метки** — организация заметок по темам
 - **📅 Встроенный календарь** — просмотр заметок по датам (месяц / неделя / повестка)
-- **🛡️ CSP, HTTPS, защита от XSS** — усиленный слой безопасности
 - **🔄 Офлайн работа** — Service Worker для автономной работы
 
 ---
@@ -83,7 +84,36 @@ HKDF-SHA-512 → 5 независимых ключей:
 
 **Привязка к домену:** ключи криптографически привязаны к `localnotes-three.vercel.app` через параметр `info` HKDF — файлы невозможно расшифровать на другом домене.
 
+**KDF cache key:** `SHA-256(пароль + соль)` — пароль никогда не хранится в открытом виде как ключ Map.
+
 **Обратная совместимость** с форматами v2 и v3.
+
+---
+
+## 🛡️ Модель безопасности
+
+### Защита от XSS
+- **DOMPurify** (раздаётся локально, без CDN) санитизирует весь контент заметок перед присвоением `innerHTML`
+- Применяется при рендеринге, импорте и всех внутренних функциях парсинга HTML
+- `sanitizeImportedHTML()` использует DOMPurify — удаляет `<script>`, обработчики событий (`on*`), `javascript:` URL
+
+### Content Security Policy
+- `unsafe-eval` удалён — динамическое выполнение кода заблокировано
+- `assets.twitch.tv` / `api.twitch.tv` удалены из `script-src` / `connect-src`
+- Twitch-эмбеды работают только через `frame-src` (player.twitch.tv, clips.twitch.tv)
+- GA Consent Mode v2 — `analytics_storage: 'denied'` по умолчанию до получения согласия
+
+### Защита от Clickjacking
+- Реальный frame-busting: `window.top.location = window.self.location`
+- Fallback для cross-origin фреймов: `document.documentElement.style.display = 'none'`
+
+### Криптографические ID
+- ID заметок генерируются через `crypto.getRandomValues()` — не `Math.random()`
+- ID сообщений воркера используют CSPRNG
+- Timing jitter использует CSPRNG (защита от timing-атак)
+
+### Service Worker
+- Обработчик события `message` проверяет origin источника по белому списку
 
 ---
 
@@ -92,7 +122,7 @@ HKDF-SHA-512 → 5 независимых ключей:
 ### 📝 Редактор (LocalNotesEditor)
 - ~15KB, без зависимостей — заменил TinyMCE (был 500KB+)
 - Богатое форматирование: заголовки, списки, таблицы, ссылки, цитаты, блоки кода
-- Медиа: изображения (drag & drop), видео (YouTube, Vimeo, прямые ссылки)
+- Медиа: изображения (drag & drop), видео (YouTube, Vimeo, Twitch, Rutube, VK, TikTok)
 - Интерактивные чеклисты, пикер эмодзи, специальные символы
 - Найти и заменить, счётчик слов/символов
 - Цвет текста и выделения с синхронизацией позиции курсора
@@ -122,14 +152,6 @@ HKDF-SHA-512 → 5 независимых ключей:
 - Модал расшифровки с live-проверкой пароля — полностью переведён
 - Понятные сообщения об ошибках: неверный пароль vs. неверный домен
 
-### 🛡️ Безопасность
-- AES-256-GCM + HMAC-SHA-512 с PBKDF2-SHA-512 (600k итераций)
-- Ключи привязаны к домену — файлы расшифровываются только на официальном сайте
-- Блокировка после 5 неудачных попыток
-- Обнуление чувствительных буферов после использования
-- Constant-time сравнения (защита от timing-атак)
-- Все данные локально — ничего не отправляется на сервер
-
 ---
 
 ## 🌐 Система переводов
@@ -156,21 +178,22 @@ HKDF-SHA-512 → 5 независимых ключей:
 localnotes/
 ├── index.html                    # Главная страница (EN)
 ├── manifest.json                 # PWA манифест
-├── sw.js                         # Service Worker
+├── sw.js                         # Service Worker (с проверкой origin)
 ├── robots.txt / sitemap.xml
 │
 ├── css/
 │   ├── index.css                 # Основные стили
 │   ├── editor-modal.css          # Стили модальных окон редактора
 │   ├── tags-calendar.css         # Теги, календарь, модал расшифровки
-│   └── img.css / preloader.css / highlight.css / print.css / page.css
+│   └── img.css / highlight.css / print.css / page.css / apple.css
 │
 ├── js/
 │   ├── index.js                  # Логика приложения, шифрование v4, импорт/экспорт
+│   ├── purify.min.js             # DOMPurify — санитизация XSS (локально, без CDN)
 │   ├── translations.js           # 12 языков, 300+ ключей
 │   ├── translate.js              # Определение и переключение языка
 │   ├── tags-calendar.js          # Система тегов + календарь
-│   ├── security.js               # SecurityManager + SecureStorage (AES-GCM)
+│   ├── security.js               # SecurityManager (clickjacking) + SecureStorage
 │   ├── themes.js / utils.js / selectors.js
 │   ├── performance.js / editor-integration.js
 │   └── date-utils.js / img.js / preloader.js / magicurl.js / pwa.js
@@ -183,10 +206,11 @@ localnotes/
 │   └── bootstrap-icons/
 │
 ├── fonts/ favicon/ resources/
-├── cookies_banner_universal/     # GDPR-совместимый баннер cookies
+├── cookies_banner_universal/     # GDPR-совместимый баннер (Consent Mode v2)
 │
 └── [lang]/                       # ru, ua, pl, cs, sk, bg, hr, sr, bs, mk, sl
     ├── index.html
+    ├── manifest.json
     ├── privacy_policy.html
     ├── usage_policy.html
     └── cookie_policy.html
@@ -200,16 +224,19 @@ localnotes/
 | Редактор | LocalNotesEditor (собственный, без зависимостей) |
 | Хранение | IndexedDB |
 | Шифрование | Web Crypto API — AES-256-GCM + HMAC-SHA-512 + PBKDF2-SHA-512 |
+| Санитизация XSS | DOMPurify (локально) |
 | PWA | Service Worker + Web App Manifest |
+| Аналитика | Google Analytics с Consent Mode v2 |
 | Иконки | Bootstrap Icons |
 
 ### Поток данных
 
 1. **Инициализация** → определение языка → тема → инициализация редактора
 2. **Создание заметки** → LocalNotesEditor → IndexedDB
-3. **Экспорт** → 5-уровневый пайплайн шифрования → скачивание `.note` файла
-4. **Импорт** → модал расшифровки (live-проверка пароля) → валидация → IndexedDB
-5. **Смена языка** → `updateButtonTexts()` → обновление всех элементов UI
+3. **Рендеринг заметки** → `DOMPurify.sanitize(content)` → `innerHTML`
+4. **Экспорт** → 5-уровневый пайплайн шифрования → скачивание `.note` файла
+5. **Импорт** → `DOMPurify.sanitize()` → модал расшифровки → валидация → IndexedDB
+6. **Смена языка** → `updateButtonTexts()` → обновление всех элементов UI
 
 ---
 
@@ -238,13 +265,24 @@ python -m http.server 8000
 
 ## 📋 История изменений
 
-### v1.2.1 (текущая)
+### v1.5.0 (текущая)
+- **🛡️ Интеграция DOMPurify** — все присвоения `innerHTML` теперь санитизированы; `sanitizeImportedHTML()` заменена на DOMPurify; раздаётся локально (без CDN, совместимо с CSP)
+- **🔑 Защита KDF-кэша** — ключ кэша теперь `SHA-256(пароль + соль)`, пароль никогда не хранится в открытом виде как ключ Map
+- **🎲 CSPRNG везде** — ID заметок, ID сообщений воркера, timing jitter — всё через `crypto.getRandomValues()` вместо `Math.random()`
+- **🔒 Ужесточение CSP** — удалён `unsafe-eval`; удалены `assets.twitch.tv` / `api.twitch.tv` из `script-src` / `connect-src`
+- **📊 GA Consent Mode v2** — `analytics_storage: 'denied'` по умолчанию до согласия пользователя; GA-скрипт загружается после блока consent
+- **🖼️ Исправление Clickjacking** — реальный frame-busting (`window.top.location`) с fallback для cross-origin (`display:none`)
+- **🧹 Очистка SecurityManager** — удалены декоративные методы (`setupCSP`, `setupXSSProtection`, `setupSecureHeaders`, `monitorSecurityEvents`)
+- **🔐 Валидация origin в Service Worker** — обработчик `message` проверяет origin источника по белому списку
+- **💬 XSS-безопасные модалы** — `showCustomAlert`, `showCustomPrompt`, `showClearAllConfirmationModal`, модал удаления тега используют `textContent` вместо `innerHTML` для пользовательских строк
+- **📦 Обновление версии** — все строки cache-busting обновлены до `?v=1.5.0`
+
+### v1.2.1
 - **🔐 Шифрование v4 (Max-2026)** — PBKDF2-SHA-512 (600k итер.) + HKDF → 5 ключей + XOR-поток + перестановка блоков + HMAC-SHA-512 + canary bytes + zeroize
 - **🔗 Привязка к домену** — `.note` файлы криптографически привязаны к `localnotes-three.vercel.app`
 - **🔒 SecureStorage** — localStorage теперь шифруется AES-256-GCM + HMAC (сессионный ключ через HKDF)
 - **🌍 Полная локализация ошибок** — ошибки импорта, ошибка домена, ошибки целостности — все 12 языков
 - **🛡️ Защита от timing-атак** — jitter-задержки, constant-time сравнения, zeroize буферов
-- **📝 UX импорта** — переведённые сообщения об ошибках для зашифрованных файлов, частичного успеха
 
 ### v1.1.0
 - **LocalNotesEditor** — замена TinyMCE: на 97% меньше, в 50 раз быстрее инициализация
@@ -279,6 +317,9 @@ AES-256-GCM с PBKDF2-SHA-512 (600 000 итераций) + HMAC-SHA-512 + при
 
 **Работает ли офлайн?**
 Да — Service Worker кэширует все ресурсы после первой загрузки.
+
+**DOMPurify загружается с CDN?**
+Нет — `js/purify.min.js` раздаётся локально. Это сохраняет эффективность CSP `script-src 'self'` и исключает сторонние зависимости.
 
 ---
 

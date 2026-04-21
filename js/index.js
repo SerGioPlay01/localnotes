@@ -774,7 +774,10 @@ function isEncryptedFile(content) {
 function validateAndFixImages(content) {
     if (!content) return content;
     try {
-        const safe = DOMPurify.sanitize(content);
+        const safe = DOMPurify.sanitize(content, {
+            ADD_TAGS: ['iframe', 'video', 'source'],
+            ADD_ATTR: ['allowfullscreen', 'frameborder', 'scrolling', 'allow', 'src', 'width', 'height', 'controls', 'autoplay', 'muted', 'loop']
+        });
         const d = document.createElement('div'); d.innerHTML = safe;
         d.querySelectorAll('img').forEach(img => {
             if (!img.src) { img.remove(); return; }
@@ -790,7 +793,10 @@ function validateAndFixImages(content) {
 
 function fixChecklistStructure(content) {
     if (!content) return content;
-    const safe = DOMPurify.sanitize(content);
+    const safe = DOMPurify.sanitize(content, {
+        ADD_TAGS: ['iframe', 'video', 'source'],
+        ADD_ATTR: ['allowfullscreen', 'frameborder', 'scrolling', 'allow', 'src', 'width', 'height', 'controls', 'autoplay', 'muted', 'loop']
+    });
     const d = document.createElement('div'); d.innerHTML = safe;
     d.querySelectorAll('.checklist-item-wrapper').forEach(wrapper => {
         let cb = wrapper.querySelector('.checklist-checkbox-ios');
@@ -832,7 +838,10 @@ function blobToBase64(blob) {
 
 async function processMediaContent(content) {
     if (!content) return content;
-    const safe = DOMPurify.sanitize(content);
+    const safe = DOMPurify.sanitize(content, {
+        ADD_TAGS: ['iframe', 'video', 'source'],
+        ADD_ATTR: ['allowfullscreen', 'frameborder', 'scrolling', 'allow', 'src', 'width', 'height', 'controls', 'autoplay', 'muted', 'loop']
+    });
     const d = document.createElement('div'); d.innerHTML = safe;
     const imgs = d.querySelectorAll('img[src^="blob:"]');
     for (const img of imgs) {
@@ -1709,7 +1718,9 @@ async function loadNotes() {
             const notePreview = document.createElement('div');
             notePreview.classList.add('noteContent');
             notePreview.innerHTML = DOMPurify.sanitize(note.content, {
-                ADD_ATTR: ['data-checked', 'data-cl-color', 'data-cl-priority', 'data-cl-tag', 'value', 'checked', 'type', 'placeholder', 'autocomplete', 'spellcheck']
+                ADD_TAGS: ['iframe', 'video', 'source'],
+                ADD_ATTR: ['data-checked', 'data-cl-color', 'data-cl-priority', 'data-cl-tag', 'value', 'checked', 'type', 'placeholder', 'autocomplete', 'spellcheck',
+                           'allowfullscreen', 'frameborder', 'scrolling', 'allow', 'src', 'width', 'height', 'controls', 'autoplay', 'muted', 'loop']
             });
 
             // Restore input values from HTML attributes (DOMPurify preserves them but browser doesn't auto-sync)

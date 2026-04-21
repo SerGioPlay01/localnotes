@@ -92,7 +92,11 @@ if ('serviceWorker' in navigator) {
         });
 
         // Если SW активировался пока страница была открыта — перезагружаем
+        // Флаг предотвращает повторный reload если controllerchange сработает несколько раз
+        var _reloading = false;
         navigator.serviceWorker.addEventListener('controllerchange', function() {
+            if (_reloading) return;
+            _reloading = true;
             window.location.reload();
         });
     });

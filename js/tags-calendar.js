@@ -262,21 +262,79 @@ function showTagEditModal(tag, onCreated) {
     const onVpResize = function() {
         var vv = window.visualViewport;
         if (!vv || !lneModal) return;
-        var keyboardHeight = window.innerHeight - vv.height - vv.offsetTop;
-        if (keyboardHeight > 50) {
-            lneModal.style.marginBottom = keyboardHeight + 'px';
-            lneModal.style.maxHeight = (vv.height * 0.92) + 'px';
-        } else {
-            lneModal.style.marginBottom = '';
-            lneModal.style.maxHeight = '';
-        }
+        // On mobile bottom-sheet: shrink maxHeight to visible area, don't shift with marginBottom
+        var visibleH = vv.height;
+        lneModal.style.maxHeight = (visibleH * 0.92) + 'px';
+        // Reset any stale marginBottom
+        lneModal.style.marginBottom = '';
     };
     if (window.visualViewport) window.visualViewport.addEventListener('resize', onVpResize);
     modal.querySelector('.lne-mclose').addEventListener('click', close);
     modal.querySelector('.lne-mcancel').addEventListener('click', close);
+    modal.addEventListener('click', e => { if (e.target === modal) close(); });
+    document.addEventListener('keydown', function esc(e) {
+        if (e.key === 'Escape') { document.removeEventListener('keydown', esc); close(); }
+    });
+
+    // Swipe-down to close on touch devices
+    const isTouchDev = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    if (isTouchDev) {
+        let startY = 0, curY = 0, dragging = false;
+        const header = lneModal.querySelector('.lne-mhd');
+
+        const onStart = (e) => {
+            startY = e.touches[0].clientY;
+            curY = startY;
+            dragging = true;
+            lneModal.style.transition = 'none';
+        };
+        const onMove = (e) => {
+            if (!dragging) return;
+            curY = e.touches[0].clientY;
+            const delta = curY - startY;
+            if (delta > 0) {
+                lneModal.style.transform = 'translateY(' + delta + 'px)';
+                lneModal.style.opacity = String(Math.max(0, 1 - delta / 300));
+                e.preventDefault();
+            }
+        };
+        const onEnd = () => {
+            if (!dragging) return;
+            dragging = false;
+            const delta = curY - startY;
+            lneModal.style.transition = '';
+            if (delta > 80) {
+                lneModal.style.transform = 'translateY(100%)';
+                lneModal.style.opacity = '0';
+                setTimeout(close, 200);
+            } else {
+                lneModal.style.transform = '';
+                lneModal.style.opacity = '';
+            }
+        };
+
+        // Drag from header
+        if (header) {
+            header.addEventListener('touchstart', onStart, { passive: true });
+            header.addEventListener('touchmove', onMove, { passive: false });
+            header.addEventListener('touchend', onEnd, { passive: true });
+        }
+        // Drag from top 44px of modal (covers ::before handle)
+        lneModal.addEventListener('touchstart', (e) => {
+            const rect = lneModal.getBoundingClientRect();
+            if (e.touches[0].clientY - rect.top < 44) onStart(e);
+        }, { passive: true });
+        lneModal.addEventListener('touchmove', onMove, { passive: false });
+        lneModal.addEventListener('touchend', onEnd, { passive: true });
+    }
     modal.querySelector('.lne-mok').addEventListener('click', async () => {
         const tagName = modal.querySelector('#tag-name-inp').value.trim();
-        if (!tagName) return;
+        if (!tagName) {
+            const inp = modal.querySelector('#tag-name-inp');
+            inp.style.borderColor = '#dc3545';
+            inp.focus();
+            return;
+        }
         if (isNew) {
             await createTag(tagName, selectedColor);
         } else {
@@ -293,7 +351,10 @@ function showTagEditModal(tag, onCreated) {
             await loadNotes();
         }
     });
-    setTimeout(() => modal.querySelector('#tag-name-inp').focus(), 50);
+    // Focus input only on non-touch devices to avoid keyboard jump on mobile
+    if (!isTouchDev) {
+        setTimeout(() => modal.querySelector('#tag-name-inp').focus(), 60);
+    }
 }
 
 // ─────────────────────────────────────────────────────────────

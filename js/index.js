@@ -874,10 +874,75 @@ function fixCodeBlockStyles(container) {
 // Add copy buttons to code blocks in note cards
 function initCodeBlockCopyButtons(container) {
     if (!container) return;
+
+    const makeLabel = (icon, key, fallback) =>
+        `<i class="bi bi-${icon}"></i> ` + (typeof t === 'function' ? t(key) || fallback : fallback);
+
+    const attachCopyBtn = (pre, header) => {
+        // Don't add twice
+        if (header.querySelector('.lne-copy-btn')) return;
+
+        const codeEl = pre.querySelector('code');
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'lne-copy-btn';
+        copyBtn.setAttribute('data-copy-state', 'idle');
+        copyBtn.innerHTML = makeLabel('clipboard', 'copy', 'Copy');
+
+        copyBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            e.preventDefault();
+            if (copyBtn.getAttribute('data-copy-state') === 'copied') return;
+
+            const text = ((codeEl || pre).textContent || '').replace(/\n$/, '');
+            const labelCopy = makeLabel('clipboard', 'copy', 'Copy');
+            const labelDone = makeLabel('check-lg', 'copied', 'Copied!');
+
+            const showCopied = () => {
+                copyBtn.setAttribute('data-copy-state', 'copied');
+                copyBtn.innerHTML = labelDone;
+                copyBtn.classList.add('copied');
+                clearTimeout(copyBtn._t);
+                copyBtn._t = setTimeout(() => {
+                    copyBtn.innerHTML = labelCopy;
+                    copyBtn.classList.remove('copied');
+                    copyBtn.setAttribute('data-copy-state', 'idle');
+                }, 2000);
+            };
+
+            const fallback = () => {
+                try {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none;';
+                    document.body.appendChild(ta);
+                    ta.focus(); ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                } catch (ex) { /* silent */ }
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(showCopied).catch(() => { fallback(); showCopied(); });
+            } else {
+                fallback();
+                showCopied();
+            }
+        });
+
+        header.appendChild(copyBtn);
+    };
+
+    // Case 1: already-wrapped blocks (from editor) — just add button to existing header
+    container.querySelectorAll('.lne-code-wrapper').forEach(wrapper => {
+        if (wrapper.closest('.lne-editor') || wrapper.closest('.lne-modal-ov')) return;
+        const pre = wrapper.querySelector('pre, .lne-code');
+        const header = wrapper.querySelector('.lne-code-header');
+        if (pre && header) attachCopyBtn(pre, header);
+    });
+
+    // Case 2: bare pre/.lne-code not yet wrapped — wrap them
     container.querySelectorAll('pre, .lne-code').forEach(pre => {
-        // Skip if already wrapped
-        if (pre.parentElement && pre.parentElement.classList.contains('lne-code-wrapper')) return;
-        // Skip inside editor itself
+        if (pre.closest('.lne-code-wrapper')) return; // already handled above
         if (pre.closest('.lne-editor') || pre.closest('.lne-modal-ov')) return;
 
         const wrapper = document.createElement('div');
@@ -887,58 +952,16 @@ function initCodeBlockCopyButtons(container) {
         header.className = 'lne-code-header';
 
         const langSpan = document.createElement('span');
-        // Try to detect language from hljs class
         const codeEl = pre.querySelector('code');
         const langClass = codeEl && [...codeEl.classList].find(c => c.startsWith('language-'));
         langSpan.textContent = langClass ? langClass.replace('language-', '') : 'code';
-
-        const copyBtn = document.createElement('button');
-        copyBtn.className = 'lne-copy-btn';
-        copyBtn.innerHTML = '<i class="bi bi-clipboard"></i> ' + (typeof t === 'function' ? t('copy') || 'Copy' : 'Copy');
-        copyBtn.addEventListener('click', e => {
-            e.stopPropagation();
-            e.preventDefault();
-            // Get only code text, not the header
-            const codeEl = pre.querySelector('code');
-            const text = (codeEl ? codeEl.innerText : pre.innerText) || pre.textContent || '';
-            const copyLabel = '<i class="bi bi-clipboard"></i> ' + (typeof t === 'function' ? t('copy') || 'Copy' : 'Copy');
-            const copiedLabel = '<i class="bi bi-check-lg"></i> ' + (typeof t === 'function' ? t('copied') || 'Copied!' : 'Copied!');
-            const doFeedback = () => {
-                copyBtn.innerHTML = copiedLabel;
-                copyBtn.classList.add('copied');
-                setTimeout(() => {
-                    copyBtn.innerHTML = copyLabel;
-                    copyBtn.classList.remove('copied');
-                }, 2000);
-            };
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(doFeedback).catch(() => {
-                    // Fallback
-                    try {
-                        const ta = document.createElement('textarea');
-                        ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-                        document.body.appendChild(ta); ta.select();
-                        document.execCommand('copy'); document.body.removeChild(ta);
-                    } catch(ex) {}
-                    doFeedback();
-                });
-            } else {
-                try {
-                    const ta = document.createElement('textarea');
-                    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
-                    document.body.appendChild(ta); ta.select();
-                    document.execCommand('copy'); document.body.removeChild(ta);
-                } catch(ex) {}
-                doFeedback();
-            }
-        });
-
         header.appendChild(langSpan);
-        header.appendChild(copyBtn);
 
         pre.parentNode.insertBefore(wrapper, pre);
         wrapper.appendChild(header);
         wrapper.appendChild(pre);
+
+        attachCopyBtn(pre, header);
     });
 }
 
@@ -1297,6 +1320,7 @@ function openNoteSettings(noteId) {
     const render = (allTags) => {
         ov.innerHTML = `
             <div class="nsm-panel">
+                <div class="nsm-drag-handle"></div>
                 <div class="nsm-header">
                     <h3><i class="bi bi-sliders2"></i> ${window.t ? window.t('noteSettings') : 'Note Settings'}</h3>
                     <button class="nsm-close" id="nsm-close"><i class="bi bi-x-lg"></i></button>
@@ -1308,7 +1332,7 @@ function openNoteSettings(noteId) {
                     </section>
                     <section class="nsm-section">
                         <div class="nsm-section-title"><i class="bi bi-calendar-event"></i> ${window.t ? window.t('dueDate') : 'Due date'}</div>
-                        <input type="datetime-local" id="nsm-due" class="nsm-input" value="${dateVal}">
+                        <input type="datetime-local" id="nsm-due" class="nsm-input" value="${dateVal}" readonly onfocus="this.removeAttribute('readonly')">
                         ${meta.dueDate ? `<button class="nsm-clear-date" id="nsm-clear-date"><i class="bi bi-x"></i> ${window.t ? window.t('clear') : 'Clear'}</button>` : ''}
                     </section>
                     <section class="nsm-section">
@@ -1330,10 +1354,75 @@ function openNoteSettings(noteId) {
             </div>`;
 
         // Wire close/cancel
-        const closeOv = () => { if (ov.parentNode) document.body.removeChild(ov); };
+        const closeOv = () => {
+            const panel = ov.querySelector('.nsm-panel');
+            if (panel) {
+                panel.style.transition = 'transform 0.25s ease, opacity 0.2s ease';
+                panel.style.transform = 'translateY(100%)';
+                panel.style.opacity = '0';
+                setTimeout(() => { if (ov.parentNode) document.body.removeChild(ov); }, 220);
+            } else {
+                if (ov.parentNode) document.body.removeChild(ov);
+            }
+        };
         ov.querySelector('#nsm-close').addEventListener('click', closeOv);
         ov.querySelector('#nsm-cancel').addEventListener('click', closeOv);
         ov.addEventListener('click', e => { if (e.target === ov) closeOv(); });
+
+        // Swipe-down to close on touch devices
+        const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+        if (isTouch) {
+            const panel = ov.querySelector('.nsm-panel');
+            if (panel) {
+                let startY = 0, currentY = 0, dragging = false;
+                const header = panel.querySelector('.nsm-header');
+                const dragHandle = panel.querySelector('.nsm-drag-handle');
+
+                const onStart = (e) => {
+                    startY = e.touches[0].clientY;
+                    currentY = startY;
+                    dragging = true;
+                    panel.style.transition = 'none';
+                };
+                const onMove = (e) => {
+                    if (!dragging) return;
+                    currentY = e.touches[0].clientY;
+                    const delta = currentY - startY;
+                    if (delta > 0) {
+                        panel.style.transform = `translateY(${delta}px)`;
+                        panel.style.opacity = String(Math.max(0, 1 - delta / 350));
+                        e.preventDefault();
+                    }
+                };
+                const onEnd = () => {
+                    if (!dragging) return;
+                    dragging = false;
+                    const delta = currentY - startY;
+                    panel.style.transition = '';
+                    if (delta > 90) {
+                        closeOv();
+                    } else {
+                        panel.style.transform = '';
+                        panel.style.opacity = '';
+                    }
+                };
+
+                // Attach to header and drag handle
+                [header, dragHandle].forEach(el => {
+                    if (!el) return;
+                    el.addEventListener('touchstart', onStart, { passive: true });
+                    el.addEventListener('touchmove', onMove, { passive: false });
+                    el.addEventListener('touchend', onEnd, { passive: true });
+                });
+                // Also allow drag from top 44px of panel
+                panel.addEventListener('touchstart', (e) => {
+                    const rect = panel.getBoundingClientRect();
+                    if (e.touches[0].clientY - rect.top < 44) onStart(e);
+                }, { passive: true });
+                panel.addEventListener('touchmove', onMove, { passive: false });
+                panel.addEventListener('touchend', onEnd, { passive: true });
+            }
+        }
 
         // Remove tag
         ov.querySelectorAll('.nsm-tag-remove').forEach(btn => {

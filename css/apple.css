@@ -1,178 +1,72 @@
-﻿html {
+﻿/* =============================================================================
+   MOBILE ENHANCED — Cross-browser, cross-platform mobile styles
+   Covers: iOS Safari, Android Chrome, Samsung Internet, Firefox Android,
+           Yandex Browser, Opera Mini/Mobile, UC Browser, Huawei Browser
+   ============================================================================= */
+
+/* ── 1. BASE RENDERING ─────────────────────────────────────────────────────── */
+html {
+    /* iOS Safari momentum scrolling */
     -webkit-overflow-scrolling: touch;
+    /* Prevent font inflation on orientation change — all browsers */
     -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
 }
+
 body {
+    /* Subpixel antialiasing — macOS/iOS Safari, Chrome */
     -webkit-font-smoothing: antialiased;
+    /* Firefox on macOS */
     -moz-osx-font-smoothing: grayscale;
+    /* Legacy */
     font-smooth: always;
+    /* Remove tap flash — iOS Safari, Android Chrome, Yandex Browser */
     -webkit-tap-highlight-color: transparent;
+    /* Disable callout on long-press — iOS Safari only */
     -webkit-touch-callout: none;
 }
-::selection {
-    background: rgba(174, 252, 110, 0.35);
-    color: inherit;
-}
-::-moz-selection {
-    background: rgba(174, 252, 110, 0.35);
-    color: inherit;
-}
+
+/* ── 2. SELECTION ──────────────────────────────────────────────────────────── */
+::selection        { background: rgba(174,252,110,.35); color: inherit; }
+::-moz-selection   { background: rgba(174,252,110,.35); color: inherit; }
+
+/* ── 3. SAFE-AREA INSETS (notch / Dynamic Island / Android cutout) ─────────── */
+/* Applied globally so every browser that supports env() picks them up.
+   Yandex Browser (Chromium-based) and Samsung Internet support env() since 2019. */
 .info-app {
-    padding-top: env(safe-area-inset-top);
-    padding-left: max(14px, env(safe-area-inset-left));
-    padding-right: max(14px, env(safe-area-inset-right));
+    padding-top:   env(safe-area-inset-top,   0px);
+    padding-left:  max(14px, env(safe-area-inset-left,  0px));
+    padding-right: max(14px, env(safe-area-inset-right, 0px));
 }
 .center_nav {
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
+    padding-left:  env(safe-area-inset-left,  0px);
+    padding-right: env(safe-area-inset-right, 0px);
 }
 .btn_view_div {
-    padding-bottom: max(12px, calc(env(safe-area-inset-bottom) + 8px));
-    padding-left: max(14px, env(safe-area-inset-left));
-    padding-right: max(14px, env(safe-area-inset-right));
+    padding-bottom: max(12px, calc(env(safe-area-inset-bottom, 0px) + 8px));
+    padding-left:   max(14px, env(safe-area-inset-left,  0px));
+    padding-right:  max(14px, env(safe-area-inset-right, 0px));
 }
 footer {
-    padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 12px));
-    padding-left: max(20px, env(safe-area-inset-left));
-    padding-right: max(20px, env(safe-area-inset-right));
+    padding-bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 16px));
+    padding-left:   max(0px, env(safe-area-inset-left,  0px));
+    padding-right:  max(0px, env(safe-area-inset-right, 0px));
 }
 #notesContainer {
-    padding-left: max(0px, env(safe-area-inset-left));
-    padding-right: max(0px, env(safe-area-inset-right));
+    padding-left:  max(0px, env(safe-area-inset-left,  0px));
+    padding-right: max(0px, env(safe-area-inset-right, 0px));
 }
-@media (max-width: 768px) {
-    .modal {
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
-    }
-    .modal-content {
-        overscroll-behavior: none;
-        -webkit-overflow-scrolling: auto;
-    }
-    .modal-content .lne-body {
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior-y: contain;
-    }
-    .modal-content .lne-toolbar {
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior-x: contain;
-    }
-}
-@media (hover: none) and (pointer: coarse) {
-    .block_btn button {
-        min-height: 44px !important;
-        touch-action: manipulation;
-    }
-    #searchInput {
-        min-height: 44px !important;
-        touch-action: manipulation;
-    }
-    .editBtn, .deleteBtn, .exportBtn {
-        min-height: 44px !important;
-        touch-action: manipulation;
-    }
-    .modal-buttons-container button {
-        min-height: 44px !important;
-        touch-action: manipulation;
-    }
-    #toggleViewButton {
-        min-height: 44px !important;
-        touch-action: manipulation;
-    }
-    .lne-btn {
-        min-width: 40px !important;
-        min-height: 40px !important;
-        touch-action: manipulation;
-    }
-    .checklist-checkbox-ios {
-        width: 24px !important;
-        height: 24px !important;
-        min-width: 24px !important;
-        min-height: 24px !important;
-        touch-action: manipulation;
-    }
-    .checklist-add-desc {
-        min-width: 36px !important;
-        min-height: 36px !important;
-        touch-action: manipulation;
-    }
-    .theme-toggle {
-        min-width: 44px !important;
-        min-height: 44px !important;
-        touch-action: manipulation;
-    }
-    button, a, input, select, label, [role="button"] {
-        -webkit-tap-highlight-color: transparent;
-        touch-action: manipulation;
-    }
-}
-@media (hover: none) and (pointer: coarse) {
-    .block_btn button:active {
-        transform: scale(0.96) !important;
-        opacity: 0.82 !important;
-        transition: transform 0.08s ease, opacity 0.08s ease !important;
-    }
-    .editBtn:active, .deleteBtn:active, .exportBtn:active {
-        transform: scale(0.94) !important;
-        opacity: 0.78 !important;
-        transition: transform 0.08s ease !important;
-    }
-    .modal-buttons-container button:active {
-        transform: scale(0.97) !important;
-        opacity: 0.85 !important;
-        transition: transform 0.08s ease !important;
-    }
-    .lne-btn:active {
-        transform: scale(0.9) !important;
-        transition: transform 0.06s ease !important;
-    }
-    .note:active {
-        transform: scale(0.99) !important;
-        transition: transform 0.1s ease !important;
-    }
-    #toggleViewButton:active {
-        transform: scale(0.97) !important;
-        opacity: 0.88 !important;
-        transition: transform 0.08s ease !important;
-    }
-    .welcome-dismiss-btn:active {
-        transform: scale(0.97) !important;
-        transition: transform 0.08s ease !important;
-    }
-}
-@supports (-webkit-touch-callout: none) {
-    input[type="text"],
-    input[type="search"],
-    input[type="email"],
-    input[type="password"],
-    input[type="number"],
-    input[type="url"],
-    textarea,
-    select {
-        font-size: 16px !important;
-    }
-    .lne-sel {
-        font-size: 16px !important;
-    }
-    .lne-inp {
-        font-size: 16px !important;
-    }
-    #searchInput {
-        font-size: 16px !important;
-    }
-}
-html, body {
-    overscroll-behavior-y: auto;
-}
+
+/* ── 4. OVERSCROLL / RUBBER-BAND ───────────────────────────────────────────── */
+html, body { overscroll-behavior-y: auto; }
+
 #notesContainer {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
 }
+/* block_btn scroll behaviour — overflow-x set per breakpoint in index.css */
 .block_btn {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
@@ -180,21 +74,96 @@ html, body {
     scroll-snap-type: x mandatory;
     -webkit-scroll-snap-type: x mandatory;
 }
-.block_btn button {
-    scroll-snap-align: start;
-}
+.block_btn button { scroll-snap-align: start; }
 #notesContainer.default-view .noteContent {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
 }
-.lne-body {
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
+.lne-body  { -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; }
+.lne-mbody { -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; }
+.nsm-body  { -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; }
+
+/* ── 5. TOUCH TARGETS (WCAG 2.5.5 — min 44×44px) ──────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+    #searchInput,
+    .editBtn, .deleteBtn, .exportBtn,
+    .modal-buttons-container button,
+    #toggleViewButton,
+    .theme-toggle,
+    .nsm-btn,
+    .nsm-close,
+    .nsm-pin-btn,
+    .nsm-color-sw,
+    .cnp-btn,
+    .cnp-close {
+        min-height: 44px !important;
+        touch-action: manipulation;
+    }
+    /* .block_btn button handled in index.css with exact height */
+    .lne-btn {
+        min-width:  40px !important;
+        min-height: 40px !important;
+        touch-action: manipulation;
+    }
+    .checklist-checkbox-ios {
+        width:      24px !important;
+        height:     24px !important;
+        min-width:  24px !important;
+        min-height: 24px !important;
+        touch-action: manipulation;
+    }
+    .checklist-add-desc {
+        min-width:  36px !important;
+        min-height: 36px !important;
+        touch-action: manipulation;
+    }
+    /* Global tap targets */
+    button, a, input, select, label, [role="button"], [role="tab"], [role="menuitem"] {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+    }
 }
-.lne-mbody {
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
+
+/* ── 6. ACTIVE STATES (touch feedback) ────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+    .block_btn button:active            { transform: scale(0.96) !important; opacity: 0.82 !important; transition: transform 0.08s ease, opacity 0.08s ease !important; }
+    .editBtn:active, .deleteBtn:active,
+    .exportBtn:active                   { transform: scale(0.94) !important; opacity: 0.78 !important; transition: transform 0.08s ease !important; }
+    .modal-buttons-container button:active { transform: scale(0.97) !important; opacity: 0.85 !important; transition: transform 0.08s ease !important; }
+    .lne-btn:active                     { transform: scale(0.90) !important; transition: transform 0.06s ease !important; }
+    .note:active                        { transform: scale(0.99) !important; transition: transform 0.10s ease !important; }
+    #toggleViewButton:active            { transform: scale(0.97) !important; opacity: 0.88 !important; transition: transform 0.08s ease !important; }
+    .welcome-dismiss-btn:active         { transform: scale(0.97) !important; transition: transform 0.08s ease !important; }
+    .nsm-btn:active                     { transform: scale(0.96) !important; opacity: 0.85 !important; transition: transform 0.08s ease !important; }
+    .cnp-btn:active                     { transform: scale(0.96) !important; opacity: 0.82 !important; transition: transform 0.08s ease, opacity 0.08s ease !important; }
+    .cnp-close:active                   { transform: scale(0.94) !important; opacity: 0.78 !important; transition: transform 0.08s ease !important; }
 }
+
+/* ── 7. INPUT ZOOM PREVENTION ──────────────────────────────────────────────── */
+/* iOS Safari zooms in when input font-size < 16px.
+   Yandex Browser (iOS) has the same behaviour.
+   @supports (-webkit-touch-callout: none) targets iOS Safari + Yandex iOS. */
+@supports (-webkit-touch-callout: none) {
+    input[type="text"],
+    input[type="search"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="url"],
+    input[type="tel"],
+    input[type="datetime-local"],
+    input[type="date"],
+    input[type="time"],
+    textarea,
+    select,
+    .lne-sel,
+    .lne-inp,
+    #searchInput {
+        font-size: 16px !important;
+    }
+}
+
+/* ── 8. iOS CHECKLIST SPECIFICS ────────────────────────────────────────────── */
 @supports (-webkit-touch-callout: none) {
     .checklist-item-wrapper {
         -webkit-touch-callout: none;
@@ -214,26 +183,51 @@ html, body {
         border-radius: 6px;
         padding: 2px;
         box-sizing: content-box;
+        transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
     }
+    .checklist-checkbox-ios:active { transform: scale(0.88); }
     .checklist-checkbox-ios:checked::after {
         font-size: 13px;
         font-weight: 900;
         line-height: 1;
-        top: 50%;
-        left: 50%;
+        top: 50%; left: 50%;
         transform: translate(-50%, -50%) translateZ(0);
     }
-    .checklist-checkbox-ios {
-        transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
-    }
-    .checklist-checkbox-ios:active {
-        transform: scale(0.88);
-    }
     .checklist-done {
-        -webkit-text-decoration: line-through rgba(174, 252, 110, 0.65) !important;
-        text-decoration: line-through rgba(174, 252, 110, 0.65) !important;
+        -webkit-text-decoration: line-through rgba(174,252,110,.65) !important;
+        text-decoration: line-through rgba(174,252,110,.65) !important;
     }
 }
+
+/* ── 9. MODAL — MOBILE FULL-SCREEN ────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .modal {
+        top: 0; left: 0; right: 0; bottom: 0;
+        width: 100%; height: 100%;
+    }
+    .modal-content {
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: auto;
+    }
+    .modal-content .lne-body {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+        /* Samsung Internet / old Android fallback */
+        max-height: calc(100vh - 200px);
+        max-height: calc(100dvh - 200px);
+    }
+    .modal-content .lne-toolbar {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
+    }
+    .modal-buttons-container {
+        position: relative;
+        z-index: 2;
+        flex-shrink: 0;
+    }
+}
+
+/* ── 10. EDITOR TOOLBAR — MOBILE ───────────────────────────────────────────── */
 @media (max-width: 768px) {
     .lne-toolbar {
         -webkit-overflow-scrolling: touch;
@@ -244,9 +238,7 @@ html, body {
         top: auto;
         z-index: 10;
     }
-    .lne-toolbar::-webkit-scrollbar {
-        display: none;
-    }
+    .lne-toolbar::-webkit-scrollbar { display: none; }
     .lne-toolbar-row {
         flex-wrap: nowrap !important;
         will-change: transform;
@@ -254,7 +246,7 @@ html, body {
         transform: translateZ(0);
     }
     .lne-btn {
-        width: 38px !important;
+        width:  38px !important;
         height: 38px !important;
         border-radius: 8px !important;
     }
@@ -263,35 +255,24 @@ html, body {
         border-radius: 8px !important;
     }
 }
-@media (max-width: 768px) {
-    .modal-content .lne-body {
-        max-height: calc(100dvh - 200px);
-        -webkit-overflow-scrolling: touch;
-    }
-    .modal-buttons-container {
-        position: relative;
-        z-index: 2;
-        flex-shrink: 0;
-    }
-}
+
+/* ── 11. HOVER STATES — DESKTOP ONLY ──────────────────────────────────────── */
 @media (hover: hover) and (pointer: fine) {
-    button, a, [role="button"], .note, .lne-btn, .editBtn, .deleteBtn, .exportBtn {
-        cursor: pointer;
-    }
+    button, a, [role="button"], .note,
+    .lne-btn, .editBtn, .deleteBtn, .exportBtn { cursor: pointer; }
+
     #notesContainer.default-view .note:hover {
         transform: translateY(-4px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-                    box-shadow 0.25s ease;
+        box-shadow: 0 12px 40px rgba(0,0,0,.3);
+        transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;
     }
     #notesContainer.full-width-view .note:hover {
         transform: translateX(6px);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
-                    box-shadow 0.2s ease;
+        box-shadow: 0 4px 20px rgba(0,0,0,.2);
+        transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
     }
     .block_btn button:hover {
-        box-shadow: 0 2px 12px rgba(174, 252, 110, 0.15);
+        box-shadow: 0 2px 12px rgba(174,252,110,.15);
         transition: background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
     }
     .lne-btn:hover {
@@ -300,182 +281,151 @@ html, body {
     .checklist-item-wrapper:hover {
         transition: background 0.15s ease, border-color 0.15s ease;
     }
-    ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    }
+    /* Custom scrollbar — desktop only */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb {
-        background: rgba(174, 252, 110, 0.25);
+        background: rgba(174,252,110,.25);
         border-radius: 10px;
-        border: none;
     }
-    ::-webkit-scrollbar-thumb:hover {
-        background: rgba(174, 252, 110, 0.5);
-    }
-    ::-webkit-scrollbar-thumb:window-inactive {
-        background: rgba(174, 252, 110, 0.1);
-    }
-    [data-theme="light"] ::-webkit-scrollbar-thumb {
-        background: rgba(40, 167, 69, 0.25);
-    }
-    [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
-        background: rgba(40, 167, 69, 0.5);
-    }
+    ::-webkit-scrollbar-thumb:hover  { background: rgba(174,252,110,.5); }
+    ::-webkit-scrollbar-thumb:window-inactive { background: rgba(174,252,110,.1); }
+    [data-theme="light"] ::-webkit-scrollbar-thumb       { background: rgba(40,167,69,.25); }
+    [data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: rgba(40,167,69,.5);  }
 }
+
+/* ── 12. HIGH-DPI / RETINA ─────────────────────────────────────────────────── */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .note {
-        border-width: 0.5px;
-    }
-    .lne-wrapper {
-        border-width: 0.5px;
-    }
-    .modal-content {
-        border-width: 0.5px;
-    }
-    .note {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.15);
-    }
+    .note, .lne-wrapper, .modal-content { border-width: 0.5px; }
+    .note { box-shadow: 0 1px 3px rgba(0,0,0,.2), 0 1px 2px rgba(0,0,0,.15); }
     .lne-editor {
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
     }
+    .cnp-panel { border-width: 0.5px; }
 }
+
+/* ── 13. PREFERS-COLOR-SCHEME (system theme fallback) ──────────────────────── */
 @media (prefers-color-scheme: dark) {
-    html:not([data-theme]) body {
-        background-color: #0a0a0a;
-        color: #ffffff;
-    }
-    html:not([data-theme]) .modal-content {
-        background: #1a1a1a;
-        border-color: #272727;
-    }
-    html:not([data-theme]) .lne-wrapper {
-        background: #1a1a1a;
-        border-color: #272727;
-    }
+    html:not([data-theme]) body          { background-color: #0a0a0a; color: #ffffff; }
+    html:not([data-theme]) .modal-content { background: #1a1a1a; border-color: #272727; }
+    html:not([data-theme]) .lne-wrapper  { background: #1a1a1a; border-color: #272727; }
 }
 @media (prefers-color-scheme: light) {
-    html:not([data-theme]) body {
-        background-color: #ffffff;
-        color: #212529;
-    }
+    html:not([data-theme]) body { background-color: #ffffff; color: #212529; }
 }
+
+/* ── 14. PREFERS-REDUCED-MOTION ────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
+    *, *::before, *::after {
+        animation-duration:       0.01ms !important;
+        animation-iteration-count: 1     !important;
+        transition-duration:      0.01ms !important;
+        scroll-behavior:          auto   !important;
     }
     .note:hover,
     #notesContainer.default-view .note:hover,
-    #notesContainer.full-width-view .note:hover {
-        transform: none !important;
-    }
+    #notesContainer.full-width-view .note:hover { transform: none !important; }
     .block_btn button:active,
     .modal-buttons-container button:active,
-    .lne-btn:active {
-        transform: none !important;
-    }
+    .lne-btn:active { transform: none !important; }
 }
-@media (min-width: 768px) and (max-width: 1366px) and (hover: none) and (pointer: coarse) {
-    .info-app {
-        padding-left: max(20px, env(safe-area-inset-left));
-        padding-right: max(20px, env(safe-area-inset-right));
-    }
-    .center_nav .sticky {
-        padding-left: max(16px, env(safe-area-inset-left));
-        padding-right: max(16px, env(safe-area-inset-right));
-    }
-    #editModal .modal-content {
-        padding-top: max(8px, env(safe-area-inset-top)) !important;
-        padding-bottom: max(8px, env(safe-area-inset-bottom)) !important;
-    }
-    .lne-btn {
-        width: 36px !important;
-        height: 36px !important;
-    }
-    .editBtn, .deleteBtn, .exportBtn {
-        height: 40px !important;
-    }
-    @media (max-width: 900px) {
-        #notesContainer.default-view {
-            grid-template-columns: repeat(2, 1fr) !important;
-        }
-    }
-}
+
+/* ── 15. PWA STANDALONE MODE ───────────────────────────────────────────────── */
 @media (display-mode: standalone) {
     .info-app {
-        padding-top: max(env(safe-area-inset-top), 20px);
+        /* Extra padding for Dynamic Island / notch in standalone */
+        padding-top: max(env(safe-area-inset-top, 0px), 20px);
     }
-    .ln-install-banner {
-        display: none !important;
-    }
+    .ln-install-banner { display: none !important; }
     .btn_view_div {
-        padding-bottom: max(16px, calc(env(safe-area-inset-bottom) + 10px));
+        padding-bottom: max(16px, calc(env(safe-area-inset-bottom, 0px) + 10px));
     }
-    html {
-        overscroll-behavior: none;
+    html, body { overscroll-behavior: none; }
+}
+
+/* ── 16. TABLET TOUCH (iPad, Android tablet, Yandex Pad) ───────────────────── */
+@media (min-width: 768px) and (max-width: 1366px) and (hover: none) and (pointer: coarse) {
+    .info-app {
+        padding-left:  max(20px, env(safe-area-inset-left,  0px));
+        padding-right: max(20px, env(safe-area-inset-right, 0px));
     }
-    body {
-        overscroll-behavior: none;
+    .center_nav .sticky {
+        padding-left:  max(16px, env(safe-area-inset-left,  0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+    }
+    #editModal .modal-content {
+        padding-top:    max(8px, env(safe-area-inset-top,    0px)) !important;
+        padding-bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important;
+    }
+    .lne-btn { width: 36px !important; height: 36px !important; }
+    .editBtn, .deleteBtn, .exportBtn { height: 40px !important; }
+}
+
+/* Tablet 2-column notes grid */
+@media (min-width: 768px) and (max-width: 900px) and (hover: none) and (pointer: coarse) {
+    #notesContainer.default-view {
+        grid-template-columns: repeat(2, 1fr) !important;
     }
 }
-[data-theme="light"] {
-    --bg-color: #f5f5f7;
-    --card-bg: #ffffff;
-    --header-bg: rgba(255, 255, 255, 0.85);
-    --modal-bg: #ffffff;
-}
+
+/* ── 17. GLASSMORPHISM HEADER — theme-aware ────────────────────────────────── */
 [data-theme="light"] .info-app,
 [data-theme="light"] .center_nav {
-    background: rgba(255, 255, 255, 0.85) !important;
-    backdrop-filter: saturate(180%) blur(20px);
+    background: rgba(255,255,255,.85) !important;
     -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,.08);
 }
 [data-theme="light"] .modal-content {
-    background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: saturate(180%) blur(20px);
+    background: rgba(255,255,255,.95) !important;
     -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
 }
 [data-theme="dark"] .info-app,
 [data-theme="dark"] .center_nav {
-    background: rgba(8, 8, 8, 0.85) !important;
-    backdrop-filter: saturate(180%) blur(20px);
+    background: rgba(8,8,8,.85) !important;
     -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,.06);
 }
 [data-theme="dark"] .modal-content {
-    background: rgba(26, 26, 26, 0.97) !important;
-    backdrop-filter: saturate(180%) blur(20px);
+    background: rgba(26,26,26,.97) !important;
     -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
 }
-:focus:not(:focus-visible) {
-    outline: none;
+/* Fallback for browsers without backdrop-filter (Firefox < 103, UC Browser) */
+@supports not (backdrop-filter: blur(1px)) {
+    [data-theme="light"] .info-app,
+    [data-theme="light"] .center_nav { background: rgba(255,255,255,.98) !important; }
+    [data-theme="dark"]  .info-app,
+    [data-theme="dark"]  .center_nav { background: rgba(8,8,8,.98) !important; }
 }
+
+/* ── 18. THEME VARS OVERRIDE (apple.css scope) ─────────────────────────────── */
+[data-theme="light"] {
+    --bg-color:    #f5f5f7;
+    --card-bg:     #ffffff;
+    --header-bg:   rgba(255,255,255,.85);
+    --modal-bg:    #ffffff;
+}
+
+/* ── 19. FOCUS STYLES ──────────────────────────────────────────────────────── */
+:focus:not(:focus-visible) { outline: none; }
 :focus-visible {
-    outline: 2px solid rgba(174, 252, 110, 0.8);
+    outline: 2px solid rgba(174,252,110,.8);
     outline-offset: 2px;
     border-radius: 4px;
 }
-[data-theme="light"] :focus-visible {
-    outline-color: rgba(40, 167, 69, 0.8);
-}
+[data-theme="light"] :focus-visible { outline-color: rgba(40,167,69,.8); }
 [contenteditable]:focus,
-[contenteditable]:focus-visible {
-    outline: none !important;
-    box-shadow: none !important;
-}
-button, a {
-    touch-action: manipulation;
-}
+[contenteditable]:focus-visible { outline: none !important; box-shadow: none !important; }
+
+/* ── 20. MISC TOUCH OPTIMISATIONS ──────────────────────────────────────────── */
+button, a { touch-action: manipulation; }
+
 img {
+    /* Crisp rendering on Retina — Chrome, Safari, Yandex */
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
 }
@@ -483,6 +433,8 @@ img {
     -webkit-touch-callout: none;
     pointer-events: auto;
 }
+
+/* GPU-composited layers for smooth scroll/animation */
 .note,
 .lne-wrapper,
 .lne-modal,
@@ -493,78 +445,43 @@ img {
     transform: translateZ(0);
     will-change: transform;
 }
-.note:not(:hover) {
-    will-change: auto;
-}
+.note:not(:hover) { will-change: auto; }
 
-/* ── Calendar Note Preview — Mobile & Touch Adaptation ───────── */
-@media (hover: none) and (pointer: coarse) {
-    .cnp-btn {
-        min-height: 44px !important;
-        touch-action: manipulation;
-        -webkit-tap-highlight-color: transparent;
-    }
-    .cnp-close {
-        min-width: 44px !important;
-        min-height: 44px !important;
-        touch-action: manipulation;
-        -webkit-tap-highlight-color: transparent;
-    }
-    .cnp-btn:active {
-        transform: scale(0.96) !important;
-        opacity: 0.82 !important;
-        transition: transform 0.08s ease, opacity 0.08s ease !important;
-    }
-    .cnp-close:active {
-        transform: scale(0.94) !important;
-        opacity: 0.78 !important;
-        transition: transform 0.08s ease !important;
-    }
-}
-
-/* iOS safe-area + bottom sheet on small screens */
+/* ── 21. CALENDAR NOTE PREVIEW — MOBILE ────────────────────────────────────── */
 @media (max-width: 600px) {
-    .cnp-overlay {
-        align-items: flex-end;
-        padding: 0;
-    }
+    .cnp-overlay { align-items: flex-end; padding: 0; }
     .cnp-panel {
         border-radius: 16px 16px 0 0;
+        width: 100%;
+        /* Progressive height fallback: vh → dvh → fill-available */
         max-height: 88vh;
         max-height: 88dvh;
-        /* iOS fill-available fallback */
         max-height: -webkit-fill-available;
-        width: 100%;
     }
     .cnp-footer {
-        padding-bottom: max(12px, env(safe-area-inset-bottom));
-        padding-left: max(16px, env(safe-area-inset-left));
-        padding-right: max(16px, env(safe-area-inset-right));
+        padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+        padding-left:   max(16px, env(safe-area-inset-left,   0px));
+        padding-right:  max(16px, env(safe-area-inset-right,  0px));
     }
-    .cnp-header {
-        padding-left: max(16px, env(safe-area-inset-left));
-        padding-right: max(16px, env(safe-area-inset-right));
+    .cnp-header,
+    .cnp-meta {
+        padding-left:  max(16px, env(safe-area-inset-left,  0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
     }
     .cnp-body {
-        padding-left: max(16px, env(safe-area-inset-left));
-        padding-right: max(16px, env(safe-area-inset-right));
+        padding-left:  max(16px, env(safe-area-inset-left,  0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
         -webkit-overflow-scrolling: touch;
         overscroll-behavior-y: contain;
     }
-    .cnp-meta {
-        padding-left: max(16px, env(safe-area-inset-left));
-        padding-right: max(16px, env(safe-area-inset-right));
-    }
 }
 
-/* PWA standalone — extra bottom inset */
 @media (display-mode: standalone) and (max-width: 600px) {
     .cnp-footer {
-        padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 8px));
+        padding-bottom: max(20px, calc(env(safe-area-inset-bottom, 0px) + 8px));
     }
 }
 
-/* Tablet touch (iPad, Android tablet) */
 @media (min-width: 601px) and (max-width: 1024px) and (hover: none) and (pointer: coarse) {
     .cnp-panel {
         max-width: 560px;
@@ -572,25 +489,96 @@ img {
         max-height: 80dvh;
     }
     .cnp-footer {
-        padding-bottom: max(12px, env(safe-area-inset-bottom));
+        padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
     }
 }
 
-/* iOS Safari — prevent zoom on inputs inside preview, smooth scroll */
+/* iOS Safari — smooth scroll inside preview */
 @supports (-webkit-touch-callout: none) {
-    .cnp-body {
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior-y: contain;
-    }
-    .cnp-panel {
-        /* Prevent rubber-band on the panel itself */
-        overscroll-behavior: contain;
+    .cnp-body  { -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; }
+    .cnp-panel { overscroll-behavior: contain; }
+}
+
+/* ── 22. YANDEX BROWSER SPECIFICS ──────────────────────────────────────────── */
+/* Yandex Browser on Android uses Blink — same as Chrome.
+   Yandex Browser on iOS uses WebKit — same as Safari.
+   Main quirks: older versions lack dvh, color-mix, :has().
+   We rely on progressive enhancement already in place.
+   Extra: Yandex sometimes injects its own bottom bar (~56px) — compensate. */
+@media (max-width: 768px) {
+    /* Extra bottom padding so fixed footer clears Yandex/Samsung bottom bar */
+    .btn_view_div {
+        padding-bottom: max(
+            max(12px, calc(env(safe-area-inset-bottom, 0px) + 8px)),
+            env(safe-area-inset-bottom, 0px)
+        );
     }
 }
 
-/* High-DPI (Retina / Android HDPI) — hairline borders */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .cnp-panel {
-        border-width: 0.5px;
+/* ── 23. SAMSUNG INTERNET SPECIFICS ────────────────────────────────────────── */
+/* Samsung Internet < 14 doesn't support dvh — fallback already in editor-modal.css.
+   Samsung DeX (desktop mode) — treat as desktop, hover: hover fires correctly. */
+
+/* ── 24. FIREFOX ANDROID SPECIFICS ────────────────────────────────────────── */
+/* Firefox doesn't support -webkit-touch-callout or -webkit-overflow-scrolling.
+   It does support overscroll-behavior, touch-action, env(), dvh (since v110). */
+@-moz-document url-prefix() {
+    /* Firefox: remove momentum scroll property (unsupported, harmless) */
+    .lne-body, #notesContainer, .block_btn { -webkit-overflow-scrolling: unset; }
+    /* Firefox Android: ensure inputs don't zoom */
+    input, select, textarea { font-size: max(16px, 1em); }
+}
+
+/* ── 25. OPERA MINI / UC BROWSER FALLBACKS ─────────────────────────────────── */
+/* These browsers have limited CSS support. Key fallbacks:
+   - No env() → safe-area values default to 0px (already handled above)
+   - No dvh   → vh fallback already in place
+   - No backdrop-filter → handled in section 17
+   - No color-mix → handled in index.css with @supports not */
+
+/* ── 26. LANDSCAPE PHONE ───────────────────────────────────────────────────── */
+@media (max-width: 900px) and (orientation: landscape) and (hover: none) and (pointer: coarse) {
+    .info-app {
+        min-height: 44px !important;
+        padding-top: max(4px, env(safe-area-inset-top, 0px)) !important;
+        padding-left:  max(env(safe-area-inset-left,  0px), 12px) !important;
+        padding-right: max(env(safe-area-inset-right, 0px), 12px) !important;
     }
+    .info-app .logo   { width: 26px !important; height: 26px !important; }
+    .info-app .name-app { font-size: 1rem !important; }
+    .center_nav .sticky { padding: 4px 10px !important; gap: 5px !important; }
+    .block_btn button   { height: 36px !important; font-size: 11px !important; }
+    #searchInput        { height: 36px !important; font-size: 14px !important; }
+    .btn_view_div {
+        padding: 4px max(10px, env(safe-area-inset-right, 0px)) max(6px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px)) !important;
+        min-height: 46px !important;
+    }
+    #toggleViewButton { height: 34px !important; font-size: 11px !important; }
+    /* Editor modal in landscape — give more vertical space */
+    #editModal .modal-content .lne-toolbar { max-height: 38px; overflow-y: hidden; }
+}
+
+/* ── 27. SMALL PHONES (< 360px — Galaxy A series, old iPhones) ─────────────── */
+@media (max-width: 359px) {
+    .info-app .name-app { font-size: 1rem !important; }
+    .block_btn button   { font-size: 11px !important; padding: 0 7px !important; }
+    #searchInput        { font-size: 14px !important; }
+    .lne-btn            { width: 34px !important; height: 34px !important; }
+}
+
+/* ── 28. LARGE PHONES / PHABLETS (> 428px — iPhone Pro Max, Pixel 7 Pro) ───── */
+@media (min-width: 428px) and (max-width: 767px) {
+    #notesContainer.default-view .note { height: 420px !important; }
+}
+
+/* ── 29. HUAWEI BROWSER / HARMONY OS ──────────────────────────────────────── */
+/* HarmonyOS browser is Chromium-based — no special hacks needed.
+   Huawei devices may have a bottom navigation bar — env(safe-area-inset-bottom)
+   handles this correctly when viewport-fit=cover is set in the meta tag. */
+
+/* ── 30. PRINT ─────────────────────────────────────────────────────────────── */
+@media print {
+    .btn_view_div, .center_nav, .info-app .beta-badge,
+    .modal, .ln-install-banner { display: none !important; }
+    .note { break-inside: avoid; box-shadow: none !important; border: 1px solid #ccc !important; }
 }

@@ -5,177 +5,86 @@
 
 let localNotesEditorInstance = null;
 
-/**
- * Initialize the editor
- */
 function initializeLocalNotesEditor() {
     const container = document.getElementById('editorContainer');
-    if (!container) {
-        console.error('❌ Editor container not found');
-        return false;
-    }
-
+    if (!container) { console.error('Editor container not found'); return false; }
     try {
-        // Check if LocalNotesEditor class is available
         if (typeof LocalNotesEditor === 'undefined') {
-            console.warn('⚠️ LocalNotesEditor class not yet loaded, retrying...');
             setTimeout(initializeLocalNotesEditor, 100);
             return false;
         }
-
         const isTablet = window.innerWidth <= 1024 && window.innerWidth > 480;
         const placeholder = (typeof t === 'function' ? t('editorPlaceholder') : null) || 'Start typing...';
-        
         localNotesEditorInstance = new LocalNotesEditor('editorContainer', {
             height: isTablet ? 'calc(var(--vh, 1vh) * 100 - 200px)' : '500px',
-            placeholder: placeholder,
+            placeholder,
             toolbar: true,
             statusbar: true
         });
         return true;
-    } catch (error) {
-        console.error('❌ Error initializing LocalNotesEditor:', error);
-        return false;
-    }
+    } catch (e) { console.error('Error initializing LocalNotesEditor:', e); return false; }
 }
 
-/**
- * Get editor content
- */
-function getEditorContent() {
-    if (!localNotesEditorInstance) {
-        console.warn('⚠️ Editor not initialized');
-        return '';
-    }
-    return localNotesEditorInstance.getContent();
-}
+function getEditorContent()  { return localNotesEditorInstance ? localNotesEditorInstance.getContent() : ''; }
+function setEditorContent(h) { if (localNotesEditorInstance) localNotesEditorInstance.setContent(h); }
+function getEditorText()     { return localNotesEditorInstance ? localNotesEditorInstance.getText() : ''; }
+function clearEditor()       { if (localNotesEditorInstance) localNotesEditorInstance.clear(); }
+function destroyEditor()     { if (localNotesEditorInstance) { localNotesEditorInstance.destroy(); localNotesEditorInstance = null; } }
+function isEditorInitialized() { return localNotesEditorInstance !== null && !localNotesEditorInstance.isDestroyed; }
+function focusEditor()       { if (localNotesEditorInstance && localNotesEditorInstance.editorElement) localNotesEditorInstance.editorElement.focus(); }
+function editorUndo()        { if (localNotesEditorInstance) localNotesEditorInstance.undo(); }
+function editorRedo()        { if (localNotesEditorInstance) localNotesEditorInstance.redo(); }
 
-/**
- * Set editor content
- */
-function setEditorContent(html) {
-    if (!localNotesEditorInstance) {
-        console.warn('⚠️ Editor not initialized');
-        return;
-    }
-    localNotesEditorInstance.setContent(html);
-}
-
-/**
- * Get editor text
- */
-function getEditorText() {
-    if (!localNotesEditorInstance) {
-        console.warn('⚠️ Editor not initialized');
-        return '';
-    }
-    return localNotesEditorInstance.getText();
-}
-
-/**
- * Clear editor
- */
-function clearEditor() {
-    if (!localNotesEditorInstance) {
-        console.warn('⚠️ Editor not initialized');
-        return;
-    }
-    localNotesEditorInstance.clear();
-}
-
-/**
- * Destroy editor
- */
-function destroyEditor() {
-    if (localNotesEditorInstance) {
-        localNotesEditorInstance.destroy();
-        localNotesEditorInstance = null;
-    }
-}
-
-/**
- * Check if editor is initialized
- */
-function isEditorInitialized() {
-    return localNotesEditorInstance !== null && !localNotesEditorInstance.isDestroyed;
-}
-
-/**
- * Focus editor
- */
-function focusEditor() {
-    if (localNotesEditorInstance && localNotesEditorInstance.editorElement) {
-        localNotesEditorInstance.editorElement.focus();
-    }
-}
-
-/**
- * Undo
- */
-function editorUndo() {
-    if (localNotesEditorInstance) {
-        localNotesEditorInstance.undo();
-    }
-}
-
-/**
- * Redo
- */
-function editorRedo() {
-    if (localNotesEditorInstance) {
-        localNotesEditorInstance.redo();
-    }
-}
-
-// Initialize editor when LocalNotesEditor class is available
 function waitForEditorClass() {
-    if (typeof LocalNotesEditor === 'undefined') {
-        setTimeout(waitForEditorClass, 50);
-        return;
-    }
-    
+    if (typeof LocalNotesEditor === 'undefined') { setTimeout(waitForEditorClass, 50); return; }
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(initializeLocalNotesEditor, 100);
-        });
+        document.addEventListener('DOMContentLoaded', () => setTimeout(initializeLocalNotesEditor, 100));
     } else {
         setTimeout(initializeLocalNotesEditor, 100);
     }
 }
-
-// Start waiting for editor class
 waitForEditorClass();
 
-// Export for use in other modules
 window.localNotesEditorAPI = {
-    getContent: getEditorContent,
-    setContent: setEditorContent,
-    getText: getEditorText,
-    clear: clearEditor,
-    destroy: destroyEditor,
-    isInitialized: isEditorInitialized,
-    focus: focusEditor,
-    undo: editorUndo,
-    redo: editorRedo,
+    getContent: getEditorContent, setContent: setEditorContent,
+    getText: getEditorText, clear: clearEditor, destroy: destroyEditor,
+    isInitialized: isEditorInitialized, focus: focusEditor,
+    undo: editorUndo, redo: editorRedo,
     getInstance: () => localNotesEditorInstance
 };
 
-/**
- * Mobile keyboard handler — two jobs:
- *  1. Resize modal-content to the visual viewport height so lne-body
- *     stays fully scrollable above the keyboard.
- *     - iOS: dvh does NOT shrink when keyboard opens → JS must set height
- *     - Android: dvh DOES shrink, but JS override is harmless and ensures
- *       consistent behaviour across both platforms.
- *  2. Compensate for iOS layout-viewport scroll (vv.offsetTop > 0) so the
- *     toolbar doesn't disappear above the top of the screen.
- */
-(function () {
-    if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) return;
-    if (!window.visualViewport) return;
+/* =============================================================================
+   MOBILE KEYBOARD HANDLER
+   Keeps the editor modal correctly sized when the virtual keyboard opens/closes.
 
-    var modal = null;
-    var rafId = null;
+   Strategy per platform:
+   - iOS Safari / Yandex iOS:
+       dvh does NOT shrink when keyboard opens.
+       visualViewport.height gives the true visible height.
+       visualViewport.offsetTop > 0 when the layout viewport scrolled up.
+       We set modal height = vv.height and marginTop = vv.offsetTop + safeTop.
+
+   - Android Chrome / Yandex Android / Samsung Internet >= 14:
+       dvh DOES shrink, but JS override is harmless and ensures consistency.
+       visualViewport.offsetTop is always 0.
+
+   - Samsung Internet < 14:
+       No dvh support — JS height override is the only reliable fix.
+
+   - Firefox Android:
+       dvh works since v110. visualViewport supported since v63.
+       Same JS path works fine.
+
+   - Opera Mobile / UC Browser:
+       visualViewport may be absent — guarded with feature check.
+   ============================================================================= */
+(function () {
+    var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    if (!isTouch) return;
+    if (!window.visualViewport) return;  // Opera Mini, very old browsers
+
+    var modal  = null;
+    var rafId  = null;
 
     function getModal() {
         if (!modal) modal = document.getElementById('editModal');
@@ -184,6 +93,14 @@ window.localNotesEditorAPI = {
 
     function isOpen(m) {
         return m && m.style.display !== 'none' && m.style.display !== '';
+    }
+
+    /** Read safe-area-inset-top from CSS custom property --sat (set in :root) */
+    function getSafeTop() {
+        try {
+            var v = getComputedStyle(document.documentElement).getPropertyValue('--sat');
+            return v ? parseFloat(v) || 0 : 0;
+        } catch (e) { return 0; }
     }
 
     function apply() {
@@ -195,13 +112,21 @@ window.localNotesEditorAPI = {
         var content = m.querySelector('.modal-content');
         if (!content) return;
 
-        // Set exact visible height — works on both iOS and Android
-        content.style.height    = vv.height + 'px';
-        content.style.maxHeight = vv.height + 'px';
+        var h = vv.height;
 
-        // iOS only: offsetTop > 0 means layout viewport was scrolled up by
-        // the browser when keyboard opened — shift content down to compensate
-        content.style.marginTop = (vv.offsetTop || 0) + 'px';
+        // Set the visible height — keyboard shrinks vv.height on Android,
+        // on iOS dvh doesn't shrink so JS must do it.
+        content.style.height    = h + 'px';
+        content.style.maxHeight = h + 'px';
+
+        // iOS: vv.offsetTop > 0 means the layout viewport scrolled up when
+        // keyboard opened. We compensate with marginTop so the modal stays
+        // anchored below the notch/status-bar — but ONLY when offsetTop is
+        // meaningful (> safe-area), otherwise we get the "fly up" glitch.
+        var offsetTop = vv.offsetTop || 0;
+        var safeTop   = getSafeTop();
+        // Only apply marginTop for the notch offset, not for keyboard scroll
+        content.style.marginTop = (offsetTop > safeTop ? offsetTop : safeTop) + 'px';
     }
 
     function reset() {
@@ -227,9 +152,10 @@ window.localNotesEditorAPI = {
         if (!modal) return;
         new MutationObserver(function () {
             if (isOpen(modal)) {
-                // Apply immediately and again after layout settles
                 apply();
-                setTimeout(apply, 100);
+                // Re-apply after layout settles (iOS keyboard animation ~300ms)
+                setTimeout(apply, 150);
+                setTimeout(apply, 350);
             } else {
                 reset();
             }
@@ -237,32 +163,23 @@ window.localNotesEditorAPI = {
     });
 })();
 
-/**
- * Cursor scroll — keeps the caret visible above the keyboard on mobile.
- *
- * The tricky case: user scrolls lne-body to the bottom of a long note,
- * taps somewhere — keyboard opens, shrinks the viewport, and the caret
- * ends up hidden under the keyboard.  We must re-scroll lne-body AFTER
- * the keyboard has finished animating (visualViewport resize settles).
- */
+/* =============================================================================
+   CARET SCROLL — keeps the cursor visible above the keyboard on mobile.
+   Works on iOS Safari, Android Chrome, Yandex Browser, Firefox Android.
+   ============================================================================= */
 (function () {
-    // Only on touch devices
-    if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) return;
+    var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    if (!isTouch) return;
 
     var PADDING        = 24;
     var rafId          = null;
     var timers         = [];
     var userScrolling  = false;
     var scrollEndTimer = null;
-    // true only when user tapped inside the editor — prevents auto-scroll
-    // to end of text when the modal first opens
     var userTapped     = false;
     var tapResetTimer  = null;
 
-    function clearTimers() {
-        timers.forEach(clearTimeout);
-        timers = [];
-    }
+    function clearTimers() { timers.forEach(clearTimeout); timers = []; }
 
     function getCaretRect() {
         var sel = window.getSelection();
@@ -278,9 +195,8 @@ window.localNotesEditorAPI = {
 
     function scrollCaretIntoView() {
         if (userScrolling) return;
-
         var modal = document.getElementById('editModal');
-        if (!modal || modal.style.display === 'none' || modal.style.display === '') return;
+        if (!modal || !isModalOpen(modal)) return;
 
         var body = modal.querySelector('.lne-body');
         if (!body) return;
@@ -301,12 +217,15 @@ window.localNotesEditorAPI = {
         }
     }
 
+    function isModalOpen(m) {
+        return m && m.style.display !== 'none' && m.style.display !== '';
+    }
+
     function scheduleScroll() {
         if (rafId) cancelAnimationFrame(rafId);
         rafId = requestAnimationFrame(scrollCaretIntoView);
     }
 
-    // Only scroll to caret after keyboard animation if user actually tapped
     function scheduleScrollDelayed() {
         if (!userTapped) return;
         clearTimers();
@@ -318,21 +237,18 @@ window.localNotesEditorAPI = {
     document.addEventListener('DOMContentLoaded', function () {
         var modal = document.getElementById('editModal');
         if (!modal) return;
-        var body  = modal.querySelector('.lne-body');
-        var ed    = modal.querySelector('.lne-editor');
+        var body = modal.querySelector('.lne-body');
+        var ed   = modal.querySelector('.lne-editor');
         if (!body) return;
 
-        // Mark tap inside editor — so viewport resize knows it's user-initiated
         if (ed) {
             ed.addEventListener('touchstart', function () {
                 userTapped = true;
                 clearTimeout(tapResetTimer);
-                // Reset after enough time for keyboard + scroll to complete
                 tapResetTimer = setTimeout(function () { userTapped = false; }, 1500);
             }, { passive: true });
         }
 
-        // Suppress caret-scroll while user is manually scrolling
         body.addEventListener('touchstart', function () {
             userScrolling = true;
             clearTimeout(scrollEndTimer);
@@ -340,21 +256,14 @@ window.localNotesEditorAPI = {
 
         body.addEventListener('touchend', function () {
             clearTimeout(scrollEndTimer);
-            scrollEndTimer = setTimeout(function () {
-                userScrolling = false;
-            }, 300);
+            scrollEndTimer = setTimeout(function () { userScrolling = false; }, 300);
         }, { passive: true });
 
-        // Reset userTapped when modal closes
         new MutationObserver(function () {
-            if (modal.style.display === 'none' || modal.style.display === '') {
-                userTapped = false;
-                clearTimers();
-            }
+            if (!isModalOpen(modal)) { userTapped = false; clearTimers(); }
         }).observe(modal, { attributes: true, attributeFilter: ['style'] });
     });
 
-    // input = user typed → always scroll to caret
     document.addEventListener('input', function () {
         userScrolling = false;
         userTapped    = true;
@@ -365,5 +274,27 @@ window.localNotesEditorAPI = {
 
     if (window.visualViewport) {
         window.visualViewport.addEventListener('resize', scheduleScrollDelayed);
+    }
+})();
+
+/* =============================================================================
+   --vh CUSTOM PROPERTY
+   Some browsers (Samsung Internet < 14, old Yandex) don't support dvh.
+   We set --vh = 1% of the visual viewport height so CSS can use it.
+   ============================================================================= */
+(function () {
+    var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    if (!isTouch) return;
+
+    function setVh() {
+        var vv = window.visualViewport;
+        var h  = vv ? vv.height : window.innerHeight;
+        document.documentElement.style.setProperty('--vh', (h * 0.01) + 'px');
+    }
+
+    setVh();
+    window.addEventListener('resize', setVh);
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', setVh);
     }
 })();

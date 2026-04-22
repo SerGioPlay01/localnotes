@@ -4,6 +4,21 @@
  *   find/replace, word count, templates, emoji, special chars,
  *   drag-drop, floating toolbar on selection, history, i18n
  */
+
+/** Clipboard fallback for browsers without navigator.clipboard */
+function _fallbackCopy(text) {
+    try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none;';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+    } catch (e) { /* silent */ }
+}
+
 class LocalNotesEditor {
     constructor(containerId, options = {}) {
         this.container = document.getElementById(containerId);
@@ -217,7 +232,7 @@ class LocalNotesEditor {
         var selF = this.toolbar.querySelector('.lne-sel-font');
         var selS = this.toolbar.querySelector('.lne-sel-size');
         if (selH) { selH.addEventListener('mousedown', function() { self._saveRange(); }); selH.addEventListener('change', function(e) { if (!e.target.value) return; self._restoreRange(); self._saveSnap(); document.execCommand('formatBlock', false, e.target.value); e.target.value = ''; self._syncState(); }); }
-        if (selF) { selF.addEventListener('mousedown', function() { self._saveRange(); }); selF.addEventListener('change', function(e) { if (!e.target.value) return; self._restoreRange(); self._saveSnap(); document.execCommand('fontName', false, e.target.value); e.target.value = ''; var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0); if (!isTouch) self.ed.focus(); }); }
+        if (selF) { selF.addEventListener('mousedown', function() { self._saveRange(); }); selF.addEventListener('change', function(e) { if (!e.target.value) return; self._restoreRange(); self._expandWordIfCollapsed(); self._saveSnap(); document.execCommand('fontName', false, e.target.value); e.target.value = ''; self._syncState(); var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0); if (!isTouch) self.ed.focus(); }); }
         if (selS) { selS.addEventListener('mousedown', function() { self._saveRange(); }); selS.addEventListener('change', function(e) { if (!e.target.value) return; self._restoreRange(); self._applySize(e.target.value + 'px'); e.target.value = ''; var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0); if (!isTouch) self.ed.focus(); }); }
     }
 
@@ -233,8 +248,16 @@ class LocalNotesEditor {
             insertSpecialChar: function() { this._modalSpecialChars(); },
             findReplace:       function() { this._modalFindReplace(); },
             wordCount:         function() { this._modalWordCount(); },
-            foreColor:         function() { this._modalColor('foreColor', btn); },
-            hiliteColor:       function() { this._modalColor('hiliteColor', btn); }
+            foreColor:         function() {
+                if (this._selectionInChecklist()) return;
+                this._expandWordIfCollapsed();
+                this._modalColor('foreColor', btn);
+            },
+            hiliteColor:       function() {
+                if (this._selectionInChecklist()) return;
+                this._expandWordIfCollapsed();
+                this._modalColor('hiliteColor', btn);
+            }
         };
         if (modalCmds[cmd]) { modalCmds[cmd].call(this); return; }
         // Non-modal commands
@@ -258,12 +281,61 @@ class LocalNotesEditor {
             tplHabit:         function() { this._insertTemplate('habit'); }
         };
         if (map[cmd]) { map[cmd].call(this); return; }
+
+        // Inline formatting commands — expand to word if cursor is collapsed
+        var inlineFmtCmds = {
+            bold:1, italic:1, underline:1, strikeThrough:1,
+            superscript:1, subscript:1, removeFormat:1
+        };
+        if (inlineFmtCmds[cmd]) {
+            this._expandWordIfCollapsed();
+        }
+
         this._saveSnap();
         document.execCommand(cmd, false, null);
         this._syncState();
         // On touch devices don't refocus — avoids keyboard popping up
         var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
         if (!isTouchDevice) this.ed.focus();
+    }
+
+    /**
+     * If the current selection is collapsed (cursor, no text selected),
+     * expand it to cover the whole word under the cursor.
+     * This makes bold/italic/etc work on a single click inside a word.
+     */
+    _expandWordIfCollapsed() {
+        var sel = window.getSelection();
+        if (!sel || sel.rangeCount === 0) return;
+        var range = sel.getRangeAt(0);
+        if (!range.collapsed) return; // already has selection — leave it
+
+        var node = range.startContainer;
+        if (node.nodeType !== 3) return; // not a text node — nothing to expand
+        if (!this.ed.contains(node)) return;
+
+        var text = node.textContent;
+        var offset = range.startOffset;
+
+        // Find word boundaries — include letters, digits, underscores, hyphens
+        var wordRe = /[\w\u00C0-\u024F\u0400-\u04FF-]/;
+        var start = offset;
+        var end   = offset;
+
+        // Walk left
+        while (start > 0 && wordRe.test(text[start - 1])) start--;
+        // Walk right
+        while (end < text.length && wordRe.test(text[end])) end++;
+
+        if (start === end) return; // cursor not on a word character
+
+        var wordRange = document.createRange();
+        wordRange.setStart(node, start);
+        wordRange.setEnd(node, end);
+        sel.removeAllRanges();
+        sel.addRange(wordRange);
+        // Keep _range in sync so _restoreRange works after modal closes
+        this._range = wordRange.cloneRange();
     }
 
     // ── State sync ───────────────────────────────────────────────────────
@@ -472,6 +544,10 @@ class LocalNotesEditor {
         d.querySelectorAll('.cl-opts-btn').forEach(function(btn) {
             btn.remove();
         });
+        // Remove zero-width space spans left by old collapsed font-size logic
+        d.querySelectorAll('span[style]').forEach(function(sp) {
+            if (sp.textContent === '\u200B' || sp.innerHTML === '\u200B') sp.remove();
+        });
         // Persist target="_blank" so it survives DOMPurify on next load
         d.querySelectorAll('a[href]').forEach(function(a) {
             if (!a.getAttribute('target')) a.setAttribute('target', '_blank');
@@ -482,6 +558,10 @@ class LocalNotesEditor {
     _snapDecode(container) {
         (container || this.ed).querySelectorAll('iframe[data-src]').forEach(function(f) {
             f.src = f.getAttribute('data-src');
+        });
+        // Restore table checkbox checked state from data-checked attribute
+        (container || this.ed).querySelectorAll('input.tbl-cb[data-checked="1"]').forEach(function(cb) {
+            cb.checked = true;
         });
         // Restore cl-text input values from HTML attribute
         (container || this.ed).querySelectorAll('.cl-item .cl-text').forEach(function(inp) {
@@ -530,18 +610,25 @@ class LocalNotesEditor {
         var sel = window.getSelection();
         if (!sel || sel.rangeCount === 0) return;
         var r = sel.getRangeAt(0);
+
         if (r.collapsed) {
-            var sp = document.createElement('span');
-            sp.style.fontSize = px; sp.innerHTML = '\u200B';
-            r.insertNode(sp); r.setStart(sp.firstChild, 1); r.collapse(true);
-            sel.removeAllRanges(); sel.addRange(r); return;
+            // Try to expand to word first
+            this._expandWordIfCollapsed();
+            sel = window.getSelection();
+            if (!sel || sel.rangeCount === 0) return;
+            r = sel.getRangeAt(0);
         }
+
+        // Still collapsed (cursor not on a word) — nothing to apply
+        if (r.collapsed) return;
+
         var sp = document.createElement('span');
         sp.style.fontSize = px;
         try { r.surroundContents(sp); }
         catch (e) { var f = r.extractContents(); sp.appendChild(f); r.insertNode(sp); }
         var nr = document.createRange();
         nr.selectNodeContents(sp); sel.removeAllRanges(); sel.addRange(nr);
+        this._syncState();
     }
 
     // ── Editor wiring ────────────────────────────────────────────────────
@@ -562,6 +649,16 @@ class LocalNotesEditor {
         this.ed.addEventListener('click',     function() { self._saveRange(); self._syncState(); });
         this.ed.addEventListener('input',     function() { self._saveSnap(); self._updateStatusbar(); });
         this.ed.addEventListener('focus',     function() { if (!self.ed.innerHTML) self.ed.innerHTML = '<p><br></p>'; });
+    }
+
+    // Returns true if the current selection is inside a checklist item (cl-item or checklist-item-wrapper)
+    _selectionInChecklist() {
+        var sel = window.getSelection();
+        if (!sel || sel.rangeCount === 0) return false;
+        var node = sel.anchorNode;
+        if (node && node.nodeType === 3) node = node.parentNode;
+        if (!node || !node.closest) return false;
+        return !!(node.closest('.cl-item') || node.closest('.checklist-item-wrapper'));
     }
 
     // Shared backspace logic — works for both keydown and mobile beforeinput
@@ -599,9 +696,9 @@ class LocalNotesEditor {
         if (e.ctrlKey || e.metaKey) {
             if (!e.shiftKey && c === 'z') { e.preventDefault(); this.undo(); return; }
             if ((e.shiftKey && c === 'z') || c === 'y') { e.preventDefault(); this.redo(); return; }
-            if (c === 'b') { e.preventDefault(); this._saveSnap(); document.execCommand('bold'); this._syncState(); return; }
-            if (c === 'i') { e.preventDefault(); this._saveSnap(); document.execCommand('italic'); this._syncState(); return; }
-            if (c === 'u') { e.preventDefault(); this._saveSnap(); document.execCommand('underline'); this._syncState(); return; }
+            if (c === 'b') { e.preventDefault(); this._expandWordIfCollapsed(); this._saveSnap(); document.execCommand('bold'); this._syncState(); return; }
+            if (c === 'i') { e.preventDefault(); this._expandWordIfCollapsed(); this._saveSnap(); document.execCommand('italic'); this._syncState(); return; }
+            if (c === 'u') { e.preventDefault(); this._expandWordIfCollapsed(); this._saveSnap(); document.execCommand('underline'); this._syncState(); return; }
             if (c === 'k') { e.preventDefault(); this._modalLink(); return; }
             if (c === 'h') { e.preventDefault(); this._modalFindReplace(); return; }
         }
@@ -989,33 +1086,47 @@ class LocalNotesEditor {
         var copyBtn = document.createElement('button');
         copyBtn.className = 'lne-copy-btn';
         copyBtn.contentEditable = 'false';
+        copyBtn.setAttribute('data-copy-state', 'idle');
         copyBtn.innerHTML = '<i class="bi bi-clipboard"></i> ' + (this._('copy','Copy'));
+
         copyBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+            // Prevent double-click while already showing feedback
+            if (copyBtn.getAttribute('data-copy-state') === 'copied') return;
+
             var prEl = wrapper.querySelector('pre');
             var codeEl = prEl ? prEl.querySelector('code') : null;
-            var text = codeEl ? (codeEl.innerText || codeEl.textContent) : (prEl ? (prEl.innerText || prEl.textContent) : '');
-            var copyLabel = '<i class="bi bi-clipboard"></i> Copy';
-            var copiedLabel = '<i class="bi bi-check-lg"></i> Copied!';
-            var doFeedback = function() {
-                copyBtn.innerHTML = copiedLabel;
+            // Use textContent to avoid hljs span artifacts
+            var text = codeEl ? codeEl.textContent : (prEl ? prEl.textContent : '');
+            text = text.replace(/\n$/, ''); // trim trailing newline
+
+            var iconCopy    = '<i class="bi bi-clipboard"></i>';
+            var iconCopied  = '<i class="bi bi-check-lg"></i>';
+            var labelCopy   = iconCopy + ' Copy';
+            var labelCopied = iconCopied + ' Copied!';
+
+            var showCopied = function() {
+                copyBtn.setAttribute('data-copy-state', 'copied');
+                copyBtn.innerHTML = labelCopied;
                 copyBtn.classList.add('copied');
-                setTimeout(function() {
-                    copyBtn.innerHTML = copyLabel;
+                clearTimeout(copyBtn._resetTimer);
+                copyBtn._resetTimer = setTimeout(function() {
+                    copyBtn.innerHTML = labelCopy;
                     copyBtn.classList.remove('copied');
+                    copyBtn.setAttribute('data-copy-state', 'idle');
                 }, 2000);
             };
-            navigator.clipboard.writeText(text).then(doFeedback).catch(function() {
-                var ta = document.createElement('textarea');
-                ta.value = text;
-                ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
-                doFeedback();
-            });
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(showCopied).catch(function() {
+                    _fallbackCopy(text);
+                    showCopied();
+                });
+            } else {
+                _fallbackCopy(text);
+                showCopied();
+            }
         });
 
         header.appendChild(langSpan);
@@ -1295,19 +1406,13 @@ class LocalNotesEditor {
             if (ov.parentNode) document.body.removeChild(ov);
         };
 
-        // ── visualViewport: push modal above keyboard on iOS/Android ──
+        // ── visualViewport: keep modal visible above keyboard on iOS/Android ──
         var onVpResize = function() {
             var vv = window.visualViewport;
             if (!vv || !modal) return;
-            var keyboardHeight = window.innerHeight - vv.height - vv.offsetTop;
-            if (keyboardHeight > 50) {
-                // Keyboard is open — shift modal up
-                modal.style.marginBottom = keyboardHeight + 'px';
-                modal.style.maxHeight = (vv.height * 0.92) + 'px';
-            } else {
-                modal.style.marginBottom = '';
-                modal.style.maxHeight = '';
-            }
+            // Shrink modal to visible area — don't shift with marginBottom (causes jump)
+            modal.style.maxHeight = (vv.height * 0.92) + 'px';
+            modal.style.marginBottom = '';
         };
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', onVpResize);
@@ -2520,6 +2625,41 @@ class LocalNotesEditor {
         var self = this;
         var bar = this._ctxBar([
             {
+                icon: 'bi bi-check2-square', label: this._('insertCheckbox','Insert checkbox'),
+                action: function() {
+                    self._saveSnap();
+                    // If cell already has a checkbox — toggle its checked state
+                    var existing = cell.querySelector('.tbl-cb');
+                    if (existing) {
+                        existing.checked = !existing.checked;
+                        existing.setAttribute('data-checked', existing.checked ? '1' : '0');
+                        self._saveSnap();
+                        return;
+                    }
+                    // Build checkbox element — contenteditable=false so it acts as atomic widget
+                    var cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.className = 'tbl-cb';
+                    cb.contentEditable = 'false';
+                    cb.setAttribute('data-checked', '0');
+                    // Persist checked state on change
+                    cb.addEventListener('change', function() {
+                        cb.setAttribute('data-checked', cb.checked ? '1' : '0');
+                        self._saveSnap();
+                    });
+                    // Prepend checkbox before existing cell text
+                    if (cell.firstChild) {
+                        cell.insertBefore(cb, cell.firstChild);
+                        // Add a thin space after checkbox if there's text
+                        var hasText = cell.textContent.replace(/\u00A0/g,'').trim().length > 0;
+                        if (hasText) cell.insertBefore(document.createTextNode('\u00A0'), cb.nextSibling);
+                    } else {
+                        cell.appendChild(cb);
+                    }
+                    self._saveSnap();
+                }
+            },
+            {
                 icon: 'bi bi-table', label: this._('tableHeader','Header row toggle'),
                 action: function() {
                     self._saveSnap();
@@ -2760,6 +2900,7 @@ class LocalNotesEditor {
     setContent(html) {
         this.ed.innerHTML = html || '';
         this._snapDecode();
+        this._cleanZeroWidthSpans(this.ed);
         this._initAll();
         // Reset history — loading new content is not undoable
         this.undoStack = []; this.redoStack = []; this.lastSnap = null;
@@ -2769,7 +2910,17 @@ class LocalNotesEditor {
         if (typeof fixCodeBlockStyles === 'function') fixCodeBlockStyles(this.ed);
     }
 
+    /** Remove leftover zero-width-space spans inserted by old _applySize collapsed logic */
+    _cleanZeroWidthSpans(root) {
+        root.querySelectorAll('span[style]').forEach(function(sp) {
+            if (sp.textContent === '\u200B' || sp.innerHTML === '\u200B') {
+                sp.parentNode && sp.parentNode.removeChild(sp);
+            }
+        });
+    }
+
     _initAll() {
+        var self = this;
         // Ensure video wrappers are non-editable atoms so the cursor can't enter them
         this.ed.querySelectorAll('.lne-video-wrapper, .video-embed-wrapper').forEach(function(vw) {
             vw.setAttribute('contenteditable', 'false');
@@ -2778,6 +2929,16 @@ class LocalNotesEditor {
         this.ed.querySelectorAll('a[href]').forEach(function(a) {
             if (!a.getAttribute('target')) a.setAttribute('target', '_blank');
             if (!a.getAttribute('rel')) a.setAttribute('rel', 'noopener');
+        });
+        // Wire table checkboxes — re-attach change listener after innerHTML replace
+        this.ed.querySelectorAll('input.tbl-cb').forEach(function(cb) {
+            if (cb._lneCbBound) return;
+            cb._lneCbBound = true;
+            cb.contentEditable = 'false';
+            cb.addEventListener('change', function() {
+                cb.setAttribute('data-checked', cb.checked ? '1' : '0');
+                self._saveSnap();
+            });
         });
         this._initChecklists();
         this._initCodeBlocks();

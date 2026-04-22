@@ -1,4 +1,10 @@
-﻿.lne-editor-wrapper {
+﻿/* =============================================================================
+   EDITOR MODAL — Mobile layout
+   Covers: iOS Safari, Android Chrome, Samsung Internet, Firefox Android,
+           Yandex Browser, Opera Mobile
+   ============================================================================= */
+
+.lne-editor-wrapper {
     width: 100%;
     flex: 1;
     display: flex;
@@ -32,25 +38,39 @@
 .modal-content .modal-buttons-container {
     flex-shrink: 0;
 }
+
+/* ── MOBILE FULL-SCREEN EDITOR ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
     #editModal .modal-content {
         display: flex;
         flex-direction: column;
-        /* начальная высота — JS переопределит через vv.height при открытии клавиатуры */
+
+        /* Height stack — from least to most capable browser:
+           1. 100vh        — Samsung Internet < 14, UC Browser, Opera Mini
+           2. -webkit-fill-available — iOS Safari (avoids address-bar gap)
+           3. 100dvh       — Chrome 108+, Firefox 110+, Safari 15.4+, Yandex Android */
+        height: 100vh;
         height: -webkit-fill-available;
         height: 100dvh;
+
+        max-height: 100vh;
         max-height: -webkit-fill-available;
         max-height: 100dvh;
+
         margin: 0 !important;
-        padding-top: max(3px, env(safe-area-inset-top)) !important;
-        padding-bottom: env(safe-area-inset-bottom) !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+
+        /* Safe-area: notch / Dynamic Island / Android cutout */
+        padding-top:    env(safe-area-inset-top,    0px) !important;
+        padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+        padding-left:   0 !important;
+        padding-right:  0 !important;
+
         border: none !important;
         border-radius: 0 !important;
         overflow: hidden;
         box-sizing: border-box !important;
     }
+
     #editModal .modal-content .lne-editor-wrapper {
         flex: 1;
         min-height: 0;
@@ -60,6 +80,7 @@
         width: 100% !important;
         overflow: hidden;
     }
+
     #editModal .modal-content .lne-wrapper {
         height: 100%;
         flex: 1;
@@ -67,39 +88,74 @@
         flex-direction: column;
         margin: 0 !important;
         width: 100% !important;
+        border-radius: 0 !important;
+        border: none !important;
     }
+    #editModal .modal-content .lne-wrapper:focus-within {
+        border: none !important;
+        box-shadow: none !important;
+    }
+
     #editModal .modal-content .lne-body {
         flex: 1;
         min-height: 0;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
     }
+
     #editModal .modal-content .lne-editor {
         min-height: 300px;
-        padding: 12px max(14px, env(safe-area-inset-right, 0px)) 120px max(14px, env(safe-area-inset-left, 0px));
+        /* Side padding respects notch on landscape */
+        padding: 12px
+                 max(14px, env(safe-area-inset-right,  0px))
+                 120px
+                 max(14px, env(safe-area-inset-left,   0px));
         font-size: 15px;
     }
+
     #editModal .modal-content .lne-toolbar {
         flex-shrink: 0;
         overflow-x: auto;
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
         scrollbar-width: none;
+        -ms-overflow-style: none;
         position: relative;
         top: auto;
         z-index: 10;
     }
     #editModal .modal-content .lne-toolbar::-webkit-scrollbar { display: none; }
+
     #editModal .modal-content .lne-statusbar {
         flex-shrink: 0;
         padding: 3px 12px;
         font-size: 10px;
     }
+
+    /* Hide scrollbars inside editor on mobile */
+    #editModal .modal-content .lne-body::-webkit-scrollbar,
+    #editModal .modal-content .lne-editor::-webkit-scrollbar,
+    #editModal .modal-content .lne-wrapper::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+    #editModal .modal-content .lne-body,
+    #editModal .modal-content .lne-editor,
+    #editModal .modal-content .lne-wrapper {
+        scrollbar-width: none !important;
+    }
+
+    /* Bottom action bar */
     .modal-buttons-container {
         flex-shrink: 0;
         flex-direction: row !important;
         flex-wrap: nowrap;
-        padding: 6px 10px;
+        padding: 6px max(10px, env(safe-area-inset-right, 0px))
+                 max(6px,  env(safe-area-inset-bottom, 0px))
+                 max(10px, env(safe-area-inset-left,   0px));
         gap: 6px;
         border-top: 1px solid var(--border-color, #272727);
         background: var(--modal-bg, #1a1a1a);
@@ -115,6 +171,8 @@
         height: 42px;
     }
 }
+
+/* ── TABLET PORTRAIT (iPad, Android tablet) ────────────────────────────────── */
 @media (min-width: 769px) and (max-width: 1024px) {
     .modal-content {
         width: 98% !important;
@@ -123,6 +181,8 @@
         height: 94dvh;
     }
 }
+
+/* ── LARGE TABLET / SMALL LAPTOP ───────────────────────────────────────────── */
 @media (min-width: 1025px) and (max-width: 1366px) {
     .modal-content {
         width: 96% !important;
@@ -131,25 +191,73 @@
         height: 92dvh;
     }
 }
-@media (max-width: 768px) {
-    #editModal .modal-content .lne-wrapper {
-        border-radius: 0 !important;
-        border: none !important;
+
+/* ── LANDSCAPE PHONE — compact toolbar ─────────────────────────────────────── */
+@media (max-width: 900px) and (orientation: landscape) and (hover: none) and (pointer: coarse) {
+    #editModal .modal-content {
+        padding-top:   max(2px, env(safe-area-inset-top,    0px)) !important;
+        padding-left:  max(0px, env(safe-area-inset-left,   0px)) !important;
+        padding-right: max(0px, env(safe-area-inset-right,  0px)) !important;
     }
-    #editModal .modal-content .lne-wrapper:focus-within {
-        border: none !important;
-        box-shadow: none !important;
+    #editModal .modal-content .lne-toolbar {
+        /* Single-row compact toolbar in landscape */
+        max-height: 40px;
     }
-    #editModal .modal-content .lne-body::-webkit-scrollbar,
-    #editModal .modal-content .lne-editor::-webkit-scrollbar,
-    #editModal .modal-content .lne-wrapper::-webkit-scrollbar {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
+    #editModal .modal-content .lne-btn {
+        width:  34px !important;
+        height: 34px !important;
     }
-    #editModal .modal-content .lne-body,
-    #editModal .modal-content .lne-editor,
-    #editModal .modal-content .lne-wrapper {
-        scrollbar-width: none !important;
+    #editModal .modal-content .lne-statusbar { display: none; }
+    .modal-buttons-container {
+        padding-top:    4px !important;
+        padding-bottom: max(4px, env(safe-area-inset-bottom, 0px)) !important;
+    }
+    .modal-buttons-container button { height: 36px !important; font-size: 12px !important; }
+    #noteSettingsBtn { flex: 0 0 36px !important; width: 36px !important; height: 36px !important; }
+}
+
+/* ── NOTE SETTINGS MODAL — MOBILE ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .nsm-overlay {
+        align-items: flex-end;
+        padding: 0;
+    }
+    .nsm-panel {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 16px 16px 0 0;
+        /* Progressive height */
+        max-height: 90vh;
+        max-height: 90dvh;
+        max-height: -webkit-fill-available;
+    }
+    .nsm-footer {
+        padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+        padding-left:   max(16px, env(safe-area-inset-left,   0px));
+        padding-right:  max(16px, env(safe-area-inset-right,  0px));
+    }
+    .nsm-header {
+        padding-left:  max(16px, env(safe-area-inset-left,  0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+    }
+    .nsm-body {
+        padding-left:  max(0px, env(safe-area-inset-left,  0px));
+        padding-right: max(0px, env(safe-area-inset-right, 0px));
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+    }
+}
+
+/* ── SAMSUNG INTERNET FALLBACK ──────────────────────────────────────────────── */
+/* Samsung Internet < 14 doesn't support dvh — vh fallback is first in the stack above */
+/* Samsung Internet < 12 doesn't support env() — 0px defaults handle this */
+
+/* ── FIREFOX ANDROID ────────────────────────────────────────────────────────── */
+/* Firefox supports dvh since v110, env() since v65, no -webkit-fill-available */
+@-moz-document url-prefix() {
+    #editModal .modal-content {
+        /* Firefox: dvh works, skip -webkit-fill-available */
+        height: 100dvh !important;
+        max-height: 100dvh !important;
     }
 }

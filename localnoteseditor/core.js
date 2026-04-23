@@ -907,7 +907,11 @@ class LocalNotesEditor {
     _showChecklistOpts(item, anchor) {
         // Remove any existing panel
         var existing = document.querySelector('.cl-opts-panel');
-        if (existing) { existing.remove(); if (existing._item === item) return; }
+        if (existing) {
+            if (existing._cleanup) existing._cleanup();
+            existing.remove();
+            if (existing._item === item) return;
+        }
 
         var self = this;
         var panel = document.createElement('div');
@@ -945,7 +949,7 @@ class LocalNotesEditor {
             if (c.reset) btn.dataset.reset = '1';
             else btn.style.background = c.v;
             if (c.reset) btn.textContent = '✕';
-            btn.addEventListener('mousedown', function(e) {
+            var applyColor = function(e) {
                 e.preventDefault();
                 if (!c.reset) {
                     item.dataset.clColor = c.v;
@@ -959,7 +963,9 @@ class LocalNotesEditor {
                 colorBtns.querySelectorAll('.cl-color-dot').forEach(function(b) { b.classList.remove('active'); });
                 btn.classList.add('active');
                 self._saveSnap();
-            });
+            };
+            btn.addEventListener('mousedown', applyColor);
+            btn.addEventListener('touchend', applyColor, { passive: false });
             colorBtns.appendChild(btn);
         });
         colorRow.appendChild(colorBtns);
@@ -977,14 +983,16 @@ class LocalNotesEditor {
             btn.title = p.label;
             if (p.v) btn.dataset.prio = p.v;
             btn.innerHTML = '<i class="bi ' + p.icon + '"></i><span>' + p.label + '</span>';
-            btn.addEventListener('mousedown', function(e) {
+            var applyPrio = function(e) {
                 e.preventDefault();
                 if (p.v) item.dataset.clPriority = p.v;
                 else delete item.dataset.clPriority;
                 prioBtns.querySelectorAll('.cl-prio-btn').forEach(function(b) { b.classList.remove('active'); });
                 btn.classList.add('active');
                 self._saveSnap();
-            });
+            };
+            btn.addEventListener('mousedown', applyPrio);
+            btn.addEventListener('touchend', applyPrio, { passive: false });
             prioBtns.appendChild(btn);
         });
         prioRow.appendChild(prioBtns);
@@ -998,6 +1006,14 @@ class LocalNotesEditor {
         tagInp.className = 'cl-tag-inp';
         tagInp.placeholder = this._('clLabel','e.g. work, urgent…');
         tagInp.value = item.dataset.clTag || '';
+        tagInp.setAttribute('inputmode', 'none');
+        tagInp.autocomplete = 'off';
+        tagInp.addEventListener('focus', function() {
+            tagInp.setAttribute('inputmode', 'text');
+        });
+        tagInp.addEventListener('blur', function() {
+            tagInp.setAttribute('inputmode', 'none');
+        });
         tagInp.addEventListener('input', function() {
             if (tagInp.value.trim()) item.dataset.clTag = tagInp.value.trim();
             else delete item.dataset.clTag;
@@ -1010,12 +1026,15 @@ class LocalNotesEditor {
         var delBtn = document.createElement('button');
         delBtn.className = 'cl-del-btn';
         delBtn.innerHTML = '<i class="bi bi-trash3"></i> ' + this._('clDeleteItem','Delete item');
-        delBtn.addEventListener('mousedown', function(e) {
+        var doDelete = function(e) {
             e.preventDefault();
             panel.remove();
+            if (panel._cleanup) panel._cleanup();
             self._saveSnap();
             item.remove();
-        });
+        };
+        delBtn.addEventListener('mousedown', doDelete);
+        delBtn.addEventListener('touchend', doDelete, { passive: false });
         delRow.appendChild(delBtn);
 
         panel.appendChild(colorRow);
@@ -1023,32 +1042,63 @@ class LocalNotesEditor {
         panel.appendChild(tagRow);
         panel.appendChild(delRow);
 
-        // Position panel — keep within viewport
+        // Position panel — keep within viewport (respects visualViewport for mobile keyboards)
         document.body.appendChild(panel);
-        var rect = anchor.getBoundingClientRect();
-        var pw = panel.offsetWidth || 232;
-        var ph = panel.offsetHeight || 280;
-        var vw = window.innerWidth;
-        var vh = window.innerHeight;
+        // Prevent auto-focus on tag input (would open keyboard on mobile)
+        tagInp.blur();
 
-        var top = rect.bottom + window.scrollY + 4;
-        var left = rect.left + window.scrollX;
+        var anchorRect = anchor.getBoundingClientRect();
 
-        // Flip up if not enough space below
-        if (rect.bottom + ph + 8 > vh) {
-            top = rect.top + window.scrollY - ph - 4;
+        var positionPanel = function() {
+            var vp = window.visualViewport || { width: window.innerWidth, height: window.innerHeight, offsetTop: 0, offsetLeft: 0 };
+            var vpW = vp.width;
+            var vpH = vp.height;
+            var vpTop = vp.offsetTop || 0;
+            var vpLeft = vp.offsetLeft || 0;
+
+            var pw = panel.offsetWidth || 232;
+            var ph = panel.offsetHeight || 280;
+
+            // anchor position relative to visualViewport
+            var rect = anchor.getBoundingClientRect();
+
+            var top  = rect.bottom + vpTop + 4;
+            var left = rect.left + vpLeft;
+
+            // Flip up if not enough space below
+            if (rect.bottom + ph + 8 > vpH) {
+                top = rect.top + vpTop - ph - 4;
+            }
+            // Keep within horizontal bounds
+            if (left + pw > vpLeft + vpW - 8) left = vpLeft + vpW - pw - 8;
+            if (left < vpLeft + 8) left = vpLeft + 8;
+
+            panel.style.top  = Math.max(vpTop + 8, top) + 'px';
+            panel.style.left = left + 'px';
+        };
+
+        positionPanel();
+
+        // Reposition when keyboard opens/closes on mobile
+        var onViewportResize = function() { positionPanel(); };
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', onViewportResize);
+            window.visualViewport.addEventListener('scroll', onViewportResize);
         }
-        // Keep within horizontal bounds
-        if (left + pw > vw - 8) left = vw - pw - 8;
-        if (left < 8) left = 8;
 
-        panel.style.top  = Math.max(8, top) + 'px';
-        panel.style.left = left + 'px';
+        var cleanupViewport = function() {
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener('resize', onViewportResize);
+                window.visualViewport.removeEventListener('scroll', onViewportResize);
+            }
+        };
+        panel._cleanup = cleanupViewport;
 
         // Close on outside click
         var closePanel = function(e) {
             if (!panel.contains(e.target) && e.target !== anchor) {
                 panel.remove();
+                cleanupViewport();
                 document.removeEventListener('mousedown', closePanel);
                 document.removeEventListener('touchstart', closePanel);
             }

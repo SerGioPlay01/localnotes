@@ -855,7 +855,7 @@ const translations = {
         // Подтверждения
         confirmDeleteOneNote: "Видалити цю нотатку? Цю дію не можна скасувати.",
         delete: "Видалити",
-        confirmDeleteAll: "Ви впевнені, що хочете видалити всі нотатки?",
+        confirmDeleteAll: "Ви дійсно хочете видалити ВСІ нотатки?",
         confirmDeleteAllTitle: "Видалити всі нотатки",
         confirmDeleteAllPlaceholder: "Введіть 'DELETE ALL' для підтвердження",
         deleteAll: "Видалити все",
@@ -1228,12 +1228,12 @@ const translations = {
         // Подтверждения
         confirmDeleteOneNote: "Usunąć tę notatkę? Tej operacji nie można cofnąć.",
         delete: "Usuń",
-        confirmDeleteAll: "Czy na pewno chcesz usunąć wszystkie notatki?",
+        confirmDeleteAll: "Czy naprawdę chcesz usunąć WSZYSTKIE notatki?",
         confirmDeleteAllTitle: "Usuń wszystkie notatki",
         confirmDeleteAllPlaceholder: "Wpisz 'DELETE ALL' aby potwierdzić",
         deleteAll: "Usuń wszystko",
         clearAllWarning: "Ta akcja jest nieodwracalna!",
-        clearAllWarning1: "Wszystkie notatki zostaną trwale usunięte",
+        clearAllWarning1: "Wszystkie Twoje notatki zostaną trwale usunięte",
         clearAllWarning2: "Odzyskanie danych będzie niemożliwe",
         clearAllWarning3: "Zaleca się utworzenie kopii zapasowej przed usunięciem",
         invalidPassword: "Nieprawidłowe hasło. Spróbuj ponownie.",
@@ -1581,12 +1581,12 @@ const translations = {
         // Подтверждения
         confirmDeleteOneNote: "Smazat tuto poznámku? Tuto akci nelze vrátit.",
         delete: "Smazat",
-        confirmDeleteAll: "Jste si jisti, že chcete smazat všechny poznámky?",
+        confirmDeleteAll: "Opravdu chcete smazat VŠECHNY poznámky?",
         confirmDeleteAllTitle: "Smazat všechny poznámky",
         confirmDeleteAllPlaceholder: "Zadejte 'DELETE ALL' pro potvrzení",
         deleteAll: "Smazat vše",
         clearAllWarning: "Tato akce je nevratná!",
-        clearAllWarning1: "Všechny poznámky budou trvale smazány",
+        clearAllWarning1: "Všechny vaše poznámky budou trvale smazány",
         clearAllWarning2: "Obnovení dat bude nemožné",
         clearAllWarning3: "Doporučuje se vytvořit zálohu před smazáním",
         invalidPassword: "Neplatné heslo. Zkuste to znovu.",
@@ -1928,12 +1928,12 @@ const translations = {
         // Подтверждения
         confirmDeleteOneNote: "Zmazať túto poznámku? Túto akciu nie je možné vrátiť.",
         delete: "Zmazať",
-        confirmDeleteAll: "Ste si istí, že chcete zmazať všetky poznámky?",
+        confirmDeleteAll: "Naozaj chcete zmazať VŠETKY poznámky?",
         confirmDeleteAllTitle: "Zmazať všetky poznámky",
         confirmDeleteAllPlaceholder: "Zadajte 'DELETE ALL' pre potvrdenie",
         deleteAll: "Zmazať všetko",
         clearAllWarning: "Táto akcia je nevratná!",
-        clearAllWarning1: "Všetky poznámky budú trvalo zmazané",
+        clearAllWarning1: "Všetky vaše poznámky budú trvalo zmazané",
         clearAllWarning2: "Obnovenie dát bude nemožné",
         clearAllWarning3: "Odporúča sa vytvoriť zálohu pred zmazaním",
         invalidPassword: "Neplatné heslo. Skúste to znovu.",
@@ -2290,7 +2290,7 @@ const translations = {
         // Подтверждения
         confirmDeleteOneNote: "Изтриване на тази бележка? Това действие е необратимо.",
         delete: "Изтрий",
-        confirmDeleteAll: "Сигурни ли сте, че искате да изтриете всички бележки?",
+        confirmDeleteAll: "Наистина ли искате да изтриете ВСИЧКИ бележки?",
         confirmDeleteAllTitle: "Изтрий всички бележки",
         confirmDeleteAllPlaceholder: "Въведете 'DELETE ALL' за потвърждение",
         deleteAll: "Изтрий всичко",
@@ -2650,14 +2650,14 @@ const translations = {
         
         // Подтверждения
         confirmDeleteOneNote: "Obrisati ovu bilješku? Ova radnja se ne može poništiti.",
-        confirmDeleteAll: "Jeste li sigurni da želite obrisati sve bilješke?",
-        
-        // Интерфейс
-        noNotesMessage: "Nema bilješki za prikaz",
-        chooseImportFormat: "Odaberite format uvoza",
-        encryptedFiles: "Šifrirane datoteke (.note)",
-        htmlFiles: "HTML datoteke",
-        markdownFiles: "Markdown datoteke (.md)",
+        confirmDeleteAll: "Jeste li sigurni da želite obrisati SVE bilješke?",
+        confirmDeleteAllTitle: "Obriši sve bilješke",
+        confirmDeleteAllPlaceholder: "Upišite 'DELETE ALL' za potvrdu",
+        deleteAll: "Obriši sve",
+        clearAllWarning: "Ova radnja je nepovratna!",
+        clearAllWarning1: "Sve vaše bilješke bit će trajno obrisane",
+        clearAllWarning2: "Oporavak podataka bit će nemoguć",
+        clearAllWarning3: "Preporučuje se izrada sigurnosne kopije prije brisanja",
         imageNotFound: "Slika nije pronađena",
         imageNotFoundMessage: "Slika nije pronađena: {src}",
         selectImageFile: "Molimo odaberite datoteku slike",
@@ -3006,7 +3006,14 @@ const translations = {
         // Подтверждения
         confirmDeleteOneNote: "Обрисати ову белешку? Ова радња се не може поништити.",
         delete: "Обриши",
-        confirmDeleteAll: "Да ли сте сигурни да желите обрисати све белешке?",
+        confirmDeleteAll: "Да ли заиста желите да обришете СВЕ белешке?",
+        confirmDeleteAllTitle: "Обриши све белешке",
+        confirmDeleteAllPlaceholder: "Унесите 'DELETE ALL' за потврду",
+        deleteAll: "Обриши све",
+        clearAllWarning: "Ова акција је неповратна!",
+        clearAllWarning1: "Све ваше белешке ће бити трајно обрисане",
+        clearAllWarning2: "Опоравак података ће бити немогућ",
+        clearAllWarning3: "Препоручује се прављење резервне копије пре брисања",
         
         // Интерфейс
         noNotesMessage: "Нема белешки за приказ",
@@ -3359,7 +3366,14 @@ const translations = {
         allNotesDeleted: "Sve bilješke su uspješno obrisane!",
         
         // Подтверждения
-        confirmDeleteAll: "Jeste li sigurni da želite obrisati sve bilješke?",
+        confirmDeleteAll: "Jeste li sigurni da želite obrisati SVE bilješke?",
+        confirmDeleteAllTitle: "Obriši sve bilješke",
+        confirmDeleteAllPlaceholder: "Upišite 'DELETE ALL' za potvrdu",
+        deleteAll: "Obriši sve",
+        clearAllWarning: "Ova radnja je nepovratna!",
+        clearAllWarning1: "Sve vaše bilješke bit će trajno obrisane",
+        clearAllWarning2: "Oporavak podataka bit će nemoguć",
+        clearAllWarning3: "Preporučuje se izrada sigurnosne kopije prije brisanja",
         confirmDeleteOneNote: "Obrisati ovu bilješku? Ova radnja se ne može poništiti.",
         
         // Интерфейс
@@ -3716,7 +3730,7 @@ const translations = {
         // Подтверждения
         confirmDeleteOneNote: "Да се избрише оваа белешка? Оваа акција е неповратна.",
         delete: "Избриши",
-        confirmDeleteAll: "Дали сте сигурни дека сакате да ги избришете сите белешки?",
+        confirmDeleteAll: "Навистина сакате да ги избришете СИТЕ белешки?",
         confirmDeleteAllTitle: "Избриши ги сите белешки",
         confirmDeleteAllPlaceholder: "Внесете 'ИЗБРИШИ СИТЕ' за потврда",
         deleteAll: "Избриши сите",
@@ -4075,7 +4089,14 @@ const translations = {
         // Подтверждения
         confirmDeleteOneNote: "Izbrisati to opombo? Tega dejanja ni mogoče razveljaviti.",
         delete: "Izbriši",
-        confirmDeleteAll: "Ali ste prepričani, da želite izbrisati vse opombe?",
+        confirmDeleteAll: "Ali ste prepričani, da želite izbrisati VSE opombe?",
+        confirmDeleteAllTitle: "Izbriši vse opombe",
+        confirmDeleteAllPlaceholder: "Vnesite 'DELETE ALL' za potrditev",
+        deleteAll: "Izbriši vse",
+        clearAllWarning: "To dejanje je nepopravljivo!",
+        clearAllWarning1: "Vse vaše opombe bodo trajno izbrisane",
+        clearAllWarning2: "Obnovitev podatkov bo nemogoča",
+        clearAllWarning3: "Priporočamo ustvaritev varnostne kopije pred brisanjem",
         
         // Интерфейс
         noNotesMessage: "Ni opomb za prikaz",

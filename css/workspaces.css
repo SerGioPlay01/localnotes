@@ -1,0 +1,471 @@
+/**
+ * Workspaces — стили в дизайн-системе сайта
+ */
+
+/* ── Полоса вкладок ─────────────────────────────────────── */
+.workspace-tabs-container {
+    width: 100%;
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border-color);
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-end;
+    /* iOS safe-area */
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Скроллируемая зона вкладок */
+.workspace-tabs-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    padding: 8px 0 0 16px;
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+}
+.workspace-tabs-wrapper::-webkit-scrollbar {
+    height: 3px;
+}
+.workspace-tabs-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+.workspace-tabs-wrapper::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+/* На тач-устройствах скроллбар скрываем */
+@media (hover: none) and (pointer: coarse) {
+    .workspace-tabs-wrapper {
+        scrollbar-width: none;
+    }
+    .workspace-tabs-wrapper::-webkit-scrollbar { display: none; }
+}
+
+/* ── Одна вкладка ───────────────────────────────────────── */
+.workspace-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+    position: relative;
+    flex-shrink: 0;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    /* минимальная зона касания для мобильных */
+    min-height: 36px;
+}
+
+.workspace-tab:hover {
+    background: var(--button-hover);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.workspace-tab.active {
+    background: var(--button-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+    box-shadow: 0 -1px 0 0 var(--button-bg) inset;
+}
+
+/* Цветная черта сверху у активной вкладки — цвет пространства */
+.workspace-tab.active::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--ws-accent, var(--primary-color));
+    border-radius: 8px 8px 0 0;
+}
+
+/* Приглушённая черта у неактивных вкладок */
+.workspace-tab:not(.active)::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--ws-accent, var(--border-color));
+    opacity: 0.3;
+    border-radius: 8px 8px 0 0;
+}
+
+.workspace-tab-color {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    opacity: 0.85;
+}
+
+.workspace-tab-name {
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.workspace-tab-default {
+    font-size: 10px;
+    color: var(--primary-color);
+    opacity: 0.8;
+    line-height: 1;
+}
+
+/* Кнопка меню ⋮ */
+.workspace-tab-menu {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 2px;
+    margin-left: 2px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    display: flex;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
+    /* на тач-устройствах всегда видна */
+}
+.workspace-tab:hover .workspace-tab-menu,
+.workspace-tab.active .workspace-tab-menu { opacity: 0.6; }
+.workspace-tab-menu:hover { opacity: 1 !important; color: var(--text-color); }
+
+/* На тач — всегда показываем ⋮ */
+@media (hover: none) {
+    .workspace-tab-menu { opacity: 0.5; }
+}
+
+/* ── Кнопка «+» — зафиксирована справа ─────────────────── */
+.workspace-tab-add {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    background: none;
+    border: 1px dashed var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin: 0 12px 8px 8px;
+    transition: border-color 0.18s, color 0.18s, background 0.18s;
+    align-self: center;
+    -webkit-tap-highlight-color: transparent;
+}
+.workspace-tab-add:hover,
+.workspace-tab-add:active {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(174, 252, 110, 0.06);
+}
+[data-theme="light"] .workspace-tab-add:hover,
+[data-theme="light"] .workspace-tab-add:active {
+    background: rgba(40, 167, 69, 0.06);
+}
+
+/* ── Выпадающее меню ────────────────────────────────────── */
+.workspace-menu {
+    background: var(--modal-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    padding: 6px;
+    min-width: 170px;
+    /* z-index задаётся инлайн */
+}
+
+.workspace-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 11px 12px;
+    background: none;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 14px;
+    color: var(--text-color);
+    text-align: left;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    /* минимальная зона касания */
+    min-height: 44px;
+}
+.workspace-menu-item:hover,
+.workspace-menu-item:active { background: var(--button-hover); }
+.workspace-menu-item i { font-size: 14px; color: var(--text-secondary); }
+.workspace-menu-item-danger { color: #f44336; }
+.workspace-menu-item-danger i { color: #f44336; }
+.workspace-menu-item-danger:hover,
+.workspace-menu-item-danger:active { background: rgba(244, 67, 54, 0.08); }
+
+/* ── Кнопка удаления в модалке ──────────────────────────── */
+.ws-delete-confirm-btn:hover,
+.ws-delete-confirm-btn:active {
+    background: #d32f2f !important;
+    border-color: #d32f2f !important;
+    box-shadow: 0 4px 14px rgba(244, 67, 54, 0.35);
+}
+
+/* ── Оверлей выбора пространства ────────────────────────── */
+.ws-selector-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 10001;
+    display: flex;
+    align-items: flex-end; /* снизу на мобильных */
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+    /* iOS safe-area */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.ws-selector-box {
+    background: var(--modal-bg);
+    border: 1px solid var(--modal-border);
+    border-radius: 16px 16px 0 0;
+    padding: 20px 16px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    width: 100%;
+    max-width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 -4px 32px rgba(0,0,0,0.25);
+    -webkit-overflow-scrolling: touch;
+}
+
+.ws-selector-title {
+    font-family: 'Golos Text', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0 0 6px;
+}
+
+.ws-selector-hint {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0 0 16px;
+}
+
+.ws-selector-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.ws-selector-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 13px 14px;
+    background: var(--button-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px;
+    color: var(--text-color);
+    text-align: left;
+    transition: border-color 0.18s, background 0.18s;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 50px;
+}
+.ws-selector-item:hover,
+.ws-selector-item:active {
+    border-color: var(--primary-color);
+    background: var(--button-hover);
+}
+.ws-selector-item.current {
+    border-color: var(--primary-color);
+    background: rgba(174, 252, 110, 0.07);
+}
+[data-theme="light"] .ws-selector-item.current {
+    background: rgba(40, 167, 69, 0.07);
+}
+
+.ws-selector-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.ws-selector-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.ws-selector-star {
+    font-size: 13px;
+    color: var(--primary-color);
+}
+
+.ws-selector-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ws-selector-btn-new {
+    width: 100%;
+    height: 48px;
+    border: 1px solid var(--primary-color);
+    background: rgba(174, 252, 110, 0.08);
+    color: var(--primary-color);
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.18s;
+    -webkit-tap-highlight-color: transparent;
+}
+.ws-selector-btn-new:hover,
+.ws-selector-btn-new:active { background: rgba(174, 252, 110, 0.16); }
+[data-theme="light"] .ws-selector-btn-new { background: rgba(40, 167, 69, 0.08); }
+[data-theme="light"] .ws-selector-btn-new:hover,
+[data-theme="light"] .ws-selector-btn-new:active { background: rgba(40, 167, 69, 0.16); }
+
+.ws-selector-btn-cancel {
+    width: 100%;
+    height: 48px;
+    border: 1px solid var(--border-color);
+    background: var(--button-bg);
+    color: var(--text-secondary);
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Golos Text', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.18s;
+    -webkit-tap-highlight-color: transparent;
+}
+.ws-selector-btn-cancel:hover,
+.ws-selector-btn-cancel:active { background: var(--button-hover); }
+
+/* ── Десктоп — оверлей по центру ────────────────────────── */
+@media (min-width: 600px) {
+    .ws-selector-overlay {
+        align-items: center;
+        padding: 20px;
+        padding-bottom: 20px;
+    }
+    .ws-selector-box {
+        border-radius: 14px;
+        max-width: 420px;
+        padding: 24px;
+    }
+    .ws-selector-actions {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+    .ws-selector-btn-new,
+    .ws-selector-btn-cancel {
+        width: auto;
+        height: 40px;
+        padding: 0 18px;
+        font-size: 14px;
+    }
+}
+
+/* ── Мобильные ──────────────────────────────────────────── */
+@media (max-width: 599px) {
+    .workspace-tabs-wrapper { padding: 6px 0 0 12px; gap: 2px; }
+    .workspace-tab { padding: 6px 10px; font-size: 12px; min-height: 34px; }
+    .workspace-tab-name { max-width: 80px; }
+    .workspace-tab-add { margin: 0 8px 6px 6px; width: 28px; height: 28px; font-size: 13px; }
+}
+
+/* ── Светлая тема ───────────────────────────────────────── */
+[data-theme="light"] .workspace-tab.active {
+    background: var(--bg-color);
+    box-shadow: 0 -1px 0 0 var(--bg-color) inset;
+}
+[data-theme="light"] .workspace-tab:hover {
+    background: var(--button-hover);
+}
+
+/* ── Цветная точка в пункте меню ────────────────────────── */
+.ws-menu-color-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    vertical-align: middle;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+/* ── Пикер цвета ────────────────────────────────────────── */
+.ws-color-picker {
+    background: var(--modal-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    padding: 10px;
+}
+
+.ws-color-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+.ws-color-swatch {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+.ws-color-swatch:hover {
+    transform: scale(1.15);
+}
+.ws-color-swatch.active {
+    border-color: var(--text-color);
+    box-shadow: 0 0 0 2px var(--modal-bg), 0 0 0 4px var(--text-color);
+}
+
+/* На мобильных — чуть крупнее свотчи */
+@media (max-width: 599px) {
+    .ws-color-swatch { width: 38px; height: 38px; }
+    .ws-color-grid { gap: 8px; }
+}

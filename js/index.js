@@ -879,8 +879,9 @@ function initCodeBlockCopyButtons(container) {
         `<i class="bi bi-${icon}"></i> ` + (typeof t === 'function' ? t(key) || fallback : fallback);
 
     const attachCopyBtn = (pre, header) => {
-        // Don't add twice
-        if (header.querySelector('.lne-copy-btn')) return;
+        // Remove stale button (saved HTML has button but no live event listener)
+        const existing = header.querySelector('.lne-copy-btn');
+        if (existing) existing.remove();
 
         const codeEl = pre.querySelector('code');
         const copyBtn = document.createElement('button');

@@ -1263,6 +1263,14 @@ async function clearAllNotes() {
 window._noteMeta = { tags: [], dueDate: null, color: '', pinned: false };
 
 function openNoteSettings(noteId) {
+    // Snapshot original state so cancel can restore it
+    const _orig = window._noteMeta;
+    const _snapshot = {
+        tags:    (_orig.tags || []).slice(),
+        dueDate: _orig.dueDate,
+        color:   _orig.color,
+        pinned:  _orig.pinned
+    };
     const meta = window._noteMeta;
 
     // Build tags HTML
@@ -1366,9 +1374,17 @@ function openNoteSettings(noteId) {
                 if (ov.parentNode) document.body.removeChild(ov);
             }
         };
-        ov.querySelector('#nsm-close').addEventListener('click', closeOv);
-        ov.querySelector('#nsm-cancel').addEventListener('click', closeOv);
-        ov.addEventListener('click', e => { if (e.target === ov) closeOv(); });
+        const cancelOv = () => {
+            // Restore original state on cancel
+            window._noteMeta.tags    = _snapshot.tags;
+            window._noteMeta.dueDate = _snapshot.dueDate;
+            window._noteMeta.color   = _snapshot.color;
+            window._noteMeta.pinned  = _snapshot.pinned;
+            closeOv();
+        };
+        ov.querySelector('#nsm-close').addEventListener('click', cancelOv);
+        ov.querySelector('#nsm-cancel').addEventListener('click', cancelOv);
+        ov.addEventListener('click', e => { if (e.target === ov) cancelOv(); });
 
         // Swipe-down to close on touch devices
         const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
@@ -1401,7 +1417,7 @@ function openNoteSettings(noteId) {
                     const delta = currentY - startY;
                     panel.style.transition = '';
                     if (delta > 90) {
-                        closeOv();
+                        cancelOv();
                     } else {
                         panel.style.transform = '';
                         panel.style.opacity = '';

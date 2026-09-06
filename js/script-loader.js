@@ -17,21 +17,21 @@ function loadScriptsInOrder(scripts) {
 
 // Load scripts after DOM is ready
 var scripts = [
-    '/js/highlight.min.js?v=1.9.13',
-    '/js/i18n.js?v=1.9.13',
-    '/js/img.js?v=1.9.13',
-    '/js/date-utils.js?v=1.9.13',
-    '/js/editor-integration.js?v=1.9.13',
-    '/js/markdown.js?v=1.9.13',
-    '/js/import-formats.js?v=1.9.13',
-    '/js/tags-calendar.js?v=1.9.13',
-    '/js/task-board.js?v=1.9.13',
-    '/js/index.js?v=1.9.13',
-    '/js/command-palette.js?v=1.9.13',
-    '/js/share-target.js?v=1.9.13',
-    '/js/onboarding-tour.js?v=1.9.13',
-    '/js/action-bar.js?v=1.9.13',
-    '/js/sidebar.js?v=1.9.13'
+    '/js/highlight.min.js?v=1.9.14',
+    '/js/i18n.js?v=1.9.14',
+    '/js/img.js?v=1.9.14',
+    '/js/date-utils.js?v=1.9.14',
+    '/js/editor-integration.js?v=1.9.14',
+    '/js/markdown.js?v=1.9.14',
+    '/js/import-formats.js?v=1.9.14',
+    '/js/tags-calendar.js?v=1.9.14',
+    '/js/task-board.js?v=1.9.14',
+    '/js/index.js?v=1.9.14',
+    '/js/command-palette.js?v=1.9.14',
+    '/js/share-target.js?v=1.9.14',
+    '/js/onboarding-tour.js?v=1.9.14',
+    '/js/action-bar.js?v=1.9.14',
+    '/js/sidebar.js?v=1.9.14'
 ];
 
 if (document.readyState === 'loading') {

@@ -190,8 +190,22 @@ class NotesDatabase {
                 req.onerror = () => reject(req.error);
             });
             const decrypted = await Promise.all(raw.map(n => this._decryptNoteFromStorage(n)));
-            this._notesCache = decrypted;
-            this._notesCacheDirty = false;
+            // Several other modules (task-board.js, workspaces.js,
+            // sidebar.js...) have their own independent DOMContentLoaded
+            // init and call getAllNotes()/getNote() on their own — they
+            // don't wait for AppLock.ensureUnlocked() first. If one of
+            // those races ahead of the unlock screen, _decryptNoteFromStorage
+            // silently hands back the still-encrypted note (no _vaultKey
+            // to decrypt with) rather than throwing, and nothing would
+            // otherwise mark that "successful but wrong" result stale —
+            // notes stayed undecrypted until an unrelated write (e.g.
+            // adding a note) happened to invalidate the cache. Only cache
+            // a fetch that either had a real key, or genuinely has no
+            // encrypted notes to get wrong yet (pre-vault-setup).
+            if (this._vaultKey || !raw.some(n => n.encrypted)) {
+                this._notesCache = decrypted;
+                this._notesCacheDirty = false;
+            }
             return decrypted;
         })();
         try {

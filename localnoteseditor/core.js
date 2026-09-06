@@ -4363,7 +4363,7 @@ class LocalNotesEditor {
         
         // Wire buttons
         this._bubbleToolbar.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('mousedown', e => e.preventDefault());
+            btn.addEventListener('mousedown', e => { e.preventDefault(); self._saveRange(); });
             btn.addEventListener('click', e => {
                 e.preventDefault();
                 self._exec(btn.dataset.cmd, btn);

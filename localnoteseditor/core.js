@@ -4348,17 +4348,18 @@ class LocalNotesEditor {
 
     _initBubbleToolbar() {
         var self = this;
-        
+        var _ = this._.bind(this);
+
         // Create bubble toolbar
         this._bubbleToolbar = document.createElement('div');
         this._bubbleToolbar.className = 'lne-bubble-toolbar';
         this._bubbleToolbar.innerHTML = `
-            <button data-cmd="bold" title="Bold"><i class="bi bi-type-bold"></i></button>
-            <button data-cmd="italic" title="Italic"><i class="bi bi-type-italic"></i></button>
-            <button data-cmd="underline" title="Underline"><i class="bi bi-type-underline"></i></button>
+            <button data-cmd="bold" title="${_('bold','Bold')}"><i class="bi bi-type-bold"></i></button>
+            <button data-cmd="italic" title="${_('italic','Italic')}"><i class="bi bi-type-italic"></i></button>
+            <button data-cmd="underline" title="${_('underline','Underline')}"><i class="bi bi-type-underline"></i></button>
             <div class="lne-bubble-sep"></div>
-            <button data-cmd="insertLink" title="Link"><i class="bi bi-link-45deg"></i></button>
-            <button data-cmd="hiliteColor" title="Highlight"><i class="bi bi-highlighter"></i></button>
+            <button data-cmd="insertLink" title="${_('insertLink','Insert link')}"><i class="bi bi-link-45deg"></i></button>
+            <button data-cmd="hiliteColor" title="${_('highlightColor','Highlight')}"><i class="bi bi-highlighter"></i></button>
         `;
         
         // Wire buttons

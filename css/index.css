@@ -781,6 +781,57 @@ body {
     border-radius: 16px;
     background: linear-gradient(135deg, var(--button-bg) 0%, rgba(174, 252, 110, 0.05) 100%);
 }
+/* Split-button group: the lock toggle plus its own always-visible gear
+   button. The gear used to only be reachable via a hold/right-click on
+   the lock button itself — discoverable to nobody who hadn't already
+   found it by accident. A second, permanently visible button removes the
+   guesswork; the hold/right-click on the main button still works too, as
+   a shortcut for people already used to it. */
+.ln-lock-btn-group {
+    flex: 0 0 auto;
+    scroll-snap-align: end;
+    display: flex;
+    align-items: stretch;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(174, 252, 110, 0.06);
+}
+/* Deliberately NOT touching #appLockBtn's own width/height/font-size here
+   — half a dozen other stylesheets (action-bar.css, task-board.css,
+   app-lock.css, adaptive.css) already fight over those per breakpoint;
+   redeclaring them here would just add another contender. This only zeroes
+   the radius on the shared edge so the two buttons read as one control. */
+.ln-lock-btn-group #appLockBtn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    margin: 0;
+}
+#appLockSettingsBtn {
+    flex: 0 0 auto;
+    width: 40px;
+    /* No explicit height — align-items:stretch on the group makes this
+       match whatever height #appLockBtn ends up at per breakpoint,
+       instead of a second hard-coded number to keep in sync with the
+       half-dozen other rules that already resize that button. */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    border: none;
+    border-left: 1px solid rgba(174, 252, 110, 0.18);
+    background: linear-gradient(135deg, var(--button-bg) 0%, rgba(174, 252, 110, 0.05) 100%);
+    color: var(--button-text);
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+#appLockSettingsBtn:hover,
+#appLockSettingsBtn:focus-visible {
+    background: rgba(174, 252, 110, 0.16);
+    color: var(--primary-color, #aefc6e);
+}
+[data-theme="light"] #appLockSettingsBtn { border-left-color: rgba(0,0,0,.08); }
 #toggleViewButton::before {
     content: '';
     position: absolute;
@@ -1456,6 +1507,15 @@ footer a:hover { color: var(--primary-color); }
         flex-direction: row !important;
         gap: 6px !important;
         width: 100%;
+        /* .more-actions-menu below is `position: absolute; top: calc(100%
+           + 8px)` expecting to anchor right under THIS row. Without a
+           positioned ancestor here, it falls through to .center_nav
+           (position: sticky, two levels up — wraps this row AND the
+           search bar), so "100%" measured its full height instead: the
+           dropdown rendered below the search bar, not under the "⋯"
+           button — looking empty/blank at the button's own position,
+           whether opened by hand or by the tour. */
+        position: relative;
         padding: 2px 0 6px !important;
         overflow-x: auto !important;
         overflow-y: hidden !important;
@@ -1552,6 +1612,14 @@ footer a:hover { color: var(--primary-color); }
         opacity: 1;
         visibility: visible;
         transform: translateY(0);
+    }
+    /* .block_btn clips vertical overflow for its own horizontal-scroll
+       button strip (overflow-y: hidden above) — without this, the dropdown
+       would be correctly positioned right under the row but then clipped
+       away by that same overflow rule the moment it tried to render below
+       the row's own height. */
+    .block_btn:has(.more-actions-menu.open) {
+        overflow: visible !important;
     }
     .more-actions-menu button {
         width: 100% !important;
@@ -2931,12 +2999,19 @@ footer a:hover { color: var(--primary-color); }
     vertical-align: middle;
 }
 .noteContent th {
-    background: var(--primary-color);
-    color: #000;
+    background: var(--th-bg, var(--primary-color));
+    color: var(--th-color, #000);
     font-weight: 700;
     font-size: .9em;
     letter-spacing: .02em;
 }
+/* Dark theme — match the live editor's table header exactly (.lne-editor
+   th in localnoteseditor/styles.css): a rendered note used to switch to a
+   plain green/black header the moment you left the editor, because this
+   rule hard-coded --primary-color + #000 instead of reusing the same
+   --th-bg/--th-color pair the editor already defines for dark mode. */
+:root .noteContent th,
+[data-theme="dark"] .noteContent th { --th-bg: #1d6e2f; --th-color: #aefc6e; }
 .noteContent tr:nth-child(even) td { background: rgba(255,255,255,.02); }
 .noteContent tr:hover td { background: rgba(174,252,110,.04); }
 

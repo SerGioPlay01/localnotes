@@ -47,7 +47,27 @@
             const writer = ds.writable.getWriter();
             writer.write(bytes);
             writer.close();
-            jsonBytes = new Uint8Array(await new Response(ds.readable).arrayBuffer());
+            // Same reasoning as the ZIP import reader: a share link is
+            // attacker-controlled (anyone can hand-craft one), so cap how
+            // much this will inflate rather than buffer an unbounded
+            // amount via Response(...).arrayBuffer().
+            const MAX_DECOMPRESSED = 20 * 1024 * 1024; // 20 MB — a share link is one note, not a library
+            const reader = ds.readable.getReader();
+            const chunks = [];
+            let total = 0;
+            for (;;) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                total += value.byteLength;
+                if (total > MAX_DECOMPRESSED) {
+                    reader.cancel().catch(() => {});
+                    throw new Error('Shared note link is too large');
+                }
+                chunks.push(value);
+            }
+            jsonBytes = new Uint8Array(total);
+            let pos = 0;
+            for (const c of chunks) { jsonBytes.set(c, pos); pos += c.byteLength; }
         }
         const json = new TextDecoder().decode(jsonBytes);
         const data = JSON.parse(json);

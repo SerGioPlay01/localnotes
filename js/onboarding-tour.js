@@ -119,6 +119,17 @@
         if (!toggle || !menu) return;
         menu.classList.toggle('open', open);
         toggle.setAttribute('aria-expanded', String(open));
+        // The menu panel normally sits at z-index 30 — nowhere near the
+        // tour overlay's z-index 10000 dimming layer. Opening it via the
+        // .open class alone left it correctly "open" but still buried
+        // under the dark backdrop, punched through only by the tiny
+        // spotlight cutout around the one target button — the whole panel
+        // (its background, border, the OTHER buttons in it) stayed hidden
+        // in the dark, which is what actually looked like "the menu never
+        // opens". Lifting it above the overlay while the tour is pointing
+        // at something inside it makes the real panel visible instead of
+        // relying on the cutout hole to reveal it.
+        menu.classList.toggle('ln-tour-menu-above', open);
     }
 
     function positionForStep(step) {

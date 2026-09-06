@@ -133,7 +133,7 @@ let currentLang = getCurrentLang();
 // NOTES DATABASE (from backup)
 // ============================================================================
 class NotesDatabase {
-    constructor() { this.dbName = 'LocalNotesDB'; this.dbVersion = 2; this.db = null; }
+    constructor() { this.dbName = 'LocalNotesDB'; this.dbVersion = 2; this.db = null; this._vaultKey = null; this._notesCache = null; this._notesCacheDirty = true; this._notesCachePromise = null; }
     async init() {
         return new Promise((resolve, reject) => {
             const req = indexedDB.open(this.dbName, this.dbVersion);
@@ -158,33 +158,69 @@ class NotesDatabase {
     }
     async saveNote(note) {
         if (!this.db) await this.init();
+        const toStore = await this._encryptNoteForStorage(note);
+        this._notesCacheDirty = true;
         return new Promise((resolve, reject) => {
             const tx = this.db.transaction(['notes'], 'readwrite');
-            const req = tx.objectStore('notes').put(note);
+            const req = tx.objectStore('notes').put(toStore);
             req.onsuccess = () => resolve(req.result);
             req.onerror = () => reject(req.error);
         });
     }
+    // Every note's content/title/tags is a real AES-GCM decrypt now, not a
+    // free IndexedDB read — and getAllNotes() is called from a dozen
+    // independent places (search, tags, calendar, sidebar, backlinks,
+    // command palette...), several of which can fire back-to-back for the
+    // same render (e.g. one keystroke in search). Without caching, each of
+    // those redundantly re-decrypts the entire note list from scratch, and
+    // if several land in the same tick they run as fully parallel decrypt
+    // passes instead of one — this is what was actually behind the high
+    // memory/CPU use, not a leak. The cache is invalidated on any write
+    // (saveNote/deleteNote) and concurrent callers share one in-flight
+    // decrypt pass instead of each starting their own.
     async getAllNotes() {
         if (!this.db) await this.init();
-        return new Promise((resolve, reject) => {
-            const tx = this.db.transaction(['notes'], 'readonly');
-            const req = tx.objectStore('notes').getAll();
-            req.onsuccess = () => resolve(req.result);
-            req.onerror = () => reject(req.error);
-        });
+        if (this._notesCache && !this._notesCacheDirty) return this._notesCache.slice();
+        if (this._notesCachePromise) return (await this._notesCachePromise).slice();
+        this._notesCachePromise = (async () => {
+            const raw = await new Promise((resolve, reject) => {
+                const tx = this.db.transaction(['notes'], 'readonly');
+                const req = tx.objectStore('notes').getAll();
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+            const decrypted = await Promise.all(raw.map(n => this._decryptNoteFromStorage(n)));
+            this._notesCache = decrypted;
+            this._notesCacheDirty = false;
+            return decrypted;
+        })();
+        try {
+            const result = await this._notesCachePromise;
+            return result.slice();
+        } finally {
+            this._notesCachePromise = null;
+        }
     }
     async getNote(id) {
         if (!this.db) await this.init();
-        return new Promise((resolve, reject) => {
+        // Serve from the list cache when it's fresh — same reasoning as
+        // getAllNotes(), and avoids a second independent decrypt of the
+        // same note content that's often already sitting in memory.
+        if (this._notesCache && !this._notesCacheDirty) {
+            const cached = this._notesCache.find(n => n.id === id);
+            if (cached) return { ...cached }; // shallow copy — callers should never be able to mutate the cache by holding this reference
+        }
+        const raw = await new Promise((resolve, reject) => {
             const tx = this.db.transaction(['notes'], 'readonly');
             const req = tx.objectStore('notes').get(id);
             req.onsuccess = () => resolve(req.result);
             req.onerror = () => reject(req.error);
         });
+        return raw ? this._decryptNoteFromStorage(raw) : raw;
     }
     async deleteNote(id) {
         if (!this.db) await this.init();
+        this._notesCacheDirty = true;
         return new Promise((resolve, reject) => {
             const tx = this.db.transaction(['notes'], 'readwrite');
             const req = tx.objectStore('notes').delete(id);
@@ -198,21 +234,29 @@ class NotesDatabase {
     // real past states a user can restore, not the current one.
     async saveVersion(noteId, content, savedAt) {
         if (!this.db) await this.init();
+        const storedContent = this._vaultKey ? await this._fieldEncrypt(content) : content;
         return new Promise((resolve, reject) => {
             const tx = this.db.transaction(['noteVersions'], 'readwrite');
-            const req = tx.objectStore('noteVersions').add({ noteId, content, savedAt });
+            const req = tx.objectStore('noteVersions').add({ noteId, content: storedContent, encrypted: !!this._vaultKey, savedAt });
             req.onsuccess = () => resolve(req.result);
             req.onerror = () => reject(req.error);
         });
     }
     async getVersions(noteId) {
         if (!this.db) await this.init();
-        return new Promise((resolve, reject) => {
+        const raw = await new Promise((resolve, reject) => {
             const tx = this.db.transaction(['noteVersions'], 'readonly');
             const req = tx.objectStore('noteVersions').index('noteId').getAll(noteId);
             req.onsuccess = () => resolve((req.result || []).sort((a, b) => b.savedAt - a.savedAt));
             req.onerror = () => reject(req.error);
         });
+        return Promise.all(raw.map(async v => {
+            if (v.encrypted && this._vaultKey) {
+                try { return { ...v, content: await this._fieldDecrypt(v.content) }; }
+                catch { return { ...v, content: '' }; }
+            }
+            return v;
+        }));
     }
     async deleteVersion(versionId) {
         if (!this.db) await this.init();
@@ -251,6 +295,30 @@ class NotesDatabase {
             req.onerror = () => reject(req.error);
         });
     }
+
+    // Same key/value settings store, but for values that reveal something
+    // about the user's actual notes (tag names, etc.) rather than app
+    // preferences (theme, language, layout) — those stay in plain
+    // saveSetting/getSetting since they're harmless and some are needed
+    // before the vault is even unlocked. Falls back to storing/reading
+    // the value in the clear if the vault isn't ready, rather than
+    // throwing — callers to these two are things like the tag list, which
+    // would rather degrade to "unencrypted for now" than break entirely
+    // during, say, the brief window before first unlock.
+    async saveEncryptedSetting(key, value) {
+        const json = JSON.stringify(value);
+        const stored = this._vaultKey ? await this._fieldEncrypt(json) : json;
+        return this.saveSetting(key, { encrypted: !!this._vaultKey, data: stored });
+    }
+    async getEncryptedSetting(key) {
+        const raw = await this.getSetting(key);
+        if (raw == null) return null;
+        // Pre-vault or legacy shape: the setting itself IS the value.
+        if (typeof raw !== 'object' || !('data' in raw)) return raw;
+        if (!raw.encrypted) { try { return JSON.parse(raw.data); } catch { return null; } }
+        if (!this._vaultKey) return null; // locked — caller should treat as unavailable, not empty-on-purpose
+        try { return JSON.parse(await this._fieldDecrypt(raw.data)); } catch { return null; }
+    }
     async migrateFromLocalStorage() {
         try {
             const existing = await this.getAllNotes();
@@ -272,6 +340,195 @@ class NotesDatabase {
         const p = d.querySelector('p');
         if (p) { const t = p.textContent.trim(); return t.length > 50 ? t.substring(0, 50) + '...' : t; }
         return 'Untitled';
+    }
+
+    // ═══════════════════════════ ENCRYPTION VAULT ═══════════════════════════
+    // Notes are encrypted at rest with a random AES-256 data key that is
+    // never stored directly — instead it's wrapped once per unlock
+    // credential ("slot": 'pin' or 'file', see js/app-lock.js), each with
+    // its own PBKDF2-derived key. This is what lets App Lock's PIN/file
+    // screen BE the real vault unlock instead of a second, independent
+    // check bolted on top of it: unlocking with either credential recovers
+    // the exact same data key, and there's no separate "app lock password"
+    // living apart from the one that actually decrypts your notes.
+
+    get vaultReady() { return !!this._vaultKey; }
+
+    async _vaultSlots() { return (await this.getSetting('vaultSlots')) || []; }
+    async isVaultSetup() { return (await this._vaultSlots()).length > 0; }
+    async hasVaultCredential(slot) { return (await this._vaultSlots()).includes(slot); }
+
+    // Enrolls (or rotates) an unlock credential under `slot`. The first
+    // credential ever enrolled mints a fresh random data key; every
+    // credential after that wraps a copy of the SAME key (recovered from
+    // the already-unlocked session), so any enrolled slot decrypts the
+    // same notes. Throws if called for a 2nd+ slot while locked — the app
+    // only ever calls this from an already-unlocked settings screen.
+    async setVaultCredential(slot, secret) {
+        const slots = await this._vaultSlots();
+        let keyBytes;
+        if (!slots.length) {
+            keyBytes = crypto.getRandomValues(new Uint8Array(32));
+            // extractable: true — unlike the transient per-credential
+            // credKey below, this IS the real data key, and it has to be
+            // re-exportable so a 2nd/3rd credential (file, recovery
+            // phrase...) can wrap a copy of the exact same key later in
+            // this same unlocked session.
+            this._vaultKey = await crypto.subtle.importKey('raw', keyBytes, 'AES-GCM', true, ['encrypt', 'decrypt']);
+        } else {
+            if (!this._vaultKey) throw new Error('Vault must be unlocked to add or change an unlock method');
+            keyBytes = new Uint8Array(await crypto.subtle.exportKey('raw', this._vaultKey));
+        }
+        const salt = crypto.getRandomValues(new Uint8Array(32));
+        const credKey = await this._deriveVaultKey(secret, salt);
+        let bin = ''; for (let i = 0; i < keyBytes.length; i++) bin += String.fromCharCode(keyBytes[i]);
+        const wrapped = await this._rawFieldEncrypt(btoa(bin), credKey);
+        await this.saveSetting('vaultSalt_' + slot, btoa(String.fromCharCode(...salt)));
+        await this.saveSetting('vaultWrapped_' + slot, wrapped);
+        if (!slots.includes(slot)) await this.saveSetting('vaultSlots', [...slots, slot]);
+        if (!slots.length) await this._encryptExistingPlaintext(); // very first credential: migrate pre-vault plaintext
+    }
+
+    // Removes one unlock method. Refuses to remove the last remaining one —
+    // the vault must always stay reachable by at least one credential.
+    async removeVaultCredential(slot) {
+        const slots = await this._vaultSlots();
+        const remaining = slots.filter(s => s !== slot);
+        if (!remaining.length) throw new Error('Cannot remove the last unlock method');
+        await this.saveSetting('vaultSlots', remaining);
+        await this.saveSetting('vaultSalt_' + slot, null);
+        await this.saveSetting('vaultWrapped_' + slot, null);
+    }
+
+    // Tries to unwrap the data key using `secret` against `slot`'s stored
+    // salt/wrapped key. Returns true/false; never throws for a wrong
+    // secret (the AES-GCM auth tag failing IS the "wrong PIN/file" check —
+    // no separate password comparison exists to fall out of sync).
+    async unlockVaultWithCredential(slot, secret) {
+        const saltB64 = await this.getSetting('vaultSalt_' + slot);
+        const wrapped = await this.getSetting('vaultWrapped_' + slot);
+        if (!saltB64 || !wrapped) return false;
+        const salt = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
+        const credKey = await this._deriveVaultKey(secret, salt);
+        try {
+            const keyB64 = await this._rawFieldDecrypt(wrapped, credKey);
+            const bin = atob(keyB64);
+            const bytes = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+            this._vaultKey = await crypto.subtle.importKey('raw', bytes, 'AES-GCM', true, ['encrypt', 'decrypt']);
+            return true;
+        } catch { return false; }
+    }
+
+    // Drops the in-memory data key (used for idle-timeout re-locking) —
+    // the key has to be re-derived from a real credential again, it isn't
+    // cached anywhere on disk.
+    // Also drops the decrypted notes cache (see getAllNotes) — otherwise
+    // "locked" would only be cosmetic: the plaintext from before locking
+    // would still be sitting in this array in memory, inspectable via
+    // devtools regardless of the lock screen being up.
+    lockVaultSession() { this._vaultKey = null; this._notesCache = null; this._notesCacheDirty = true; }
+
+    // Deliberately its own, self-contained PBKDF2 → AES-256-GCM key
+    // derivation — NOT AdvancedEncryption.deriveKeys(), which hard-binds
+    // its key to window.location.origin (== 'https://localnotes-three
+    // .vercel.app' or localhost) to stop a phishing clone from decrypting
+    // *exported* files meant for the real site. The vault's credentials
+    // never leave this device and never cross a domain boundary, so that
+    // threat model doesn't apply here — and binding it anyway would mean
+    // the vault (and the whole app, since it's mandatory) becomes
+    // permanently uncreatable on any self-hosted/forked/preview deployment
+    // that isn't exactly that one domain.
+    async _deriveVaultKey(secret, salt) {
+        const baseKey = await crypto.subtle.importKey('raw', new TextEncoder().encode(secret), 'PBKDF2', false, ['deriveBits']);
+        const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt, iterations: 600000, hash: 'SHA-512' }, baseKey, 256);
+        return crypto.subtle.importKey('raw', bits, 'AES-GCM', false, ['encrypt', 'decrypt']);
+    }
+
+    // Re-saves any note/version that predates the vault (encrypted !== true)
+    // so an upgrade from an older version doesn't leave old content in the
+    // clear once a master password has been set.
+    async _encryptExistingPlaintext() {
+        const rawNotes = await new Promise((resolve, reject) => {
+            const tx = this.db.transaction(['notes'], 'readonly');
+            const req = tx.objectStore('notes').getAll();
+            req.onsuccess = () => resolve(req.result || []);
+            req.onerror = () => reject(req.error);
+        });
+        for (const n of rawNotes) {
+            if (n.encrypted) continue;
+            await this.saveNote(n);
+        }
+        const rawVersions = await new Promise((resolve, reject) => {
+            const tx = this.db.transaction(['noteVersions'], 'readonly');
+            const req = tx.objectStore('noteVersions').getAll();
+            req.onsuccess = () => resolve(req.result || []);
+            req.onerror = () => reject(req.error);
+        });
+        for (const v of rawVersions) {
+            if (v.encrypted) continue;
+            const encContent = await this._fieldEncrypt(v.content);
+            await new Promise((resolve, reject) => {
+                const tx = this.db.transaction(['noteVersions'], 'readwrite');
+                const req = tx.objectStore('noteVersions').put({ ...v, content: encContent, encrypted: true });
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+        }
+        // Tag *names* the user chose (unlike note content) used to live in
+        // the plain settings store — migrate them in place too, right now,
+        // instead of waiting for the next unrelated tag edit to trigger it.
+        const rawTags = await this.getSetting('tags');
+        if (rawTags && Array.isArray(rawTags)) {
+            await this.saveEncryptedSetting('tags', rawTags);
+        }
+    }
+
+    async _encryptNoteForStorage(note) {
+        if (!this._vaultKey) return note; // gate.js guarantees this shouldn't happen in normal use
+        const out = { ...note, encrypted: true };
+        out.content = await this._fieldEncrypt(note.content || '');
+        out.title = await this._fieldEncrypt(note.title || '');
+        if (note.tags) out.tags = await this._fieldEncrypt(JSON.stringify(note.tags));
+        return out;
+    }
+
+    async _decryptNoteFromStorage(note) {
+        if (!note || !note.encrypted) return note; // legacy plaintext note, not yet migrated
+        if (!this._vaultKey) return note; // shouldn't happen — vault gate blocks app init until unlocked
+        try {
+            const out = { ...note };
+            out.content = await this._fieldDecrypt(note.content);
+            out.title = await this._fieldDecrypt(note.title);
+            if (note.tags) { try { out.tags = JSON.parse(await this._fieldDecrypt(note.tags)); } catch { out.tags = []; } }
+            return out;
+        } catch (e) {
+            console.error('Failed to decrypt note', note.id, e);
+            return { ...note, content: '', title: '⚠️ ' + (typeof t === 'function' ? t('decryptFailed') || 'Could not decrypt' : 'Could not decrypt') };
+        }
+    }
+
+    // Cheap per-field AES-GCM using the already-derived session key — no KDF
+    // here, that already happened once in unlockVault()/setupVault().
+    async _fieldEncrypt(text) { return this._rawFieldEncrypt(text, this._vaultKey); }
+    async _fieldDecrypt(blob) { return this._rawFieldDecrypt(blob, this._vaultKey); }
+
+    async _rawFieldEncrypt(text, key) {
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+        const cipherBuf = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(text));
+        const out = new Uint8Array(12 + cipherBuf.byteLength);
+        out.set(iv, 0); out.set(new Uint8Array(cipherBuf), 12);
+        let bin = ''; for (let i = 0; i < out.length; i++) bin += String.fromCharCode(out[i]);
+        return btoa(bin);
+    }
+
+    async _rawFieldDecrypt(blob, key) {
+        const bin = atob(blob);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const iv = bytes.slice(0, 12), cipher = bytes.slice(12);
+        const plainBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, cipher);
+        return new TextDecoder().decode(plainBuf);
     }
 }
 
@@ -4060,6 +4317,7 @@ function initializeEventListeners() {
 
     // App Lock button: tap = lock now (if enabled), hold / right-click = settings
     const lockBtn = document.getElementById('appLockBtn');
+    const lockSettingsBtn = document.getElementById('appLockSettingsBtn');
     if (lockBtn) {
         const LONG_PRESS_MS = 500;
         const HOLD_CLASS = 'ln-lock-holding';
@@ -4089,13 +4347,12 @@ function initializeEventListeners() {
             const enabled = window.AppLock && window.AppLock.isEnabled();
             lockBtn.classList.toggle('ln-lock-active', !!enabled);
             const label = (typeof t === 'function' ? t('appLockBtn') : null) || 'Lock';
-            // When lock is on, a tap locks the app immediately — reaching
-            // settings needs a hold or right-click, and until now nothing
-            // on the button itself hinted that (only a title tooltip,
-            // invisible on touch). The small gear badge is a permanent,
-            // always-visible cue that there's more behind this button.
+            // The gear is now its own always-visible button next to this
+            // one (#appLockSettingsBtn) rather than a badge hinting at a
+            // hidden hold/right-click gesture — so this button's own label
+            // only needs to reflect lock state, not "there's more here".
             lockBtn.innerHTML = enabled
-                ? `<i class="bi bi-shield-lock-fill"></i> ${label}<i class="bi bi-gear-fill ln-lock-gear-badge" aria-hidden="true"></i>`
+                ? `<i class="bi bi-shield-lock-fill"></i> ${label}`
                 : `<i class="bi bi-shield-lock"></i> ${label}`;
             const titleHint = (typeof t === 'function' ? t('lockNowTitle') : null)
                 || 'Tap to lock. Hold or right-click for settings.';
@@ -4113,6 +4370,13 @@ function initializeEventListeners() {
                 }
             }, 300);
         };
+
+        if (lockSettingsBtn) {
+            const settingsLabel = (typeof t === 'function' ? t('lockSettingsTitle') : null) || 'App Lock settings';
+            lockSettingsBtn.title = settingsLabel;
+            lockSettingsBtn.setAttribute('aria-label', settingsLabel);
+            lockSettingsBtn.addEventListener('click', openLockSettings);
+        }
 
         const clearLongPress = () => {
             if (longPressTimer) {
@@ -4196,6 +4460,8 @@ function initializeEventListeners() {
 
     try {
         await notesDB.init();
+        window.notesDB = notesDB; // AppLock (js/app-lock.js) needs this to unlock/encrypt via the vault
+        if (window.AppLock) await window.AppLock.ensureUnlocked();
         await notesDB.migrateFromLocalStorage();
         await loadNotes();
         restoreViewMode();

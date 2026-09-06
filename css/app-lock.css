@@ -601,6 +601,72 @@ button.ln-lock-file-label:active {
 }
 .ln-lss-hint i { flex-shrink: 0; margin-top: 2px; color: #f59e0b; }
 
+/* ── First-run setup screen: "can't be recovered" acknowledgement ────────── */
+.ln-lock-ack {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 14px 0 4px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    cursor: pointer;
+    text-align: left;
+}
+.ln-lock-ack input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; }
+.ln-lock-ack span {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--text-secondary, #b3b3b3);
+}
+[data-theme="light"] .ln-lock-ack span { color: #495057; }
+
+/* ── Recovery phrase display + "forgot?" link ────────────────────────────── */
+.ln-lock-recovery-phrase {
+    margin: 14px 0;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: var(--bg-secondary, #111);
+    border: 1px solid var(--border-color, #272727);
+    color: var(--primary-color, #aefc6e);
+    font: 600 15px/1.7 ui-monospace, 'SF Mono', Consolas, monospace;
+    letter-spacing: .02em;
+    text-align: center;
+    word-spacing: 6px;
+    user-select: all;
+}
+[data-theme="light"] .ln-lock-recovery-phrase { background: #f1f3f5; color: #1d6e2f; border-color: #dee2e6; }
+
+.ln-lock-forgot-link {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--text-secondary, #888);
+    font-size: 12.5px;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    text-align: center;
+}
+.ln-lock-forgot-link:hover { color: var(--primary-color, #aefc6e); }
+
+.ln-lock-recovery-input {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 9px;
+    border: 1px solid var(--border-color, #272727);
+    background: var(--input-bg, #1a1a1a);
+    color: var(--input-text, #fff);
+    font: 14px/1.5 ui-monospace, 'SF Mono', Consolas, monospace;
+    resize: vertical;
+}
+
 /* ── Generate access file button ─────────────────────────────────────────── */
 .ln-lss-generate-btn {
     display: flex;

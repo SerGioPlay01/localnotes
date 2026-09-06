@@ -24,13 +24,13 @@ const TAG_COLORS = [
 
 async function getTags() {
     try {
-        const tags = await notesDB.getSetting('tags');
+        const tags = await notesDB.getEncryptedSetting('tags');
         return tags || [];
     } catch (e) { return []; }
 }
 
 async function saveTags(tags) {
-    await notesDB.saveSetting('tags', tags);
+    await notesDB.saveEncryptedSetting('tags', tags);
 }
 
 async function createTag(name, colorId) {

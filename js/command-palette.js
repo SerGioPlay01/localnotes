@@ -128,7 +128,7 @@
                 run: function () { window.themeManager.toggleTheme(); }
             });
         }
-        if (window.AppLock && typeof window.AppLock.isEnabled === 'function' && window.AppLock.isEnabled()) {
+        if (window.AppLock && typeof window.AppLock.isUnlocked === 'function' && window.AppLock.isUnlocked()) {
             cmds.push({
                 type: 'cmd', icon: 'bi-lock', label: t('cpLockNow', 'Lock now'),
                 run: function () { window.AppLock.lockNow(); }
@@ -240,9 +240,11 @@
     function isOpen() { return !!(overlay && overlay.classList.contains('lnp-open')); }
 
     function open() {
-        // Never expose note titles/search over a locked app
-        if (window.AppLock && typeof window.AppLock.isEnabled === 'function' &&
-            window.AppLock.isEnabled() && !window.AppLock.isUnlocked()) return;
+        // Never expose note titles/search over a locked app — with the
+        // vault mandatory, "not unlocked" alone is the correct guard now
+        // (there's no longer a separate "configured but not this session"
+        // state to also check for).
+        if (window.AppLock && typeof window.AppLock.isUnlocked === 'function' && !window.AppLock.isUnlocked()) return;
         buildDOM();
         notesCache = null;
         input.value = '';

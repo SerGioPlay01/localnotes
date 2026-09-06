@@ -110,3 +110,13 @@
 @media (max-width: 480px) {
     .ln-tour-tooltip { width: calc(100vw - 32px); padding: 16px; }
 }
+
+/* Mobile "More actions" dropdown, only while the tour is spotlighting a
+   button inside it (see setMoreMenuOpen in onboarding-tour.js). The panel
+   is normally z-index 30 — far below this overlay's 10000 — so simply
+   toggling its .open class left the whole dropdown hidden under the dark
+   backdrop, visible only through the tiny per-button spotlight hole.
+   Raising it above the overlay here makes the actual panel show through. */
+.more-actions-menu.ln-tour-menu-above {
+    z-index: 10002;
+}

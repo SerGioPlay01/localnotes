@@ -58,12 +58,25 @@
         return entries;
     }
 
+    // A crafted entry can claim a tiny compressed size but decompress to
+    // gigabytes (DEFLATE's ratio can reach ~1000:1) — with no cap, reading
+    // an imported "export.zip" straight into a single arrayBuffer() could
+    // exhaust memory and crash the tab. This caps both the compressed
+    // input this code will even attempt to inflate, and the decompressed
+    // output it will accumulate, at sizes generous enough for any real
+    // Notion/Keep/Evernote text export.
+    const MAX_ZIP_ENTRY_COMPRESSED = 50 * 1024 * 1024;   // 50 MB packed
+    const MAX_ZIP_ENTRY_DECOMPRESSED = 200 * 1024 * 1024; // 200 MB unpacked
+
     async function extractZipEntry(arrayBuffer, entry) {
         const view = new DataView(arrayBuffer);
         const bytes = new Uint8Array(arrayBuffer);
         const LFH_SIG = 0x04034b50;
         const off = entry.localHeaderOffset;
         if (view.getUint32(off, true) !== LFH_SIG) throw new Error('Bad local file header for ' + entry.fileName);
+        if (entry.compressedSize > MAX_ZIP_ENTRY_COMPRESSED) {
+            throw new Error('ZIP entry too large: ' + entry.fileName);
+        }
         const nameLen = view.getUint16(off + 26, true);
         const extraLen = view.getUint16(off + 28, true);
         const dataStart = off + 30 + nameLen + extraLen;
@@ -78,8 +91,27 @@
             const writer = ds.writable.getWriter();
             writer.write(compressedData);
             writer.close();
-            const buf = await new Response(ds.readable).arrayBuffer();
-            return new Uint8Array(buf);
+            // Read progressively rather than buffering the whole thing via
+            // Response(...).arrayBuffer() unconditionally, so a bomb entry
+            // gets caught (and its memory released) partway through
+            // inflating instead of only after it's already fully expanded.
+            const reader = ds.readable.getReader();
+            const chunks = [];
+            let total = 0;
+            for (;;) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                total += value.byteLength;
+                if (total > MAX_ZIP_ENTRY_DECOMPRESSED) {
+                    reader.cancel().catch(() => {});
+                    throw new Error('ZIP entry expands too large: ' + entry.fileName);
+                }
+                chunks.push(value);
+            }
+            const out = new Uint8Array(total);
+            let pos = 0;
+            for (const c of chunks) { out.set(c, pos); pos += c.byteLength; }
+            return out;
         }
         throw new Error('Unsupported ZIP compression method (' + entry.compressionMethod + ') for ' + entry.fileName);
     }

@@ -2209,11 +2209,56 @@ footer a:hover { color: var(--primary-color); }
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background .15s ease, border-color .15s ease, color .15s ease, transform .1s ease, box-shadow .15s ease;
 }
 .modal-buttons-container button:hover { background: var(--button-hover); transform: translateY(-1px); }
-.modal-buttons-container button.save { background: var(--primary-color); color: #ffffff; border-color: var(--primary-color); }
-.modal-buttons-container button.cancel { background: #dc3545; color: white; border-color: #dc3545; }
+.modal-buttons-container button:active { transform: translateY(0) scale(.98); }
+.modal-buttons-container button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--modal-bg, #1a1a1a), 0 0 0 4px var(--primary-color, #28a745);
+}
+.modal-buttons-container button.save {
+    background: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 16px rgba(40, 167, 69, .28);
+}
+.modal-buttons-container button.save:hover { box-shadow: 0 6px 20px rgba(40, 167, 69, .38); }
+/* Unsaved-changes indicator — a small dot on the Save button, shown while
+   the note being edited differs from what's saved (see _updateUnsavedIndicator
+   in index.js). This is a CSS-generated ::after, not a DOM child, on purpose:
+   updateButtonTexts() rewrites saveNoteButton's innerHTML on every language
+   switch, which would silently delete a real child element but leaves a
+   pseudo-element (driven only by the .has-unsaved class) untouched. */
+.modal-buttons-container button.save { position: relative; overflow: visible; }
+.modal-buttons-container button.save.has-unsaved::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #f1c40f;
+    border: 2px solid var(--modal-bg, #1a1a1a);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .15);
+    pointer-events: none;
+}
+/* Cancelling an edit is routine, not destructive — a solid red button
+   read as an alarm for something the user does constantly. A quiet
+   outline keeps it clearly secondary to Save without crying wolf; actual
+   destructive actions (delete) keep their own solid-red treatment
+   elsewhere and aren't affected by this. */
+.modal-buttons-container button.cancel {
+    background: transparent;
+    color: var(--text-secondary, #999);
+    border-color: var(--border-color);
+}
+.modal-buttons-container button.cancel:hover {
+    background: rgba(220, 53, 69, 0.08);
+    border-color: rgba(220, 53, 69, 0.4);
+    color: #e05565;
+}
 #import-loading-ov {
     position: fixed;
     inset: 0;
@@ -2273,6 +2318,41 @@ footer a:hover { color: var(--primary-color); }
     margin-bottom: 25px;
     font-size: 1.5em;
     font-family: 'Intro', sans-serif;
+}
+
+/* ── Import progress overlay ─────────────────────────────────────────── */
+.ln-import-progress-overlay {
+    position: fixed; inset: 0; z-index: 2100;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+}
+.ln-import-progress-panel {
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    padding: 32px 36px;
+    background: var(--modal-bg);
+    border: 1px solid var(--border-color, #272727);
+    border-radius: 18px;
+    box-shadow: 0 16px 60px rgba(0,0,0,.4);
+    animation: modalSlideUp 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.ln-import-progress-spinner {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 3px solid rgba(174, 252, 110, 0.18);
+    border-top-color: var(--primary-color, #aefc6e);
+    animation: ln-import-spin 0.8s linear infinite;
+}
+@keyframes ln-import-spin { to { transform: rotate(360deg); } }
+.ln-import-progress-text {
+    font-size: 15px; font-weight: 600;
+    color: var(--text-color, #fff);
+}
+.ln-import-progress-count {
+    font-size: 13px;
+    color: var(--text-secondary, #999);
+    min-height: 16px;
+    font-variant-numeric: tabular-nums;
 }
 .export-options {
     display: flex;

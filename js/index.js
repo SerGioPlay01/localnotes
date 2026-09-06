@@ -1750,6 +1750,11 @@ function openNoteSettings(noteId) {
 
         // Wire close/cancel
         const closeOv = () => {
+            // Settings (tags/color/pin/status/priority) mutate window._noteMeta
+            // directly as the user clicks, outside any editor 'input' event —
+            // recheck the unsaved-changes indicator now that this panel is
+            // done changing it, whichever button closed it.
+            if (typeof window._checkEditorDirty === 'function') window._checkEditorDirty();
             const panel = ov.querySelector('.nsm-panel');
             if (panel) {
                 panel.style.transition = 'transform 0.25s ease, opacity 0.2s ease';
@@ -2058,6 +2063,107 @@ function openNoteSettings(noteId) {
 }
 
 // ============================================================================
+// UNSAVED CHANGES INDICATOR (editor modal only) — a small Notion/Docs-style
+// cue that the note being edited differs from what's on disk. Compares the
+// live editor content + note metadata against a baseline snapshot captured
+// when the modal opened.
+//
+// The baseline arrives in two independent pieces because, for an existing
+// note, window._noteMeta only becomes correct once notesDB.getNote()
+// resolves — which can land before OR after the editor itself is ready
+// (encrypted vaults in particular can make the DB read the slower of the
+// two). Until BOTH pieces have been captured at least once, the indicator
+// stays hidden rather than briefly flashing "unsaved" against a stale
+// default meta object.
+// ============================================================================
+let _editorBaseline = null;
+
+function _resetEditorBaseline() {
+    _editorBaseline = { content: null, meta: null };
+    _updateUnsavedIndicator();
+}
+
+function _snapshotNoteMeta(m) {
+    m = m || {};
+    return {
+        tags: (m.tags || []).slice().sort(),
+        dueDate: m.dueDate || null,
+        color: m.color || '',
+        pinned: !!m.pinned,
+        taskStatus: m.taskStatus || 'todo',
+        taskPriority: m.taskPriority || ''
+    };
+}
+
+function _getCurrentEditorContent() {
+    if (typeof window.isLNMarkdownMode === 'function' && window.isLNMarkdownMode()) {
+        return (typeof window.getLNEditorContent === 'function' ? window.getLNEditorContent() : '').trim();
+    }
+    if (typeof localNotesEditorInstance !== 'undefined' && localNotesEditorInstance) {
+        return localNotesEditorInstance.getContent().trim();
+    }
+    return '';
+}
+
+function _captureContentBaseline() {
+    if (!_editorBaseline) _editorBaseline = { content: null, meta: null };
+    _editorBaseline.content = _getCurrentEditorContent();
+    _updateUnsavedIndicator();
+}
+
+function _captureMetaBaseline() {
+    if (!_editorBaseline) _editorBaseline = { content: null, meta: null };
+    _editorBaseline.meta = _snapshotNoteMeta(window._noteMeta);
+    _updateUnsavedIndicator();
+}
+
+function _isEditorDirty() {
+    if (!_editorBaseline || _editorBaseline.content === null || _editorBaseline.meta === null) return false;
+    if (_getCurrentEditorContent() !== _editorBaseline.content) return true;
+    const cur = _snapshotNoteMeta(window._noteMeta);
+    const base = _editorBaseline.meta;
+    return cur.dueDate !== base.dueDate ||
+        cur.color !== base.color ||
+        cur.pinned !== base.pinned ||
+        cur.taskStatus !== base.taskStatus ||
+        cur.taskPriority !== base.taskPriority ||
+        JSON.stringify(cur.tags) !== JSON.stringify(base.tags);
+}
+
+// Toggles a class on the Save button rather than writing into its
+// innerHTML — updateButtonTexts() rewrites that innerHTML on every language
+// switch, which would silently wipe out a DOM-based badge. className/title
+// survive that rewrite untouched.
+function _updateUnsavedIndicator() {
+    const btn = document.getElementById('saveNoteButton');
+    if (!btn) return;
+    const dirty = _isEditorDirty();
+    btn.classList.toggle('has-unsaved', dirty);
+    if (dirty) {
+        const label = (typeof t === 'function' ? t('unsavedChanges') : null) || 'Unsaved changes';
+        btn.setAttribute('title', label);
+    } else {
+        btn.removeAttribute('title');
+    }
+}
+// Exposed so the note-settings panel (its Apply/Cancel mutate
+// window._noteMeta directly, outside any editor 'input' event) can trigger
+// a recheck when it closes.
+window._checkEditorDirty = _updateUnsavedIndicator;
+
+// One delegated listener covers both the rich-text editor and the markdown
+// textarea (js/markdown.js swaps one for the other inside this same
+// container) — both are native inputs and their 'input' events bubble.
+(function initUnsavedIndicatorListener() {
+    const attach = () => {
+        const container = document.getElementById('editorContainer');
+        if (container) container.addEventListener('input', _updateUnsavedIndicator);
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attach);
+    else attach();
+})();
+
+// ============================================================================
 // OPEN/CLOSE MODAL (adapted for LocalNotesEditor, no TinyMCE)
 // ============================================================================
 function openModal(noteId, noteContent, noteCreationTime) {
@@ -2069,6 +2175,7 @@ function openModal(noteId, noteContent, noteCreationTime) {
     document.body.dataset.scrollY = scrollY;
 
     currentNoteId = noteId || null;
+    _resetEditorBaseline();
 
     // Init meta from existing note
     if (noteId) {
@@ -2083,10 +2190,12 @@ function openModal(noteId, noteContent, noteCreationTime) {
                     taskPriority: note.taskPriority || ''
                 };
             }
-        }).catch(() => {});
+            _captureMetaBaseline();
+        }).catch(() => { _captureMetaBaseline(); });
     } else {
         window._noteMeta = { tags: [], dueDate: window._currentNoteDueDate || null, color: '', pinned: false, taskStatus: 'todo', taskPriority: '' };
         window._currentNoteDueDate = null;
+        _captureMetaBaseline();
     }
 
     // Wire settings button
@@ -2142,6 +2251,7 @@ function openModal(noteId, noteContent, noteCreationTime) {
                     localNotesEditorInstance.setContent('<p><br></p>');
                     currentNoteId = null;
                 }
+                _captureContentBaseline();
 
                 // 2) NOW reveal the modal — the editor already has its final
                 //    content, so this first paint is the only one it needs.
@@ -2239,6 +2349,7 @@ function openModal(noteId, noteContent, noteCreationTime) {
                 taskPriority: meta.taskPriority || ''
             };
             await notesDB.saveNote(note);
+            _resetEditorBaseline();
             modal.style.display = 'none';
             document.body.classList.remove('modal-open');
             const savedY = parseInt(document.body.dataset.scrollY || '0', 10);
@@ -2275,6 +2386,7 @@ function closeModal() {
         if (typeof localNotesEditorInstance._removeCtx === 'function') localNotesEditorInstance._removeCtx();
         localNotesEditorInstance.setContent('');
     }
+    _resetEditorBaseline();
 }
 
 // ============================================================================

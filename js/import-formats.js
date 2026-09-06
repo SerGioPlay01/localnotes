@@ -133,8 +133,38 @@
         return results;
     }
 
+    // ── Import progress overlay ─────────────────────────────────────────
+    // None of the three import paths (Notion/Evernote/Keep) showed any
+    // feedback between "pick a file" and the final success/error alert —
+    // for a zip with a few hundred pages, unzipping + parsing + sanitizing
+    // + encrypting each one sequentially is a real few seconds with a
+    // frozen-looking UI in between. This shows a small overlay for that
+    // whole window, with a live "imported so far" count.
+    let _importOverlay = null, _importCountEl = null;
+    function showImportProgress() {
+        if (_importOverlay) return;
+        _importOverlay = document.createElement('div');
+        _importOverlay.className = 'ln-import-progress-overlay';
+        _importOverlay.innerHTML =
+            '<div class="ln-import-progress-panel">' +
+                '<div class="ln-import-progress-spinner"></div>' +
+                '<div class="ln-import-progress-text">' + escapeHtmlLocal(t('importingNotes', 'Importing your notes…')) + '</div>' +
+                '<div class="ln-import-progress-count" id="ln-import-progress-count"></div>' +
+            '</div>';
+        document.body.appendChild(_importOverlay);
+        _importCountEl = _importOverlay.querySelector('#ln-import-progress-count');
+    }
+    function updateImportProgress(count) {
+        if (_importCountEl) _importCountEl.textContent = (t('importedSoFar', null) || '{count} imported').replace('{count}', count);
+    }
+    function hideImportProgress() {
+        if (_importOverlay && _importOverlay.parentNode) _importOverlay.parentNode.removeChild(_importOverlay);
+        _importOverlay = null; _importCountEl = null;
+    }
+
     // ── Shared save helper ──────────────────────────────────────────────
 
+    let _importSavedCount = 0;
     async function saveImportedNote(html) {
         const id = typeof secureNoteId === 'function' ? secureNoteId() : ('note_' + Date.now() + '_' + Math.random().toString(36).slice(2));
         const now = Date.now();
@@ -142,9 +172,12 @@
             id, content: html, creationTime: now, lastModified: now,
             title: window.notesDB.extractTitle(html)
         });
+        updateImportProgress(++_importSavedCount);
     }
 
     function reportResult(imported, errors) {
+        hideImportProgress();
+        _importSavedCount = 0;
         if (imported > 0) {
             const msg = errors > 0
                 ? (t('importCompletedWithErrors', null) || `Imported ${imported}, errors: ${errors}`).replace('{count}', imported).replace('{errors}', errors)
@@ -209,6 +242,7 @@
     }
 
     async function importNotionSource(files) {
+        showImportProgress();
         let imported = 0, errors = 0;
         for (const file of files) {
             try {
@@ -278,6 +312,7 @@
     }
 
     async function importEvernoteEnex(files) {
+        showImportProgress();
         let imported = 0, errors = 0;
         for (const file of files) {
             try {
@@ -339,6 +374,7 @@
     }
 
     async function importGoogleKeepSource(files) {
+        showImportProgress();
         let imported = 0, errors = 0;
         const jsonFiles = []; // { name, text }
 

@@ -1868,6 +1868,7 @@ textarea.lne-inp { resize: vertical; }
     position: absolute;
     z-index: 99997;
     display: flex;
+    flex-wrap: nowrap;
     width: fit-content;
     gap: 2px;
     background: var(--modal-bg, #1a1a1a);
@@ -1877,11 +1878,26 @@ textarea.lne-inp { resize: vertical; }
     box-shadow: 0 8px 32px rgba(0,0,0,.55);
     animation: lneIn .15s ease;
     pointer-events: all;
+    /* Tables (and other context toolbars built by the same _ctxBar() helper
+       in core.js) can have well over a dozen buttons — bold/table/rows/
+       columns/merge/etc. Without a cap this just runs off both sides of a
+       phone screen with no way to reach the rest, so the row itself is
+       always allowed to scroll horizontally rather than only relying on
+       JS repositioning (which can only shift the whole bar, not fit it). */
+    max-width: calc(100vw - 16px);
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
 }
+.lne-ctx-toolbar-float::-webkit-scrollbar { height: 6px; }
+.lne-ctx-toolbar-float::-webkit-scrollbar-thumb { background: var(--border-color, #333); border-radius: 4px; }
+.lne-ctx-toolbar-float::-webkit-scrollbar-track { background: transparent; }
 
 .lne-ctx-btn {
     display: inline-flex; align-items: center; justify-content: center;
     width: 30px; height: 30px;
+    flex-shrink: 0; /* keep real button size and let the row scroll instead of squishing icons */
     border: 1px solid transparent; border-radius: 5px;
     background: transparent; color: var(--text-color, #e0e0e0);
     cursor: pointer; font-size: 14px; transition: all .12s;
@@ -2061,11 +2077,16 @@ textarea.lne-inp { resize: vertical; }
 @media (max-width: 768px) {
     /* Larger touch targets for ctx toolbar */
     .lne-ctx-toolbar-float { padding: 5px; gap: 3px; }
-    .lne-ctx-btn { width: 40px; height: 40px; font-size: 17px; }
+    .lne-ctx-btn { width: 40px; height: 40px; font-size: 17px; flex-shrink: 0; }
     /* Hide tooltip on touch */
     .lne-ctx-btn::after { display: none; }
     /* На мобильных тулбар fixed — убираем тень чтобы не перекрывал */
     .lne-ctx-toolbar-float { box-shadow: 0 4px 20px rgba(0,0,0,.7); }
+    /* Touch scrolling: no visible scrollbar, fingers do the work. When the
+       row is wider than the screen (e.g. the 13-button table toolbar) it
+       now scrolls instead of overflowing past the screen edge. */
+    .lne-ctx-toolbar-float { scrollbar-width: none; }
+    .lne-ctx-toolbar-float::-webkit-scrollbar { display: none; }
     /* Toolbar — single scrollable row, no wrapping; sticky so it stays visible while scrolling.
        `.lne-toolbar` itself (this element) is the sticky, non-scrolling
        shell — it never gets overflow-x, precisely so an absolutely

@@ -307,6 +307,114 @@ button.lne-tpl-btn.lne-btn {
 .lne-sel-font     { min-width: 108px; max-width: 160px; }
 .lne-sel-size     { min-width: 56px;  max-width: 72px; }
 
+/* ═══════════════ DESKTOP TOOLBAR — MODERNIZED (2026) ═══════════════════
+   Pointer-driven layout only — mirrors the `max-width:768px` breakpoint
+   used elsewhere in this file for the (already-tuned) touch toolbar, so
+   neither treatment leaks into the other.
+
+   The look follows where mainstream rich editors (Notion, Linear, Craft,
+   Docs) landed by 2026: hard 1px dividers give way to soft "chip" group
+   backgrounds — whitespace + a faint fill carries the grouping instead of
+   a vertical rule; hover is a calm fill + 1px lift rather than a scale
+   pop; the active/toggled state reads as a filled pill (like a selected
+   segmented control), not just a tinted outline; native <select> boxes
+   become borderless rounded pills with a custom chevron so they match the
+   buttons instead of looking like a stray form control; and the color
+   swatch becomes a small badge dot overlapping the glyph instead of a bar
+   stacked underneath it. */
+@media (min-width: 769px) and (pointer: fine) {
+    .lne-toolbar { padding: 8px 12px; }
+    /* `gap` here is the ONLY thing spacing groups apart now — `.lne-sep`
+       keeps zero margin of its own so the rhythm between every pair of
+       groups is identical, whether or not a separator sits between them.
+       Row-to-row spacing gets a touch more air than in-row spacing so the
+       two rows still read as one connected block, not two stacked ones. */
+    .lne-toolbar-row { gap: 10px; padding: 2px 0; }
+    /* No hard rule between the two rows — the whitespace-only grouping
+       used between chips carries over here too, so the toolbar reads as
+       one connected surface instead of two bars stacked on top of each
+       other. */
+    .lne-toolbar-row + .lne-toolbar-row { border-top: none; margin-top: 3px; }
+
+    /* Chip clusters replace hairline-separated icon rows */
+    .lne-grp {
+        gap: 1px;
+        padding: 3px;
+        border-radius: 10px;
+        background: color-mix(in srgb, var(--text-color, #fff) 4%, transparent);
+        transition: background .15s ease;
+    }
+    [data-theme="light"] .lne-grp { background: color-mix(in srgb, #000 3.5%, transparent); }
+
+    /* Separators are pure whitespace now — the chip fills above already
+       carry the grouping, so a line on top of them just added noise. The
+       row's own `gap` does all the spacing, so these collapse to 0. */
+    .lne-sep { display: none; }
+
+    /* Buttons — a touch smaller and calmer: fill-only hover with a subtle
+       lift instead of the old scale-pop, filled pill for the pressed /
+       toggled state instead of a bordered outline */
+    .lne-btn {
+        width: 31px; height: 31px;
+        border-radius: 7px;
+        border-color: transparent;
+        transition: background .14s ease, color .14s ease, transform .12s cubic-bezier(.2,.8,.3,1), box-shadow .14s ease;
+    }
+    .lne-btn i { font-size: 15.5px; }
+    .lne-btn:hover {
+        background: color-mix(in srgb, var(--text-color, #fff) 9%, transparent);
+        border-color: transparent;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 6px rgba(0,0,0,.18);
+    }
+    [data-theme="light"] .lne-btn:hover { box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+    .lne-btn:active {
+        transform: translateY(0) scale(.94);
+        background: var(--primary-color, #28a745);
+        color: #fff;
+        box-shadow: none;
+    }
+    .lne-btn.active {
+        background: color-mix(in srgb, var(--primary-color, #28a745) 18%, transparent);
+        color: var(--primary-color, #28a745);
+        border-color: transparent;
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary-color, #28a745) 35%, transparent);
+    }
+
+    /* Color pickers — a small badge dot overlapping the glyph, not a bar
+       stacked underneath it */
+    .lne-color-btn { flex-direction: row; position: relative; }
+    .lne-color-btn .lne-cbar {
+        position: absolute; right: 4px; bottom: 4px;
+        width: 8px; height: 8px; border-radius: 50%;
+        box-shadow: 0 0 0 2px var(--bg-secondary, #111);
+    }
+    [data-theme="light"] .lne-color-btn .lne-cbar { box-shadow: 0 0 0 2px #f8f9fa; }
+    .lne-color-btn .lne-cbar-bg { border: 1px solid var(--border-color, #444); }
+
+    /* Selects — borderless rounded pills with a custom chevron, matching
+       the buttons instead of reading as a native form control */
+    .lne-sel {
+        height: 30px;
+        border: none;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--text-color, #fff) 5%, transparent);
+        padding: 0 24px 0 10px;
+        font-size: 12.5px; font-weight: 500;
+        appearance: none; -webkit-appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='6' viewBox='0 0 9 6'><path d='M1 1l3.5 3.5L8 1' stroke='%23888888' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 9px center;
+    }
+    [data-theme="light"] .lne-sel { background-color: color-mix(in srgb, #000 4%, transparent); }
+    .lne-sel:hover { background-color: color-mix(in srgb, var(--text-color, #fff) 9%, transparent); }
+    [data-theme="light"] .lne-sel:hover { background-color: color-mix(in srgb, #000 7%, transparent); }
+    .lne-sel:focus { box-shadow: 0 0 0 3px rgba(40,167,69,.15); }
+
+    /* Templates row inherits the same calm lift-on-hover language */
+    .lne-tpl-toggle:hover, .lne-tpl-btn:hover { transform: translateY(-1px); }
+}
+
 /* ═══════════════════════════ EDITOR BODY ═══════════════════════════════ */
 .lne-body { flex: 1; overflow: auto; background: var(--modal-bg, #1a1a1a); }
 .lne-body { scrollbar-width: thin; scrollbar-color: var(--border-color, #333) transparent; }

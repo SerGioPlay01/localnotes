@@ -233,8 +233,6 @@ class LocalNotesEditor {
         B('wordCount','bi bi-bar-chart-line',_('wordCount','Word count')) +
         B('focusMode','bi bi-eye',_('focusMode','Focus mode'),'F12') +
         B('fullscreen','bi bi-fullscreen',_('fullscreen','Fullscreen'),'F11') +
-        GE + SEP +
-        GS +
         B('shortcutsHelp','bi bi-keyboard',_('shortcutsHelp','Keyboard shortcuts'),'Ctrl+/') +
         GE +
         '</div>' +
@@ -2655,8 +2653,10 @@ class LocalNotesEditor {
                 close();
             };
             var fi = ov.querySelector('#lne-imgfile');
-            if (isUp && fi.files[0]) {
-                var rd = new FileReader(); rd.onload = function(ev) { ins(ev.target.result); }; rd.readAsDataURL(fi.files[0]);
+            var dropped = ov._lneDroppedFile;
+            var chosenFile = (fi.files && fi.files[0]) || dropped;
+            if (isUp && chosenFile) {
+                var rd = new FileReader(); rd.onload = function(ev) { ins(ev.target.result); }; rd.readAsDataURL(chosenFile);
             } else {
                 var url = ov.querySelector('#lne-imgurl').value.trim();
                 if (url) ins(url);
@@ -2679,7 +2679,15 @@ class LocalNotesEditor {
             dz.addEventListener('drop', function(e) {
                 e.preventDefault(); dz.classList.remove('drag-over');
                 var f = e.dataTransfer.files[0];
-                if (f && f.type.startsWith('image/')) { r.ov.querySelector('#lne-imgfile').files; dz.querySelector('p').textContent = f.name; }
+                if (f && f.type.startsWith('image/')) {
+                    r.ov._lneDroppedFile = f;
+                    try {
+                        var dt = new DataTransfer();
+                        dt.items.add(f);
+                        r.ov.querySelector('#lne-imgfile').files = dt.files;
+                    } catch (err) { /* DataTransfer constructor unsupported — fallback var above still works */ }
+                    dz.querySelector('p').textContent = f.name;
+                }
             });
             r.ov.querySelector('#lne-imgfile').addEventListener('change', function(e) {
                 if (e.target.files[0]) dz.querySelector('p').textContent = e.target.files[0].name;

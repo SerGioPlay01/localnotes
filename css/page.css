@@ -30,6 +30,9 @@ body {
     * { scrollbar-width: none; }
 }
 
+/* ── Selection ────────────────────────────────────────────── */
+::selection { background: rgba(174,252,110,.25); color: #fff; }
+
 /* ── Top nav bar ──────────────────────────────────────────── */
 .page-nav {
     position: sticky;
@@ -45,6 +48,15 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+/* Same brand-gradient hairline used on the app footer, so the doc
+   pages read as part of the same product rather than a bare template. */
+.page-nav::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(174,252,110,.5) 25%, rgba(174,252,110,.5) 75%, transparent);
 }
 .page-nav-back {
     display: inline-flex;
@@ -101,7 +113,10 @@ body {
     font-family: 'Intro', 'Golos Text', sans-serif;
     font-size: clamp(1.6rem, 4vw, 2.4rem);
     font-weight: 700;
-    color: #fff;
+    background: linear-gradient(90deg, #fff, #cfcfcf 65%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     line-height: 1.2;
     letter-spacing: -.01em;
 }
@@ -131,15 +146,27 @@ body {
 
 /* ── Headings inside text ─────────────────────────────────── */
 .text_p b, .text_p strong {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 1rem;
     font-weight: 700;
     color: #fff;
     margin-bottom: 10px;
     letter-spacing: .01em;
 }
+/* Small brand-colored marker in front of each section title — makes
+   a long legal document far easier to scan/skim than plain bold text. */
+.text_p b::before, .text_p strong::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #aefc6e;
+    flex-shrink: 0;
+}
 /* Inline bold (not section title) */
 .text_p b + b, .text_p strong + strong { display: inline; font-size: inherit; margin: 0; }
+.text_p b + b::before, .text_p strong + strong::before { content: none; }
 
 /* ── Lists ────────────────────────────────────────────────── */
 ul, ol {
@@ -194,6 +221,7 @@ a:hover { color: #c8ff8a; }
     margin: 8px 0;
     color: #c8c8c8;
     font-size: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.15);
 }
 
 /* ── Code inline ──────────────────────────────────────────── */
@@ -209,6 +237,7 @@ code {
 
 /* ── Footer ───────────────────────────────────────────────── */
 .page-footer {
+    position: relative;
     margin-top: 48px;
     padding-top: 24px;
     border-top: 1px solid #1e1e1e;
@@ -220,7 +249,15 @@ code {
     font-size: 12px;
     color: #444;
 }
-.page-footer a { color: #555; font-weight: 500; font-size: 12px; }
+.page-footer::before {
+    content: "";
+    position: absolute;
+    top: -1px; left: 0;
+    width: 64px; height: 1px;
+    background: #aefc6e;
+    opacity: .6;
+}
+.page-footer a { color: #555; font-weight: 500; font-size: 12px; transition: color .18s; }
 .page-footer a:hover { color: #aefc6e; }
 
 /* ── Responsive ───────────────────────────────────────────── */

@@ -431,18 +431,39 @@ button.lne-tpl-btn.lne-btn {
 .lne-editor video  { max-width: 100%; height: auto; margin: 12px 0; border-radius: 6px; }
 
 /* Tables */
-.lne-editor table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: .93em; }
-.lne-editor td, .lne-editor th { border: 1px solid var(--border-color, #272727); padding: 9px 14px; vertical-align: middle; text-align: left; }
+/* Wrapper gives every table its own horizontal scroller instead of
+   blowing out the editor width on mobile / many-column tables — the
+   table itself stays border-collapsed so cell borders line up. */
+.lne-editor .table-responsive {
+    margin: 16px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border-color, #272727);
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+.lne-editor .table-responsive::-webkit-scrollbar { height: 8px; }
+.lne-editor .table-responsive::-webkit-scrollbar-thumb { background: var(--border-color, #333); border-radius: 4px; }
+.lne-editor .table-responsive::-webkit-scrollbar-track { background: transparent; }
+.lne-editor table { border-collapse: collapse; width: 100%; margin: 0; font-size: .93em; }
+.lne-editor td, .lne-editor th { border: 1px solid var(--border-color, #272727); padding: 9px 14px; vertical-align: middle; text-align: left; transition: background .12s ease; }
 .lne-editor th {
     background: var(--th-bg, var(--primary-color, #28a745));
     color: var(--th-color, #fff);
     font-weight: 700; font-size: .9em; letter-spacing: .02em;
+    position: sticky; top: 0;
 }
 /* Dark theme — green header, white text */
 :root .lne-editor th,
 [data-theme="dark"] .lne-editor th { --th-bg: #1d6e2f; --th-color: #aefc6e; }
 .lne-editor tr:nth-child(even) td { background: rgba(255,255,255,.02); }
-.lne-editor tr:hover td { background: rgba(174,252,110,.05); }
+.lne-editor tr:hover td { background: rgba(174,252,110,.06); }
+/* A table with no wrapper (legacy content saved before this update)
+   still gets the rounded, scrollable treatment. */
+.lne-editor > table,
+.lne-editor p > table {
+    display: block; overflow-x: auto; border-radius: 10px; border: 1px solid var(--border-color, #272727);
+}
 
 /* Table checkbox */
 .tbl-cb {

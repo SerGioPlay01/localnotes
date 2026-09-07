@@ -1294,6 +1294,7 @@ body {
     }
 }
 footer {
+    position: relative;
     background-color: var(--header-bg);
     width: 100%;
     display: flex;
@@ -1305,6 +1306,16 @@ footer {
     margin-bottom: 0;
     border-top: 1px solid var(--border-color);
     overflow: hidden;
+}
+/* Thin brand-gradient accent so the footer reads as a deliberate,
+   designed edge rather than a plain divider line. */
+footer::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-color, #28a745) 25%, var(--primary-color, #28a745) 75%, transparent);
+    opacity: 0.55;
 }
 footer a {
     text-decoration: none;
@@ -1338,15 +1349,29 @@ footer a:hover { color: var(--primary-color); }
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 6px 20px;
+    gap: 6px 4px;
 }
 .footer-content br { display: none; }
 .footer-content p { margin: 0; }
 .footer-content a {
+    position: relative;
     font-size: 13px;
     font-weight: 500;
     opacity: 0.7;
+    padding: 4px 10px;
     transition: opacity 0.2s, color 0.2s;
+}
+/* Dot separators between links instead of relying on wrapping gaps —
+   reads as one tidy row on desktop and still wraps cleanly on mobile. */
+.footer-content a:not(:last-of-type)::after {
+    content: "";
+    position: absolute;
+    right: -3px; top: 50%;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.4;
+    transform: translateY(-50%);
 }
 .footer-content a:hover { opacity: 1; color: var(--primary-color); }
 .footer-content .footerCopyRight,

@@ -2869,7 +2869,7 @@ class LocalNotesEditor {
             var zebra = ov.querySelector('#lne-tzebra').checked;
             var wid = ov.querySelector('#lne-twid').value;
             var hdLbl = self._('tableHeader','Header');
-            var html = '<table style="border-collapse:collapse;width:' + wid + ';margin:12px 0;">';
+            var html = '<div class="table-responsive"><table style="border-collapse:collapse;width:' + wid + ';">';
             if (hdr) {
                 html += '<thead><tr>';
                 for (var c=0;c<cols;c++) html += '<th style="border:1px solid var(--border-color,#272727);padding:8px 12px;background:var(--bg-secondary,#111);font-weight:600;">' + hdLbl + ' ' + (c+1) + '</th>';
@@ -2882,7 +2882,7 @@ class LocalNotesEditor {
                 for (var c=0;c<cols;c++) html += '<td style="border:1px solid var(--border-color,#272727);padding:8px 12px;">&nbsp;</td>';
                 html += '</tr>';
             }
-            html += '</tbody></table><p><br></p>';
+            html += '</tbody></table></div><p><br></p>';
             self._insertHTML(html);
             self._initContextToolbars();
             close();
@@ -3484,7 +3484,7 @@ class LocalNotesEditor {
         var self = this;
         var bar = this._ctxBar([
             {
-                icon: 'bi bi-pencil', label: this._('imageWidth','Edit image'),
+                icon: 'bi bi-pencil', label: this._('editImage','Edit image'),
                 action: function() { if (self._removeCtx) self._removeCtx(); self._modalImageEdit(img); }
             },
             {
@@ -3500,7 +3500,7 @@ class LocalNotesEditor {
                 action: function() { self._saveSnap(); img.style.cssText = 'max-width:100%;height:auto;float:right;margin:4px 0 8px 14px;display:block;border-radius:' + (img.style.borderRadius||'4px'); }
             },
             {
-                icon: 'bi bi-image', label: this._('insertImage','Replace'),
+                icon: 'bi bi-image', label: this._('replaceImage','Replace'),
                 action: function() { self._showImageCtxReplace(img); }
             },
             {
@@ -3523,7 +3523,7 @@ class LocalNotesEditor {
                      : img.style.float === 'right' ? 'right'
                      : (img.style.margin || '').includes('auto') ? 'center' : '';
 
-        this._modal(this._('insertImage','Edit Image'), 'bi bi-image',
+        this._modal(this._('editImage','Edit Image'), 'bi bi-image',
             '<div class="lne-fg"><label>' + this._('imageWidth','Width') + '</label>' +
             '<input type="text" id="lne-ei-w" class="lne-inp" value="' + curW + '" placeholder="100%, 400px, auto"></div>' +
             '<div class="lne-fg"><label>' + this._('imageBorderRadius','Border radius') + '</label>' +
@@ -3631,7 +3631,7 @@ class LocalNotesEditor {
                 }
             },
             {
-                icon: 'bi bi-plus-square', label: this._('numberOfRows','Add row below'),
+                icon: 'bi bi-plus-square', label: this._('addRowBelow','Add row below'),
                 action: function() {
                     self._saveSnap();
                     var row = cell.closest('tr');
@@ -3733,7 +3733,22 @@ class LocalNotesEditor {
                 }
             },
             {
-                icon: 'bi bi-plus-lg', label: this._('numberOfColumns','Add column right'),
+                icon: 'bi bi-arrow-bar-left', label: this._('addColumnLeft','Add column left'),
+                action: function() {
+                    self._saveSnap();
+                    var colIdx = Array.from(cell.closest('tr').children).indexOf(cell);
+                    table.querySelectorAll('tr').forEach(function(row) {
+                        var refCell = row.children[colIdx];
+                        var newCell = document.createElement(refCell && refCell.tagName === 'TH' ? 'th' : 'td');
+                        newCell.style.cssText = refCell ? refCell.style.cssText : 'border:1px solid var(--border-color,#272727);padding:8px 12px;';
+                        newCell.innerHTML = refCell && refCell.tagName === 'TH' ? 'Header' : '&nbsp;';
+                        if (refCell) refCell.parentNode.insertBefore(newCell, refCell);
+                        else row.appendChild(newCell);
+                    });
+                }
+            },
+            {
+                icon: 'bi bi-plus-lg', label: this._('addColumnRight','Add column right'),
                 action: function() {
                     self._saveSnap();
                     var colIdx = Array.from(cell.closest('tr').children).indexOf(cell);

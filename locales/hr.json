@@ -523,6 +523,8 @@
   "tourQuickEditTitle": "Brza izmjena",
   "tourSearchText": "Pronađite bilješke po tekstu, po #oznaci ili filtrima poput is:pinned ili has:image.",
   "tourSearchTitle": "Pretraga",
+  "tourSidebarText": "Ovdje se otvara puni popis bilješki. Sinkroniziran je s poljem za pretragu iznad — upišite upit i ovaj popis se također filtrira uživo, tako da odmah možete skočiti na podudaranje.",
+  "tourSidebarTitle": "Bočna traka svih bilješki",
   "tourSkip": "Preskoči",
   "tplAction": "Akcija",
   "tplActionItems": "Zadaci",

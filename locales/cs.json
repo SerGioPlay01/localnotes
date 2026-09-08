@@ -523,6 +523,8 @@
   "tourQuickEditTitle": "Rychlá úprava",
   "tourSearchText": "Najděte poznámky podle textu, podle #štítku nebo filtrů jako is:pinned či has:image.",
   "tourSearchTitle": "Hledání",
+  "tourSidebarText": "Zde se otevře celý seznam poznámek. Je synchronizovaný s vyhledávacím polem výše — zadejte dotaz a tento seznam se také filtruje živě, takže můžete rovnou přejít na shodu.",
+  "tourSidebarTitle": "Postranní panel všech poznámek",
   "tourSkip": "Přeskočit",
   "tplAction": "Akce",
   "tplActionItems": "Úkoly",

@@ -523,6 +523,8 @@
   "tourQuickEditTitle": "Szybka edycja",
   "tourSearchText": "Znajdź notatki po tekście, po #tagu lub filtrach typu is:pinned czy has:image.",
   "tourSearchTitle": "Wyszukiwanie",
+  "tourSidebarText": "Tutaj otwiera się pełna lista notatek. Jest zsynchronizowana z polem wyszukiwania powyżej — wpisz zapytanie, a ta lista również przefiltruje się na żywo, dzięki czemu od razu przejdziesz do trafienia.",
+  "tourSidebarTitle": "Panel boczny wszystkich notatek",
   "tourSkip": "Pomiń",
   "tplAction": "Działanie",
   "tplActionItems": "Zadania",

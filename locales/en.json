@@ -523,6 +523,8 @@
   "tourQuickEditTitle": "Quick Edit",
   "tourSearchText": "Find notes by text, by #tag, or with filters like is:pinned or has:image.",
   "tourSearchTitle": "Search",
+  "tourSidebarText": "Open the full list of notes here. It stays in sync with the search box above — type a query and this list filters live too, so you can jump straight to a match.",
+  "tourSidebarTitle": "All notes sidebar",
   "tourSkip": "Skip",
   "tplAction": "Action",
   "tplActionItems": "Action Items",

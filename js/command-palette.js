@@ -294,8 +294,29 @@
             // The rich-text editor already binds Ctrl+K to "Insert link" —
             // don't steal the shortcut while the user is typing inside it,
             // or both the link modal and the palette would open at once.
-            var active = document.activeElement;
-            if (active && active.closest && active.closest('.lne-editor')) return;
+            // Quick Edit's inline note content is a separate bare
+            // contenteditable region (not wrapped in .lne-editor), but the
+            // same problem applies there: hijacking Ctrl+K mid-edit yanks
+            // focus out of the note and pops the palette open unannounced.
+            // isContentEditable covers both cases (and any future editable
+            // region) since it's true for the region's descendants too;
+            // the .lne-editor closest() check is kept as a fallback for
+            // browsers/elements where isContentEditable isn't reliable.
+            //
+            // IMPORTANT: check e.target here, not document.activeElement.
+            // The editor's own Ctrl+K handler runs first (target phase, on
+            // the contenteditable itself) and — before this listener ever
+            // sees the event on its way up to document — synchronously
+            // blurs the editor to open the "Insert Link" modal (blur() is
+            // called there to dismiss the mobile keyboard). By the time
+            // this bubble-phase listener runs, activeElement is already
+            // document.body, not the editor, so the old check silently
+            // failed and the palette opened stacked underneath the link
+            // modal. e.target is fixed at dispatch time and is immune to
+            // that mid-flight blur, so it still correctly points at the
+            // element the shortcut was actually pressed in.
+            var origin = e.target;
+            if (origin && (origin.isContentEditable || (origin.closest && origin.closest('.lne-editor')))) return;
             e.preventDefault();
             toggle();
         }

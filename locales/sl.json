@@ -523,6 +523,8 @@
   "tourQuickEditTitle": "Hitro urejanje",
   "tourSearchText": "Poiščite zapiske po besedilu, po #oznaki ali filtrih, kot sta is:pinned ali has:image.",
   "tourSearchTitle": "Iskanje",
+  "tourSidebarText": "Tukaj se odpre celoten seznam zapiskov. Sinhroniziran je z iskalnim poljem zgoraj — vnesite poizvedbo in ta seznam se prav tako filtrira v živo, tako da lahko takoj skočite na zadetek.",
+  "tourSidebarTitle": "Stranska vrstica vseh zapiskov",
   "tourSkip": "Preskoči",
   "tplAction": "Akcija",
   "tplActionItems": "Naloge",

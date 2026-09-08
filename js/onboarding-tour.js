@@ -49,6 +49,11 @@
                 text: gt('tourSearchText', 'Find notes by text, by #tag, or with filters like is:pinned or has:image.')
             },
             {
+                selector: '#sidebarToggleTab',
+                title: gt('tourSidebarTitle', 'All notes sidebar'),
+                text: gt('tourSidebarText', 'Open the full list of notes here. It stays in sync with the search box above — type a query and this list filters live too, so you can jump straight to a match.')
+            },
+            {
                 selector: null,
                 title: gt('tourDoneTitle', "You're all set"),
                 text: gt('tourDoneText', "Click 'Add a note' whenever you're ready to write your first one.")

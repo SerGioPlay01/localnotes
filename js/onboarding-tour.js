@@ -82,6 +82,20 @@
         if (state) positionForStep(state.steps[state.index]);
     }
 
+    function isTargetVisible(el) {
+        if (!el) return false;
+        if (el.offsetParent !== null) return true;
+        // offsetParent is spec'd to always be null for position:fixed
+        // elements, even when they're fully visible on screen (e.g. the
+        // sidebar's edge toggle tab). Fall back to an actual visibility/
+        // layout check in that case instead of treating it as hidden.
+        const cs = getComputedStyle(el);
+        if (cs.position === 'fixed') {
+            return cs.display !== 'none' && cs.visibility !== 'hidden' && el.getClientRects().length > 0;
+        }
+        return false;
+    }
+
     function currentVisibleStep(index, direction) {
         // Skip steps whose target element isn't actually present/visible
         // (e.g. a future toolbar variant) instead of showing a spotlight
@@ -94,7 +108,7 @@
             const s = steps[index];
             if (!s.selector) return index; // the centered closing step
             const el = document.querySelector(s.selector);
-            if (el && el.offsetParent !== null) return index;
+            if (isTargetVisible(el)) return index;
             index += direction;
         }
         return direction > 0 ? steps.length : -1;
